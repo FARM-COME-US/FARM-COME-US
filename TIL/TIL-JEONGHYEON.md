@@ -2,7 +2,7 @@
 
 **2023. 01. 16 (월) : WebRTC**
 <br>
-![WebRTC_Logo](./resources/img/WebRTC_Logo.svg)
+<img src="./resources/img/WebRTC_Logo.svg" width: "60%">
 
 ### **WebRTC 초기 설정**
 ---
