@@ -63,3 +63,5 @@ function Postcode(props) {
 
 export default Postcode;
 ```
+
+![daum_postcode_response.png](TIL-SUNGJOONG_assets/5d56b48063a3c493b0f03f6783bd947361054557.png)
