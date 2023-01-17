@@ -3,7 +3,7 @@
 **2023. 01. 16 (월) : WebRTC**
 <br>
 
-<img src="./resources/img/WebRTC_Logo.svg" style="width: 60%" alt="WebRTC_Logo" />
+<img src="./resources/img/WebRTC_Logo.svg" style="width: 300px; margin: 0 auto;" alt="WebRTC_Logo" />
 
 ### **WebRTC 초기 설정**
 ---
@@ -12,7 +12,7 @@
 
 2. [WSL2 (Windows Subsystem for Linux) 설치](https://learn.microsoft.com/ko-kr/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package)
 
-3. 리눅스 가상머신 설치
+3. ~~리눅스 가상머신 설치~~(없어도 ok)
 
     윈도우 > Microsoft Store에서 Ubuntu 22.04.1(LTS) 설치
     
@@ -38,6 +38,10 @@ kurento/kurento-media-server:latest
 ---
 [참고 블로그](https://gh402.tistory.com/44)
 
+[자바 코드](https://doc-kurento.readthedocs.io/en/latest/tutorials/java/tutorial-one2many.html#)
+
+[node.js 코드](https://doc-kurento.readthedocs.io/en/latest/tutorials/node/tutorial-one2many.html#for-the-impatient-running-this-example)
+
 <br><br>
 
 ## [**WebRTC openVidu API 샘플코드**](#openVidu)
@@ -45,3 +49,14 @@ kurento/kurento-media-server:latest
 [OpenVidu 공식 가이드 문서](https://docs.openvidu.io/en/stable/tutorials/openvidu-library-react/)
 
 
+<br><br>
+
+**2023. 01. 17 (화) : WebRTC - OpenVidu**
+<br>
+
+<div style="text-align: center">
+    <img src="./resources/img/openvidu_logo.png" style="width: 300px;" alt="WebRTC_Logo" />
+</div>
+
+### **OpenVidu 테스트 코드 작성**
+---
