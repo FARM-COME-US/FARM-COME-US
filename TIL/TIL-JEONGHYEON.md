@@ -2,8 +2,9 @@
 
 **2023. 01. 16 (월) : WebRTC**
 <br>
-
-<img src="./resources/img/WebRTC_Logo.svg" style="width: 300px; margin: 0 auto;" alt="WebRTC_Logo" />
+<div style="width: 100%; text-align: center;">
+    <img src="./resources/img/WebRTC_Logo.svg" style="width: 300px; margin: 0 auto;" alt="WebRTC_Logo" />
+</div>
 
 ### **WebRTC 초기 설정**
 ---
@@ -54,8 +55,8 @@ kurento/kurento-media-server:latest
 **2023. 01. 17 (화) : WebRTC - OpenVidu**
 <br>
 
-<div style="text-align: center">
-    <img src="./resources/img/openvidu_logo.png" style="width: 300px;" alt="WebRTC_Logo" />
+<div style="width: 100%; text-align: center;">
+    <img src="./resources/img/openvidu_logo.png" style="width: 300px; margin: 0 auto" alt="WebRTC_Logo" />
 </div>
 
 ### **OpenVidu 테스트 코드 작성**
