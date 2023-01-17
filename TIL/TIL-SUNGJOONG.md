@@ -66,4 +66,26 @@ function Postcode(props) {
 export default Postcode;
 ```
 
-![loading-ag-122](TIL-SUNGJOONG_assets/c46b702a06b6584e26e21c05dadd7adcfcfed5d9.png)
+<img src="TIL-SUNGJOONG_assets/c46b702a06b6584e26e21c05dadd7adcfcfed5d9.png" title="" alt="loading-ag-122" width="393">
+
+
+
+
+
+---
+
+# 01-17
+
+- Redux 학습
+
+- 비동기 요청 async await 복습 with React
+
+- OAuth2.0 학습내용 팀노트에 공유. 이후 SNS이용한 회원가입, 인증으로 이어질 예정.
+
+- 컨설턴트님 아침조회시간에 텔넷을 이용한 네트워크 작동확인방법을 배움.
+
+- 컨설턴트님 아침조회시간에 curl 명령에 대해 배움
+
+- 특강통해 React에서 차트만들어서 관리하는 방법 배움. (MUI의 DataGrid library 사용)
+
+- 개념적 데이터모델링 검토, BE에서 설명해준 데이터 흐름 이해
