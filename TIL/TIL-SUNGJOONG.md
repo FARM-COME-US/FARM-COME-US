@@ -66,11 +66,7 @@ function Postcode(props) {
 export default Postcode;
 ```
 
-<img src="TIL-SUNGJOONG_assets/c46b702a06b6584e26e21c05dadd7adcfcfed5d9.png" title="" alt="loading-ag-122" width="393">
-
-
-
-
+<img title="" src="./resources/img/kakao_postcode_response.png" alt="loading-ag-122" width="393">
 
 ---
 
