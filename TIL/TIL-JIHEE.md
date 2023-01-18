@@ -12,3 +12,11 @@
     - JWT 토큰 관련 학습
     - ERD 작성 2차
     
+
+### 2023-01-18
+    - 오전 스크럼 회의
+    - 카카오 소셜 로그인 공부
+    - Authorization Code Grant  방식
+    - OAuth2 방식
+    - Spring Security
+    - JWT 로그인 구현하기
