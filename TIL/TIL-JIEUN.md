@@ -20,7 +20,7 @@
 
 Todo
 
-- [x]  WebRTC 학습 및 정리
+- [x] WebRTC 학습 및 정리
 - https://jieuntil.tistory.com/5
 - [x]  DB 설계
 
