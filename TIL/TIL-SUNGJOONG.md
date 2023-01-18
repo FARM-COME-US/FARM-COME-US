@@ -86,8 +86,6 @@ export default Postcode;
 
 - 개념적 데이터모델링 검토, BE에서 설명해준 데이터 흐름 이해
 
-
-
 # 01-18
 
 - Redux 학습
@@ -101,3 +99,5 @@ export default Postcode;
 - Flutter 특강
 
 - 카카오 로그인 관련 사전세팅
+
+- Redux toolkit 학습, 예제 실습
