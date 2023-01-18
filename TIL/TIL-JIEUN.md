@@ -14,4 +14,13 @@
 - [x]  내부 API 문서 작성
 - [x]  UUID와 increment PK의 차이 학습
 
+---
+
+2023.01.18.tn
+
+Todo
+
+- [x]  WebRTC 학습 및 정리
+- https://jieuntil.tistory.com/5
+- [x]  DB 설계
 
