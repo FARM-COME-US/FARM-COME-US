@@ -12,6 +12,11 @@
     3. Docker 설치
 
 ### 2023.01.18
-    1. ERD 수정
+    1. ERD 피드백
     2. WebRTC 개념 학습
     3. Docker 실습
+
+### 2023.01.19
+    1. ERD 수정
+    2. OpenVidu Workflow 학습
+    3. OpenVidu 테스트
