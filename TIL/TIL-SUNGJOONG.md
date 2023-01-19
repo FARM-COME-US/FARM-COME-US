@@ -101,3 +101,13 @@ export default Postcode;
 - 카카오 로그인 관련 사전세팅
 
 - Redux toolkit 학습, 예제 실습
+
+
+
+# 01-19
+
+- Redux toolkit + 비동기처리 학습
+
+- 컨설턴트님 정규표현식 특강 수강
+
+- FE 카카오로그인 시험코드 작성
