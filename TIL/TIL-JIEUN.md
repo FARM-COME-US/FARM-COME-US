@@ -16,7 +16,7 @@
 
 ---
 
-2023.01.18.tn
+## 2023.01.18.수
 
 Todo
 
@@ -24,3 +24,8 @@ Todo
 - https://jieuntil.tistory.com/5
 - [x]  DB 설계
 
+## 2023.01.19.목
+
+Todo
+
+- [x] Spring Boot JPA 학습 및 블로그 정리
