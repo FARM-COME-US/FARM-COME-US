@@ -50,7 +50,7 @@ kurento/kurento-media-server:latest
 
 <br><br>
 
-**2023. 01. 18 (수) : WebRTC**
+**2023. 01. 18 (수) : WebRTC - 커스텀 관련 자료 조사**
 <br>
 
 - 튜토리얼 코드 실행 성공, 코드 내에서 다대다 화상 채팅 및 실시간 채팅기능 확인.
@@ -61,4 +61,13 @@ kurento/kurento-media-server:latest
 
 - [공식문서](https://docs.openvidu.io/en/stable/tutorials/openvidu-react/)
 
--
+<br><br>
+
+**2023. 01. 19 (목) : WebRTC 커스텀 테스트**
+<br>
+
+- 커스텀 작업 중 세션 리스트(라이브 방 목록)을 불러오는 호출(GET)에서 애플리케이션 서버와 클라이언트의 주소가 모두 localhost인 상황에서 테스트를 진행해 CORS에러 발생.
+
+- 이후에 애플리케이션 서버, 미디어 서버 등을 EC2에 올린 뒤 다시 테스트 필요.
+
+- 생성된 세션 방(라이브 스토어)의 커스텀 작업 중.
