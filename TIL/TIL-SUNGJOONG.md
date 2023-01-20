@@ -102,8 +102,6 @@ export default Postcode;
 
 - Redux toolkit 학습, 예제 실습
 
-
-
 # 01-19
 
 - Redux toolkit + 비동기처리 학습
@@ -111,3 +109,17 @@ export default Postcode;
 - 컨설턴트님 정규표현식 특강 수강
 
 - FE 카카오로그인 시험코드 작성
+
+# 01-20
+
+- FE 카카오 로그인 구현
+
+- 기능명세 수정
+
+- 컴포넌트 분리
+
+- 화면별 상세기능 재정리
+
+- FE 상세 URL 정리
+
+- jwt 토큰을 이용한 유효성 관리 학습
