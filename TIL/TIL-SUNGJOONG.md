@@ -123,3 +123,21 @@ export default Postcode;
 - FE 상세 URL 정리
 
 - jwt 토큰을 이용한 유효성 관리 학습
+
+
+
+
+
+# 01-21
+
+- Redux toolkit + Thunk 학습
+
+- 공통버튼 컴포넌트 구현
+
+- 일반 회원가입 화면 구현
+
+- FE - JWT 학습
+
+- 로그인화면 구현
+
+- 유효성 검사 위한 이메일 보내기 학습
