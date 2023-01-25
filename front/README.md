@@ -4,12 +4,12 @@
 
 - node : 16.4.2
 - react : 18
-- react-router-dom :
+- react-router-dom : 6
 - redux :
-- redux-tool-kit :
-- SASS :
-- eslint :
-- axios :
+- redux-tool-kit : 1.9
+- SASS : 1.57.1
+- eslint : (보류)
+- axios : 1.2.4
 - react-daum-postcode : 3.1.1
 
 <br><br>
