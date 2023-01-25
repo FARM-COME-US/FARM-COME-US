@@ -4,9 +4,13 @@
 
 - node : 16.4.2
 - react : 18
-- react-router-dom
-- redux
-- redux-tool-kit
+- react-router-dom :
+- redux :
+- redux-tool-kit :
+- SASS :
+- eslint :
+- axios :
+- react-daum-postcode : 3.1.1
 
 <br><br>
 
