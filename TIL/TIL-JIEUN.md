@@ -36,3 +36,11 @@ Todo
 
 - [x] Spring Boot Jpa
 - [x] create entity to project
+
+## 2023.01.25.수
+
+Todo
+
+- [x] entity 수정
+- [x] 프로토 타입 작성
+- [x] 중간 발표(01.27) 프로토 타입 gif 자료 준비 
