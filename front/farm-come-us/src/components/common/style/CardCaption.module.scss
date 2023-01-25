@@ -1,5 +1,10 @@
-.card {
+.caption {
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  overflow: hidden;
   padding: 10px 5px;
+
+  .card {
+    width: 100%;
+  }
 }
