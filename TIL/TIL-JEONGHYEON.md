@@ -80,3 +80,12 @@ kurento/kurento-media-server:latest
 - 디렉토리 구조 및 컴포넌트 명세서 작성
 
 - 각 파트별 기능 사전 테스트 과제 부여
+
+  <br><br>
+
+**2023. 01. 25 (수) : \[React\] Router 구조 디자인 & 코드 작성**
+<br>
+
+- 프로젝트 경로에 Router 디자인 및 컴포넌트 파일 추가
+- icon은 react-icons 라이브러리 사용
+- [react-icons 사용 가이드](https://react-icons.github.io/react-icons/)
