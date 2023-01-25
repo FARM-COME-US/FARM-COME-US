@@ -124,10 +124,6 @@ export default Postcode;
 
 - jwt 토큰을 이용한 유효성 관리 학습
 
-
-
-
-
 # 01-21
 
 - Redux toolkit + Thunk 학습
@@ -141,3 +137,13 @@ export default Postcode;
 - 로그인화면 구현
 
 - 유효성 검사 위한 이메일 보내기 학습
+
+
+
+# 01-25
+
+- 만들어 둔 카카오로그인 FE 코드에 merge
+
+- Sidebar 구현
+
+- JWT를 이용한 일반 로그인 구현
