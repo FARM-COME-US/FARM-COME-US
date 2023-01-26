@@ -10,3 +10,19 @@
     1. 데이터 모델링, ERD 설계
     2. API 문서 작성
     3. Docker 설치
+
+### 2023.01.18
+    1. ERD 피드백
+    2. WebRTC 개념 학습
+    3. Docker 실습
+
+### 2023.01.19
+    1. ERD 수정
+    2. OpenVidu Workflow 학습
+    3. OpenVidu 테스트
+
+### 2023.01.20
+    1. CI/CD 학습
+    2. 배포 테스트
+    - EC2 + Docker
+    - Jenkins + Docker + EC2

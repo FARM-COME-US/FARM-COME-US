@@ -8,6 +8,10 @@
   src: url(./fonts/NanumSquareRoundR.ttf);
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: "NanumSquareRoundR", -apple-system, BlinkMacSystemFont,
@@ -15,6 +19,7 @@ body {
     "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 12px;
 }
 
 code {
