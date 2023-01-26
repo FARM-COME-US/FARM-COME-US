@@ -1,2 +1,4 @@
-package com.ssafy.fcmus.repository;public interface ItemRepository {
+package com.ssafy.fcmus.repository;
+
+public interface ItemRepository {
 }

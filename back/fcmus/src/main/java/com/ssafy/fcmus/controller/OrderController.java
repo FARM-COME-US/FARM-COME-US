@@ -1,4 +1,4 @@
 package com.ssafy.fcmus.controller;
 
-public class PayController {
+public class OrderController {
 }

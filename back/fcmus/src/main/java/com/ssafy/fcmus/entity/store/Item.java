@@ -2,7 +2,7 @@ package com.ssafy.fcmus.entity.store;
 
 
 import com.ssafy.fcmus.entity.live.Live;
-import com.ssafy.fcmus.entity.order.CartList;
+import com.ssafy.fcmus.entity.order.Cart;
 import com.ssafy.fcmus.entity.order.OrderItem;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,7 +56,7 @@ public class Item {
     private Live live;
 
     @OneToMany(mappedBy = "item")
-    private List<CartList> cartList = new ArrayList<>();
+    private List<Cart> cart = new ArrayList<>();
 
     @OneToMany(mappedBy = "item")
     private List<OrderItem> orderItem = new ArrayList<>();

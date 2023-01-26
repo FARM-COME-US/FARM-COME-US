@@ -1,2 +1,4 @@
-package com.ssafy.fcmus.dto;public class CartInfoDto {
+package com.ssafy.fcmus.dto;
+
+public class CartInfoDto {
 }
