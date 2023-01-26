@@ -1,5 +1,5 @@
 .liveItem {
-  width: 45%;
+  width: 47%;
 
   .liveCard {
     aspect-ratio: 2 / 3;
@@ -7,7 +7,7 @@
     overflow: hidden;
     display: flex;
     justify-content: center;
-    margin: 8px;
+    margin: 0 10px;
 
     figure {
       margin: 0;
@@ -23,6 +23,13 @@
         height: 100%;
       }
 
+      .backCover {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+      }
+
       .badge {
         position: absolute;
         top: 10px;
@@ -33,6 +40,14 @@
           color: #fff;
           font-weight: bold;
         }
+      }
+
+      .reservedCaption {
+        position: absolute;
+        top: 40%;
+        color: #fff;
+        font-size: 0.8rem;
+        font-family: "NanumSquareRoundB";
       }
 
       .liveCaption {
@@ -47,10 +62,19 @@
           margin-bottom: 5px;
           font-family: "NanumSquareRoundB";
           font-weight: 600;
-          overflow: hidden;
+          width: 100%;
 
-          .subfix {
-            color: #f7863b;
+          p {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            margin: 0;
+            padding: 0;
+
+            .subfix {
+              color: #f7863b;
+            }
           }
         }
 
@@ -59,13 +83,42 @@
           overflow: hidden;
           white-space: nowrap;
           margin-bottom: 5px;
+        }
 
-          &:not(:hover) {
-            text-overflow: ellipsis;
+        .productInfo {
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+
+          .discount {
+            color: red;
+            margin-right: 5px;
           }
+        }
 
-          &:hover,
-          &:focus {
+        &:not(:hover) .liveTitle {
+          text-overflow: ellipsis;
+        }
+
+        &:not(:hover) .productInfo {
+          text-overflow: ellipsis;
+        }
+
+        &:hover,
+        &:focus {
+          // .storeInfo {
+          //   p {
+          //     display: inline-block;
+          //     animation-name: scroll-text;
+          //     animation-duration: 7s;
+          //     animation-timing-function: linear;
+          //     animation-delay: 0s;
+          //     animation-iteration-count: infinite;
+          //     animation-direction: normal;
+          //   }
+          // }
+
+          .liveTitle {
             .text {
               display: inline-block;
               animation-name: scroll-text;
@@ -75,13 +128,6 @@
               animation-iteration-count: infinite;
               animation-direction: normal;
             }
-          }
-        }
-
-        .productInfo {
-          .discount {
-            color: red;
-            margin-right: 5px;
           }
         }
       }
@@ -104,8 +150,8 @@
   }
 }
 
-// @media (min-width: 320px) {
+// @media (max-width: 280px) {
 //   .liveItem {
-//     width: 50%;
+// width: 50%;
 //   }
 // }
