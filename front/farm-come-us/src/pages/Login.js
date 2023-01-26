@@ -8,6 +8,7 @@ import { asyncSomethingFetch } from "../reduxStore/userSlice";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import classes from "./style/Login.module.scss";
+import KakaoLogin from "../components/social/KakaoLogin";
 
 function Login() {
   const dispatch = useDispatch();
@@ -33,18 +34,21 @@ function Login() {
         <Input id="password" />
         <br />
 
-        <button type="submit">제출하기</button>
+        <button type="submit" className={classes.signUpButton}>
+          제출하기
+        </button>
       </form>
       {/* 로그인버튼. 아직 어떤 인자를 넣어서 비동기 요청 보낼지 안정함. 연결된 userSlice도 수정필요 */}
 
       <Button
-        className="signupButton" //이거 색깔 왜 안먹지? 수정필요
+        className="signUpButton" //이거 색깔 왜 안먹지? 수정필요
         onClick={() => {
           navigate("/signin");
         }}
       >
         이거는 회원가입버튼
       </Button>
+      <KakaoLogin />
     </div>
   );
 }
