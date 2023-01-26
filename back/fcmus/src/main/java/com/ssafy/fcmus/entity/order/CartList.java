@@ -1,3 +1,10 @@
+/**
+ *
+ * CartList
+ * CartList Entity
+ * 마지막 수정일 2022-01-26
+ **/
+
 package com.ssafy.fcmus.entity.order;
 
 import com.ssafy.fcmus.entity.member.Member;
@@ -24,7 +31,7 @@ public class CartList {
     @Column
     private Integer cart_item_count;
 
-    // 외래 키
+    // 연결
     @OneToOne
     @JoinColumn(name="member_id")
     private Member member;
@@ -32,6 +39,7 @@ public class CartList {
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
     @JoinColumn(name = "item_id", updatable = false)
     private Item item;
+
 
     @Builder
     public CartList(Integer cart_item_count) {

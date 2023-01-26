@@ -17,7 +17,7 @@ public class LiveLike {
     @Column(name = "live_like_id")
     private Long id;
 
-    // 외래 키
+    // 연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Member.class)
     @JoinColumn(name = "member_id", updatable = false)
     private Member member;
@@ -25,6 +25,8 @@ public class LiveLike {
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Live.class)
     @JoinColumn(name = "live_id", updatable = false)
     private Live live;
+
+
 
 }
 

@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -35,7 +37,7 @@ public class Live {
     @Column
     private LocalDateTime live_end;
 
-    // 왜래 키
+    // 연결
 
     @OneToOne
     @JoinColumn(name="item_id")
@@ -44,6 +46,9 @@ public class Live {
     @OneToOne
     @JoinColumn(name="store_id")
     private Store store;
+
+    @OneToMany(mappedBy = "live")
+    private List<LiveLike> liveLike = new ArrayList<>();
 
     //빌더
     @Builder
