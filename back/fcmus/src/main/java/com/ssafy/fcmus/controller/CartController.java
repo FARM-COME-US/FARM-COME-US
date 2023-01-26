@@ -9,16 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class CartController {
+    @Autowired
+    private CartService cartService;
 
-//    @Autowired
-//    private CartService cartService;
-//
-//    // 장바구니 담기, 장바구니 생성
-//    @GetMapping("/cart")
-//    public String createCart(Member member, Item item) {
-////		List<CartItem> cartItemList = cartService.listCartItem(user);
-//
-//        return "cart";
-//    }
+    // 장바구니 담기, 장바구니 생성
+    @GetMapping("/cart")
+    public String createCart(Member member, Item item) {
+//		List<CartItem> cartItemList = cartService.listCartItem(user);
 
+        return "cart";
+    }
 }

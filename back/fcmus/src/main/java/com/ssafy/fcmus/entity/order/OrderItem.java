@@ -33,9 +33,9 @@ public class OrderItem {
     private Timestamp oitem_created_at;
 
     // 연결
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = OrderInfo.class)
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Order.class)
     @JoinColumn(name = "order_id", updatable = false)
-    private OrderInfo order;
+    private Order order;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
     @JoinColumn(name = "item_id", updatable = false)
@@ -49,4 +49,7 @@ public class OrderItem {
         this.oitem_status = oitem_status;
         this.oitem_created_at = oitem_created_at;
     }
+
+    // 주문 상세기록 생성
+    public static OrderItem createOrderItem(Item itemm, Integer oitem_count, String oitem_status, Timestamp create_at, java.security.Timestamp)
 }
