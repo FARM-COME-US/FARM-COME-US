@@ -1,5 +1,5 @@
 .liveItem {
-  width: 95%;
+  width: 45%;
 
   .liveCard {
     aspect-ratio: 2 / 3;
@@ -7,7 +7,7 @@
     overflow: hidden;
     display: flex;
     justify-content: center;
-    margin: 10px;
+    margin: 8px;
 
     figure {
       margin: 0;
@@ -104,8 +104,8 @@
   }
 }
 
-@media (min-width: 320px) {
-  .liveItem {
-    width: 50%;
-  }
-}
+// @media (min-width: 320px) {
+//   .liveItem {
+//     width: 50%;
+//   }
+// }
