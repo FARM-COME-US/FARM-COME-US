@@ -34,7 +34,7 @@ const App = () => {
 
         {isOpen ? (
           <div>
-            <Backdrop />
+            {/* <Backdrop /> 사이드바 컨텐츠가 없는거였음. 버그 아님. */}
             <SideMenu className="sideMenu" />
           </div>
         ) : (
