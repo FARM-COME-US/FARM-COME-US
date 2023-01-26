@@ -30,10 +30,13 @@ public class DeliveryInfo {
     private String delivery_phone_number;
 
 
-    // 외래 키
+    // 연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Member.class)
     @JoinColumn(name = "member_id", updatable = false)
     private Member member;
+
+    @OneToOne(mappedBy = "delivery")
+    private DeliveryInfo delivery;
 
     //빌더
     @Builder

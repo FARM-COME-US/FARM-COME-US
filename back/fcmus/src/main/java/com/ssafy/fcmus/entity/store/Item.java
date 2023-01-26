@@ -1,13 +1,17 @@
 package com.ssafy.fcmus.entity.store;
 
 
+import com.ssafy.fcmus.entity.live.Live;
+import com.ssafy.fcmus.entity.order.CartList;
+import com.ssafy.fcmus.entity.order.OrderItem;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -39,7 +43,7 @@ public class Item {
     @Column
     private Integer item_stock;
 
-    // 외래 키
+    // 연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Category.class)
     @JoinColumn(name = "category_id", updatable = false)
     private Category category;
@@ -47,6 +51,15 @@ public class Item {
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Store.class)
     @JoinColumn(name = "store_id", updatable = false)
     private Store store;
+
+    @OneToOne(mappedBy = "item")
+    private Live live;
+
+    @OneToMany(mappedBy = "item")
+    private List<CartList> cartList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    private List<OrderItem> orderItem = new ArrayList<>();
 
     //빌더
     @Builder

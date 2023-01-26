@@ -32,7 +32,7 @@ public class OrderItem {
     @CreationTimestamp
     private Timestamp oitem_created_at;
 
-    // 외래 키
+    // 연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = OrderInfo.class)
     @JoinColumn(name = "order_id", updatable = false)
     private OrderInfo order;

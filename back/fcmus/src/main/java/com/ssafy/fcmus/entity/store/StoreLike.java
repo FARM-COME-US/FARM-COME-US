@@ -17,7 +17,7 @@ public class StoreLike {
     @Column(name = "storelike_id")
     private Long id;
 
-    //외래 키
+    //연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Member.class)
     @JoinColumn(name = "member_id", updatable = false)
     private Member member;
