@@ -26,3 +26,13 @@
     2. 배포 테스트
     - EC2 + Docker
     - Jenkins + Docker + EC2
+
+### 2023.01.25
+    1. 발표 PPT 작성
+    2. 발표 자료 조사
+    3. SSH 접속 테스트
+
+### 2023.01.26
+    1. 발표 스크립트 작성
+    2. 서버 Docker 설치
+    3. Docker Mysql 설치
