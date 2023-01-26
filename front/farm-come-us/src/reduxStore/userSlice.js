@@ -28,6 +28,7 @@ const asyncSomethingFetch = createAsyncThunk(
     const data = await res.json();
     return data.value;
     // value가 주어지는거에 따라서 pending, fulfilled, rejected가 달라짐.
+    // 로그인을 처리하는 비동기함수라고 생각하고 있음.
   }
 );
 // 비동기 처리하는 함수. 이름 안정함.
