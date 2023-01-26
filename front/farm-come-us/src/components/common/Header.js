@@ -2,7 +2,7 @@ import React from "react";
 
 import classes from "./style/Header.module.scss";
 
-const Header = () => {
+const Header = (props) => {
   return (
     <div className={`${classes.header} ${props.className}`}>
       <div className={`${classes.logo}`}></div>
