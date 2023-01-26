@@ -8,13 +8,17 @@ function Login() {
   return (
     <div>
       <div>로그인 화면입니다.</div>
+      <input></input>
+      <input></input>
+      <input></input>
+      <input></input>
 
       <button
         onClick={() => {
           dispatch(asyncSomethingFetch());
         }}
       />
-      {/* 로그인버튼. 아직 어떤 인자를 넣어서 비동기 요청 보낼지 안정함. userSlice도 수정필요 */}
+      {/* 로그인버튼. 아직 어떤 인자를 넣어서 비동기 요청 보낼지 안정함. 연결된 userSlice도 수정필요 */}
     </div>
   );
 }
