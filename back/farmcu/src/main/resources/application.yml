@@ -53,6 +53,10 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+jwt:
+    secretKey: "359568ca4a6d006075e777936278ab4ce4a143ab4f74aa963e5df676a5f85c2d73f2b7cd75e74eab8f60781b7942cfe030c39a29e69521907c2fd53fcac7036b"
+    algorithm: "HS256"
+
 logging.level:
   org.hibernate.SQL: debug
 # org.hibernate.type: trace
