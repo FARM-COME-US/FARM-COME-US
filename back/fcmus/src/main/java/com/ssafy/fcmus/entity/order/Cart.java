@@ -32,14 +32,20 @@ public class CartList {
     private Integer cart_item_count;
 
     // 연결
-    @OneToOne
-    @JoinColumn(name="member_id")
+    // modify : OneToOne -> ManyToOne
+    @ManyToOne
+    @JoinColumn(name="member_id", nullable=false)
     private Member member;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
     @JoinColumn(name = "item_id", updatable = false)
     private Item item;
 
+
+    // 장바구니 생성
+    public static CartList createCartList(Member member, Item item, Integer cart_item_count) {
+        CartList cart
+    }
 
     @Builder
     public CartList(Integer cart_item_count) {
