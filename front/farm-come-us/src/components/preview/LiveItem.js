@@ -15,15 +15,15 @@ const LiveItem = (props) => {
     <li className={classes.liveItem}>
       <Card className={classes.liveCard}>
         <figure>
-          <img src="https://via.placeholder.com/300" alt="livePreview" />
+          <img src="https://via.placeholder.com/260" alt="livePreview" />
           <figcaption className={classes.badge}>
             <Badge className={classes.liveBadge}>Live</Badge>
           </figcaption>
           <CardCaption className={classes.liveCaption}>
-            <div className={classes.storeInfo}>
+            {/* <div className={classes.storeInfo}>
               <span>{props.live.storeName}</span>
               <span className={classes.subfix}> 스토어</span>
-            </div>
+            </div> */}
             <div className={classes.liveTitle}>
               <span className={classes.text}>{props.live.productName}</span>
             </div>
