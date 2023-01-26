@@ -10,6 +10,7 @@ const SideMenuItem = (props) => {
     <div
       className={classes.SideMenuItem}
       onClick={() => {
+        props.closeSideMenu(false); //😥 잘 되는지 모름 SideMenu 49줄
         setTimeout(navigate(props.linkTo), 300);
       }}
     >

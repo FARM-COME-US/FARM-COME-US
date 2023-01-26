@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import userSlice from "../../reduxStore/userSlice";
 import Backdrop from "./Backdrop";
-import SideMenuItem from "./SIdeMenuItem";
+import SideMenuItem from "./SideMenuItem";
 import classes from "./style/SideMenu.module.scss";
 import { useNavigate } from "react-router-dom";
 
@@ -44,7 +44,9 @@ const SideMenu = (props) => {
     <SideMenuItem
       linkTo={item.linkTo}
       imageName={item.imageName}
-      itemName={item.imageName}
+      itemName={item.itemName}
+      key={item.itemName} //key 이거 문의 필요 😀
+      closeSideMenu={setIsOpen}
     />
   ));
 
@@ -54,9 +56,24 @@ const SideMenu = (props) => {
         {/* 프로필 주황색 칸 */}
 
         {isLogin ? (
-          <div className="profileBox">
-            <div>닉네임</div>
-            <div>이메일</div>
+          <div
+            className="profileBox"
+            onClick={() => {
+              setIsOpen(false);
+              navigate("/mypage");
+            }}
+          >
+            <div className={classes.circleBox}>
+              <img
+                className={classes.profileImg}
+                src={`img/${isLogin ? user.profileimg : "defaultProfile.png"}`}
+                alt="프로필이미지"
+              />
+            </div>
+            <div className={classes.profileTxtBox}>
+              <div>{user.nickname}nickname</div>
+              <div>{user.email}@naver.com</div>
+            </div>
           </div>
         ) : (
           <div
