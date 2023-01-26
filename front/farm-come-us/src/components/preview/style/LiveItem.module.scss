@@ -1,3 +1,111 @@
 .liveItem {
   width: 45%;
+
+  .liveCard {
+    aspect-ratio: 2 / 3;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    margin: 8px;
+
+    figure {
+      margin: 0;
+      padding: 0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      img {
+        display: block;
+        object-fit: cover;
+        height: 100%;
+      }
+
+      .badge {
+        position: absolute;
+        top: 10px;
+        right: 19%;
+
+        .liveBadge {
+          background-color: red;
+          color: #fff;
+          font-weight: bold;
+        }
+      }
+
+      .liveCaption {
+        position: absolute;
+        bottom: 10px;
+        width: 60%;
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.6);
+
+        .storeInfo {
+          font-size: 0.7rem;
+          margin-bottom: 5px;
+          font-family: "NanumSquareRoundB";
+          font-weight: 600;
+          overflow: hidden;
+
+          .subfix {
+            color: #f7863b;
+          }
+        }
+
+        .liveTitle {
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          margin-bottom: 5px;
+
+          &:not(:hover) {
+            text-overflow: ellipsis;
+          }
+
+          &:hover,
+          &:focus {
+            .text {
+              display: inline-block;
+              animation-name: scroll-text;
+              animation-duration: 7s;
+              animation-timing-function: linear;
+              animation-delay: 0s;
+              animation-iteration-count: infinite;
+              animation-direction: normal;
+            }
+          }
+        }
+
+        .productInfo {
+          .discount {
+            color: red;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+  }
 }
+
+@keyframes scroll-text {
+  0% {
+    transform: translateX(0%);
+  }
+  90% {
+    transform: translateX(-100%);
+  }
+  95% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+// @media (min-width: 320px) {
+//   .liveItem {
+//     width: 50%;
+//   }
+// }
