@@ -34,9 +34,9 @@ function Login() {
         <Input id="password" />
         <br />
 
-        <button type="submit" className={classes.signUpButton}>
+        <Button type="submit" className={classes.signUpButton}>
           제출하기
-        </button>
+        </Button>
       </form>
       {/* 로그인버튼. 아직 어떤 인자를 넣어서 비동기 요청 보낼지 안정함. 연결된 userSlice도 수정필요 */}
 
