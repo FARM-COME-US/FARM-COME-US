@@ -1,8 +1,7 @@
 import "./App.scss";
 
 import { Routes, Route } from "react-router-dom";
-import store from "./reduxStore/store";
-import { useSelector, Provider, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Header from "./components/common/Header";
 import Home from "./pages/Home";
