@@ -1,6 +1,20 @@
-.logo {
-  color: #f00;
-  font-size: 20px;
-  position: relative;
-  bottom: 2px;
+.container {
+  width: 100%;
+
+  .logo {
+    font-size: 20px;
+    position: relative;
+    bottom: 2px;
+
+    &.red {
+      color: red;
+    }
+  }
+
+  .horzLine {
+    width: calc(100% - 20px);
+    height: 1px;
+    background-color: #777;
+    margin: 10px auto;
+  }
 }
