@@ -1,15 +1,25 @@
 .container {
   width: 25%;
   height: 96px;
+  position: relative;
 
   .icon {
     width: 56px;
     height: 56px;
-    background: black;
+    background: orange;
     border-radius: 50%;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
     }
 
   .text {
+    color: orange;
     font-weight: bold;
+    position: absolute;
+    left: 50%;
+    top: 72px;
+    transform: translateX(-50%);
   }
 }
