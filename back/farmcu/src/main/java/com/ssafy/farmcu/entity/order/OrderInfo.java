@@ -24,19 +24,16 @@ public class OrderInfo {
 //     }
 
 
-    // 요즘은 타인에게 나를 소개하는 수단으로 mbti를 많이 쓰는 것 같다.
-    // 그거로는 나를 소개하기엔 부족해
-    //
     //필드
     @Id
     // pk 생성자 수정 필요
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    private Long id;
+    private Long orderId;
 
-    @Column
+    @Column(name = "order_created_at")
     @CreationTimestamp
-    private Timestamp order_created_at;
+    private Timestamp orderCreateAt;
 
     //연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Member.class)
@@ -47,12 +44,13 @@ public class OrderInfo {
     @JoinColumn(name="delivery_id")
     private DeliveryInfo delivery;
 
+
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItem = new ArrayList<>();
 
     @Builder
-    public OrderInfo(Timestamp order_created_at) {
-        this.order_created_at = order_created_at;
+    public OrderInfo(Timestamp orderCreateAt) {
+        this.orderCreateAt = orderCreateAt;
     }
 }
 

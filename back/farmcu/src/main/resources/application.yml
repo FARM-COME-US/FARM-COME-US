@@ -1,16 +1,16 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/farmcu?serverTimezone=Asia/Seoul
-#    username: ssafy
-#    password: ssafy
+    #    url: jdbc:mysql://localhost:3306/farmcu?serverTimezone=Asia/Seoul
+    #    username: ssafy
+    #    password: ssafy
 
     # 지은 - 임시 사용
     url: jdbc:mysql://localhost:3306/fcmus?serverTimezone=Asia/Seoul
     username: root
     password: ssafyB10312345
 
-# swagger
+  # swagger
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -53,6 +53,10 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+jwt:
+  secretKey: "359568ca4a6d006075e777936278ab4ce4a143ab4f74aa963e5df676a5f85c2d73f2b7cd75e74eab8f60781b7942cfe030c39a29e69521907c2fd53fcac7036b"
+  algorithm: "HS256"
+
 logging.level:
   org.hibernate.SQL: debug
 # org.hibernate.type: trace
