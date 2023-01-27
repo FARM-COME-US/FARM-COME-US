@@ -20,19 +20,19 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "oitem_id", unique = true, nullable = false)
-    private Long oitem_id;
+    private Long oitemId;
 
     @Column(length = 10, nullable = false)
-    private String oitem_status;
+    private String oitemStatus;
 
-    @Column
-    private Integer oitem_count;
+    @Column(name = "oitem_count")
+    private Integer oitemCount;
 
-    @Column
+    @Column(name = "oitem_created_at")
     @CreationTimestamp
-    private Timestamp oitem_created_at;
+    private Timestamp oitemCreatedAt;
 
-    // 외래 키
+    // 연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = OrderInfo.class)
     @JoinColumn(name = "order_id", updatable = false)
     private OrderInfo order;
@@ -43,10 +43,11 @@ public class OrderItem {
 
     //빌더
     @Builder
-    public OrderItem(Long oitem_id, String oitem_status, Integer oitem_count, Timestamp oitem_created_at ) {
-        this.oitem_id = oitem_id;
-        this.oitem_count = oitem_count;
-        this.oitem_status = oitem_status;
-        this.oitem_created_at = oitem_created_at;
+    public OrderItem(Long oitemId, String oitemStatus, Integer oitemCount, Timestamp oitemCreatedAt ) {
+        this.oitemId = oitemId;
+        this.oitemCount = oitemCount;
+        this.oitemStatus = oitemStatus;
+        this.oitemCreatedAt = oitemCreatedAt;
     }
+
 }
