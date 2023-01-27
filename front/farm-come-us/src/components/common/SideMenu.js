@@ -1,6 +1,6 @@
-import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import userSlice from "../../reduxStore/userSlice";
+import menuSlice from "../../reduxStore/menuSlice";
 import Backdrop from "./Backdrop";
 import SideMenuItem from "./SideMenuItem";
 import classes from "./style/SideMenu.module.scss";
@@ -9,12 +9,9 @@ import { useNavigate } from "react-router-dom";
 const SideMenu = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(true);
   const user = useSelector((state) => state.user.value); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
-  const toggleSideMenu = () => {
-    setIsOpen(!isOpen);
-  }; // 상위 컴포넌트에서 onClick으로 이 함수 발동. 근데 버튼은 헤더에 있음. redux로 관리?
-  // 😀 햄버거 버튼 눌러서 redux에서 토글하고, 그걸 sideMenu 컴포넌트에서 useSelect하는걸로?
+  const isOpen = useSelector((state) => state.menu.isOpen);
 
   const isLogin = user.isLogin; // 일단 간이로 nickname받아오면 로그인된걸로 설정
   const sideMenuItemList = [
@@ -40,13 +37,13 @@ const SideMenu = (props) => {
     },
   ];
 
+  // closeSideMenu={setIsOpen}
   const sideMenuItems = sideMenuItemList.map((item, idx) => (
     <SideMenuItem
       linkTo={item.linkTo}
       imageName={item.imageName}
       itemName={item.itemName}
       key={idx}
-      closeSideMenu={setIsOpen}
     />
   ));
 
@@ -59,7 +56,7 @@ const SideMenu = (props) => {
           <div
             className="profileBox"
             onClick={() => {
-              setIsOpen(false);
+              dispatch(menuSlice.actions.toggle());
               navigate("/mypage");
             }}
           >
@@ -78,7 +75,7 @@ const SideMenu = (props) => {
         ) : (
           <div
             onClick={() => {
-              setIsOpen(false);
+              dispatch(menuSlice.actions.toggle());
               navigate("/login"); //이거 괜찮나? 다른애들은 다 컴포넌트 따로 빼놨는데.. 🙄
             }}
           >

@@ -35,7 +35,7 @@ const asyncSomethingFetch = createAsyncThunk(
 // 비동기 처리하는 함수. 이름 안정함.
 
 const userSlice = createSlice({
-  name: "user",
+  name: "userSlice",
   initialState: {
     value: initialStateValue,
   },

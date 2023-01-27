@@ -1,16 +1,18 @@
 import React from "react";
 import classes from "./style/SideMenuItem.module.scss";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import menuSlice from "../../reduxStore/menuSlice";
 
 const SideMenuItem = (props) => {
-  const isLogin = ""; // 유저정보 구독해야함
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   return (
     <div
       className={classes.SideMenuItem}
       onClick={() => {
-        props.closeSideMenu(false); //😥 잘 되는지 모름 SideMenu 49줄
+        dispatch(menuSlice.actions.toggle());
         setTimeout(navigate(props.linkTo), 300);
       }}
     >

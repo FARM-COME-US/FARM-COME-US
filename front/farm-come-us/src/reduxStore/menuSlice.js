@@ -1,20 +1,17 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialStateValue = {
   isOpen: false,
 };
 
 const menuSlice = createSlice({
-  name: "menu",
+  name: "menuSlice",
   initialState: {
     isOpen: initialStateValue.isOpen,
   },
   reducers: {
-    open: (state, action) => {
-      state.status = action.payload.isOpen;
-    },
-    close: (state, action) => {
-      state.status = action.payload.isOpen;
+    toggle: (state, action) => {
+      state.isOpen = !state.isOpen;
     },
   },
 });
