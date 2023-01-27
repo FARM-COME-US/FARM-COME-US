@@ -1,9 +1,10 @@
 package com.ssafy.farmcu.entity.store;
 
 
-import com.ssafy.fcmus.entity.live.Live;
-import com.ssafy.fcmus.entity.order.Cart;
-import com.ssafy.fcmus.entity.order.OrderItem;
+import com.ssafy.farmcu.entity.live.Live;
+import com.ssafy.farmcu.entity.order.Cart;
+import com.ssafy.farmcu.entity.order.OrderItem;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

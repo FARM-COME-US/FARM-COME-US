@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "order_info")
 // 주문 그 자체, 예를 들어: order_info(pk = 1) = 배추*3 + 당근*4 의 값이 담겨 있음
-public class Order {
+public class OrderInfo {
 
 //     주문 상태
 //     public emun OrderStatus{
@@ -51,7 +51,7 @@ public class Order {
     private List<OrderItem> orderItem = new ArrayList<>();
 
     @Builder
-    public Order(Timestamp order_created_at) {
+    public OrderInfo(Timestamp order_created_at) {
         this.order_created_at = order_created_at;
     }
 }
