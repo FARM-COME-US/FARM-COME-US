@@ -19,10 +19,10 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
-    private Long id;
+    private Long cartId;
 
-    @Column
-    private Integer cart_item_count;
+    @Column(name = "cart_item_count")
+    private Integer cartItemCount;
 
     // 연결
     // modify : OneToOne -> ManyToOne
@@ -37,8 +37,8 @@ public class Cart {
 
 
     @Builder
-    public Cart(Integer cart_item_count) {
-        this.cart_item_count = cart_item_count;
+    public Cart(Integer cartItemCount) {
+        this.cartItemCount = cartItemCount;
 
     }
 
