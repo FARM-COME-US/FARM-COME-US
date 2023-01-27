@@ -14,28 +14,14 @@ import menuSlice from "./reduxStore/menuSlice";
 
 const App = () => {
   const menu = useSelector((state) => state.menu.isOpen); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
-  const dispatch = useDispatch();
 
   return (
     <div id="app">
-      <Header>
-        <img src="" alt="로고" />
-
-        <button
-          type="button"
-          onClick={() => {
-            dispatch(menuSlice.actions.toggle());
-          }}
-        >
-          <img src="img/menubutton.png" alt="메뉴버튼" />
-        </button>
-      </Header>
+      <Header />
 
       {menu ? (
         <div>
-          <Backdrop /> 사이드바 컨텐츠가 없는거였음. 버그 아님. 클릭했을때
-          app.js에 영향을 못미쳐서 사이드바만 들어가는거였음. redux통해
-          관리필요.
+          <Backdrop />
           <SideMenu className="sideMenu" />
         </div>
       ) : (
