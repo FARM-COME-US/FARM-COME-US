@@ -1,11 +1,7 @@
 package com.ssafy.farmcu.entity.store;
 
-<<<<<<< HEAD:back/fcmus/src/main/java/com/ssafy/fcmus/entity/store/Store.java
-import com.ssafy.fcmus.entity.live.Live;
-import com.ssafy.fcmus.entity.member.Member;
-=======
+import com.ssafy.farmcu.entity.live.Live;
 import com.ssafy.farmcu.entity.member.Member;
->>>>>>> d9b7d0e7817989ec0b51356d7fefa764ad8c39ce:back/farmcu/src/main/java/com/ssafy/farmcu/entity/store/Store.java
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
