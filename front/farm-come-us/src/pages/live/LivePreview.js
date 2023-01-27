@@ -2,9 +2,9 @@ import React from "react";
 
 import classes from "./style/LivePreview.module.scss";
 
-import PreviewHeader from "./PreviewHeader";
-import LivePreviewList from "./LivePreviewList";
-import ProductList from "./ProductList";
+import PreviewHeader from "../../components/preview/PreviewHeader";
+import LiveList from "../../components/live/LiveList";
+import ProductList from "../../components/preview/ProductList";
 
 import { MdOutlineLiveTv } from "react-icons/md";
 import { MdOutlineCalendarToday } from "react-icons/md";
@@ -140,7 +140,7 @@ const LivePreview = () => {
         text="진행 중인 라이브"
         logo={<MdOutlineLiveTv className={`${classes.logo} ${classes.red}`} />}
       />
-      <LivePreviewList liveList={LIVE_LIST} isLive={true} />
+      <LiveList liveList={LIVE_LIST} isLive={true} isPreview={true} />
       <div className={classes.horzLine} />
       {/* 예정된 라이브 */}
       <PreviewHeader
@@ -148,7 +148,7 @@ const LivePreview = () => {
         text="라이브 예정"
         logo={<MdOutlineCalendarToday className={`${classes.logo}`} />}
       />
-      <LivePreviewList liveList={RESERVED_LIVE_LIST} isLive={false} />
+      <LiveList liveList={RESERVED_LIVE_LIST} isLive={false} isPreview={true} />
       <div className={classes.horzLine} />
       {/* 상품 최신순 */}
       <PreviewHeader
