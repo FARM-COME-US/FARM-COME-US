@@ -40,12 +40,12 @@ const SideMenu = (props) => {
     },
   ];
 
-  const sideMenuItems = sideMenuItemList.map((item) => (
+  const sideMenuItems = sideMenuItemList.map((item, idx) => (
     <SideMenuItem
       linkTo={item.linkTo}
       imageName={item.imageName}
       itemName={item.itemName}
-      key={item.itemName} //key 이거 문의 필요 😀
+      key={idx}
       closeSideMenu={setIsOpen}
     />
   ));
