@@ -20,3 +20,9 @@
     1. ERD 수정
     2. OpenVidu Workflow 학습
     3. OpenVidu 테스트
+
+### 2023.01.20
+    1. CI/CD 학습
+    2. 배포 테스트
+    - EC2 + Docker
+    - Jenkins + Docker + EC2

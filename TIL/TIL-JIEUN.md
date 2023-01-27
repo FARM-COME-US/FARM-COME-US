@@ -29,3 +29,10 @@ Todo
 Todo
 
 - [x] Spring Boot JPA 학습 및 블로그 정리
+
+## 2023.01.20.금
+
+Todo
+
+- [x] Spring Boot Jpa
+- [x] create entity to project
