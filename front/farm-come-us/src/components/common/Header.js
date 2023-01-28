@@ -9,8 +9,8 @@ const Header = (props) => {
   return (
     <div className={`${classes.header} ${props.className}`}>
       <div className={`${classes.logo}`}>로고</div>
-      <button
-        type="button"
+      <div
+        className={classes.menuBtnWrapper}
         onClick={() => {
           dispatch(menuSlice.actions.toggle());
         }}
@@ -20,7 +20,7 @@ const Header = (props) => {
           src="img/menubutton.png"
           alt="메뉴버튼"
         />
-      </button>
+      </div>
     </div>
   );
 };

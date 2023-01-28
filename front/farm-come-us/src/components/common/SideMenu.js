@@ -77,7 +77,7 @@ const SideMenu = (props) => {
           <div
             onClick={() => {
               dispatch(menuSlice.actions.toggle());
-              navigate("/login"); //이거 괜찮나? 다른애들은 다 컴포넌트 따로 빼놨는데.. 🙄
+              navigate("/login");
             }}
           >
             <div className={classes.profileBox}>
