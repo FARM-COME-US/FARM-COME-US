@@ -1,11 +1,10 @@
 import React from "react";
 
-import classes from "./style/LivePreviewList.module.scss";
+import classes from "./style/ScheduledLive.module.scss";
 
-import LiveItem from "./LiveItem";
+import LiveList from "../../components/live/LiveList";
 
-// 더미 데이터
-const liveList = [
+const RESERVED_LIVE_LIST = [
   {
     liveId: 1,
     storeId: 1,
@@ -15,6 +14,7 @@ const liveList = [
     discount: 14,
     price: 10800,
     unit: 1,
+    time: new Date(),
   },
   {
     liveId: 2,
@@ -25,6 +25,7 @@ const liveList = [
     discount: 12,
     price: 6200,
     unit: 1,
+    time: new Date(),
   },
   {
     liveId: 3,
@@ -35,6 +36,7 @@ const liveList = [
     discount: 14,
     price: 10800,
     unit: 3,
+    time: new Date(),
   },
   {
     liveId: 4,
@@ -45,17 +47,16 @@ const liveList = [
     discount: 16,
     price: 13200,
     unit: 1,
+    time: new Date(),
   },
 ];
 
-const LivePreviewList = () => {
+const ScheduledLive = () => {
   return (
-    <ul className={`${classes.liveList}`}>
-      {liveList.map((item) => (
-        <LiveItem key={item.liveId} live={item} />
-      ))}
-    </ul>
+    <div className={classes.liveContainer}>
+      <LiveList liveList={RESERVED_LIVE_LIST} isLive={false} />
+    </div>
   );
 };
 
-export default LivePreviewList;
+export default ScheduledLive;
