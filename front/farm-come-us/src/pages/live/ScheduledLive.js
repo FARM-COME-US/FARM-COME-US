@@ -1,10 +1,10 @@
 import React from "react";
 
-import classes from "./style/RunningLive.module.scss";
+import classes from "./style/ScheduledLive.module.scss";
 
 import LiveList from "../../components/live/LiveList";
 
-const LIVE_LIST = [
+const RESERVED_LIVE_LIST = [
   {
     liveId: 1,
     storeId: 1,
@@ -14,6 +14,7 @@ const LIVE_LIST = [
     discount: 14,
     price: 10800,
     unit: 1,
+    time: new Date(),
   },
   {
     liveId: 2,
@@ -24,6 +25,7 @@ const LIVE_LIST = [
     discount: 12,
     price: 6200,
     unit: 1,
+    time: new Date(),
   },
   {
     liveId: 3,
@@ -34,6 +36,7 @@ const LIVE_LIST = [
     discount: 14,
     price: 10800,
     unit: 3,
+    time: new Date(),
   },
   {
     liveId: 4,
@@ -44,35 +47,16 @@ const LIVE_LIST = [
     discount: 16,
     price: 13200,
     unit: 1,
-  },
-  {
-    liveId: 5,
-    storeId: 5,
-    storeName: "강원 고랭 배추",
-    productId: 5,
-    productName: "강원도 고랭지 배추",
-    discount: 14,
-    price: 10800,
-    unit: 3,
-  },
-  {
-    liveId: 6,
-    storeId: 6,
-    storeName: "제주 당근당근",
-    productId: 6,
-    productName: "[서귀포] 신선 당근",
-    discount: 16,
-    price: 13200,
-    unit: 1,
+    time: new Date(),
   },
 ];
 
-const RunningLive = () => {
+const ScheduledLive = () => {
   return (
     <div className={classes.liveContainer}>
-      <LiveList liveList={LIVE_LIST} isLive={true} />
+      <LiveList liveList={RESERVED_LIVE_LIST} isLive={false} />
     </div>
   );
 };
 
-export default RunningLive;
+export default ScheduledLive;
