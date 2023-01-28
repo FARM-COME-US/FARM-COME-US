@@ -1,6 +1,6 @@
-package com.ssafy.farmcu.entity.order;
+package com.ssafy.fcmus.entity.order;
 
-import com.ssafy.farmcu.entity.store.Item;
+import com.ssafy.fcmus.entity.store.Item;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,17 +20,17 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "oitem_id", unique = true, nullable = false)
-    private Long oitemId;
+    private Long oitem_id;
 
     @Column(length = 10, nullable = false)
-    private String oitemStatus;
+    private String oitem_status;
 
-    @Column(name = "oitem_count")
-    private Integer oitemCount;
+    @Column
+    private Integer oitem_count;
 
-    @Column(name = "oitem_created_at")
+    @Column
     @CreationTimestamp
-    private Timestamp oitemCreatedAt;
+    private Timestamp oitem_created_at;
 
     // 연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = OrderInfo.class)
@@ -43,11 +43,10 @@ public class OrderItem {
 
     //빌더
     @Builder
-    public OrderItem(Long oitemId, String oitemStatus, Integer oitemCount, Timestamp oitemCreatedAt ) {
-        this.oitemId = oitemId;
-        this.oitemCount = oitemCount;
-        this.oitemStatus = oitemStatus;
-        this.oitemCreatedAt = oitemCreatedAt;
+    public OrderItem(Long oitem_id, String oitem_status, Integer oitem_count, Timestamp oitem_created_at ) {
+        this.oitem_id = oitem_id;
+        this.oitem_count = oitem_count;
+        this.oitem_status = oitem_status;
+        this.oitem_created_at = oitem_created_at;
     }
-
 }
