@@ -89,3 +89,14 @@ kurento/kurento-media-server:latest
 - 프로젝트 경로에 Router 디자인 및 컴포넌트 파일 추가
 - icon은 react-icons 라이브러리 사용
 - [react-icons 사용 가이드](https://react-icons.github.io/react-icons/)
+
+**2023. 01. 27 (금) : \[OpenVidu\] 오픈비두 방 생성 삽질**
+<br>
+
+- 현재 생성된 세션에 다른 사용자가 참여했을 때 publisher의 입장에서 subscriber들의 영상을 확인하지 못하는 에러 발생
+
+- 오픈비두에서 제공해주는 튜토리얼에서도 동일한 문제 발생... 로컬에서 세팅한 서버 오류인가..?
+
+```
+StreamManager of Stream str_CAM_G0gV_con_WvivPOXdur (Subscriber) did not trigger "streamPlaying" event in 4000 ms
+```
