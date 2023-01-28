@@ -1,6 +1,6 @@
-package com.ssafy.farmcu.entity.store;
+package com.ssafy.fcmus.entity.store;
 
-import com.ssafy.farmcu.entity.member.Member;
+import com.ssafy.fcmus.entity.member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

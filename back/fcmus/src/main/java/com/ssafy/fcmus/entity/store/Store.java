@@ -1,7 +1,6 @@
-package com.ssafy.farmcu.entity.store;
+package com.ssafy.fcmus.entity.store;
 
-import com.ssafy.farmcu.entity.live.Live;
-import com.ssafy.farmcu.entity.member.Member;
+import com.ssafy.fcmus.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Getter
@@ -59,7 +56,7 @@ public class Store {
     // 연결
 
     @OneToOne(mappedBy = "store")
-    private Live live;
+    private Live live
 
     @OneToOne
     @JoinColumn(name="member_id")

@@ -1,8 +1,8 @@
-package com.ssafy.farmcu.entity.live;
+package com.ssafy.fcmus.entity.live;
 
 
-import com.ssafy.farmcu.entity.store.Item;
-import com.ssafy.farmcu.entity.store.Store;
+import com.ssafy.fcmus.entity.store.Item;
+import com.ssafy.fcmus.entity.store.Store;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor

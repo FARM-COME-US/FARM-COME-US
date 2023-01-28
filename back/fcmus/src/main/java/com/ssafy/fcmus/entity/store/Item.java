@@ -1,9 +1,5 @@
-package com.ssafy.farmcu.entity.store;
+package com.ssafy.fcmus.entity.store;
 
-
-import com.ssafy.farmcu.entity.live.Live;
-import com.ssafy.farmcu.entity.order.Cart;
-import com.ssafy.farmcu.entity.order.OrderItem;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +7,7 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 
 @Getter
@@ -54,10 +49,10 @@ public class Item {
     private Store store;
 
     @OneToOne(mappedBy = "item")
-    private Live live;
+    private Live live
 
     @OneToMany(mappedBy = "item")
-    private List<Cart> cart = new ArrayList<>();
+    private List<CartList> cartList = new ArrayList<>();
 
     @OneToMany(mappedBy = "item")
     private List<OrderItem> orderItem = new ArrayList<>();
