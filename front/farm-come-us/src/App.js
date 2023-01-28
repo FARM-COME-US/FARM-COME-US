@@ -18,16 +18,14 @@ const App = () => {
   return (
     <div id="app">
       <Header />
-
       {menu ? (
         <div>
           <Backdrop />
-          <SideMenu className="sideMenu" />
+          <SideMenu className="sideMenu open" />
         </div>
       ) : (
-        ""
+        <SideMenu className="sideMenu closed" /> // className이 바뀌는게 아니라 다른className의 컴포넌트가 렌더링되니까 애니메이션 효과가 적용이 안됨. 수정필요
       )}
-
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
