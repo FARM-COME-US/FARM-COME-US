@@ -1,7 +1,5 @@
 import React from "react";
-import LivePreview from "../components/preview/LivePreview";
-
-import { MdOutlineLiveTv } from "react-icons/md";
+import LivePreview from "./live/LivePreview";
 
 const Home = () => {
   return (

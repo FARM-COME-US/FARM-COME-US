@@ -1,9 +1,10 @@
 .header {
-  width: 100%;
+  width: calc(100% - 20px);
+  margin: 0 auto;
+  margin-top: 10px;
   display: flex;
   align-items: center;
-  padding: 10px 0px 5px 10px;
-  margin-bottom: 10px;
+  padding: 10px;
 
   .title {
     margin-left: 10px;
