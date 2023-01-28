@@ -10,16 +10,22 @@ const SideMenuItem = (props) => {
 
   return (
     <div
-      className={classes.SideMenuItem}
+      className={classes.sideMenuItem}
       onClick={() => {
         dispatch(menuSlice.actions.toggle());
         setTimeout(navigate(props.linkTo), 300);
       }}
     >
       {/* 상위 컴포넌트에서 prop으로 주는 주소로 들어가게 했음. */}
-      <div>
-        <img src={`./baseURLforimage/${props.imageName}`} alt="" />
-        <div>{props.itemName}</div>
+      <div className={classes.flexWrapper}>
+        <div className={classes.imgWrapper}>
+          <img
+            src={`img/${props.imageName}.png`}
+            alt={props.imageName}
+            className={classes.iconImg}
+          />
+        </div>
+        <div className={classes.itemTxt}>{props.itemName}</div>
       </div>
     </div>
   );

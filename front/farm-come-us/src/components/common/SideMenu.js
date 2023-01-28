@@ -40,6 +40,7 @@ const SideMenu = (props) => {
   // closeSideMenu={setIsOpen}
   const sideMenuItems = sideMenuItemList.map((item, idx) => (
     <SideMenuItem
+      className="sideMenuItem"
       linkTo={item.linkTo}
       imageName={item.imageName}
       itemName={item.itemName}
@@ -48,7 +49,7 @@ const SideMenu = (props) => {
   ));
 
   return (
-    <div className={`${isOpen ? "open" : "closed"} ${props.className}`}>
+    <div className={`${isOpen ? "open" : "closed"} ${props.className} side`}>
       <div>
         {/* 프로필 주황색 칸 */}
 
@@ -95,12 +96,7 @@ const SideMenu = (props) => {
         )}
       </div>
 
-      <div>
-        {sideMenuItems}
-        {/* <SideMenuItem linkTo="" imageName="" itemName="" />
-        <SideMenuItem linkTo="" imageName="" itemName="" />
-        <SideMenuItem linkTo="" imageName="" itemName="" /> */}
-      </div>
+      <div className={classes.sideMenuItemsWrapper}>{sideMenuItems}</div>
 
       {isLogin ? (
         <div
@@ -111,7 +107,10 @@ const SideMenu = (props) => {
             // 로그아웃 바로 되지 않고, 로그아웃할거냐고 물어보고, 확인 누르면 해야될거같음.
             // 모달용 컴포넌트를 새로 생성하고 "확인" 누르면 해당 dispatch 진행하는방식.
           }}
-        ></div>
+        >
+          <img src="img/logoutIcon.png" alt="로그아웃아이콘" />
+          <div>로그아웃</div>
+        </div>
       ) : (
         ""
       )}
