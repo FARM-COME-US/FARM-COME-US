@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +38,9 @@ public class Order {
     @CreationTimestamp
     private Timestamp orderCreateAt;
 
-    // 주문 - 결제 대기 - 결제 완료 - 배송 중 - 배송 완료 / B = before, A = after
+    // 주문 - 결제 대기 - 결제 완료 - 배송 중 - 배송 완료 - 주문취소 / B = before, A = after
     public enum OrderStatus{
-        ORDER, BPAY, APAY, BSHIPPING, ASHIPPING
+        ORDER, BPAY, APAY, BSHIPPING, ASHIPPING, CANCEL
     }
 
     @Enumerated(EnumType.STRING)
@@ -67,12 +68,42 @@ public class Order {
         this.orderItems = orderItems;
     }
 
-    // 주문에 주문아이템 주입
+    // 주문에 주문 상품 주입 -> OrderItem.java 의 setOrder
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
-        // OrderItem에 작성해둔 setOrder을 여기로 갖고 오는?
+    }
 
+    //첫 주문시 주문생성
+    public static Order createOrder(Member member, List<OrderItem> orderItems){
+        Order order = new Order();
+        order.setMember(member); //멤버 정보 set
+
+        for(OrderItem orderItem : orderItems){ //주문 상세 리스트 주입
+            order.addOrderItem(orderItem);
+        }
+
+        order.setOrderStatus(OrderStatus.ORDER); //주문상태를 ORDER로 set
+        order.setOrderCreateAt(Timestamp.valueOf("?")); //주문시간
+        return order; //완성된 주문정보
+    }
+    // 전체 주문 가격
+    public int getTotalPrice(){
+        int totalPrice = 0;
+
+        for(OrderItem orderItem : orderItems){
+            totalPrice += orderItem.getTotalPrice();
+        }
+        return totalPrice;
+    }
+
+    //주문 취소
+    public void cancelOrder(){
+        this.orderStatus = OrderStatus.CANCEL; //주문 상태를 CANCEL로
+
+        for(OrderItem orderItem : orderItems){ //주문 취소, 재고 원상복구
+            orderItem.cancel();
+        }
     }
 }
 
