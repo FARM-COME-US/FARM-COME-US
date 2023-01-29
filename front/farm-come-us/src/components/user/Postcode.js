@@ -28,7 +28,7 @@ function Postcode(props) {
 
   return (
     <div>
-      <button onClick={clickEmptyPostbar}>toggle</button>
+      <button onClick={clickEmptyPostbar}>주소찾기</button>
 
       {openPostcode && (
         <DaumPostcode
