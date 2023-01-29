@@ -31,6 +31,8 @@ public class OrderItem {
     @CreationTimestamp
     private Timestamp oitemCreatedAt;
 
+    private int orderPrice;
+
     // 연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Order.class)
     @JoinColumn(name = "order_id", updatable = false)
@@ -50,14 +52,24 @@ public class OrderItem {
 
     }
 
-    //==생성 메서드==//
+    // 주문 상품 상세 정보 생성
     public static OrderItem createOrderItem(Item item, int count, int oitemCount) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setOitemCount(oitemCount);
-
+//        orderItem.removeStock(oitemCount);
         return orderItem;
     }
 
+    // 주문
+    public void addOrderId(Order order) { this.order = order; }
+
+    //총액
+    public int getTotalPrice(){
+        return orderPrice * oitemCount;
+    }
+
+    // 주문 취소 시 재고 원상 복구
+    public void cancel() { this.getItem().addStock(oitemCount); }
 
 }
