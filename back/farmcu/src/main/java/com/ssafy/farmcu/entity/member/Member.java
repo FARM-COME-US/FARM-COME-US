@@ -79,4 +79,17 @@ public class Member {
         this.providerId = providerId;
         this.createdAt = createdAt;
     }
+
+    public Member(Member o){
+        this.id = o.id;
+        this.password = o.password;
+        this.nickname = o.nickname;
+        this.name = o.name;
+        this.nickname = o.nickname;
+        this.email = o.email;
+        this.streetAddr = o.streetAddr;
+        this.detailAddr = o.detailAddr;
+        this.zipcode = o.zipcode;
+        this.phoneNumber = o.phoneNumber;
+    }
 }
