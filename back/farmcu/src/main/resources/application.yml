@@ -54,7 +54,7 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 jwt:
-  secretKey: "359568ca4a6d006075e777936278ab4ce4a143ab4f74aa963e5df676a5f85c2d73f2b7cd75e74eab8f60781b7942cfe030c39a29e69521907c2fd53fcac7036b"
+  secretKey: "d21b5b9c6ee776cac626c60a1d113ee43e9055c04f17cafb37bcfb4b128e01fe2566a1b7c159343279cab64b375ed3eee848b7a2efb65f17325a1f15f50bc5d10427108b5452bf8ca62cdb7ab1ce7c69713746c26121760be8eac9f231258b473416640dd60d68a591ddec2ce55bc1a4fe65332aedf45ab9ce2dd0d0a3c358d9"
   algorithm: "HS256"
 
 logging.level:
