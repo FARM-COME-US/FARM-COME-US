@@ -5,6 +5,7 @@ import classes from "./style/SignUp.module.scss";
 import Postcode from "../components/user/Postcode";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import Postcode2 from "../components/user/Postcode2";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -81,9 +82,9 @@ const SignUp = () => {
           onBlur={(e) => {
             setSignUpForm({ ...signUpForm, roadAddress: e.target.value });
           }}
-        >
-          <Postcode>asdasd</Postcode>
-        </Input>
+        ></Input>
+        <Postcode className={classes.postcode} />
+        <Postcode2 />
         <Input
           className={classes.inputbox}
           onBlur={(e) => {
