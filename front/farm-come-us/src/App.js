@@ -16,6 +16,11 @@ import Live from "./pages/live/Live";
 import RunningLive from "./pages/live/RunningLive";
 import ScheduledLive from "./pages/live/ScheduledLive";
 import NotFound from "./pages/NotFound";
+import MyStore from "./pages/mystore/MyStore";
+import MyStoreInfo from "./pages/mystore/MyStoreInfo";
+import MyStoreLive from "./pages/mystore/MyStoreLive";
+import MyStoreProducts from "./pages/mystore/MyStoreProducts";
+import MyStoreReceipt from "./pages/mystore/MyStoreReceipt";
 
 const App = () => {
   const menu = useSelector((state) => state.menu.isOpen); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
@@ -36,12 +41,20 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/live" element={<Live />}>
+        <Route path="/livestore" element={<Live />}>
           <Route path="running" element={<RunningLive />} />
           <Route path="scheduled" element={<ScheduledLive />} />
           <Route path="" element={<Navigate replace to="running" />} />
         </Route>
         <Route path="/products" element={<Products />} />
+        {/* 마이스토어 생성을 안했으면 prompt 창 띄우고 마이페이지로 리다이렉션 */}
+        <Route path="/mystore" element={<MyStore />}>
+          <Route path="info" element={<MyStoreInfo />} />
+          <Route path="live" element={<MyStoreLive />} />
+          <Route path="product" element={<MyStoreProducts />} />
+          <Route path="receipt" element={<MyStoreReceipt />} />
+          <Route path="" element={<Navigate replace to="info" />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

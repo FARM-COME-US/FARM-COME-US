@@ -34,6 +34,7 @@ a {
 
 .title {
   font-size: 20px;
+  font-family: "NanumSquareRoundB";
 }
 
 @media (max-width: 280px) {
