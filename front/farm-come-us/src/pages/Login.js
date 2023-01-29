@@ -8,7 +8,7 @@ import { asyncSomethingFetch } from "../reduxStore/userSlice";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import classes from "./style/Login.module.scss";
-import KakaoLogin from "../components/social/KakaoLogin";
+import KakaoLogin from "../components/user/KakaoLogin";
 
 function Login() {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ function Login() {
       <Button
         className="signUpButton" //이거 색깔 왜 안먹지? 수정필요
         onClick={() => {
-          navigate("/signin");
+          navigate("/sign-up");
         }}
       >
         이거는 회원가입버튼

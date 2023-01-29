@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.subcontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 55px;
+}
+
+.button {
+  background-color: #f7863b;
+  width: 280px;
+  height: 48px;
+}
+
+.inputbox {
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  width: 304px;
+  height: 48px;
+  margin-top: 9px;
+  //   outline: #ccc;
+  &:focus {
+    border: 2px solid #ccc;
+  }
+}
