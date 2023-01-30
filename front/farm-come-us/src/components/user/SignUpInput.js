@@ -3,11 +3,11 @@ import { IconName } from "react-icons/md";
 import classes from "./SignUpInput.module.scss";
 
 const SignUpInput = (props) => {
-  //   const [onFocus, setOnFocus] = useState(false);
-  const onFocus = "";
-  const setOnFocus = () => {
-    console.log("as");
-  };
+  const [onFocus, setOnFocus] = useState(false);
+  // const onFocus = "";
+  // const setOnFocus = () => {
+  //   console.log("");
+  // };
 
   return (
     <div className={`${classes.outerInput} ${onFocus ? classes.focus : ""}`}>
@@ -17,13 +17,16 @@ const SignUpInput = (props) => {
         onFocus={() => {
           setOnFocus(true);
         }}
-        onBlur={() => {
-          setOnFocus(false);
-          props.onBlur;
-        }}
+        onBlur={
+          (props.onBlur, // 동작확인
+          setOnFocus(false))
+        }
         placeholder={props.placeholder}
         onChange={props.onChange}
         type={props.type}
+        pattern={props.pattern}
+        max={props.max}
+        // class={props.class}
       ></input>
     </div>
   );

@@ -5,7 +5,7 @@
   height: 48px;
   border: 2px solid #ccc;
   background-color: none;
-  outline: none;
+
   box-sizing: border-box;
   margin-top: 9px;
 
@@ -16,4 +16,8 @@
 
 .innerInput {
   border: none;
+  outline: none;
+  border-radius: 20px;
+  width: 304px;
+  height: 48px;
 }

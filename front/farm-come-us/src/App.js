@@ -1,16 +1,15 @@
 import "./App.scss";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Header from "./components/common/Header";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Signup from "./pages/SignUp";
+import SignUp from "./pages/SignUp";
 import Cart from "./pages/Cart";
 import SideMenu from "./components/common/SideMenu";
 import Backdrop from "./components/common/Backdrop";
-import menuSlice from "./reduxStore/menuSlice";
 import Products from "./pages/product/Products";
 import Live from "./pages/live/Live";
 import RunningLive from "./pages/live/RunningLive";
@@ -39,7 +38,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/sign-up" element={<Signup />} />
+        <Route path="/sign-up" element={<SignUp />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/livestore" element={<Live />}>
           <Route path="running" element={<RunningLive />} />

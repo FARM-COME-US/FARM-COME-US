@@ -1,23 +1,16 @@
-import React, { useState, useEffect, useValid, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "../components/common/Input";
-import Button from "../components/common/Button";
 import classes from "./style/SignUp.module.scss";
-import Postcode from "../components/user/Postcode";
-import { useDispatch } from "react-redux";
+import DaumPostcodeEmbed from "react-daum-postcode";
+// import Postcode from "../components/user/Postcode";
+// import { useDispatch } from "react-redux";
 import SignUpInput from "../components/user/SignUpInput";
 import axios from "axios";
 
 const SingUp = () => {
   const REGISTER_USERS_URL = "http://signupURL";
 
-  //   const submitHandler = async (e) => {
-  //     e.preventDefault();
-  //     // signupURL 바꿔줘야한다. 수정필요
-  //     const res = await axios.post("http://signupURL", signUpForm);
-  //   };
-  // 회원가입 정보 날리는 함수
-
+  const [openModal, setOpenModal] = useState(false);
   //이름, 닉네임, 전화번호, 비밀번호, 비밀번호 확인, 주소, 상세주소(얘는 유효성검사 안함. 주택이면 없으니까.), 우편번호(주소 들어오면 있는거니까 얘도 유효성X)
   //이름, 이메일, 비밀번호, 비밀번호 확인
   const [id, setId] = useState("");
@@ -28,16 +21,6 @@ const SingUp = () => {
   const [roadAddress, setRoadAddress] = useState("");
   const [specificAddress, setSpecificAddress] = useState("");
   const [zonecode, setZonecode] = useState("");
-  const [signUpForm, setSignUpForm] = useState({
-    id: "",
-    nickname: "",
-    tel: "",
-    password: "",
-    confirmPassword: "",
-    roadAddress: "",
-    specificAddress: "",
-    zonecode: "",
-  });
 
   //오류메시지 상태저장
   const [idMessage, setIdMessage] = useState("");
@@ -57,22 +40,35 @@ const SingUp = () => {
   const navigate = useNavigate();
 
   // 회원가입 정보 날리는 함수
-  const submitHandler = useCallback(
-    async (e) => {
-      e.preventDefault();
-      try {
-        await axios.post(REGISTER_USERS_URL, signUpForm).then((res) => {
-          console.log("response:", res);
-          if (res.status === 200) {
-            navigate("/"); // 가입성공시 목적지 URL 바꿔야함. 수정필요
-          }
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    [signUpForm, navigate] //navigate는 왜 dependency arr에 있지?
-  );
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const newUser = {
+        id,
+        nickname,
+        tel,
+        password,
+        roadAddress,
+        specificAddress,
+        zonecode,
+      };
+      const body = JSON.stringify(newUser);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      await axios.post(REGISTER_USERS_URL, body, config).then((res) => {
+        console.log("response:", res);
+        if (res.status === 200) {
+          navigate("/"); // 가입성공시 목적지 URL 바꿔야함. 수정필요
+        }
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   // 아이디
   const onChangeId = useCallback((e) => {
@@ -89,9 +85,9 @@ const SingUp = () => {
   // 닉네임
   const onChangeNickname = useCallback((e) => {
     setNickname(e.target.value);
-    if (e.target.value.length < 2 || e.target.value.length > 5) {
+    if (e.target.value.length < 2 || e.target.value.length > 10) {
       setIdMessage(
-        "닉네임을 2글자 이상 5글자 미만으로 입력해주세요. 이거 조건 수정해"
+        "닉네임을 2글자 이상 10글자 미만으로 입력해주세요. 조건수정필요"
       );
       setIsId(false);
     } else {
@@ -116,7 +112,7 @@ const SingUp = () => {
   // }, []);
 
   //전화번호
-  const onChangeTel = useCallback((e) => {
+  const onBlurTel = useCallback((e) => {
     setTel(e.target.value);
     if (e.target.value.length === 11) {
       setTelMessage("올바른 전화번호 형식입니다. :)");
@@ -177,12 +173,26 @@ const SingUp = () => {
     [roadAddress]
   );
 
+  // const onChangezonecode = useCallback(
+  //   (e) => {
+  //     setZonecode(e.target.value);
+  //     if (zonecode.length === 0) {
+  //       // setRoadAddressMessage("주소를 입력해주세요."); 클릭눌렀을때..
+  //       setIsRoadAddress(false);
+  //     } else {
+  //       setIsRoadAddress(true);
+  //     }
+  //   },
+  //   [zonecode]
+  // );
+
   return (
     <form className={classes.container} onSubmit={submitHandler}>
       <div className={classes.subcontainer}>
         <h1>회원가입</h1>
         <div className={classes.formbox}>
-          <SignUpInput
+          <input
+            className={classes.outerInput}
             text="아이디"
             type="text"
             placeholder="아이디"
@@ -201,7 +211,8 @@ const SingUp = () => {
         </div>
 
         <div className={classes.formbox}>
-          <SignUpInput
+          <input
+            className={classes.outerInput}
             text="닉네임"
             type="nickname"
             placeholder="닉네임"
@@ -218,14 +229,17 @@ const SingUp = () => {
             </span>
           )}
         </div>
-
         <div className={classes.formbox}>
-          <SignUpInput
-            text="전화번호"
+          <input
+            className={classes.outerInput}
             type="tel"
+            class="form-control m-input"
+            text="전화번호"
             placeholder="전화번호"
             typeName="tel"
-            onChange={onChangeTel}
+            pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"
+            maxlength="13"
+            onBlur={onBlurTel}
           />
           {tel.length > 0 && (
             <span
@@ -240,8 +254,9 @@ const SingUp = () => {
       </div>
 
       <div className={classes.subcontainer}>
-        <div className={`${classes.formbox} ${classes.inputbox}`}>
-          <SignUpInput
+        <div className={`${classes.formbox}`}>
+          <input
+            className={classes.outerInput}
             onChange={onChangePassword}
             passwordText="비밀번호 (숫자+영문자+특수문자 조합으로 8자리 이상)"
             placeholder="비밀번호"
@@ -259,7 +274,8 @@ const SingUp = () => {
         </div>
 
         <div className={classes.formbox}>
-          <SignUpInput
+          <input
+            className={classes.outerInput}
             onChange={onChangePasswordConfirm}
             passwordText=" "
             placeholder="비밀번호 확인"
@@ -279,9 +295,11 @@ const SingUp = () => {
 
       <div className={classes.subcontainer}>
         <div className={classes.formbox}>
-          <SignUpInput
+          <input
+            onClick={setOpenModal(!openModal)}
+            className={classes.outerInput}
             onChange={onChangeRoadAddress}
-            passwordText=" "
+            addressText=" "
             placeholder="주소를 검색해주세요."
             typeTitle="roadAddress"
           />
@@ -297,65 +315,53 @@ const SingUp = () => {
         </div>
 
         <div className={classes.formbox}>
-          <SignUpInput
-            onChange={onChangezonecode}
+          <input
+            className={classes.outerInput}
+            onChange={(e) => setZonecode(e.target.value)}
             passwordText=" "
             placeholder="우편번호"
             typeTitle="zonecode"
           />
-          {passwordConfirm.length > 0 && (
-            <span
-              className={`${classes.message} ${
-                isPasswordConfirm ? classes.success : classes.error
-              }`}
-            >
-              {passwordConfirmMessage}
-            </span>
-          )}
         </div>
 
         <div className={classes.formbox}>
-          <SignUpInput
-            // 상세주소 검증 필요.
-            onChange={onChangePasswordConfirm}
+          <input
+            className={classes.outerInput}
+            onChange={(e) => setSpecificAddress(e.target.value)}
             passwordText=" "
             placeholder="상세주소"
             typeTitle="specificRoadAddress"
           />
-          {passwordConfirm.length > 0 && (
-            <span
-              className={`${classes.message} ${
-                isPasswordConfirm ? classes.success : classes.error
-              }`}
-            >
-              {passwordConfirmMessage}
-            </span>
-          )}
         </div>
       </div>
 
       {/* 이름, 이메일, 패스워드, 패스워드 확인, 주소가 다 맞다면 주황버튼으로 */}
       <div>
-        <section>
-          <Button
-            type="submit"
-            //   footButtonType={FootButtonType.ACTIVATION}
-            onClick={submitHandler}
-            disabled={
-              !(
-                isId &&
-                isNickname &&
-                isPassword &&
-                isPasswordConfirm &&
-                isRoadAddress
-              )
-            }
-          >
-            다음
-          </Button>
-        </section>
+        <button
+          className={`${classes.button}`}
+          type="submit"
+          //   footButtonType={FootButtonType.ACTIVATION}
+          onClick={submitHandler}
+          disabled={
+            !(
+              isId &&
+              isNickname &&
+              isPassword &&
+              isPasswordConfirm &&
+              isRoadAddress
+            )
+          }
+        >
+          다음
+        </button>
       </div>
-      <SignUpInput />
+      {openModal ? (
+        <div className={`${classes.modal} ${openModal}`}>
+          <DaumPostcodeEmbed />
+        </div>
+      ) : (
+        ""
+      )}
     </form>
   );
 };
