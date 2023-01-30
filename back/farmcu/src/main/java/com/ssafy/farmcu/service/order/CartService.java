@@ -29,6 +29,7 @@ public class CartService {
     private final CartRepository cartRepository;
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
+    private final OrderService orderService;
 
     // 현재 로그인 한 member 장바구니 조회
     public List<Cart> findMemberCart(Member member) {
@@ -48,23 +49,25 @@ public class CartService {
     }
 
     // 장바구니 상품 주문
-    public Long orderCart(List<CartOrderDto> cartOrderDtoList, String Id){
+    //** memberRepository의 id 는 pk 가 아니라 회원가입 아이디 **//
+    public Long orderCart(List<CartOrderDto> cartOrderDtoList, String id){
         List<OrderDto> orderDtoList = new ArrayList<>(); //장바구니 리스트
 
         for(CartOrderDto CartOrderDto : cartOrderDtoList){ //장바구니 항목들 정리
             Cart cart = cartRepository.findById(CartOrderDto.getCartId()).orElseThrow();//고객이 담은 장바구니 항목 불러오기
             OrderDto orderDto = new OrderDto();
             orderDto.setItem_id(cart.getItem().getItemId()); //상품번호
-            orderDto.setOitemCount(cart.getCartItemCount()); //수량
+            orderDto.setOrderCount(cart.getCartItemCount()); //수량
             orderDtoList.add(orderDto);
         }
 
         //주문 로직
-        Long orderId = orderService.orders(orderInfoDtoList, username);
+        Long orderId = orderService.orders(orderDtoList, id);
+
 
         //주문완료 후 장바구니 삭제
         for (CartOrderDto cartOrderDto : cartOrderDtoList){
-            Cart cart = cartRepository.findById(cartOrderDto.getCart_num()).orElseThrow();
+            Cart cart = cartRepository.findById(cartOrderDto.getCartId()).orElseThrow();
             cartRepository.delete(cart);
         }
         return orderId;
