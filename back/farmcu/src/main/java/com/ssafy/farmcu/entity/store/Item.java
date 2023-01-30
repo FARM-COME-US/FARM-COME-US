@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "item")
 public class Item {
@@ -67,7 +67,7 @@ public class Item {
 
     //빌더
     @Builder
-    public Item(Long itemId, String itemName, String itemDescription, String itemImg, Integer itemDiscount, Integer itemPrice, Integer itemStock ) {
+    public Item(Long itemId, String itemName, String itemDescription, String itemImg, int itemDiscount, int itemPrice, int itemStock, Category category, Store store ) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
@@ -75,6 +75,8 @@ public class Item {
         this.itemPrice = itemPrice;
         this.itemDiscount = itemDiscount;
         this.itemStock = itemStock;
+        this.category = category;
+        this.store = store;
     }
 
     //**   주문 관련   **//

@@ -1,5 +1,6 @@
 package com.ssafy.farmcu.dto.request.item;
 
+import com.ssafy.farmcu.entity.store.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,6 @@ public class ItemUpdateReq {
     int itemPrice;
     int itemDiscount;
     int itemStock;
-    Long categoryCode;
+    Category category;
 
 }
