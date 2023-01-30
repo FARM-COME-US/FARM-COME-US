@@ -4,13 +4,19 @@
   padding: 8px 24px;
   display: flex;
   align-items: center;
-  border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 4px;
+
+  &:hover {
+    background-color: rgba(0, 0, 255, 0.03);
+    cursor: pointer;
+  }
 
   img {
     width: 120px;
     height: 120px;
     border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 8px;
   }
 
   .liveInfo {
@@ -19,5 +25,30 @@
     flex-direction: column;
     justify-content: flex-start;
     height: 112px;
+
+    .productInfo {
+      font-weight: 600;
+      margin-bottom: 8px;
+
+      .title {
+        font-size: 1.02rem;
+      }
+
+      .stock {
+        margin-left: 8px;
+        color: #555;
+      }
+    }
+
+    .unitPrice {
+      color: #f7863b;
+      font-family: "NanumSquareRoundB";
+      margin-bottom: 4px;
+      font-size: 1.05rem;
+    }
+
+    .date {
+      font-weight: 600;
+    }
   }
 }

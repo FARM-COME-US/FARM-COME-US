@@ -38,11 +38,13 @@ const MyStoreLiveItem = (props) => {
       <img src={props.item.imgSrc} alt="live_img" />
       <div className={classes.liveInfo}>
         <div className={classes.productInfo}>
-          <span>{props.item.liveTitle}</span>
-          <span>{`${props.item.stock}상자`}</span>
+          <span className={classes.title}>{props.item.liveTitle}</span>
+          <span className={classes.stock}>{`${props.item.stock}상자`}</span>
         </div>
-        <div>{`${convertedPrice}/${props.item.unit}상자`}</div>
-        <div>{`${reservedDate()}`}</div>
+        <div
+          className={classes.unitPrice}
+        >{`${convertedPrice}/${props.item.unit}상자`}</div>
+        <div className={classes.date}>{`${reservedDate()}`}</div>
       </div>
     </div>
   );
