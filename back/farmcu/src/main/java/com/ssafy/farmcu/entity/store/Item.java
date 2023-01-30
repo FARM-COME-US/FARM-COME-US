@@ -14,37 +14,37 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Getter @Setter
 @NoArgsConstructor
-@Entity
 @Table(name = "item")
 public class Item {
 
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id", unique = true, nullable = false)
+    @Column(name = "item_id")
     private Long itemId;
 
     @Column(length = 15, nullable = false)
     private String itemName;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     private String itemDescription;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     private String itemImg;
 
-    @Column(length = 50, nullable = false)
-    private Integer itemPrice;
+    @Column(nullable = false)
+    private int itemPrice;
 
-    @Column(length = 50, nullable = false)
-    private Integer itemDiscount;
+    @Column(nullable = false)
+    private int itemDiscount;
 
     @Column
-    private Integer itemStock;
+    private int itemStock;
 
-    // 연결
+    //연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Category.class)
     @JoinColumn(name = "category_id", updatable = false)
     private Category category;
@@ -64,7 +64,7 @@ public class Item {
 
     //빌더
     @Builder
-    public Item(Long itemID, String itemName, String itemDescription, String itemImg, Integer itemDiscount, Integer itemPrice, Integer itemStock ) {
+    public Item(Long itemId, String itemName, String itemDescription, String itemImg, Integer itemDiscount, Integer itemPrice, Integer itemStock ) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
@@ -74,7 +74,6 @@ public class Item {
         this.itemStock = itemStock;
     }
 
-
     //**   주문 관련   **//
     //주문시 재고 차감
     public void removeStock(int quantity){
@@ -82,7 +81,7 @@ public class Item {
 
         if(remainStock < 0) {
             throw new OutOfStockException("상품의 재고가 부족합니다. \n부족 수량: " + -(remainStock) + ", 현재 재고: " + this.itemStock);
-        }else {
+        } else {
             this.itemStock = remainStock;
         }
     }
@@ -91,4 +90,5 @@ public class Item {
     public void addStock(int quantity){
         this.itemStock += quantity;
     }
+
 }
