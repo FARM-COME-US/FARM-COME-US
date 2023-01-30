@@ -44,9 +44,12 @@ public class Item {
     @Column
     private int itemStock;
 
+    @Column(nullable = false)
+    private String itemCreatedAt;
+
     //연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Category.class)
-    @JoinColumn(name = "category_id", updatable = false)
+    @JoinColumn(name = "category_code", updatable = false)
     private Category category;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Store.class)
