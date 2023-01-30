@@ -1,5 +1,4 @@
 import React from "react";
-
 import classes from "./style/Input.module.scss";
 
 const Input = (props) => {
@@ -10,6 +9,8 @@ const Input = (props) => {
       value={props.value}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
+      id={props.id} // 추가했습니다.
+      readOnly={props.readOnly}
     />
   );
 };

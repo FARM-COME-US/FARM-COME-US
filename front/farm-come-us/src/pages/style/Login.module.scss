@@ -1,0 +1,21 @@
+.screen {
+  height: 1000px;
+}
+
+.signUpButton {
+  height: 48px;
+  border-radius: 24px;
+  background-color: #265040;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  color: white;
+
+  &:hover {
+    // background-color: #ff8e43;
+    cursor: pointer;
+  }
+}
