@@ -25,12 +25,11 @@ public class Cart {
     @Column(name = "cart_item_count")
     private Integer cartItemCount;
 
-//    private Integer citemCount;
 
     // 연결
 
     @ManyToOne
-    @JoinColumn(name="member_id", nullable=false)
+    @JoinColumn(name="memberId", nullable=false)
     private Member member;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
@@ -43,19 +42,19 @@ public class Cart {
         this.cartItemCount = cartItemCount;
     }
 
-    //장바구니 생성
-    public static Cart createCart(Member member, Item Item, int citemCount){
-        Cart cart = new Cart(); //새로운 장바구니
+    // create: cart
+    public static Cart createCart(Member member, Item item, Integer cartItemCount){
+        Cart cart = new Cart(); // 새 장바구니
         cart.setMember(member);
-        cart.setItem(Item);//담은 상품 정보
-//        cart.setCitemCount(citemCount); //장바구니에 담은 상품 개수
+        cart.setItem(item);//장바구니 속 상품 정보
+        cart.setCartItemCount(cartItemCount); //장바구니에 담은 상품 개수
 
         return cart;
     }
 
-//    //총액
+    //총액
 //    public int getTotalPrice(){
-//        return Item.getItemPrice * citemCount;
+//        return Item.getItem
 //    }
 
 }
