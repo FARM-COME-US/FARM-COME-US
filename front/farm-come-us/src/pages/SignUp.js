@@ -7,7 +7,7 @@ import DaumPostcodeEmbed from "react-daum-postcode";
 import SignUpInput from "../components/user/SignUpInput";
 import axios from "axios";
 
-const SingUp = () => {
+const SignUp = () => {
   const REGISTER_USERS_URL = "http://signupURL";
 
   const [openModal, setOpenModal] = useState(false);
@@ -196,7 +196,7 @@ const SingUp = () => {
             text="아이디"
             type="text"
             placeholder="아이디"
-            typeName="id"
+            typename="id"
             onChange={onChangeId}
           />
           {id.length > 0 && (
@@ -216,7 +216,7 @@ const SingUp = () => {
             text="닉네임"
             type="nickname"
             placeholder="닉네임"
-            typeName="nickname"
+            typename="nickname"
             onChange={onChangeNickname}
           />
           {nickname.length > 0 && (
@@ -233,12 +233,12 @@ const SingUp = () => {
           <input
             className={classes.outerInput}
             type="tel"
-            class="form-control m-input"
+            // class="form-control m-input"
             text="전화번호"
             placeholder="전화번호"
-            typeName="tel"
+            typename="tel"
             pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"
-            maxlength="13"
+            maxLength="13"
             onBlur={onBlurTel}
           />
           {tel.length > 0 && (
@@ -258,9 +258,9 @@ const SingUp = () => {
           <input
             className={classes.outerInput}
             onChange={onChangePassword}
-            passwordText="비밀번호 (숫자+영문자+특수문자 조합으로 8자리 이상)"
+            passwordtext="비밀번호 (숫자+영문자+특수문자 조합으로 8자리 이상)"
             placeholder="비밀번호"
-            typeTitle="password"
+            typetitle="password"
           />
           {password.length > 0 && (
             <span
@@ -277,9 +277,9 @@ const SingUp = () => {
           <input
             className={classes.outerInput}
             onChange={onChangePasswordConfirm}
-            passwordText=" "
+            passwordtext=" "
             placeholder="비밀번호 확인"
-            typeTitle="passwordConfirm"
+            typetitle="passwordConfirm"
           />
           {passwordConfirm.length > 0 && (
             <span
@@ -296,12 +296,14 @@ const SingUp = () => {
       <div className={classes.subcontainer}>
         <div className={classes.formbox}>
           <input
-            onClick={setOpenModal(!openModal)}
+            onClick={() => {
+              setOpenModal(!openModal);
+            }}
             className={classes.outerInput}
             onChange={onChangeRoadAddress}
-            addressText=" "
+            addresstext=" "
             placeholder="주소를 검색해주세요."
-            typeTitle="roadAddress"
+            typetitle="roadAddress"
           />
           {passwordConfirm.length > 0 && (
             <span
@@ -318,9 +320,9 @@ const SingUp = () => {
           <input
             className={classes.outerInput}
             onChange={(e) => setZonecode(e.target.value)}
-            passwordText=" "
+            passwordtext=" "
             placeholder="우편번호"
-            typeTitle="zonecode"
+            typetitle="zonecode"
           />
         </div>
 
@@ -328,9 +330,9 @@ const SingUp = () => {
           <input
             className={classes.outerInput}
             onChange={(e) => setSpecificAddress(e.target.value)}
-            passwordText=" "
+            passwordtext=" "
             placeholder="상세주소"
-            typeTitle="specificRoadAddress"
+            typetitle="specificRoadAddress"
           />
         </div>
       </div>
@@ -341,7 +343,9 @@ const SingUp = () => {
           className={`${classes.button}`}
           type="submit"
           //   footButtonType={FootButtonType.ACTIVATION}
-          onClick={submitHandler}
+          onClick={() => {
+            submitHandler();
+          }}
           disabled={
             !(
               isId &&
@@ -366,4 +370,4 @@ const SingUp = () => {
   );
 };
 
-export default SingUp;
+export default SignUp;
