@@ -1,38 +1,31 @@
-import React from "react";
-import { useDaumPostcodePopup } from "react-daum-postcode";
+import DaumPostcode from "react-daum-postcode";
+import { useState } from "react";
+import { Modal } from "antd";
 
-const Postcode2 = () => {
-  const scriptUrl =
-    "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
-  const open = useDaumPostcodePopup(scriptUrl);
+export default function ModalAddressesPrevPage() {
+  const [myZipcode, setMyZipcode] = useState("");
+  const [myAddress, setMyAddress] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleComplete = (data) => {
-    let fullAddress = data.address;
-    let extraAddress = "";
-
-    if (data.addressType === "R") {
-      if (data.bname !== "") {
-        extraAddress += data.bname;
-      }
-      if (data.buildingName !== "") {
-        extraAddress +=
-          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
-      }
-      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-    }
-
-    console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    setMyZipcode(data.zonecode);
+    setMyAddress(data.address);
+    console.log(data.zonecode);
+    console.log(data.address);
+    setIsOpen((prev) => !prev);
   };
 
-  const handleClick = () => {
-    open({ onComplete: handleComplete });
-  };
-
+  function onToggleZipcode() {
+    setIsOpen((prev) => !prev);
+  }
   return (
-    <button type="button" onClick={handleClick}>
-      Open
-    </button>
+    <>
+      <button onClick={onToggleZipcode}>우편번호 검색</button>
+      {isOpen && (
+        <Modal visible={true} onCancel={onToggleZipcode}>
+          <DaumPostcode onComplete={handleComplete} />
+        </Modal>
+      )}
+    </>
   );
-};
-
-export default Postcode2;
+}
