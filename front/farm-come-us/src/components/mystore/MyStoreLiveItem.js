@@ -37,7 +37,7 @@ const MyStoreLiveItem = (props) => {
     <div className={classes.liveItem}>
       <img src={props.item.imgSrc} alt="live_img" />
       <div className={classes.liveInfo}>
-        <div>
+        <div className={classes.productInfo}>
           <span>{props.item.liveTitle}</span>
           <span>{`${props.item.stock}상자`}</span>
         </div>
