@@ -17,7 +17,7 @@ const Header = (props) => {
       >
         <img
           className={classes.menuBtn}
-          src="img/menubutton.png"
+          src={process.env.PUBLIC_URL + "/img/menubutton.png"}
           alt="메뉴버튼"
         />
       </div>

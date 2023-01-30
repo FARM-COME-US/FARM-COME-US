@@ -64,8 +64,8 @@ const SideMenu = (props) => {
             <div className={classes.circleBox}>
               <img
                 className={classes.profileImg}
-                src={`img/${isLogin ? user.profileimg : "defaultProfile.png"}`}
-                alt="프로필이미지"
+                src={process.env.PUBLIC_URL + "/img/defaultProfile.png"}
+                alt="프필이미"
               />
             </div>
             <div className={classes.profileTxtBox}>
@@ -84,9 +84,10 @@ const SideMenu = (props) => {
               <div className={classes.circleBox}>
                 <img
                   className={classes.profileImg}
-                  src={`img/${
-                    isLogin ? user.profileimg : "defaultProfile.png"
-                  }`}
+                  src={
+                    process.env.PUBLIC_URL +
+                    `/img/${isLogin ? user.profileimg : "defaultProfile.png"}`
+                  }
                   alt="프로필이미지"
                 />
               </div>
