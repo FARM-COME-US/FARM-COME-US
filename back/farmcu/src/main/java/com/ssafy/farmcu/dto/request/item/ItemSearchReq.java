@@ -1,5 +1,6 @@
 package com.ssafy.farmcu.dto.request.item;
 
+import com.ssafy.farmcu.entity.store.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,6 @@ import lombok.NoArgsConstructor;
 public class ItemSearchReq {
 
     String itemName;
-    Long categoryCode;
+    Category category;
 
 }
