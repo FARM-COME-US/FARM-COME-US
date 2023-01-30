@@ -65,18 +65,87 @@
 
       .cardbody {
         border-bottom: 1px solid black;
+        display: flex;
+
+        .imgline {
+          margin-left: 5px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .imgbox {
+            width: 60px;
+            height: 60px;
+            border: 1px solid black;
+            border-radius: 10px;
+          }
+        }
+
+        .script {
+          width: 100%;
+          margin-left: 5px;
+          margin-right: 5px;
+          padding-top: 5px;
+          padding-bottom: 5px;
+
+          .firstline {
+            display: flex;
+
+            .productname {
+              font-size: 18px;
+              font-weight: bold;
+              display: flex;
+              align-items: end;
+            }
+
+            .poductweight {
+              margin-left: 2px;
+              font-weight: bold;
+              display: flex;
+              align-items: end;
+            }
+          }
+
+          .secondline {
+            margin-top: 4px;
+            display: flex;
+            justify-content: end;
+
+            .discountrate {
+              font-size: 16px;
+              font-weight: bold;
+              color: #FF0000;
+            }
+
+            .originalprice {
+              margin-left: 8px;
+              font-size: 16px;
+            }
+          }
+
+          .thirdline {
+            margin-top: 4px;
+            display: flex;
+            justify-content: end;
+
+            .discountprice {
+              font-size: 20px;
+              font-weight: bold;
+            }
+          }
+        }
       }
 
       .cardfoot {
         padding-bottom: 5px;
-        
+
         .shippingfee {
           margin-top: 5px;
           margin-right: 5px;
           display: flex;
           justify-content: end;
         }
-        
+
         .secondline {
           margin-top: 3px;
           margin-right: 3px;
@@ -87,7 +156,7 @@
             font-weight: bold;
             margin-left: auto;
           }
-  
+
           .price {
             margin-left: 5px;
             font-size: 20px;
