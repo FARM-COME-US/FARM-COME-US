@@ -2,17 +2,19 @@ package com.ssafy.farmcu.dto.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
+@AllArgsConstructor
+@Getter @Setter
+@ToString
 public class ResponseCartDto {
 
-    @Getter
-    @AllArgsConstructor
-    @ToString
-    public static class Response {
-        private Long cartId;
-        private Long item_id;
-        private Integer cartItemCount;
+    private Long cartId;
+    private Long itemId;
+    private Integer cartItemCount;
+    private List<ResponseCartDto> ResponseCartDto;
 
-    }
 }

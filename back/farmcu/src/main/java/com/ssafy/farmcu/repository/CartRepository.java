@@ -13,7 +13,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     Optional<Cart> findById(Long num);
 
     List<Cart> findAll();
-    List<Cart> findAllByMember(Member member);
+    List<Cart> findByMember(Member member);
 
     void deleteById(Long id);
 }
