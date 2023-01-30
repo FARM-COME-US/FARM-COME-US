@@ -22,6 +22,8 @@ import MyStoreLive from "./pages/mystore/MyStoreLive";
 import MyStoreProducts from "./pages/mystore/MyStoreProducts";
 import MyStoreReceipt from "./pages/mystore/MyStoreReceipt";
 
+import OVTest from "./pages/OVTest";
+
 const App = () => {
   const menu = useSelector((state) => state.menu.isOpen); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
 
@@ -37,6 +39,7 @@ const App = () => {
         <SideMenu className="sideMenu closed" /> // className이 바뀌는게 아니라 다른className의 컴포넌트가 렌더링되니까 애니메이션 효과가 적용이 안됨. 수정필요
       )}
       <Routes>
+        <Route path="/ov" element={<OVTest />} />
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />

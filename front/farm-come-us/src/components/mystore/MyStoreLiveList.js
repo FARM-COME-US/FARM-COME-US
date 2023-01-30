@@ -12,7 +12,7 @@ const MyStoreLiveList = (props) => {
       <ul className={classes.liveList}>
         {props.lives.map((live, idx) => (
           <li key={idx} onClick={(e) => props.startLiveHandler(live, e)}>
-            <MyStoreLiveItem item={live} />
+            <MyStoreLiveItem key={idx} item={live} />
           </li>
         ))}
       </ul>
