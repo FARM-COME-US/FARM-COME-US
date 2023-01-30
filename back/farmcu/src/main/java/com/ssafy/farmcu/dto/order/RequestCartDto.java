@@ -1,4 +1,4 @@
-package com.ssafy.farmcu.dto;
+package com.ssafy.farmcu.dto.order;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.ToString;
 
 import java.security.Timestamp;
 
-public class CartDto {
+public class RequestCartDto {
     @Getter
     @AllArgsConstructor
     @ToString
@@ -20,13 +20,5 @@ public class CartDto {
         private Integer cartItemCount;
     }
 
-    @Getter
-    @AllArgsConstructor
-    @ToString
-    public static class Response {
-        private Long cartId;
-        private Long item_id;
-        private Integer cartItemCount;
 
-    }
 }
