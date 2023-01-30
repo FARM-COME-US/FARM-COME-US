@@ -16,7 +16,7 @@ const DUMMY_LIVE_LIST = [
     stock: 140,
     price: 14000,
     unit: 1,
-    startDate: new Date(2022, 1, 10, 23, 0, 0),
+    startDate: new Date(2023, 1, 10, 23, 0, 0),
     imgSrc: "https://via.placeholder.com/300",
   },
   {
@@ -27,7 +27,7 @@ const DUMMY_LIVE_LIST = [
     stock: 140,
     price: 14000,
     unit: 1,
-    startDate: new Date(2022, 1, 10, 23, 0, 0),
+    startDate: new Date(2023, 0, 30, 6, 0, 0),
     imgSrc: "https://via.placeholder.com/300",
   },
 ];
@@ -54,8 +54,18 @@ const MyStoreLive = () => {
   };
 
   const startLiveHandler = (liveInfo) => {
-    console.log(liveInfo);
-    alert("라이브 시작");
+    const endDate = new Date(liveInfo.startDate.getTime() + 1 * 60 * 60 * 1000);
+    const today = new Date();
+
+    const isLiveEnd = today.getTime() >= endDate.getTime() ? true : false;
+    if (isLiveEnd) {
+      alert("이미 종료된 라이브입니다.");
+    } else {
+      const flag = window.confirm("시작?");
+      if (!flag) return;
+
+      alert("라이브 시작 로직 구현");
+    }
     return;
   };
 
