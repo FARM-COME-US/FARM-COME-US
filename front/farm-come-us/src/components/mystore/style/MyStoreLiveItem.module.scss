@@ -1,0 +1,13 @@
+.liveItem {
+  width: calc(100% - 32px);
+  height: 160px;
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+  }
+}
