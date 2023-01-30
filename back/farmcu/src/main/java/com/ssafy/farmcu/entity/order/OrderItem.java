@@ -63,7 +63,11 @@ public class OrderItem {
         return orderItem;
     }
 
-    // 주문
+    // 주문 번호 주입
+    public  void addOrderNum(Order order){
+        this.order = order;
+    }
+    // 주문 상품에 주문 번호 주입
     public void addOrderId(Order order) { this.order = order; }
 
     //총액
