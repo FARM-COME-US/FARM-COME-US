@@ -1,0 +1,13 @@
+.header {
+  width: calc(100% - 20px);
+  margin: 0 auto;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  .title {
+    margin-left: 10px;
+    font-family: "NanumSquareRoundB";
+  }
+}
