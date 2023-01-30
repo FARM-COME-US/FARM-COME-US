@@ -1,5 +1,5 @@
 import React from "react";
-import LivePreview from "../components/preview/LivePreview";
+import LivePreview from "./live/LivePreview";
 
 const Home = () => {
   return (

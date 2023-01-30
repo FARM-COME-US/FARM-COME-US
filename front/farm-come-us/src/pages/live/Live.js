@@ -1,16 +1,17 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
-import { Routes, Route, useMatch } from "react-router-dom";
-import RunningLive from "./RunningLive";
-import ScheduledLive from "./ScheduledLive";
+import classes from "./style/Live.module.scss";
+
+import LiveTab from "../../components/live/LiveTab";
 
 const Live = () => {
   return (
-    <div className={``}>
-      <Routes>
-        <Route path="" element={<RunningLive />}></Route>
-        <Route path="" element={<ScheduledLive />}></Route>
-      </Routes>
+    <div className={classes.live}>
+      <LiveTab />
+      <div className={classes.container}>
+        <Outlet />
+      </div>
     </div>
   );
 };
