@@ -64,7 +64,7 @@ const SideMenu = (props) => {
             <div className={classes.circleBox}>
               <img
                 className={classes.profileImg}
-                src={`img/${isLogin ? user.profileimg : "defaultProfile.png"}`}
+                src={`/img/${isLogin ? user.profileimg : "defaultProfile.png"}`}
                 alt="프로필이미지"
               />
             </div>
