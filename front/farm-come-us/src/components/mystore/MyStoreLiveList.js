@@ -11,7 +11,7 @@ const MyStoreLiveList = (props) => {
     ) : (
       <ul className={classes.liveList}>
         {props.lives.map((live, idx) => (
-          <li key={idx}>
+          <li key={idx} onClick={(e) => props.startLiveHandler(live, e)}>
             <MyStoreLiveItem item={live} />
           </li>
         ))}
