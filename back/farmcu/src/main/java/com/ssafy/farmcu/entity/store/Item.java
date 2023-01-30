@@ -1,6 +1,5 @@
 package com.ssafy.farmcu.entity.store;
 
-
 import com.ssafy.farmcu.entity.live.Live;
 import com.ssafy.farmcu.entity.order.Cart;
 import com.ssafy.farmcu.entity.order.OrderItem;
@@ -11,11 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Getter @Setter
 @NoArgsConstructor

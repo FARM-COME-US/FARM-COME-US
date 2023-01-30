@@ -11,6 +11,8 @@
 - eslint : (보류)
 - axios : 1.2.4
 - react-daum-postcode : 3.1.1
+- react-icons : 4.7.1
+  [react-icons 사용 가이드](https://react-icons.github.io/react-icons/)
 
 <br><br>
 
