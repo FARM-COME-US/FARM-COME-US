@@ -1,0 +1,126 @@
+.container {
+  width: 95%;
+  margin: auto;
+
+  .title {
+    padding: 15px 0px;
+    height: 56px;
+    font-size: x-large;
+    font-weight: bold;
+  }
+
+  .paymentcard {
+    padding: 0px;
+    margin-bottom: 16px;
+
+    .cardheader {
+      padding: 8px 5px;
+      height: 35px;
+      border-bottom: solid 1px #EEEEEE;
+      font-size: large;
+      font-weight: bolder;
+    }
+
+    .cardscript {
+      padding: 8px 5px;
+
+      .option {
+        display: flex;
+        flex-direction: row;
+        
+
+        .options {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .price {
+          margin-left: auto;
+          font-size: large;
+        }
+      }
+    }
+
+    .shippingfee {
+      padding: 8px 5px;
+      height: 35px;
+      border-top: solid 1px #EEEEEE;
+      border-bottom: solid 1px #EEEEEE;
+      display: flex;
+      flex-direction: row;
+
+      .defaultscript {
+        font-size: large;
+        font-weight: bolder;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .price {
+        margin-left: auto;
+        font-size: large;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .bill {
+      padding: 8px 5px;
+      height: 35px;
+      display: flex;
+      flex-direction: row;
+
+      .defaultscript {
+        font-size: large;
+        font-weight: bolder;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .price {
+        margin-left: auto;
+        font-size: large;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .changeaddressbutton {
+      width: 70px;
+      height: 18px;
+      background-color: #D9D9D9;
+      color: white;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: auto;
+    }
+  }
+
+  .foot {
+    .text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .button {
+      width: 80%;
+      height: 40px;
+      border-radius: 20px;
+      background-color: #D9D9D9;
+      color: white;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+    }
+  }
+}
