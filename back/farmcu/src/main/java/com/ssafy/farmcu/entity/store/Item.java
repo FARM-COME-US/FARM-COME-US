@@ -64,7 +64,7 @@ public class Item {
 
     //빌더
     @Builder
-    public Item(Long itemID, String itemName, String itemDescription, String itemImg, Integer itemDiscount, Integer itemPrice, Integer itemStock ) {
+    public Item(Long itemId, String itemName, String itemDescription, String itemImg, Integer itemDiscount, Integer itemPrice, Integer itemStock ) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDescription = itemDescription;

@@ -10,11 +10,11 @@ import java.util.List;
 @AllArgsConstructor
 @Getter @Setter
 @ToString
-public class ResponseCartDto {
+public class CartOrderDto {
 
     private Long cartId;
     private Long itemId;
     private Integer cartItemCount;
-    private List<ResponseCartDto> ResponseCartDto;
+    private List<CartOrderDto> ResponseCartDto;
 
 }

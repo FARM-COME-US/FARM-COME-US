@@ -11,7 +11,7 @@ import java.security.Timestamp;
 @Getter @Setter
 @AllArgsConstructor
 @ToString
-public class RequestCartDto {
+public class CartRequestDto {
 
     @NotNull
     private Long memberId;
