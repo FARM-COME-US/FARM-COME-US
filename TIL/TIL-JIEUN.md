@@ -29,3 +29,25 @@ Todo
 Todo
 
 - [x] Spring Boot JPA 학습 및 블로그 정리
+
+## 2023.01.20.금
+
+Todo
+
+- [x] Spring Boot Jpa
+- [x] create entity to project
+
+## 2023.01.25.수
+
+Todo
+
+- [x] entity 수정
+- [x] 프로토 타입 작성
+- [x] 중간 발표(01.27) 프로토 타입 gif 자료 준비 
+
+## 2023.01.26.목
+
+Todo
+
+- [x] Cart 관련 파일 수정 중
+
