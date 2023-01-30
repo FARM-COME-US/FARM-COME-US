@@ -1,11 +1,18 @@
 .container {
-  width: 25%;
+  width: 72px;
   height: 96px;
+<<<<<<< HEAD
   position: relative;
+=======
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+>>>>>>> 984f48e189ac4a651403fbcf6f0be90a41cc1525
 
   .icon {
     width: 56px;
     height: 56px;
+<<<<<<< HEAD
     background: orange;
     border-radius: 50%;
     position: absolute;
@@ -21,5 +28,19 @@
     left: 50%;
     top: 72px;
     transform: translateX(-50%);
+=======
+    background: #fff;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+  }
+
+  .text {
+    color: #fff;
+    font-weight: 300;
+>>>>>>> 984f48e189ac4a651403fbcf6f0be90a41cc1525
   }
 }

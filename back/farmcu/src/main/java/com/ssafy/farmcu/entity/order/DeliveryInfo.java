@@ -18,30 +18,32 @@ public class DeliveryInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id", unique = true, nullable = false)
-    private Long delivery_id;
+    private Long deliveryId;
 
-    @Column(length = 10, nullable = false)
-    private String delivery_name;
+    @Column(name = "delivery_name", length = 10, nullable = false)
+    private String deliveryName;
 
-    @Column(length = 255, nullable = false)
-    private String delivery_addr;
+    @Column(name = "delivery_addr",length = 255, nullable = false)
+    private String deliveryAddr;
 
-    @Column(length = 15, nullable = false)
-    private String delivery_phone_number;
+    @Column(name = "delivery_phone_number",length = 15, nullable = false)
+    private String deliveryPhoneNumber;
 
 
-    // 외래 키
+    // 연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Member.class)
     @JoinColumn(name = "member_id", updatable = false)
     private Member member;
 
+//    @OneToOne(mappedBy = "delivery" ,orphanRemoval = true)
+//    private DeliveryInfo delivery;
+
     //빌더
     @Builder
-    public DeliveryInfo(Long delivery_id, String delivery_name, String delivery_addr, String delivery_phone_number ) {
-        this.delivery_id = delivery_id;
-        this.delivery_name = delivery_name;
-        this.delivery_addr = delivery_addr;
-        this.delivery_phone_number = delivery_phone_number;
-
+    public DeliveryInfo(Long deliveryId, String deliveryName, String deliveryAddr, String deliveryPhoneNumber ) {
+        this.deliveryId = deliveryId;
+        this.deliveryName = deliveryName;
+        this.deliveryAddr = deliveryAddr;
+        this.deliveryPhoneNumber = deliveryPhoneNumber;
     }
 }
