@@ -1,15 +1,24 @@
 .container {
-  width: 25%;
+  width: 72px;
   height: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   .icon {
     width: 56px;
     height: 56px;
-    background: black;
+    background: #fff;
     border-radius: 50%;
-    }
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+  }
 
   .text {
-    font-weight: bold;
+    color: #fff;
+    font-weight: 300;
   }
 }
