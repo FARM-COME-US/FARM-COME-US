@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { MdPermIdentity } from "react-icons/md";
 import axios from "axios";
 
 // 이 함수도 수정필요 😀 기본형으로 해둠.
@@ -27,7 +28,9 @@ function Login() {
     <div className={classes.screen}>
       <div>로그인 화면입니다.</div>
       <form onSubmit={LoginSubmit}>
-        <label htmlFor="id">ID: </label>
+        <label htmlFor="id">
+          <MdPermIdentity />
+        </label>
         <Input id="id" />
         <br />
         <label htmlFor="password">PW: </label>
