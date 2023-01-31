@@ -26,32 +26,39 @@ function Login() {
   };
   return (
     <div className={classes.screen}>
-      <div>로그인 화면입니다.</div>
-      <form onSubmit={LoginSubmit}>
-        <label htmlFor="id">
+      <h1>로그인</h1>
+      <form
+        className={`${classes.centeralign} ${classes.marginSpacing}`}
+        onSubmit={LoginSubmit}
+      >
+        {/* <label htmlFor="id">
           <MdPermIdentity />
-        </label>
-        <Input id="id" />
+        </label> 😀라벨 일단 제거 */}
+
+        <input className={classes.inputbar} id="id" />
         <br />
-        <label htmlFor="password">PW: </label>
-        <Input id="password" />
+        {/* <label htmlFor="password">PW: </label>😀라벨 일단 제거 */}
+        <input className={classes.inputbar} id="password" />
         <br />
 
-        <Button type="submit" className={classes.signUpButton}>
-          제출하기
-        </Button>
+        <div className={classes.marginSpacing}>
+          <Button type="submit" className={`${classes.signUpButton}`}>
+            사용자 로그인
+          </Button>
+        </div>
       </form>
       {/* 로그인버튼. 아직 어떤 인자를 넣어서 비동기 요청 보낼지 안정함. 연결된 userSlice도 수정필요 */}
-
+      <div className={classes.marginSpacing}>
+        <KakaoLogin />
+      </div>
       <Button
-        className="signUpButton" //이거 색깔 왜 안먹지? 수정필요
+        className={classes.loginButton} //이거 색깔 왜 안먹지? 수정필요
         onClick={() => {
           navigate("/sign-up");
         }}
       >
         이거는 회원가입버튼
       </Button>
-      <KakaoLogin />
     </div>
   );
 }
