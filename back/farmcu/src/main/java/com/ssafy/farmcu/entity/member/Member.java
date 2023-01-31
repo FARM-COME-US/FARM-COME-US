@@ -53,9 +53,9 @@ public class Member {
     @CreationTimestamp
     private Timestamp createdAt;
 
-    @OneToOne
-    @JoinColumn(name="store_id")
-    private Store store;
+//    @OneToOne
+//    @JoinColumn(name="store_id")
+//    private Store store;
 
     @Builder
     public Member(String id, String password, String nickname, String name, String email, String profileImg, String streetAddr, String detailAddr, String zipcode, String phoneNumber, RoleType role, ProviderType provider, String providerId) {
