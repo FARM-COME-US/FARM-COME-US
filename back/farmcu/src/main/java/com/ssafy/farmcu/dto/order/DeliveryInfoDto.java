@@ -6,19 +6,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
 @AllArgsConstructor
 @Getter @Setter
 @ToString
-public class CartOrderDto {
-    // not null 새로 적용
+public class DeliveryInfoDto {
     @NotNull
-    private Long cartId;
+    private Long deliveryId;
+    @NotNull
+    private String deliveryName;
+    private String deliveryPhoneNumber;
+    private String deliveryAddr;
+
+    @NotNull
+    private Long MemberId;
     @NotNull
     private Long itemId;
-    @NotNull
-    private Integer cartItemCount;
-    private List<CartOrderDto> CartOrderDtoList;
 
 }

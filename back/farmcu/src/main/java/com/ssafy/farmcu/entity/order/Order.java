@@ -55,10 +55,8 @@ public class Order {
     @JoinColumn(name="delivery_id")
     private DeliveryInfo delivery;
 
-
-    @OneToMany(mappedBy = "order_info")
+    @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
-
 
     @Builder
     public Order(Member member, Timestamp orderCreateAt, OrderStatus orderStatus, List<OrderItem> orderItems) {
@@ -74,7 +72,7 @@ public class Order {
         orderItem.setOrder(this);
     }
 
-    //첫 주문시 주문생성
+    //** 주문 생성 **//
     public static Order createOrder(Member member, List<OrderItem> orderItems){
         Order order = new Order();
         order.setMember(member); //멤버 정보 set
@@ -87,7 +85,7 @@ public class Order {
         order.setOrderCreateAt(Timestamp.valueOf("?")); //주문시간
         return order; //완성된 주문정보
     }
-    // 전체 주문 가격
+    //** 전체 주문 가격 조회 **//
     public int getTotalPrice(){
         int totalPrice = 0;
 
@@ -97,8 +95,8 @@ public class Order {
         return totalPrice;
     }
 
-    //주문 취소
-    public void cancelOrder(){
+    //** 주문 취소 **//
+    public void updateOrder(){
         this.orderStatus = OrderStatus.CANCEL; //주문 상태를 CANCEL로
 
         for(OrderItem orderItem : orderItems){ //주문 취소, 재고 원상복구

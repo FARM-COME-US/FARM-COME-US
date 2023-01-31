@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +77,10 @@ public class OrderService {
 
     //** 주문 취소 **//
     // controller 에서 작성
-
+    public void updateOrder(Long orderId){
+        Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+        order.updateOrder();
+    }
 
     //** 전체 주문 조회 **//
     public List<Order> findAll() {

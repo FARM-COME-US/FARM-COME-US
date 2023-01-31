@@ -31,6 +31,7 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final OrderService orderService;
 
+    // 구현 기능
 
     // Service method
     //
@@ -40,7 +41,7 @@ public class CartService {
     //- update
 
     //** 현재 로그인 한 member 장바구니 조회  **//
-    public List<Cart> findMemberCart(Member member) {
+    public List<Cart> findMyCart(Member member) {
         return cartRepository.findByMember(member);
     }
 
@@ -83,6 +84,7 @@ public class CartService {
     }
 
     //** 장바구니 삭제 **//
-    public void deleteCart(long cartId) { cartRepository.deleteById(cartId); }
+    public void deleteById(Long id) { cartRepository.deleteById(id); }
+
 
 }
