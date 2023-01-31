@@ -1,4 +1,4 @@
-package com.ssafy.farmcu.jwt;
+package com.ssafy.farmcu.oauth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
