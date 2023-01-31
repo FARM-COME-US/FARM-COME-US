@@ -74,8 +74,7 @@ public class Item {
         this.itemStock = itemStock;
     }
 
-
-    //**   주문 관련   **//
+    //**  주문 관련   **//
     //주문: 재고 차감
     public void removeStock(int quantity){
         int remainStock = this.itemStock - quantity;
