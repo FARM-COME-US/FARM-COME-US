@@ -12,16 +12,21 @@ import axios from "axios";
 //         })
 //     }
 // )
+// const initialStateValue = {
+//   accessToken: "",
+//   refreshToken: "",
+//   accessCode: "",
+//   email: "",
+//   id: "",
+//   nickname: "",
+//   roadAddress: "",
+//   specificAddress: "",
+//   zonecode: "",
+//   isLogin: false,
+// }; //정확히 어떤 변수명으로 가지고 있어야할지 정하지 못함. BE와 문의
 const initialStateValue = {
-  accessToken: "",
-  refreshToken: "",
-  accessCode: "",
-  email: "",
-  id: "",
-  nickname: "",
-  roadAddress: "",
-  specificAddress: "",
-  zonecode: "",
+  username: "",
+  password: "",
   isLogin: false,
 }; //정확히 어떤 변수명으로 가지고 있어야할지 정하지 못함. BE와 문의
 
