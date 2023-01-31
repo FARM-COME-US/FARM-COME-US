@@ -1,9 +1,9 @@
 package com.ssafy.farmcu.service.member;
 
-import com.ssafy.farmcu.dto.request.member.MemberJoinReq;
-import com.ssafy.farmcu.dto.request.member.MemberLoginReq;
-import com.ssafy.farmcu.dto.request.member.MemberUpdateReq;
-import com.ssafy.farmcu.dto.response.member.MemberInfoRes;
+import com.ssafy.farmcu.dto.member.MemberJoinReq;
+import com.ssafy.farmcu.dto.member.MemberLoginReq;
+import com.ssafy.farmcu.dto.member.MemberUpdateReq;
+import com.ssafy.farmcu.dto.member.MemberInfoRes;
 import com.ssafy.farmcu.entity.member.Member;
 
 public interface MemberService {

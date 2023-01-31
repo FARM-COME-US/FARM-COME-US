@@ -1,5 +1,6 @@
 package com.ssafy.farmcu.entity.member;
 
+import com.ssafy.farmcu.entity.store.Store;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -34,21 +35,17 @@ public class Member {
     private String streetAddr;
     @Column(name = "detail_addr", length = 50)
     private String detailAddr;
-
     @Column(length = 10)
     private String zipcode;
-
     @Column(name = "phone_number")
     private String phoneNumber;
 
 
     @Enumerated(EnumType.STRING)
     private RoleType role;
-
     // OAuth를 위해 구성한 추가 필드 2개
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
-
     @Column(name = "provider_id", length = 100)
     private String providerId;
 
@@ -56,6 +53,9 @@ public class Member {
     @CreationTimestamp
     private Timestamp createdAt;
 
+    @OneToOne
+    @JoinColumn(name="store_id")
+    private Store store;
 
     @Builder
     public Member(String id, String password, String nickname, String name, String email, String profileImg, String streetAddr, String detailAddr, String zipcode, String phoneNumber, RoleType role, ProviderType provider, String providerId) {
