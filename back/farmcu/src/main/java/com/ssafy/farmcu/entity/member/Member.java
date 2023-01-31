@@ -1,5 +1,6 @@
 package com.ssafy.farmcu.entity.member;
 
+import com.ssafy.farmcu.dto.member.MemberUpdateReq;
 import com.ssafy.farmcu.entity.store.Store;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -79,17 +80,17 @@ public class Member {
         return this;
     }
 
-//    public void updateInfo(MemberUpdateReq memberUpdateReq){
-//        this.name = memberUpdateReq.getName();
-//        this.email = memberUpdateReq.getEmail();
-//        this.nickname = memberUpdateReq.getNickname(); // 닉네임 중복 체크 추가할 것
-//        this.profileImg = memberUpdateReq.getProfileImg();
-//        this.streetAddr = memberUpdateReq.getStreetAddr();
-//        this.detailAddr = memberUpdateReq.getDetailAddr();
-//        this.zipcode = memberUpdateReq.getZipcode();
-//        this.phoneNumber = memberUpdateReq.getPhoneNumber(); // 휴대폰 번호 인증?
-//
-//    }
+    public void updateInfo(MemberUpdateReq memberUpdateReq){
+        this.name = memberUpdateReq.getName();
+        this.email = memberUpdateReq.getEmail();
+        this.nickname = memberUpdateReq.getNickname(); // 닉네임 중복 체크 추가할 것
+        this.profileImg = memberUpdateReq.getProfileImg();
+        this.streetAddr = memberUpdateReq.getStreetAddr();
+        this.detailAddr = memberUpdateReq.getDetailAddr();
+        this.zipcode = memberUpdateReq.getZipcode();
+        this.phoneNumber = memberUpdateReq.getPhoneNumber(); // 휴대폰 번호 인증?
+
+    }
 
 
     public String getRoleType(){
