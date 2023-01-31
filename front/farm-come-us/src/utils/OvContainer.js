@@ -77,6 +77,13 @@ const OvContainer = (props) => {
       console.warn(exception);
     });
 
+    /* 채팅 이벤트 listener 추가 */
+    mySession.on("signal:my-chat", (e) => {
+      console.log(e.data);
+      console.log(e.from);
+      console.log(e.type);
+    });
+
     // --- 4) Connect to the session with a valid user token ---
 
     // Get a token from the OpenVidu deployment
@@ -211,24 +218,12 @@ const OvContainer = (props) => {
 
   return (
     <div className={props.className}>
-      {mainStreamManager !== undefined ? (
-        <div id="main-video" className="col-md-6">
+      {session !== undefined && mainStreamManager !== undefined ? (
+        <div className="">
           <UserVideoComponent streamManager={mainStreamManager} />
-          <input
-            className="btn btn-large btn-success"
-            type="button"
-            id="buttonSwitchCamera"
-            onClick={switchCamera}
-            value="Switch Camera"
-          />
-        </div>
-      ) : null}
-
-      {session !== undefined ? (
-        <div id="session">
           <div id="session-header">
-            <h1 id="session-title">{props.sessionId}</h1>
-            <h1 id="session-title">{subscribers.length}</h1>
+            <div id="session-title">{props.sessionId}</div>
+            <div id="session-title">{subscribers.length}</div>
             <input
               className="btn btn-large btn-danger"
               type="button"
@@ -236,6 +231,36 @@ const OvContainer = (props) => {
               onClick={leaveSession}
               value="Leave session"
             />
+            <input
+              className="btn btn-large btn-success"
+              type="button"
+              id="buttonSwitchCamera"
+              onClick={switchCamera}
+              value="Switch Camera"
+            />
+          </div>
+          <div>
+            <span>채팅창 목록</span>
+            <ul></ul>
+            <input type="text" />
+            <button
+              onClick={() => {
+                session
+                  .signal({
+                    data: "my custom msg",
+                    to: [],
+                    type: "my-chat",
+                  })
+                  .then(() => {
+                    console.log("메시지 성공적으로 전송");
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                  });
+              }}
+            >
+              전송
+            </button>
           </div>
         </div>
       ) : null}
