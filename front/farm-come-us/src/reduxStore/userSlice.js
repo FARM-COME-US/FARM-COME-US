@@ -19,8 +19,22 @@ const initialStateValue = {
   email: "",
   id: "",
   nickname: "",
+  roadAddress: "",
+  specificAddress: "",
+  zonecode: "",
   isLogin: false,
 }; //정확히 어떤 변수명으로 가지고 있어야할지 정하지 못함. BE와 문의
+
+const asynclogin = createAsyncThunk(
+  "userSlice/asynclogin",
+  async ({ username, password }) => {
+    const response = await axios.post("BackendURL/loginURL", {
+      username,
+      password,
+    });
+    return response.data;
+  }
+);
 
 const asyncSomethingFetch = createAsyncThunk(
   "userSlice/something",
