@@ -61,11 +61,11 @@ public class CartService {
             orderDtoList.add(orderDto);
         }
 
-        //주문 로직
+        // 주문 로직
         Long orderId = orderService.orders(orderDtoList, id);
 
 
-        //주문완료 후 장바구니 삭제
+        //** 주문완료 후 장바구니 삭제 **//
         for (CartOrderDto cartOrderDto : cartOrderDtoList){
             Cart cart = cartRepository.findById(cartOrderDto.getCartId()).orElseThrow();
             cartRepository.delete(cart);
@@ -73,7 +73,7 @@ public class CartService {
         return orderId;
     }
 
-    // 장바구니 삭제
+    //** 장바구니 삭제 **//
     public void deleteCart(long cartId) { cartRepository.deleteById(cartId); }
 
 }
