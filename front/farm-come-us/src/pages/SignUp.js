@@ -323,6 +323,9 @@ const SignUp = () => {
           <div>
             <MdSearch className={classes.icon} />
             <input
+              onFocus={() => {
+                setOpenModal(!openModal);
+              }}
               onClick={() => {
                 setOpenModal(!openModal);
               }}
@@ -380,7 +383,18 @@ const SignUp = () => {
       {/* 이름, 이메일, 패스워드, 패스워드 확인, 주소가 다 맞다면 주황버튼으로 */}
       <div>
         <button
-          className={`${classes.button}`}
+          className={`${classes.button} ${
+            !(
+              isId &&
+              isNickname &&
+              isTel &&
+              isPassword &&
+              isPasswordConfirm &&
+              isRoadAddress
+            )
+              ? classes.disabled
+              : ""
+          }`}
           type="submit"
           disabled={
             !(
