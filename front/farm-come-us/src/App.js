@@ -26,6 +26,10 @@ import MyStoreLive from "./pages/mystore/MyStoreLive";
 import MyStoreProducts from "./pages/mystore/MyStoreProducts";
 import MyStoreReceipt from "./pages/mystore/MyStoreReceipt";
 
+import Store from "./pages/store/Store";
+import StoreLive from "./pages/store/StoreLive";
+import StoreProducts from "./pages/store/StoreProducts";
+
 const App = () => {
   const menu = useSelector((state) => state.menu.isOpen); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
 
@@ -43,6 +47,10 @@ const App = () => {
       <Routes>
         <Route path="/product-detail" element={<ProductDetail />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
+        <Route path="/store" element={<Store />}></Route>
+          <Route path="/live" element={<StoreLive />}></Route>
+          <Route path="/products" element={<StoreProducts />}></Route>
+        {/* 스토어페이지 렌더링용. */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />

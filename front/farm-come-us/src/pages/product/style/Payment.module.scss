@@ -17,14 +17,39 @@
       padding: 8px 5px;
       height: 35px;
       border-bottom: solid 1px #EEEEEE;
-      font-size: large;
+      font-size: 16px;
       font-weight: bolder;
     }
 
     .cardscript {
       padding: 8px 5px;
 
+      .username {
+        font-size: 14px;
+      }
+
+      .userphonenumber {
+        margin-top: 4px;
+        font-size: 14px;
+      }
+
+      .useraddress {
+        margin-top: 4px;
+        font-size: 14px;
+      }
+
+      .storename {
+        font-weight: bold;
+      }
+
+      .productname {
+        margin-top: 8px;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
       .option {
+        margin-top: 2px;
         display: flex;
         flex-direction: row;
         
@@ -37,7 +62,7 @@
 
         .price {
           margin-left: auto;
-          font-size: large;
+          font-size: 16px;
         }
       }
     }
@@ -51,7 +76,7 @@
       flex-direction: row;
 
       .defaultscript {
-        font-size: large;
+        font-size: 16px;
         font-weight: bolder;
         display: flex;
         justify-content: center;
@@ -60,7 +85,7 @@
 
       .price {
         margin-left: auto;
-        font-size: large;
+        font-size: 16px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -74,7 +99,7 @@
       flex-direction: row;
 
       .defaultscript {
-        font-size: large;
+        font-size: 16px;
         font-weight: bolder;
         display: flex;
         justify-content: center;
@@ -83,7 +108,7 @@
 
       .price {
         margin-left: auto;
-        font-size: large;
+        font-size: 16px;
         display: flex;
         justify-content: center;
         align-items: center;
