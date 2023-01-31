@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { MdPermIdentity } from "react-icons/md";
+import jwt_decode from "jwt-decode";
 import axios from "axios";
 
 // 이 함수도 수정필요 😀 기본형으로 해둠.
@@ -25,6 +26,17 @@ function Login() {
       });
       const accessToken = response.data.accessToken;
       const refreshToken = response.data.refreshToken;
+      const decodedAccessToken = jwt_decode(accessToken);
+      const decodedRefreshToken = jwt_decode(refreshToken);
+      sessionStorage.setItem("jwtAccess", JSON.stringify(decodedAccessToken));
+      sessionStorage.setItem("jwtRefresh", JSON.stringify(decodedRefreshToken));
+      dispatch(
+        userSlice.actions.savetoken({
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+        })
+        //수정필요. 작동하는지 확인이 필요함. 세션에 저장하는거라서 이 부분이 필요 없다. 이 로직으로 끝낼거면..
+      );
     } catch (err) {
       console.log(err);
     }
@@ -38,6 +50,8 @@ function Login() {
     dispatch(
       userSlice.actions.login({ username: username, password: password })
     );
+
+    console.log({ username: username, password: password });
     alert(
       "이렇게 하지말고 밑 오른쪽에 오류를 알려주는걸 흔들면서 넣어줘야지. 수정필요"
     );
