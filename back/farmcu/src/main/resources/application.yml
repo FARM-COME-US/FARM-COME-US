@@ -9,7 +9,7 @@ server:
 
 spring:
   profiles:
-    include: local
+    include: oauth, local
 
   # swagger
   mvc:
