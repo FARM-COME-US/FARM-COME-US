@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class FcmusApplication {
+public class FarmcuApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FcmusApplication.class, args);
+		SpringApplication.run(FarmcuApplication.class, args);
 	}
 
 }
