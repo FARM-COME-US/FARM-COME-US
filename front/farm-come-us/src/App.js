@@ -2,6 +2,7 @@ import "./App.scss";
 
 import { useSelector } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
+import classes from "./App.scss";
 
 import Header from "./components/common/Header";
 import Home from "./pages/Home";
@@ -27,14 +28,14 @@ const App = () => {
   return (
     <div id="app">
       <Header />
-      {menu ? (
-        <div>
-          <Backdrop />
-          <SideMenu className="sideMenu open" />
-        </div>
-      ) : (
-        <SideMenu className="sideMenu closed" /> // className이 바뀌는게 아니라 다른className의 컴포넌트가 렌더링되니까 애니메이션 효과가 적용이 안됨. 수정필요
-      )}
+      <div>
+        {menu && <Backdrop />}
+        <SideMenu
+          className={`${classes.sideMenu} ${
+            menu ? classes.open : classes.closed
+          }`}
+        />
+      </div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
