@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Component
-public class DeliveryInfoService {
+public class DeliveryServiceImpl {
 }

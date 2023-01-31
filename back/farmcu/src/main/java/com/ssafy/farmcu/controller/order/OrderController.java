@@ -3,14 +3,13 @@ package com.ssafy.farmcu.controller.order;
 import com.ssafy.farmcu.dto.order.OrderDto;
 import com.ssafy.farmcu.entity.member.Member;
 import com.ssafy.farmcu.entity.order.OrderItem;
-import com.ssafy.farmcu.service.order.OrderService;
+import com.ssafy.farmcu.service.order.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -28,24 +27,12 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    private final OrderService orderService;
-
-    //return "/경로"; = html 문서 경로
-    //ruturn "redirect: /값"; = 맵핑 액션 이름
-
-    //(관리자)전체 주문 목록
-//    @GetMapping("/orders")
-//    public String getOrders(Model model){
-//        List<OrderDetailInfo> orders = orderService.findAllDetails();
-//
-//        model.addAttribute("orders", orders);
-//        return "/admin/orderList";
-//    }
+    private final OrderServiceImpl orderServiceImpl;
 
     //** 주문 목록 조회 **//
     @GetMapping("") //전체 주문 목록 확인
     public String selectOrders(Model model){
-        List<OrderItem> orders = orderService.findAllItems(); //모든 주문 불러오기
+        List<OrderItem> orders = orderServiceImpl.findAllItems(); //모든 주문 불러오기
 
         model.addAttribute("orders", orders); //주문 리스트를 뷰로 전송
         return "/admin/orderList";
@@ -55,13 +42,13 @@ public class OrderController {
     @GetMapping("")
     public String selectMyOrders(Model model){
         Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //현재 로그인 정보
-        List<OrderItem> orders = orderService.findMyItems(member); //멤버의 주문목록 불러오기
+        List<OrderItem> orders = orderServiceImpl.findMyItems(member); //멤버의 주문목록 불러오기
 
         model.addAttribute("orders", orders); //멤버의 주문리스트 뷰로 전송
         return "/order/myOrder";
     }
 
-    //** 주문 **//
+    //** 상품 주문 **//                  <======== 장바구니 상품 주문은 CartController
     @PostMapping(value = "")
     public ResponseEntity order(OrderDto orderDto, BindingResult bindingResult, Principal principal){
         if(bindingResult.hasErrors()){
@@ -77,7 +64,7 @@ public class OrderController {
         Long orderId; //주문번호 생성
 
         try {
-            orderId = orderService.order(orderDto, name); //주문 시도 및 주문번호 가져오기
+            orderId = orderServiceImpl.order(orderDto, name); //주문 시도 및 주문번호 가져오기
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -88,7 +75,7 @@ public class OrderController {
     //** 주문 취소 **//
     @PutMapping
     public String updateOrder(Long orderId){
-        orderService.updateOrder(orderId);
+        orderServiceImpl.updateOrder(orderId);
 
         return "redirect:/myOrders";
     }

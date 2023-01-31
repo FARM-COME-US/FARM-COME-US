@@ -5,7 +5,7 @@ import com.ssafy.farmcu.dto.order.CartOrderDto;
 import com.ssafy.farmcu.dto.order.CartRequestDto;
 import com.ssafy.farmcu.entity.member.Member;
 import com.ssafy.farmcu.entity.order.Cart;
-import com.ssafy.farmcu.service.order.CartService;
+import com.ssafy.farmcu.service.order.CartServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ import java.util.List;
 
 public class CartController {
     @Autowired
-    private final CartService cartService;
+    private final CartServiceImpl cartServiceImpl;
 
     // Controller method
     //
@@ -43,7 +43,7 @@ public class CartController {
     @GetMapping("")
     public String selectMyCart(Model model) {
         Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //현재 로그인 정보
-        List<Cart> cart = cartService.findMyCart(member); //멤버의 주문목록 불러오기
+        List<Cart> cart = cartServiceImpl.findMyCart(member); //멤버의 주문목록 불러오기
         model.addAttribute("cart", cart); //멤버의 주문리스트 뷰로 전송
 
         model.addAttribute("cart", cart); //멤버의 주문리스트 뷰로 전송
@@ -67,7 +67,7 @@ public class CartController {
         Long cartId; //장바구니번호 생성
 
         try {
-            cartId = cartService.addCart(cartDto, name); //주문 시도 및 주문번호 가져오기
+            cartId = cartServiceImpl.addCart(cartDto, name); //주문 시도 및 주문번호 가져오기
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -75,7 +75,7 @@ public class CartController {
         return new ResponseEntity<Long>(cartId, HttpStatus.OK); //장바구니번호 리턴
     }
 
-    //**  **//
+    //** 장바구니 상품 주문 **//                  <======== 상품 바로 주문은 OrderController
     @PostMapping(value = "")
     public ResponseEntity cartOrder(CartOrderDto cartOrderDto, Principal principal) {
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList(); //전달된 장바구니의 항목 리스트
@@ -84,14 +84,14 @@ public class CartController {
             return new ResponseEntity<String>("선택된 상품이 없습니다.", HttpStatus.BAD_REQUEST);
         }
         //주문로직에 장바구니 리스트와 멤버 정보 전달
-        Long orderId = cartService.orderCart(cartOrderDtoList, principal.getName());
+        Long orderId = cartServiceImpl.orderCart(cartOrderDtoList, principal.getName());
         //주문번호 리턴
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/deleteCart") //장바구니 삭제
     public String deleteCart(Long id) {
-        cartService.deleteById(id);
+        cartServiceImpl.deleteById(id);
         return "redirect:/myCart";
     }
 
