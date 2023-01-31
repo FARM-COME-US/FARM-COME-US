@@ -17,8 +17,24 @@ function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const loginHandler = async () => {
+    try {
+      const response = await axios.post("Backend/request/login", {
+        username: username,
+        password: password,
+      });
+      const accessToken = response.data.accessToken;
+      const refreshToken = response.data.refreshToken;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const LoginSubmit = (e) => {
     e.preventDefault();
+    console.log(e);
+    loginHandler();
+
     dispatch(
       userSlice.actions.login({ username: username, password: password })
     );
