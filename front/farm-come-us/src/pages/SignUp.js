@@ -2,11 +2,15 @@ import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "./style/SignUp.module.scss";
 import DaumPostcodeEmbed from "react-daum-postcode";
-// import Postcode from "../components/user/Postcode";
-// import { useDispatch } from "react-redux";
-import SignUpInput from "../components/user/SignUpInput";
+import {
+  MdPermIdentity,
+  MdPhoneIphone,
+  MdLockOutline,
+  MdCheck,
+  MdSearch,
+} from "react-icons/md";
 import axios from "axios";
-
+// <MdSearch className={classes.icon} />
 const SignUp = () => {
   const REGISTER_USERS_URL = "http://signupURL";
 
@@ -58,6 +62,7 @@ const SignUp = () => {
           "Content-Type": "application/json",
         },
       };
+      // console.log(newUser);
 
       await axios.post(REGISTER_USERS_URL, body, config).then((res) => {
         console.log("response:", res);
@@ -86,13 +91,11 @@ const SignUp = () => {
   const onChangeNickname = useCallback((e) => {
     setNickname(e.target.value);
     if (e.target.value.length < 2 || e.target.value.length > 10) {
-      setIdMessage(
-        "닉네임을 2글자 이상 10글자 미만으로 입력해주세요. 조건수정필요"
-      );
-      setIsId(false);
+      setNicknameMessage("닉네임을 2글자 이상 10글자 미만으로 입력해주세요.");
+      setIsNickname(false);
     } else {
-      setIdMessage("올바른 닉네임 형식입니다 :)");
-      setIsId(true);
+      setNicknameMessage("올바른 닉네임 형식입니다 :)");
+      setIsNickname(true);
     }
   }, []);
   // // 이메일 유효성검사 (예비로 남겨둠)
@@ -162,7 +165,6 @@ const SignUp = () => {
   // 주소확인// 주소바뀌면 동작 - 만들고 수정필요(주소컴포넌트에서 값을 줬을때, useState바꿔줘야함.)
   const onChangeRoadAddress = useCallback(
     (e) => {
-      setRoadAddress(e.target.value);
       if (roadAddress.length === 0) {
         // setRoadAddressMessage("주소를 입력해주세요."); 클릭눌렀을때..
         setIsRoadAddress(false);
@@ -172,6 +174,13 @@ const SignUp = () => {
     },
     [roadAddress]
   );
+
+  const selectAddress = (data) => {
+    setIsRoadAddress(true);
+    setRoadAddress(data.roadAddress);
+    setZonecode(data.zonecode);
+    setOpenModal(!openModal);
+  };
 
   // const onChangezonecode = useCallback(
   //   (e) => {
@@ -191,14 +200,18 @@ const SignUp = () => {
       <div className={classes.subcontainer}>
         <h1>회원가입</h1>
         <div className={classes.formbox}>
-          <input
-            className={classes.outerInput}
-            text="아이디"
-            type="text"
-            placeholder="아이디"
-            typename="id"
-            onChange={onChangeId}
-          />
+          <div>
+            <MdPermIdentity className={classes.icon} />
+            <input
+              className={classes.outerInput}
+              text="아이디"
+              type="text"
+              placeholder="아이디"
+              typename="id"
+              onChange={onChangeId}
+            />
+          </div>
+
           {id.length > 0 && (
             <span
               className={`${classes.message} ${
@@ -211,14 +224,17 @@ const SignUp = () => {
         </div>
 
         <div className={classes.formbox}>
-          <input
-            className={classes.outerInput}
-            text="닉네임"
-            type="nickname"
-            placeholder="닉네임"
-            typename="nickname"
-            onChange={onChangeNickname}
-          />
+          <div>
+            <MdPermIdentity className={classes.icon} />
+            <input
+              className={classes.outerInput}
+              text="닉네임"
+              type="nickname"
+              placeholder="닉네임"
+              typename="nickname"
+              onChange={onChangeNickname}
+            />
+          </div>
           {nickname.length > 0 && (
             <span
               className={`${classes.message} ${
@@ -230,21 +246,24 @@ const SignUp = () => {
           )}
         </div>
         <div className={classes.formbox}>
-          <input
-            className={classes.outerInput}
-            type="tel"
-            // class="form-control m-input"
-            text="전화번호"
-            placeholder="전화번호"
-            typename="tel"
-            pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"
-            maxLength="13"
-            onBlur={onBlurTel}
-          />
+          <div>
+            <MdPhoneIphone className={classes.icon} />
+            <input
+              className={classes.outerInput}
+              type="tel"
+              // class="form-control m-input"
+              text="전화번호"
+              placeholder="전화번호"
+              typename="tel"
+              pattern="[0-9]{11}"
+              maxLength="13"
+              onBlur={onBlurTel}
+            />
+          </div>
           {tel.length > 0 && (
             <span
               className={`${classes.message} ${
-                isNickname ? classes.success : classes.error
+                isTel ? classes.success : classes.error
               }`}
             >
               {telMessage}
@@ -255,13 +274,16 @@ const SignUp = () => {
 
       <div className={classes.subcontainer}>
         <div className={`${classes.formbox}`}>
-          <input
-            className={classes.outerInput}
-            onChange={onChangePassword}
-            passwordtext="비밀번호 (숫자+영문자+특수문자 조합으로 8자리 이상)"
-            placeholder="비밀번호"
-            typetitle="password"
-          />
+          <div>
+            <MdLockOutline className={classes.icon} />
+            <input
+              className={classes.outerInput}
+              onChange={onChangePassword}
+              passwordtext="비밀번호 (숫자+영문자+특수문자 조합으로 8자리 이상)"
+              placeholder="비밀번호"
+              type="password"
+            />
+          </div>
           {password.length > 0 && (
             <span
               className={`${classes.message} ${
@@ -274,13 +296,16 @@ const SignUp = () => {
         </div>
 
         <div className={classes.formbox}>
-          <input
-            className={classes.outerInput}
-            onChange={onChangePasswordConfirm}
-            passwordtext=" "
-            placeholder="비밀번호 확인"
-            typetitle="passwordConfirm"
-          />
+          <div>
+            <MdCheck className={classes.icon} />
+            <input
+              className={classes.outerInput}
+              onChange={onChangePasswordConfirm}
+              passwordtext=" "
+              placeholder="비밀번호 확인"
+              type="password"
+            />
+          </div>
           {passwordConfirm.length > 0 && (
             <span
               className={`${classes.message} ${
@@ -295,23 +320,27 @@ const SignUp = () => {
 
       <div className={classes.subcontainer}>
         <div className={classes.formbox}>
-          <input
-            onClick={() => {
-              setOpenModal(!openModal);
-            }}
-            className={classes.outerInput}
-            onChange={onChangeRoadAddress}
-            addresstext=" "
-            placeholder="주소를 검색해주세요."
-            typetitle="roadAddress"
-          />
-          {passwordConfirm.length > 0 && (
+          <div>
+            <MdSearch className={classes.icon} />
+            <input
+              onClick={() => {
+                setOpenModal(!openModal);
+              }}
+              className={classes.outerInput}
+              onChange={onChangeRoadAddress}
+              addresstext=" "
+              placeholder="주소를 검색해주세요."
+              typetitle="roadAddress"
+              value={roadAddress}
+            />
+          </div>
+          {roadAddressMessage.length > 0 && (
             <span
               className={`${classes.message} ${
-                isPasswordConfirm ? classes.success : classes.error
+                roadAddressMessage ? classes.success : classes.error
               }`}
             >
-              {passwordConfirmMessage}
+              {roadAddressMessage}
             </span>
           )}
         </div>
@@ -323,13 +352,24 @@ const SignUp = () => {
             passwordtext=" "
             placeholder="우편번호"
             typetitle="zonecode"
+            value={zonecode}
           />
         </div>
 
         <div className={classes.formbox}>
           <input
             className={classes.outerInput}
-            onChange={(e) => setSpecificAddress(e.target.value)}
+            onChange={(e) => {
+              console.log({
+                isId,
+                isNickname,
+                isTel,
+                isPassword,
+                isPasswordConfirm,
+                isRoadAddress,
+              });
+              setSpecificAddress(e.target.value);
+            }}
             passwordtext=" "
             placeholder="상세주소"
             typetitle="specificRoadAddress"
@@ -342,14 +382,11 @@ const SignUp = () => {
         <button
           className={`${classes.button}`}
           type="submit"
-          //   footButtonType={FootButtonType.ACTIVATION}
-          onClick={() => {
-            submitHandler();
-          }}
           disabled={
             !(
               isId &&
               isNickname &&
+              isTel &&
               isPassword &&
               isPasswordConfirm &&
               isRoadAddress
@@ -359,12 +396,14 @@ const SignUp = () => {
           다음
         </button>
       </div>
-      {openModal ? (
-        <div className={`${classes.modal} ${openModal}`}>
-          <DaumPostcodeEmbed />
+      {openModal && (
+        <div className={`${classes.modal} ${classes.openModal}`}>
+          <DaumPostcodeEmbed
+            onComplete={selectAddress} // 값을 선택할 경우 실행되는 이벤트
+            autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+            defaultQuery="동서대로 98-39" // 팝업을 열때 기본적으로 입력되는 검색어. 대전캠주소 해놨음.
+          />
         </div>
-      ) : (
-        ""
       )}
     </form>
   );
