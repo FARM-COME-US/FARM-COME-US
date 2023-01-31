@@ -1,6 +1,6 @@
 package com.ssafy.farmcu.config;
 
-import com.ssafy.farmcu.jwt.JwtTokenUtil;
+import com.ssafy.farmcu.oauth.JwtTokenUtil;
 import com.ssafy.farmcu.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
