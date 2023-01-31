@@ -29,6 +29,9 @@
   &:hover {
     cursor: pointer;
   }
+  &.disabled {
+    background-color: #ccc;
+  }
 }
 
 .inputbox {
@@ -100,13 +103,15 @@
   border: 1px solid #eee;
   box-shadow: 0 2px 2px #ccc;
   background-color: white;
-  padding: 10px;
+  // padding: 10px;
   text-align: center;
   box-sizing: border-box;
-  top: 20%;
-  left: 15%;
-  width: 50%;
+  top: 25%;
+  // left: 5%;
+  margin: 0 auto;
+  // width: 50%;
   transition: all 0.2s ease-out;
+  border-radius: 20px;
   &.openModal {
     display: block;
   }
