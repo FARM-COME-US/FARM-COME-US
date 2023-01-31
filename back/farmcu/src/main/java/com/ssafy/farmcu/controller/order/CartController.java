@@ -6,6 +6,7 @@ import com.ssafy.farmcu.dto.order.CartRequestDto;
 import com.ssafy.farmcu.entity.member.Member;
 import com.ssafy.farmcu.entity.order.Cart;
 import com.ssafy.farmcu.service.order.CartServiceImpl;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,7 @@ public class CartController {
 
     //** 로그인 한 사용자의 장바구니 목록 조회 **//
     @GetMapping("")
+    @ApiOperation(value="회원 탈퇴", notes="")
     public String selectMyCart(Model model) {
         Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //현재 로그인 정보
         List<Cart> cart = cartServiceImpl.findMyCart(member); //멤버의 주문목록 불러오기
@@ -51,8 +53,7 @@ public class CartController {
     }
 
 
-    //    @PostMapping(value = "/order", produces = "application/json") //주문하기, application/json 부분은 지워야 할 듯
-    @PostMapping(value = "") //주문하기, application/json 부분은 지워야 할 듯
+    @PostMapping(value = "") //주문하기,
     public ResponseEntity createCart(CartRequestDto cartDto, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
@@ -93,6 +94,7 @@ public class CartController {
     public String deleteCart(Long id) {
         cartServiceImpl.deleteById(id);
         return "redirect:/myCart";
+//        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 }
