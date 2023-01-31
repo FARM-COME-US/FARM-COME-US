@@ -1,6 +1,5 @@
 package com.ssafy.farmcu.config;
 
-import com.ssafy.farmcu.oauth.JwtTokenUtil;
 import com.ssafy.farmcu.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +13,5 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private MemberService memberService;
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
 }
