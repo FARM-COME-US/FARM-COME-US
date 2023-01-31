@@ -19,3 +19,28 @@
     cursor: pointer;
   }
 }
+
+.inputbar {
+  padding-left: 50px; //추가 된 패딩
+  display: flex;
+  border-radius: 20px;
+  width: 304px;
+  height: 48px;
+  border: 2px solid #ccc;
+  background-color: none;
+
+  box-sizing: border-box;
+  margin-top: 0px;
+
+  &:focus {
+    border: 2px solid #ccc;
+  }
+}
+
+.icon {
+  margin-top: 9px;
+  margin-left: 12px;
+  color: #ccc;
+  position: absolute;
+  font-size: 30px;
+}
