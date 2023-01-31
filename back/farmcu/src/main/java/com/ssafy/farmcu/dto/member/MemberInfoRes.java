@@ -1,4 +1,4 @@
-package com.ssafy.farmcu.dto.response.member;
+package com.ssafy.farmcu.dto.member;
 
 
 import lombok.AllArgsConstructor;
