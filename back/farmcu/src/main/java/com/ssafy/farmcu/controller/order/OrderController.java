@@ -29,7 +29,7 @@ public class OrderController {
     @Autowired
     private final OrderServiceImpl orderServiceImpl;
 
-    //** 주문 목록 조회 **//
+    //** 전체 주문 목록 조회 **//
     @GetMapping("") //전체 주문 목록 확인
     public String selectOrders(Model model){
         List<OrderItem> orders = orderServiceImpl.findAllItems(); //모든 주문 불러오기
@@ -38,7 +38,7 @@ public class OrderController {
         return "/admin/orderList";
     }
 
-    //** 주문 상세 조회 **//
+    //** 로그인 사용자 주문 조회 **//
     @GetMapping("")
     public String selectMyOrders(Model model){
         Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //현재 로그인 정보
