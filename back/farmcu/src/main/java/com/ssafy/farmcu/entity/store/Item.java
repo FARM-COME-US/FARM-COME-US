@@ -8,14 +8,18 @@ import com.ssafy.farmcu.exception.OutOfStockException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor
 @Table(name = "item")
 public class Item {
@@ -44,8 +48,8 @@ public class Item {
     @Column
     private int itemStock;
 
-    @Column(nullable = false)
-    private String itemCreatedAt;
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp itemCreatedAt;
 
     //연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Category.class)
@@ -56,18 +60,29 @@ public class Item {
     @JoinColumn(name = "store_id", updatable = false)
     private Store store;
 
-    @OneToOne(mappedBy = "item")
-    private Live live;
+//    @OneToOne(mappedBy = "item")
+//    private Live live;
+//
+//    @OneToMany(mappedBy = "item")
+//    private List<Cart> cart = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "item")
+//    private List<OrderItem> orderItem = new ArrayList<>();
 
-    @OneToMany(mappedBy = "item")
-    private List<Cart> cart = new ArrayList<>();
-
-    @OneToMany(mappedBy = "item")
-    private List<OrderItem> orderItem = new ArrayList<>();
+    //연관 관계 메서드
+//    public void setCategory(Category category) {
+//        this.category = category;
+//        category.getItem().add(this);
+//    }
+//
+//    public void setStore(Store store) {
+//        this.store = store;
+//        store.getItem().add(this);
+//    }
 
     //빌더
     @Builder
-    public Item(Long itemId, String itemName, String itemDescription, String itemImg, int itemDiscount, int itemPrice, int itemStock, Category category, Store store ) {
+    public Item(Long itemId, String itemName, String itemDescription, String itemImg, int itemDiscount, int itemPrice, int itemStock, Timestamp itemCreatedAt, Category category, Store store ) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
@@ -75,6 +90,7 @@ public class Item {
         this.itemPrice = itemPrice;
         this.itemDiscount = itemDiscount;
         this.itemStock = itemStock;
+        this.itemCreatedAt = itemCreatedAt;
         this.category = category;
         this.store = store;
     }
