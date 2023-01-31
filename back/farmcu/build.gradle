@@ -45,6 +45,7 @@ dependencies {
 	//swagger
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
 	// ConfigurationProperties 애노테이션 사용
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
