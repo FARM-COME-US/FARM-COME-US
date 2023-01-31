@@ -31,25 +31,34 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final OrderService orderService;
 
-    // 현재 로그인 한 member 장바구니 조회
+
+    // Service method
+    //
+    //- find
+    //- save ex) saveItem
+    //- delete
+    //- update
+
+    //** 현재 로그인 한 member 장바구니 조회  **//
     public List<Cart> findMemberCart(Member member) {
         return cartRepository.findByMember(member);
     }
 
-     // 장바구니 상품 추가
+     //** 장바구니 상품 추가 **//
     public Long addCart(CartRequestDto cartDto, String Id) {
         Item item = itemRepository.findById(cartDto.getItemId()).orElseThrow(() -> new ItemNotFoundException("상품에 대한 정보가 없습니다."));
         Member member = memberRepository.findById(Id);
 
-        // 장바구니 만들기
+        //** 장바구니 만들기 **//
         Cart cart = Cart.createCart(member, item, cartDto.getCartItemCount());
         cartRepository.save(cart);
 
         return cart.getCartId();
     }
 
-    // 장바구니 상품 주문
-    //** memberRepository의 id 는 pk 가 아니라 회원가입 아이디 **//
+    //** 장바구니 상품 주문  **//
+    //memberRepository의 id 는 pk 가 아니라 회원가입 아이디
+    //save로 수정
     public Long orderCart(List<CartOrderDto> cartOrderDtoList, String id){
         List<OrderDto> orderDtoList = new ArrayList<>(); //장바구니 리스트
 
