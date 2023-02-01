@@ -12,15 +12,34 @@ import axios from "axios";
 //         })
 //     }
 // )
+// const initialStateValue = {
+//   accessToken: "",
+//   refreshToken: "",
+//   accessCode: "",
+//   email: "",
+//   id: "",
+//   nickname: "",
+//   roadAddress: "",
+//   specificAddress: "",
+//   zonecode: "",
+//   isLogin: false,
+// }; //정확히 어떤 변수명으로 가지고 있어야할지 정하지 못함. BE와 문의
 const initialStateValue = {
-  accessToken: "",
-  refreshToken: "",
-  accessCode: "",
-  email: "",
-  id: "",
-  nickname: "",
+  username: "",
+  password: "",
   isLogin: false,
 }; //정확히 어떤 변수명으로 가지고 있어야할지 정하지 못함. BE와 문의
+
+const asynclogin = createAsyncThunk(
+  "userSlice/asynclogin",
+  async ({ username, password }) => {
+    const response = await axios.post("BackendURL/loginURL", {
+      username,
+      password,
+    });
+    return response.data;
+  }
+);
 
 const asyncSomethingFetch = createAsyncThunk(
   "userSlice/something",
@@ -38,6 +57,8 @@ const userSlice = createSlice({
   name: "userSlice",
   initialState: {
     value: initialStateValue,
+    accessToken: "",
+    refreshToken: "",
   },
   reducers: {
     login: (state, action) => {
@@ -45,6 +66,10 @@ const userSlice = createSlice({
     },
     logout: (state, action) => {
       state.value = initialStateValue;
+    },
+    savetoken: (state, action) => {
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
     },
     // up: (state, action) => {
     //   state.value = state.value + action.payload;
