@@ -25,6 +25,7 @@ import MyStoreInfo from "./pages/mystore/MyStoreInfo";
 import MyStoreLive from "./pages/mystore/MyStoreLive";
 import MyStoreProducts from "./pages/mystore/MyStoreProducts";
 import MyStoreReceipt from "./pages/mystore/MyStoreReceipt";
+import BroadCast from "./pages/BroadCast";
 
 import Store from "./pages/store/Store";
 import StoreLive from "./pages/store/StoreLive";
@@ -70,6 +71,7 @@ const App = () => {
           <Route path="receipt" element={<MyStoreReceipt />} />
           <Route path="" element={<Navigate replace to="info" />} />
         </Route>
+        <Route path="/broadcast" element={<BroadCast />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import ImageButton from "../common/ImageButton";
 
 import { MdStoreMallDirectory } from "react-icons/md";
@@ -13,40 +13,52 @@ const MyStoreMenu = () => {
   return (
     <ul className={classes.menuList}>
       <li>
-        <Link to="info">
+        <NavLink
+          to="info"
+          className={({ isActive }) => (isActive ? classes.active : null)}
+        >
           <ImageButton
             className={classes.menuItem}
             icon={<MdStoreMallDirectory />}
             text="스토어 정보"
           />
-        </Link>
+        </NavLink>
       </li>
       <li>
-        <Link to="live">
+        <NavLink
+          to="live"
+          className={({ isActive }) => (isActive ? classes.active : null)}
+        >
           <ImageButton
             className={classes.menuItem}
             icon={<MdOutlineLiveTv />}
             text="Live"
           />
-        </Link>
+        </NavLink>
       </li>
       <li>
-        <Link to="product">
+        <NavLink
+          to="product"
+          className={({ isActive }) => (isActive ? classes.active : null)}
+        >
           <ImageButton
             className={classes.menuItem}
             icon={<MdLocalGroceryStore />}
             text="판매상품"
           />
-        </Link>
+        </NavLink>
       </li>
       <li>
-        <Link to="receipt">
+        <NavLink
+          to="receipt"
+          className={({ isActive }) => (isActive ? classes.active : null)}
+        >
           <ImageButton
             className={classes.menuItem}
             icon={<MdCreditCard />}
             text="판매내역"
           />
-        </Link>
+        </NavLink>
       </li>
     </ul>
   );
