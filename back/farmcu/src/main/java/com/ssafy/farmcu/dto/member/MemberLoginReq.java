@@ -1,4 +1,4 @@
-package com.ssafy.farmcu.dto.request.member;
+package com.ssafy.farmcu.dto.member;
 
 import lombok.Getter;
 import lombok.Setter;
