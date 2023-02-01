@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
         Item item = itemRepository.findByItemId(orderDto.getItem_id()).orElseThrow(() -> new ItemNotFoundException("상품에 대한 정보가 없습니다."));
 
         // 로그인 중인 사용자
-        Member member = memberRepository.findById(id);
+        Optional<Member> member = memberRepository.findById(id);
 
         // item 객체에서 OrderItem 객체 생성
         List<OrderItem> orderItems = new ArrayList<>();
@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
     public Long orders(List<OrderDto> orderDtoList, String id) {
 
         // 로그인 중인 사용자
-        Member member = memberRepository.findById(id);
+        Optional<Member> member = memberRepository.findById(id);
 
         // OrderDto 객체에서 item 객체, count 값을 얻음 =>  OrderItem 객체들 생성해서 추가
         List<OrderItem> orderItemList = new ArrayList<>();

@@ -9,9 +9,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -73,7 +73,7 @@ public class Order {
     }
 
     //** 주문 생성 **//
-    public static Order createOrder(Member member, List<OrderItem> orderItems){
+    public static Order createOrder(Optional<Member> member, List<OrderItem> orderItems){
         Order order = new Order();
         order.setMember(member); //멤버 정보 set
 
