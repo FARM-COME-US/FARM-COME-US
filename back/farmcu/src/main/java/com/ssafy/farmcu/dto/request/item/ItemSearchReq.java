@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ItemSearchReq {
 
-    String itemName;
-    Category category;
+    private Long categoryCode;
+    private String itemName;
 
 }
