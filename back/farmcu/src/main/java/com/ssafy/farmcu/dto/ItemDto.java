@@ -22,8 +22,8 @@ public class ItemDto {
     int itemDiscount;
     int itemStock;
     String itemCreatedAt;
-    Category category;
-    Store store;
+    Long categoryCode;
+    Long storeId;
 
     public ItemDto(Item item) {
         this.itemId = item.getItemId();
@@ -33,8 +33,9 @@ public class ItemDto {
         this.itemPrice = item.getItemPrice();
         this.itemDiscount = item.getItemDiscount();
         this.itemStock = item.getItemStock();
-        this.itemCreatedAt = item.getItemCreatedAt();
-        this.category = item.getCategory();
-        this.store = item.getStore();
+        this.itemCreatedAt = item.getItemCreatedAt().toString();
+        this.categoryCode = item.getCategory().getCategoryCode();
+        this.storeId = item.getStore().getStoreId();
     }
+
 }

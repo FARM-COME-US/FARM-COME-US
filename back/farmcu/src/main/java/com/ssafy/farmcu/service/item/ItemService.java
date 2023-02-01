@@ -2,7 +2,6 @@ package com.ssafy.farmcu.service.item;
 
 import com.ssafy.farmcu.dto.ItemDto;
 import com.ssafy.farmcu.dto.request.item.ItemSearchReq;
-import com.ssafy.farmcu.dto.request.item.ItemUpdateReq;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ public interface ItemService {
     public boolean saveItem(ItemDto itemDto);
 
     //상품 수정
-    public boolean updateItem(ItemUpdateReq itemUpdateReq);
+    public boolean updateItem(ItemDto itemDto);
 
     //상품 삭제
     public boolean deleteItem(Long itemId);
@@ -30,6 +29,6 @@ public interface ItemService {
 //    public List<Item> findItemsByCategoryCode(Long categoryCode);
 
     //상품 이름, 카테고리 검색
-    public List<ItemDto> findItemsByItemNameAndCategoryCode(ItemSearchReq itemSearchReq);
+    public List<ItemDto> findItemsByCategoryAndItemName(ItemSearchReq itemSearchReq);
 
 }
