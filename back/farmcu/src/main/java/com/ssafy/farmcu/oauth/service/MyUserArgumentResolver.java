@@ -1,6 +1,6 @@
 package com.ssafy.farmcu.oauth.service;
 
-import com.ssafy.farmcu.entity.member.Member;
+import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.oauth.PrincipalDetails;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
