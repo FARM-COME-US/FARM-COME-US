@@ -89,7 +89,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto findOne(Long itemId) {
-        Item item = itemRepository.findByItemId(itemId);
+        Item item = itemRepository.findByItemId(itemId).orElseThrow(NullPointerException::new);
+//        Item item = itemRepository.findByItemId(itemId);
 //        Category category = categoryRepository.findByCategoryCode(item.getCategory().getCategoryCode());
 //        Store store = storeRepository.findByStoreId(item.getStore().getStoreId());
 
