@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,10 +49,10 @@ public class CartServiceImpl implements CartService{
      //** 장바구니 상품 추가 **//
     public Long addCart(CartRequestDto cartDto, String Id) {
         Item item = itemRepository.findById(cartDto.getItemId()).orElseThrow(() -> new ItemNotFoundException("상품에 대한 정보가 없습니다."));
-        Member member = memberRepository.findById(Id);
-
+        Member member = memberRepository.findById(Id).get();
         //** 장바구니 만들기 **//
-        Cart cart = Cart.createCart(member, item, cartDto.getCartItemCount());
+//        Cart cart = Cart.createCart(member, item, cartDto.getCartItemCount());
+        Cart cart = Cart.createCart(Optional.of(member), item, cartDto.getCartItemCount());
         cartRepository.save(cart);
 
         return cart.getCartId();
