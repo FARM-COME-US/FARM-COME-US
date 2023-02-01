@@ -1,9 +1,9 @@
 package com.ssafy.farmcu.oauth.handler;
 
 import com.ssafy.farmcu.config.properties.AppProperties;
-import com.ssafy.farmcu.entity.member.MemberRefreshToken;
-import com.ssafy.farmcu.entity.member.ProviderType;
-import com.ssafy.farmcu.entity.member.RoleType;
+import com.ssafy.farmcu.api.entity.member.MemberRefreshToken;
+import com.ssafy.farmcu.api.entity.member.ProviderType;
+import com.ssafy.farmcu.api.entity.member.RoleType;
 import com.ssafy.farmcu.oauth.Info.KakaoMemberInfo;
 import com.ssafy.farmcu.oauth.Info.OAuth2MemberInfo;
 import com.ssafy.farmcu.oauth.repository.MemberRefreshTokenRepository;

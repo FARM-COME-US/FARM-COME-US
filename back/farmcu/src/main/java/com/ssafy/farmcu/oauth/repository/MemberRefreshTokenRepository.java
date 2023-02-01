@@ -1,6 +1,6 @@
 package com.ssafy.farmcu.oauth.repository;
 
-import com.ssafy.farmcu.entity.member.MemberRefreshToken;
+import com.ssafy.farmcu.api.entity.member.MemberRefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
