@@ -42,6 +42,7 @@ function Login() {
         })
         //수정필요. 작동하는지 확인이 필요함. 세션에 저장하는거라서 이 부분이 필요 없다. 이 로직으로 끝낼거면..
       );
+      navigate("/");
     } catch (err) {
       setIsError(true); // 수정필요. 이부분 괜찮은지 확인필요함.
       setErrMessage("입력 정보를 확인해주세요.");
