@@ -11,10 +11,12 @@ const Input = (props) => {
       onFocus={props.onFocus}
       onBlur={props.onBlur}
       id={props.id} // 추가했습니다.
+      placeholder={props.placeholder} // 추가
       readOnly={props.readOnly}
       min={props.min}
       max={props.max}
       step={props.step}
+      onChange={props.onChange}
     />
   );
 };
