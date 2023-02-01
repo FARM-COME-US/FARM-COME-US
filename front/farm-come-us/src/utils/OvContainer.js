@@ -1,12 +1,12 @@
 import { React, useState, useEffect, Fragment } from "react";
 import { OpenVidu } from "openvidu-browser";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import classes from "./OvContainer.module.scss";
 
 import UserVideoComponent from ".//UserVideoComponent";
-import ChatForm from "../components/broadcast/ChatForm";
-import ChatList from "../components/broadcast/ChatList";
+import LiveChat from "../components/broadcast/LiveChat";
 import LiveHeader from "../components/broadcast/LiveHeader";
 import LiveInfo from "../components/broadcast/LiveInfo";
 import LiveFooter from "../components/broadcast/LiveFooter";
@@ -18,6 +18,8 @@ const DUMMY = {
 };
 
 const OvContainer = (props) => {
+  const navigate = useNavigate();
+
   const [OV, setOV] = useState(null);
   const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
@@ -33,8 +35,6 @@ const OvContainer = (props) => {
 
   const onbeforeunload = (event) => {
     leaveSession();
-    console.log("unload");
-
     event.returnValue = "";
   };
 
@@ -156,6 +156,8 @@ const OvContainer = (props) => {
   };
 
   const leaveSession = () => {
+    if (!window.confirm("방송을 종료하시겠습니까?")) return;
+
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     if (session) {
       session.disconnect();
@@ -167,6 +169,8 @@ const OvContainer = (props) => {
     setSubscribers([]);
     setMainStreamManager(undefined);
     setPublisher(undefined);
+
+    navigate("/mystore/live");
   };
 
   const switchCamera = async () => {
@@ -261,14 +265,14 @@ const OvContainer = (props) => {
   };
 
   const liveCloseHandler = () => {
-    alert("라이브 종료 로직");
+    leaveSession();
   };
 
   const toggleMuteHandler = () => {
     if (isMute) {
-      alert("MUTE -> UNMUTE");
+      publisher.publishAudio(false);
     } else {
-      alert("UNMUTE -> MUTE");
+      publisher.publishAudio(false);
     }
 
     setIsMute((prev) => !prev);
@@ -290,6 +294,12 @@ const OvContainer = (props) => {
               subCnt={subscribers.length}
               stock={DUMMY.stock}
               unit={DUMMY.unit}
+            />
+            <LiveChat
+              chatList={chatList}
+              onTextMsgChangeHandler={onTextMsgChangeHandler}
+              onSubmit={sendChatMsgHandler}
+              msg={chatMsg}
             />
             <LiveFooter
               isSubscriber={props.isSubscriber}
@@ -317,15 +327,6 @@ const OvContainer = (props) => {
               onClick={switchCamera}
               value="Switch Camera"
             />
-            <div>
-              <span>채팅창 목록</span>
-              <ChatList chatList={chatList} />
-              <ChatForm
-                onTextChange={onTextMsgChangeHandler}
-                onSubmit={sendChatMsgHandler}
-                msg={chatMsg}
-              />
-            </div>
           </div>
         </Fragment>
       ) : null}
