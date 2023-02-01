@@ -40,6 +40,8 @@ public class DeliveryInfo {
     @OneToOne(mappedBy = "delivery",fetch = FetchType.LAZY)
     private Order order;
 
+
+
     // 송장 번호 or 예송 배정 날짜를 판매자가 입력 => 구매자에게 배송 상태 상세 정보에 대한 정보 보여줌
     @Column
     private String deliveryMethod;
