@@ -32,10 +32,8 @@ public class CartServiceImpl implements CartService{
     private final MemberRepository memberRepository;
     private final OrderServiceImpl orderServiceImpl;
 
-    // 구현 기능
-
     // Service method
-    //
+
     //- find
     //- save ex) saveItem
     //- delete
@@ -52,7 +50,7 @@ public class CartServiceImpl implements CartService{
         Member member = memberRepository.findById(Id).get();
         //** 장바구니 만들기 **//
 //        Cart cart = Cart.createCart(member, item, cartDto.getCartItemCount());
-        Cart cart = Cart.createCart(Optional.of(member), item, cartDto.getCartItemCount());
+        Cart cart = Cart.createCart(member, item, cartDto.getCartItemCount());
         cartRepository.save(cart);
 
         return cart.getCartId();
@@ -60,7 +58,6 @@ public class CartServiceImpl implements CartService{
 
     //** 장바구니 상품 주문  **//
     //memberRepository의 id 는 pk 가 아니라 회원가입 아이디
-    //save로 수정?
     public Long orderCart(List<CartOrderDto> cartOrderDtoList, String id){
         List<OrderDto> orderDtoList = new ArrayList<>(); //장바구니 리스트
 
