@@ -48,12 +48,12 @@ public class Live {
 
     //빌더
     @Builder
-    public Live(Long live_id,Integer live_discount, Integer live_views, LocalDateTime live_start, LocalDateTime live_end ) {
-        this.live_id = live_id;
-        this.liveStart = live_start;
-        this.live_end = live_end;
-        this.liveDiscount = live_discount;
-        this.liveViewers = live_views;
-
+    public Live(Long liveId, Integer liveDiscount, Integer liveViewers, LocalDateTime liveStart, LocalDateTime liveEnd) {
+        this.liveId = liveId;
+        this.liveDiscount = liveDiscount;
+        this.liveViewers = liveViewers;
+        this.liveStart = liveStart;
+        this.liveEnd = liveEnd;
     }
+
 }
