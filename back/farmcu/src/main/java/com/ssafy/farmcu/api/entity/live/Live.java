@@ -1,44 +1,40 @@
 package com.ssafy.farmcu.api.entity.live;
 
-
 import com.ssafy.farmcu.api.entity.store.Item;
 import com.ssafy.farmcu.api.entity.store.Store;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Getter
 @NoArgsConstructor
-@Entity
 @Table(name = "live")
 public class Live {
 
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "live_id", unique = true, nullable = false)
-    private Long live_id;
+    private Long liveId;
 
     @Column(nullable = false)
-    private Integer live_discount;
+    private Integer liveDiscount;
 
     @Column
-    private Integer live_viewers;
+    private Integer liveViewers;
 
     @Column
-    private LocalDateTime live_start;
+    private LocalDateTime liveStart;
 
     @Column
-    private LocalDateTime live_end;
+    private LocalDateTime liveEnd;
 
-    // 연결
-
+    //연결
     @OneToOne
     @JoinColumn(name="item_id")
     private Item item;
@@ -54,10 +50,10 @@ public class Live {
     @Builder
     public Live(Long live_id,Integer live_discount, Integer live_views, LocalDateTime live_start, LocalDateTime live_end ) {
         this.live_id = live_id;
-        this.live_start = live_start;
+        this.liveStart = live_start;
         this.live_end = live_end;
-        this.live_discount = live_discount;
-        this.live_viewers = live_views;
+        this.liveDiscount = live_discount;
+        this.liveViewers = live_views;
 
     }
 }
