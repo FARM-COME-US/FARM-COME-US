@@ -1,7 +1,7 @@
 package com.ssafy.farmcu.repository;
 
 import com.ssafy.farmcu.entity.member.Member;
-import com.ssafy.farmcu.entity.order.Cart;
+import com.ssafy.farmcu.entity.order.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CartRepository extends JpaRepository<Cart, Long> {
-    Optional<Cart> findById(Long num);
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
+    Optional<OrderItem> findById(Long num);
 
-    List<Cart> findAll();
-    List<Cart> findByMember(Member member);
+    List<OrderItem> findAll();
 
-    void deleteById(Long id);
+    List<OrderItem> findByOrderMember(Member member);
+
 }
