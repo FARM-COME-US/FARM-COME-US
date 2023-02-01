@@ -35,8 +35,10 @@ public class DeliveryInfo {
     @JoinColumn(name = "member_id", updatable = false)
     private Member member;
 
-//    @OneToOne(mappedBy = "delivery" ,orphanRemoval = true)
-//    private DeliveryInfo delivery;
+    // 주문 관련 양방향 매핑
+    // @OneToOne(mappedBy = "delivery" ,orphanRemoval = true)  ==> 아래 코드랑 같이 테스트 해보기
+    @OneToOne(mappedBy = "delivery",fetch = FetchType.LAZY)
+    private Order order;
 
     //빌더
     @Builder

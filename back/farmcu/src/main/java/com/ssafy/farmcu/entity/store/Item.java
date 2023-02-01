@@ -82,7 +82,11 @@ public class Item {
 
     //빌더
     @Builder
+<<<<<<< HEAD
+    public Item(Long itemId, String itemName, String itemDescription, String itemImg, Integer itemDiscount, Integer itemPrice, Integer itemStock ) {
+=======
     public Item(Long itemId, String itemName, String itemDescription, String itemImg, int itemDiscount, int itemPrice, int itemStock, Timestamp itemCreatedAt, Category category, Store store ) {
+>>>>>>> 61ad1482338307786df48abfe77acbde92312944
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDescription = itemDescription;

@@ -53,15 +53,21 @@ public class OrderItem {
     }
 
     // 주문 상품 상세 정보 생성
-    public static OrderItem createOrderItem(Item item, int count, int oitemCount) {
+    public static OrderItem createOrderItem(Item item, Integer oitemCount) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setOitemCount(oitemCount);
+
+        // 주문 상품 재고 차감
 //        orderItem.removeStock(oitemCount);
         return orderItem;
     }
 
-    // 주문
+    // 주문 번호 주입
+    public  void addOrderNum(Order order){
+        this.order = order;
+    }
+    // 주문 상품에 주문 번호 주입
     public void addOrderId(Order order) { this.order = order; }
 
     //총액
