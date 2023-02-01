@@ -60,14 +60,14 @@ public class Item {
     @JoinColumn(name = "store_id", updatable = false)
     private Store store;
 
-//    @OneToOne(mappedBy = "item")
-//    private Live live;
-//
-//    @OneToMany(mappedBy = "item")
-//    private List<Cart> cart = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "item")
-//    private List<OrderItem> orderItem = new ArrayList<>();
+    @OneToOne(mappedBy = "item")
+    private Live live;
+
+    @OneToMany(mappedBy = "item")
+    private List<Cart> cart = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    private List<OrderItem> orderItem = new ArrayList<>();
 
     //연관 관계 메서드
 //    public void setCategory(Category category) {
@@ -82,11 +82,7 @@ public class Item {
 
     //빌더
     @Builder
-<<<<<<< HEAD
-    public Item(Long itemId, String itemName, String itemDescription, String itemImg, Integer itemDiscount, Integer itemPrice, Integer itemStock ) {
-=======
     public Item(Long itemId, String itemName, String itemDescription, String itemImg, int itemDiscount, int itemPrice, int itemStock, Timestamp itemCreatedAt, Category category, Store store ) {
->>>>>>> 61ad1482338307786df48abfe77acbde92312944
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
