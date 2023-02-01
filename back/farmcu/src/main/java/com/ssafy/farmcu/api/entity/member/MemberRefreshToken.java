@@ -1,10 +1,7 @@
 package com.ssafy.farmcu.api.entity.member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -30,8 +27,10 @@ public class MemberRefreshToken {
     @NotNull
     private String refreshToken;
 
-    public MemberRefreshToken(@NotNull String id, @NotNull String refreshToken) {
+    @Builder
+    public MemberRefreshToken( String id,  String refreshToken) {
         this.id = id;
         this.refreshToken = refreshToken;
     }
+
 }
