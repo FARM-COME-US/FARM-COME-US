@@ -2,7 +2,7 @@ package com.ssafy.farmcu.oauth.token;
 
 import com.ssafy.farmcu.exception.TokenValidFailedException;
 import com.ssafy.farmcu.oauth.PrincipalDetails;
-import com.ssafy.farmcu.repository.MemberRepository;
+import com.ssafy.farmcu.api.repository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
