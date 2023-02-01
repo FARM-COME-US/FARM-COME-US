@@ -1,6 +1,6 @@
 package com.ssafy.farmcu.oauth.dto;
 
-import com.ssafy.farmcu.entity.member.Member;
+import com.ssafy.farmcu.api.entity.member.Member;
 import lombok.Getter;
 
 @Getter

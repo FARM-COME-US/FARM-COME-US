@@ -1,10 +1,10 @@
 package com.ssafy.farmcu.oauth;
 
-import com.ssafy.farmcu.entity.member.Member;
+import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.oauth.dto.OAuthAttributes;
 import com.ssafy.farmcu.oauth.dto.SessionUser;
 
-import com.ssafy.farmcu.repository.MemberRepository;
+import com.ssafy.farmcu.api.repository.MemberRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

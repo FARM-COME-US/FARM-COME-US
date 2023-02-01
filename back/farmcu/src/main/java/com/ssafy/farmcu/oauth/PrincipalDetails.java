@@ -1,6 +1,6 @@
 package com.ssafy.farmcu.oauth;
 
-import com.ssafy.farmcu.entity.member.Member;
+import com.ssafy.farmcu.api.entity.member.Member;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
