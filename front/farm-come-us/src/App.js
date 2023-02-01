@@ -47,9 +47,10 @@ const App = () => {
       <Routes>
         <Route path="/product-detail" element={<ProductDetail />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
-        <Route path="/store" element={<Store />}></Route>
-          <Route path="/live" element={<StoreLive />}></Route>
-          <Route path="/products" element={<StoreProducts />}></Route>
+        <Route path="/store" element={<Store />}>
+          <Route path="live" element={<StoreLive />}></Route>
+          <Route path="products" element={<StoreProducts />}></Route>
+        </Route>
         {/* 스토어페이지 렌더링용. */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
