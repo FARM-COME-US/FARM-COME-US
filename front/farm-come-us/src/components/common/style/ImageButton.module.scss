@@ -1,7 +1,6 @@
 .container {
   width: 72px;
   height: 96px;
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,21 +8,6 @@
   .icon {
     width: 56px;
     height: 56px;
-    background: orange;
-    border-radius: 50%;
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    }
-
-  .text {
-    color: orange;
-    font-weight: bold;
-    position: absolute;
-    left: 50%;
-    top: 72px;
-    transform: translateX(-50%);
     background: #fff;
     border-radius: 50%;
     margin-bottom: 8px;
