@@ -8,63 +8,85 @@ import com.ssafy.farmcu.exception.OutOfStockException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter
-@NoArgsConstructor
 @Entity
+@Getter
+@DynamicInsert
+@DynamicUpdate
+@NoArgsConstructor
 @Table(name = "item")
 public class Item {
 
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id", unique = true, nullable = false)
+    @Column(name = "item_id")
     private Long itemId;
 
     @Column(length = 15, nullable = false)
     private String itemName;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     private String itemDescription;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     private String itemImg;
 
-    @Column(length = 50, nullable = false)
-    private Integer itemPrice;
+    @Column(nullable = false)
+    private int itemPrice;
 
-    @Column(length = 50, nullable = false)
-    private Integer itemDiscount;
+    @Column(nullable = false)
+    private int itemDiscount;
 
     @Column
-    private Integer itemStock;
+    private int itemStock;
 
-    // 연결
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp itemCreatedAt;
+
+    //연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Category.class)
-    @JoinColumn(name = "category_id", updatable = false)
+    @JoinColumn(name = "category_code", updatable = false)
     private Category category;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Store.class)
     @JoinColumn(name = "store_id", updatable = false)
     private Store store;
 
-    @OneToOne(mappedBy = "item")
-    private Live live;
+//    @OneToOne(mappedBy = "item")
+//    private Live live;
+//
+//    @OneToMany(mappedBy = "item")
+//    private List<Cart> cart = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "item")
+//    private List<OrderItem> orderItem = new ArrayList<>();
 
-    @OneToMany(mappedBy = "item")
-    private List<Cart> cart = new ArrayList<>();
-
-    @OneToMany(mappedBy = "item")
-    private List<OrderItem> orderItem = new ArrayList<>();
+    //연관 관계 메서드
+//    public void setCategory(Category category) {
+//        this.category = category;
+//        category.getItem().add(this);
+//    }
+//
+//    public void setStore(Store store) {
+//        this.store = store;
+//        store.getItem().add(this);
+//    }
 
     //빌더
     @Builder
+<<<<<<< HEAD
     public Item(Long itemId, String itemName, String itemDescription, String itemImg, Integer itemDiscount, Integer itemPrice, Integer itemStock ) {
+=======
+    public Item(Long itemId, String itemName, String itemDescription, String itemImg, int itemDiscount, int itemPrice, int itemStock, Timestamp itemCreatedAt, Category category, Store store ) {
+>>>>>>> 61ad1482338307786df48abfe77acbde92312944
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
@@ -72,6 +94,9 @@ public class Item {
         this.itemPrice = itemPrice;
         this.itemDiscount = itemDiscount;
         this.itemStock = itemStock;
+        this.itemCreatedAt = itemCreatedAt;
+        this.category = category;
+        this.store = store;
     }
 
     //**  주문 관련   **//
@@ -90,4 +115,5 @@ public class Item {
     public void addStock(int quantity){
         this.itemStock += quantity;
     }
+
 }

@@ -1,5 +1,7 @@
 package com.ssafy.farmcu.entity.member;
 
+import com.ssafy.farmcu.dto.member.MemberUpdateReq;
+import com.ssafy.farmcu.entity.store.Store;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -12,11 +14,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "member_id")
     private Long memberId;
 
-    @Column(length = 20)
     private String id;
 
     @Column(length = 20)
@@ -29,30 +30,23 @@ public class Member {
     @Column(length = 30)
     private String email;
 
-    @Column(name = "profile_img", length=255)
+    @Column(name = "profile_img", length = 255)
     private String profileImg;
-    @Column(name = "street_addr", length=50)
+    @Column(name = "street_addr", length = 50)
     private String streetAddr;
-    @Column(name = "detail_addr", length=50)
+    @Column(name = "detail_addr", length = 50)
     private String detailAddr;
-
     @Column(length = 10)
     private String zipcode;
-
-    @Column(length = 15)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "refresh_token", length = 255)
-    private String refreshToken;
 
-
-    // 인증
-    @Column(length = 20)
-    private String role; //ROLE_USER, ROLE_ADMIN
+    @Enumerated(EnumType.STRING)
+    private RoleType role;
     // OAuth를 위해 구성한 추가 필드 2개
-    @Column(length = 20)
-    private String provider;
-
+    @Enumerated(EnumType.STRING)
+    private ProviderType provider;
     @Column(name = "provider_id", length = 100)
     private String providerId;
 
@@ -60,9 +54,12 @@ public class Member {
     @CreationTimestamp
     private Timestamp createdAt;
 
+//    @OneToOne
+//    @JoinColumn(name="store_id")
+//    private Store store;
+
     @Builder
-    public Member(Long memberId, String id, String password, String nickname, String name, String email, String profileImg, String streetAddr, String detailAddr, String zipcode, String phoneNumber, String refreshToken, String role, String provider, String providerId, Timestamp createdAt) {
-        this.memberId = memberId;
+    public Member(String id, String password, String nickname, String name, String email, String profileImg, String streetAddr, String detailAddr, String zipcode, String phoneNumber, RoleType role, ProviderType provider, String providerId) {
         this.id = id;
         this.password = password;
         this.nickname = nickname;
@@ -73,23 +70,31 @@ public class Member {
         this.detailAddr = detailAddr;
         this.zipcode = zipcode;
         this.phoneNumber = phoneNumber;
-        this.refreshToken = refreshToken;
         this.role = role;
         this.provider = provider;
         this.providerId = providerId;
-        this.createdAt = createdAt;
     }
 
-    public Member(Member o){
-        this.id = o.id;
-        this.password = o.password;
-        this.nickname = o.nickname;
-        this.name = o.name;
-        this.nickname = o.nickname;
-        this.email = o.email;
-        this.streetAddr = o.streetAddr;
-        this.detailAddr = o.detailAddr;
-        this.zipcode = o.zipcode;
-        this.phoneNumber = o.phoneNumber;
+    public Member update(String name){
+        this.name = name;
+        return this;
     }
+
+    public void updateInfo(MemberUpdateReq memberUpdateReq){
+        this.name = memberUpdateReq.getName();
+        this.email = memberUpdateReq.getEmail();
+        this.nickname = memberUpdateReq.getNickname(); // 닉네임 중복 체크 추가할 것
+        this.profileImg = memberUpdateReq.getProfileImg();
+        this.streetAddr = memberUpdateReq.getStreetAddr();
+        this.detailAddr = memberUpdateReq.getDetailAddr();
+        this.zipcode = memberUpdateReq.getZipcode();
+        this.phoneNumber = memberUpdateReq.getPhoneNumber(); // 휴대폰 번호 인증?
+
+    }
+
+
+    public String getRoleType(){
+        return this.getRole().toString();
+    }
+
 }

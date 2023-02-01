@@ -1,4 +1,4 @@
-package com.ssafy.farmcu.dto.request.member;
+package com.ssafy.farmcu.dto.member;
 
 import com.ssafy.farmcu.entity.member.Member;
 import io.swagger.annotations.ApiModel;

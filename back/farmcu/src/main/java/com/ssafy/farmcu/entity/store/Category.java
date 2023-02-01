@@ -15,11 +15,7 @@ public class Category {
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    private Long id;
-
-    @Column(length = 15, nullable = false)
-    private String category_name;
+    private Long categoryCode;
 
     @OneToMany(mappedBy = "category")
     private List<Item> item = new ArrayList<>();

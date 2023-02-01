@@ -26,11 +26,11 @@ public class SwaggerConfig {
     @Bean
     public Docket allApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("Board")
+                .groupName("farmcu")
                 .useDefaultResponseMessages(false)
                 .select()
                 //.apis(RequestHandlerSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("com.ssafy.board.farmcu"))
+                .apis(RequestHandlerSelectors.basePackage("com.ssafy.farmcu"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(commonInfo());
