@@ -36,7 +36,7 @@ public class OrderItem {
     // 연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Order.class)
     @JoinColumn(name = "order_id", updatable = false)
-    private Order order;
+    private Order order_info;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
     @JoinColumn(name = "item_id", updatable = false)
@@ -65,10 +65,10 @@ public class OrderItem {
 
     // 주문 번호 주입
     public  void addOrderNum(Order order){
-        this.order = order;
+        this.order_info = order;
     }
     // 주문 상품에 주문 번호 주입
-    public void addOrderId(Order order) { this.order = order; }
+    public void addOrderId(Order order) { this.order_info = order; }
 
     //총액
     public int getTotalPrice(){

@@ -48,12 +48,19 @@ public class Order {
     @JoinColumn(name = "member_id", updatable = false)
     private Member member;
 
+//    @ManyToOne
+//    @JoinColumn(name = "payment")
+//    private Payment payment;
+//
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // ====>> 02.01 delivery test 수정
     @JoinColumn(name="delivery_id")
     private DeliveryInfo delivery;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order_info")
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    // 주문 정보에 배송 정보 추가
+
 
     @Builder
     public Order(Member member, Timestamp orderCreateAt, OrderStatus orderStatus, List<OrderItem> orderItems) {
