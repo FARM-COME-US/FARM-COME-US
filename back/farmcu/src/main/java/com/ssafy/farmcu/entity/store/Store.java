@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Getter
 @NoArgsConstructor
 @Entity
@@ -23,41 +22,40 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id", unique = true, nullable = false)
-    private Long store_id;
+    private Long storeId;
 
     @Column(length = 15, nullable = false)
-    private String store_name;
+    private String storeName;
 
     @Column(length = 255, nullable = false)
-    private String store_description;
+    private String storeDescription;
 
     @Column(length = 255, nullable = false)
-    private String store_img;
+    private String storeImg;
 
     @Column(length = 50, nullable = false)
-    private String store_street_addr;
+    private String storeStreetAddr;
 
     @Column(length = 50, nullable = false)
-    private String store_detail_addr;
+    private String storeDetailAddr;
 
     @Column(length = 10, nullable = false)
-    private String store_zipcode;
+    private String storeZipcode;
 
     @Column(length = 15, nullable = false)
-    private String store_phone_number;
+    private String storePhoneNumber;
 
     @Column
-    private Integer store_delivery_cost;
+    private Integer storeDeliveryCost;
 
     @Column
-    private Integer store_delivery_free;
+    private Integer storeDeliveryFree;
 
     @Column(name = "created_at")
     @CreationTimestamp
     private Timestamp createdAt;
 
-    // 연결
-
+    //연결
     @OneToOne(mappedBy = "store")
     private Live live;
 
@@ -73,18 +71,18 @@ public class Store {
 
     //빌더
     @Builder
-    public Store(Long store_id, String store_name, String store_description, String store_img, String store_street_addr, String store_detail_addr, String store_zipcode,Integer store_delivery_cost, Integer store_delivery_free, Timestamp createdAt ) {
-        this.store_id = store_id;
-        this.store_name = store_name;
-        this.store_description = store_description;
-        this.store_img = store_img;
-        this.store_street_addr = store_street_addr;
-        this.store_detail_addr = store_detail_addr;
-        this.store_zipcode = store_zipcode;
-        this.store_phone_number = store_phone_number;
-        this.store_delivery_cost = store_delivery_cost;
-        this.store_delivery_free = store_delivery_free;
+    public Store(Long storeId, String store_name, String store_description, String storeImg, String storeStreetAddr, String storeDetailAddr, String storeZipcode, Integer storeDeliveryCost, Integer storeDeliveryFree, Timestamp createdAt ) {
+        this.storeId = storeId;
+        this.storeName = storeName;
+        this.storeDescription = store_description;
+        this.storeImg = storeImg;
+        this.storeStreetAddr = storeStreetAddr;
+        this.storeDetailAddr = storeDetailAddr;
+        this.storeZipcode = storeZipcode;
+        this.storePhoneNumber = storePhoneNumber;
+        this.storeDeliveryCost = storeDeliveryCost;
+        this.storeDeliveryFree = storeDeliveryFree;
         this.createdAt = createdAt;
-
     }
+
 }
