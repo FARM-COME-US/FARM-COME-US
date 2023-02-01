@@ -19,14 +19,14 @@ public class Member {
 
     private String id;
 
-    @Column(length = 20)
+    @Column(length = 255)
     private String password;
-    @Column(length = 10)
+    @Column(length = 50)
     private String nickname;
-    @Column(length = 10)
+    @Column(length = 50)
     private String name;
 
-    @Column(length = 30)
+    @Column(length = 50)
     private String email;
 
     @Column(name = "profile_img", length = 255)
@@ -35,7 +35,7 @@ public class Member {
     private String streetAddr;
     @Column(name = "detail_addr", length = 50)
     private String detailAddr;
-    @Column(length = 10)
+    @Column(length = 20)
     private String zipcode;
     @Column(name = "phone_number")
     private String phoneNumber;

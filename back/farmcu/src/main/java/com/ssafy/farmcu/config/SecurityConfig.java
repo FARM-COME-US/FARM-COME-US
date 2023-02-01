@@ -12,6 +12,7 @@ import com.ssafy.farmcu.oauth.service.PrincipalOauth2MemberService;
 import com.ssafy.farmcu.oauth.token.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,8 +26,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-@RequiredArgsConstructor
 @EnableWebSecurity
+@Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     //    private final CustomOAuth2UserService customOAuth2UserService;
@@ -41,19 +43,25 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+
         http
+                .httpBasic().disable()
                 .cors()
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
                 .csrf().disable()
                 .headers().frameOptions().disable()
                 .and()
                 // authorizeRequest 권한 관리 요청 시작
                 .authorizeRequests()
-                .antMatchers("/", "/css/**", "/images/**",
-                        "/js/**", "/h2-console/**","/*/signin", "/*/signin/**",  "/*/signup", "/*/signup/**", "/find/**", "/social/**", "/book/**", "/test/**").permitAll()
+                .antMatchers("/","/api/v1/auth/**","/",
+                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",   // swagger
+                        "/h2-console/**",
+                        "/favicon.ico").permitAll()
+                .antMatchers("/", "/*/swagger-ui.html#","/css/**", "/images/**",
+                        "/js/**", "/h2-console/**","/*/login", "/*/login/**",  "/*/join", "/*/join/**", "/find/**", "/social/**", "/book/**", "/test/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout()

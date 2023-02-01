@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -21,7 +22,8 @@ public class JwtServiceImpl implements JwtService {
 
     public static final Logger logger = LoggerFactory.getLogger(JwtServiceImpl.class);
 
-    private static final String SALT = "ssafySecret";
+    @Value("${jwt.secret}")
+    String SALT;
     private static final int ACCESS_TOKEN_EXPIRE_MINUTES = 60; // 분단위
     private static final int REFRESH_TOKEN_EXPIRE_MINUTES = 2; // 주단위
 

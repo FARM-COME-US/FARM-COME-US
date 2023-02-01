@@ -33,8 +33,9 @@ public class Cart {
     @JoinColumn(name="memberId", nullable=false)
     private Member member;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
+//    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
     @JoinColumn(name = "item_id", updatable = false)
+    @ManyToOne
     private Item item;
 
 
@@ -44,7 +45,7 @@ public class Cart {
     }
 
     // create: cart
-    public static Cart createCart(Optional<Member> member, Item item, Integer cartItemCount){
+    public static Cart createCart(Member member, Item item, Integer cartItemCount){
         Cart cart = new Cart(); // 새 장바구니
         cart.setMember(member);
         cart.setItem(item);//장바구니 속 상품 정보
