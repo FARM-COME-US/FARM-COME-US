@@ -1,6 +1,7 @@
-.SideMenu {
-  position: fixed;
-  top: 0;
+// 적용안되고있음. 수정 필요
+.sideMenu {
+  position: absolute;
+  top: 56px;
   right: 0;
   bottom: 0;
   width: 80%;
@@ -52,4 +53,6 @@
 
 .sideMenuItemsWrapper {
   margin-top: 8px;
+  background-color: white;
+  height: 100%;
 }

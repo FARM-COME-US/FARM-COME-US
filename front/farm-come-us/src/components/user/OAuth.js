@@ -6,3 +6,5 @@ const REDIRECT_URI = "http://localhost:3000/oauth/callback/kakao";
 const KAKAO_CLIENT_ID = "852513";
 // ID 852513인가?
 export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
+//http://localhost:9090/oauth/authorization/kakao?redirect_uri=http://localhost:8080/oauth/redirect
