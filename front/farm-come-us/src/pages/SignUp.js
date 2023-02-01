@@ -10,7 +10,7 @@ import {
   MdSearch,
 } from "react-icons/md";
 import axios from "axios";
-// <MdSearch className={classes.icon} />
+
 const SignUp = () => {
   const REGISTER_USERS_URL = "http://signupURL";
 

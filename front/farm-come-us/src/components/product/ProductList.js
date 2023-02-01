@@ -1,8 +1,9 @@
 import React from "react";
+import ProductItem from "./ProductItem";
 
 const ProductList = () => {
   return(
-    <div>아이템 리스트 출력</div>
+    <ProductItem />
   );
 };
 

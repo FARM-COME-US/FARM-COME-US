@@ -1,1 +1,10 @@
-// 사용할 common conmponents: imageButton
+import React from "react";
+import Card from "../common/Card";
+
+const ProductItem = () => {
+  return(
+    <Card />
+  )
+}
+
+export default ProductItem
