@@ -52,7 +52,7 @@ public class CartServiceImpl implements CartService{
         Member member = memberRepository.findById(Id).get();
         //** 장바구니 만들기 **//
 //        Cart cart = Cart.createCart(member, item, cartDto.getCartItemCount());
-        Cart cart = Cart.createCart(Optional.of(member), item, cartDto.getCartItemCount());
+        Cart cart = Cart.createCart(member, item, cartDto.getCartItemCount());
         cartRepository.save(cart);
 
         return cart.getCartId();
