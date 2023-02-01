@@ -1,9 +1,5 @@
 package com.ssafy.farmcu.api.entity.store;
 
-import com.ssafy.farmcu.api.entity.order.Cart;
-import com.ssafy.farmcu.api.entity.live.Live;
-import com.ssafy.farmcu.api.entity.order.OrderItem;
-
 import com.ssafy.farmcu.exception.OutOfStockException;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +9,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -59,15 +53,6 @@ public class Item {
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Store.class)
     @JoinColumn(name = "store_id", updatable = false)
     private Store store;
-
-    @OneToOne(mappedBy = "item")
-    private Live live;
-
-    @OneToMany(mappedBy = "item")
-    private List<Cart> cart = new ArrayList<>();
-
-    @OneToMany(mappedBy = "item")
-    private List<OrderItem> orderItem = new ArrayList<>();
 
     //연관 관계 메서드
 //    public void setCategory(Category category) {
