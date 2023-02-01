@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 @Entity
-//@Table(name = "store")
+@NoArgsConstructor
+@Table(name = "store")
 public class Store {
 
     //필드
@@ -67,7 +67,6 @@ public class Store {
 
     //빌더
     @Builder
-
     public Store(Long storeId, String storeName, String storeDescription, String storeImg, String storeStreetAddr, String storeDetailAddr, String storeZipcode, String storePhoneNumber, Integer storeDeliveryCost, Integer storeDeliveryFree, Timestamp createdAt) {
         this.storeId = storeId;
         this.storeName = storeName;

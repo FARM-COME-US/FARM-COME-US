@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "delivery")
+@Table(name = "delivery_info")
 public class DeliveryInfo {
 
     //필드
