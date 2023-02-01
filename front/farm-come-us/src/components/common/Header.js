@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { MdMenu } from "react-icons/md";
 import menuSlice from "../../reduxStore/menuSlice";
 import classes from "./style/Header.module.scss";
 
@@ -15,11 +16,7 @@ const Header = (props) => {
           dispatch(menuSlice.actions.toggle());
         }}
       >
-        <img
-          className={classes.menuBtn}
-          src="img/menubutton.png"
-          alt="메뉴버튼"
-        />
+        <MdMenu className={classes.menuBtn} alt="메뉴버튼" />
       </div>
     </div>
   );

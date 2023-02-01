@@ -20,7 +20,7 @@ const SideMenuItem = (props) => {
       <div className={classes.flexWrapper}>
         <div className={classes.imgWrapper}>
           <img
-            src={`img/${props.imageName}.png`}
+            src={process.env.PUBLIC_URL + `/img/${props.imageName}.png`}
             alt={props.imageName}
             className={classes.iconImg}
           />

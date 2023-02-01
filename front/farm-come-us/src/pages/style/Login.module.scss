@@ -1,8 +1,26 @@
 .screen {
-  height: 1000px;
+  display: flex;
+  margin-top: 50px;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.centeralign {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.headertxt {
+  font-size: 2em;
 }
 
 .signUpButton {
+  margin-top: 20px;
+  width: 280px;
   height: 48px;
   border-radius: 24px;
   background-color: #265040;
@@ -18,4 +36,53 @@
     // background-color: #ff8e43;
     cursor: pointer;
   }
+}
+
+.loginButton {
+  margin-top: 20px;
+  height: 48px;
+  width: 280px;
+  border-radius: 24px;
+  background-color: #f7863b;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  color: white;
+
+  &:hover {
+    // background-color: #ff8e43;
+    cursor: pointer;
+  }
+}
+
+.inputbar {
+  padding-left: 50px; //추가 된 패딩
+  display: flex;
+  border-radius: 20px;
+  width: 304px;
+  height: 48px;
+  border: 2px solid #ccc;
+  background-color: none;
+
+  box-sizing: border-box;
+  margin-top: 0px;
+
+  &:focus {
+    border: 2px solid #ccc;
+  }
+}
+
+.icon {
+  margin-top: 9px;
+  margin-left: 12px;
+  color: #ccc;
+  position: absolute;
+  font-size: 30px;
+}
+
+.marginSpacing {
+  margin-top: 20px;
 }
