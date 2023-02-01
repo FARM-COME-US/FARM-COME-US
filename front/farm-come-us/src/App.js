@@ -21,6 +21,7 @@ import MyStoreInfo from "./pages/mystore/MyStoreInfo";
 import MyStoreLive from "./pages/mystore/MyStoreLive";
 import MyStoreProducts from "./pages/mystore/MyStoreProducts";
 import MyStoreReceipt from "./pages/mystore/MyStoreReceipt";
+import BroadCast from "./pages/BroadCast";
 
 const App = () => {
   const menu = useSelector((state) => state.menu.isOpen); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
@@ -55,6 +56,7 @@ const App = () => {
           <Route path="receipt" element={<MyStoreReceipt />} />
           <Route path="" element={<Navigate replace to="info" />} />
         </Route>
+        <Route path="/broadcast" element={<BroadCast />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
