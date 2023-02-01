@@ -13,6 +13,7 @@ const Header = (props) => {
       <div
         className={classes.menuBtnWrapper}
         onClick={() => {
+          console.log("clickedasdsad");
           dispatch(menuSlice.actions.toggle());
         }}
       >
