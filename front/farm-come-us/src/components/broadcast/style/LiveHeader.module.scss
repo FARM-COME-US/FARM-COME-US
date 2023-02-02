@@ -1,0 +1,45 @@
+.titleContainer {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 1.2rem;
+  color: #fff;
+  padding-left: 16px;
+  font-weight: 600;
+
+  .icon {
+    font-size: 2rem;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .title {
+    margin-left: 8px;
+  }
+}
+
+.btnList {
+  color: #fff;
+  font-size: 1.4rem;
+  position: relative;
+  top: 1px;
+
+  .btn {
+    margin-right: 24px;
+
+    & + .red {
+      color: red;
+    }
+
+    &:hover {
+      color: #eee;
+      cursor: pointer;
+    }
+
+    &:active {
+      color: red;
+    }
+  }
+}

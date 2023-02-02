@@ -1,0 +1,52 @@
+.productItem {
+  width: 50%;
+
+  .productCard {
+    aspect-ratio: 3 / 4;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px;
+    margin-bottom: 20px;
+
+    img {
+      height: 60%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .productInfo {
+      width: 100%;
+      height: 40%;
+      padding: 10px;
+      position: relative;
+      font-weight: 600;
+    }
+
+    .productName {
+      margin-bottom: 5px;
+    }
+
+    .priceInfo {
+      width: 100%;
+      font-size: 13px;
+
+      .discount {
+        color: red;
+        margin-right: 10px;
+      }
+    }
+
+    .storeInfo {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      color: #f7863b;
+
+      .storeName {
+        color: #000;
+      }
+    }
+  }
+}
