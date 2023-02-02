@@ -69,12 +69,10 @@
     transform: translateY(80vh);
     animation-timing-function: ease-out;
   }
-  40% {
+  80% {
     transform: translateY(10px);
-    animation-timing-function: linear;
   }
   100% {
     transform: translateY(0px);
-    animation-timing-function: ease-in;
   }
 }

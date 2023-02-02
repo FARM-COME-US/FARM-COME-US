@@ -1,0 +1,37 @@
+.chatForm {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 4px 0;
+
+  .chatInput {
+    width: 80%;
+    height: 3.2rem;
+    border-radius: 1.6rem;
+    border: none;
+    outline: none;
+    padding: 0 16px;
+    font-size: 1.2rem;
+    margin-right: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+
+  button {
+    border: none;
+    background: #f7863b;
+    outline: none;
+    font-size: 2.2rem;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 1.6rem;
+
+    svg {
+      position: relative;
+      left: 1px;
+    }
+  }
+}

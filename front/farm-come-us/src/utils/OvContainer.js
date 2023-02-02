@@ -1,13 +1,23 @@
-import { React, useState } from "react";
+import { React, useState, useEffect, Fragment } from "react";
 import { OpenVidu } from "openvidu-browser";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import classes from "./OvContainer.module.scss";
+
 import UserVideoComponent from ".//UserVideoComponent";
-import { useEffect } from "react";
+import LiveChat from "../components/broadcast/LiveChat";
+import LiveHeader from "../components/broadcast/LiveHeader";
+import LiveInfo from "../components/broadcast/LiveInfo";
+import LiveFooter from "../components/broadcast/LiveFooter";
+import LeaveButton from "../components/broadcast/LeaveButton";
+import LiveProductInfo from "../components/broadcast/LiveProductInfo";
 
 const OV_SERVER_URL = "http://localhost:5000/";
 
 const OvContainer = (props) => {
+  const navigate = useNavigate();
+
   const [OV, setOV] = useState(null);
   const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
@@ -15,10 +25,14 @@ const OvContainer = (props) => {
   const [publisher, setPublisher] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
 
+  const [isMute, setIsMute] = useState(false);
+
+  // 채팅 관련 state
+  const [chatMsg, setChatMsg] = useState("");
+  const [chatList, setChatList] = useState([]);
+
   const onbeforeunload = (event) => {
     leaveSession();
-    console.log("unload");
-
     event.returnValue = "";
   };
 
@@ -26,7 +40,6 @@ const OvContainer = (props) => {
     window.addEventListener("beforeunload", onbeforeunload);
     joinSession();
     return () => {
-      leaveSession();
       window.removeEventListener("beforeunload", onbeforeunload);
     };
   }, []);
@@ -78,10 +91,10 @@ const OvContainer = (props) => {
     });
 
     /* 채팅 이벤트 listener 추가 */
-    mySession.on("signal:my-chat", (e) => {
-      console.log(e.data);
-      console.log(e.from);
-      console.log(e.type);
+    mySession.on("signal:live-chat", (e) => {
+      const sender = JSON.parse(e.from.data).clientData;
+      const msg = e.data;
+      drawTextList(sender, msg);
     });
 
     // --- 4) Connect to the session with a valid user token ---
@@ -140,6 +153,7 @@ const OvContainer = (props) => {
   };
 
   const leaveSession = () => {
+    if (!window.confirm("방송을 종료하시겠습니까?")) return;
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     if (session) {
       session.disconnect();
@@ -151,6 +165,8 @@ const OvContainer = (props) => {
     setSubscribers([]);
     setMainStreamManager(undefined);
     setPublisher(undefined);
+
+    navigate("/mystore/live");
   };
 
   const switchCamera = async () => {
@@ -216,11 +232,89 @@ const OvContainer = (props) => {
     return response.data; // The token
   };
 
+  // 실시간 채팅
+  const sendChatMsgHandler = (e) => {
+    e.preventDefault();
+    if (chatMsg.length === 0) return;
+
+    session
+      .signal({
+        data: chatMsg,
+        to: [],
+        type: "live-chat",
+      })
+      .then(() => {
+        setChatMsg("");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const onTextMsgChangeHandler = (e) => {
+    setChatMsg(e.target.value);
+  };
+
+  const drawTextList = (sender, msg) => {
+    const newChat = { sender: sender, msg: msg };
+    setChatList((prev) => [...prev, newChat]);
+  };
+
+  const liveCloseHandler = () => {
+    leaveSession();
+  };
+
+  const toggleMuteHandler = () => {
+    if (isMute) {
+      publisher.publishAudio(false);
+    } else {
+      publisher.publishAudio(false);
+    }
+
+    setIsMute((prev) => !prev);
+  };
+
   return (
     <div className={props.className}>
       {session !== undefined && mainStreamManager !== undefined ? (
-        <div className="">
-          <UserVideoComponent streamManager={mainStreamManager} />
+        <Fragment>
+          <div className={classes.ovInfoContainer}>
+            <LiveHeader
+              className={classes.liveHeader}
+              isSubscriber={props.isSubscriber}
+              isMute={isMute}
+              title={props.liveInfo.title}
+              onCameraSwitch={switchCamera}
+              onLiveClose={liveCloseHandler}
+              onToggleMute={toggleMuteHandler}
+            />
+            <LiveInfo
+              subCnt={subscribers.length}
+              title={props.liveInfo.title}
+              stock={props.liveInfo.stock}
+              unit={props.liveInfo.unit}
+            />
+            <LiveChat
+              chatList={chatList}
+              onTextMsgChangeHandler={onTextMsgChangeHandler}
+              onSubmit={sendChatMsgHandler}
+              msg={chatMsg}
+            />
+            <LiveFooter>
+              {props.isSubscriber ? (
+                <div></div>
+              ) : (
+                <Fragment>
+                  <LiveProductInfo liveInfo={props.liveInfo} />
+                  <LeaveButton onClick={liveCloseHandler} />
+                </Fragment>
+              )}
+            </LiveFooter>
+          </div>
+          <UserVideoComponent
+            className={classes.streamContainer}
+            streamManager={mainStreamManager}
+          />
           <div id="session-header">
             <div id="session-title">{props.sessionId}</div>
             <div id="session-title">{subscribers.length}</div>
@@ -232,37 +326,14 @@ const OvContainer = (props) => {
               value="Leave session"
             />
             <input
-              className="btn btn-large btn-success"
+              className="btn btn- large btn-success"
               type="button"
               id="buttonSwitchCamera"
               onClick={switchCamera}
               value="Switch Camera"
             />
           </div>
-          <div>
-            <span>채팅창 목록</span>
-            <ul></ul>
-            <input type="text" />
-            <button
-              onClick={() => {
-                session
-                  .signal({
-                    data: "my custom msg",
-                    to: [],
-                    type: "my-chat",
-                  })
-                  .then(() => {
-                    console.log("메시지 성공적으로 전송");
-                  })
-                  .catch((err) => {
-                    console.error(err);
-                  });
-              }}
-            >
-              전송
-            </button>
-          </div>
-        </div>
+        </Fragment>
       ) : null}
     </div>
   );
