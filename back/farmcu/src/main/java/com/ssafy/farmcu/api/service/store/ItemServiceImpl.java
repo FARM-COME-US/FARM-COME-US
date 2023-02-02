@@ -1,7 +1,7 @@
-package com.ssafy.farmcu.api.service.item;
+package com.ssafy.farmcu.api.service.store;
 
-import com.ssafy.farmcu.api.dto.item.ItemDto;
-import com.ssafy.farmcu.api.dto.item.ItemSearchReq;
+import com.ssafy.farmcu.api.dto.store.ItemDto;
+import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
 import com.ssafy.farmcu.api.entity.store.Category;
 import com.ssafy.farmcu.api.entity.store.Item;
 import com.ssafy.farmcu.api.entity.store.Store;
@@ -101,7 +101,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> findItemsByCategoryAndItemName(ItemSearchReq itemSearchReq) {
         Category category = categoryRepository.findByCategoryCode(itemSearchReq.getCategoryCode());
-        List<Item> items = itemRepository.findByCategoryAndItemName(category, itemSearchReq.getItemName());
+        List<Item> items = itemRepository.findByCategoryAndItemNameLike(category, itemSearchReq.getItemName());
         List<ItemDto> result = items.stream()
                 .map(i -> new ItemDto(i))
                 .collect(toList());
