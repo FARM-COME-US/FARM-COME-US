@@ -2,6 +2,7 @@ package com.ssafy.farmcu.api.dto.store;
 
 import com.ssafy.farmcu.api.entity.live.Live;
 import com.ssafy.farmcu.api.entity.member.Member;
+import com.ssafy.farmcu.api.entity.store.Store;
 import com.ssafy.farmcu.api.entity.store.StoreLike;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class StoreDto {
     //필드
+    private Long storeId;
     private String storeName;
     private String storeDescription;
     private String storeImg;
@@ -32,7 +34,19 @@ public class StoreDto {
     private Timestamp createdAt;
     private Live live;
     private Member member;
-    private List<StoreLike> storeLike = new ArrayList<>();
+//    private List<StoreLike> storeLike = new ArrayList<>();
 
+    public StoreDto(Store store){
+        this.storeId = store.getStoreId();
+        this.storeName = store.getStoreName();
+        this.storeDescription = store.getStoreDescription();
+        this.storeImg = store.getStoreImg();
+        this.storeStreetAddr = store.getStoreStreetAddr();
+        this.storeDetailAddr = store.getStoreDetailAddr();
+        this.storeZipcode = store.getStoreZipcode();
+        this.storePhoneNumber = store.getStorePhoneNumber();
+        this.storeDeliveryCost = store.getStoreDeliveryCost();
+        this.storeDeliveryFree = store.getStoreDeliveryFree();
 
+    }
 }

@@ -1,6 +1,7 @@
 package com.ssafy.farmcu.api.entity.store;
 
 import com.ssafy.farmcu.api.entity.member.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +26,12 @@ public class StoreLike {
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Store.class)
     @JoinColumn(name = "store_id", updatable = false)
     private Store store;
+
+    @Builder
+    public StoreLike( Member member, Store store){
+        this.member = member;
+        this.store= store;
+    }
 
 }
 
