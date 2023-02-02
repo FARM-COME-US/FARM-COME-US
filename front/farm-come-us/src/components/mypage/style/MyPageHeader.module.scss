@@ -1,0 +1,110 @@
+.myPageHeader {
+  position: relative;
+  padding: 5%;
+  width: 100%;
+  aspect-ratio: 5/3;
+  background-color: #f7863b;
+
+  .headerBg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    z-index: -1;
+
+    .backdrop {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+  }
+
+  .btnAddBg {
+    color: #fff;
+    font-size: 2rem;
+    transition: all 0.6s ease;
+
+    &:hover {
+      transform: rotate(180deg);
+      cursor: pointer;
+    }
+
+    &:active {
+      color: #f7863b;
+    }
+  }
+}
+
+.imgWrapper {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 80%;
+  overflow: hidden;
+  border: 2px white;
+  box-shadow: 0px 2px 4px black;
+}
+
+.profileImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flexbox {
+  display: flex;
+  padding: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.innerflexbox {
+  display: flex;
+  align-items: flex-end;
+  width: 80%;
+}
+
+.nicknameTxt {
+  font-size: 2rem;
+  color: white;
+  font-weight: bold;
+}
+
+.normalTxt {
+  font-size: 0.9rem;
+  margin-left: 3%;
+  color: white;
+}
+
+.menuBtnWrapper {
+  background-color: #265040;
+  display: flex;
+  align-items: center;
+}
+
+.menuBtn {
+  // 수정필요 불러온 이미지 크기 일단 고정시켜뒀음.
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  background-color: #265040;
+  color: white;
+}
+
+.btnAddBg {
+  color: #fff;
+  font-size: 2rem;
+  transition: all 0.6s ease;
+
+  &:hover {
+    transform: rotate(180deg);
+    cursor: pointer;
+  }
+
+  &:active {
+    color: #f7863b;
+  }
+}
