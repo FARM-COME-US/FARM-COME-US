@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { MdPermIdentity } from "react-icons/md";
+import { MdPermIdentity, MdLockOutline } from "react-icons/md";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 
@@ -16,11 +17,15 @@ function Login() {
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
   const navigate = useNavigate();
 
   const loginHandler = async () => {
     try {
-      const response = await axios.post("Backend/request/login", {
+      const response = await axios.post("Backend/member/login", {
         username: username,
         password: password,
       });
@@ -37,7 +42,14 @@ function Login() {
         })
         //수정필요. 작동하는지 확인이 필요함. 세션에 저장하는거라서 이 부분이 필요 없다. 이 로직으로 끝낼거면..
       );
+      navigate("/");
     } catch (err) {
+      setIsError(true); // 수정필요. 이부분 괜찮은지 확인필요함.
+      setErrMessage("입력 정보를 확인해주세요.");
+      setTimeout(() => {
+        setIsError(false);
+        setErrMessage("");
+      }, 500);
       console.log(err);
     }
   };
@@ -52,9 +64,9 @@ function Login() {
     );
 
     console.log({ username: username, password: password });
-    alert(
-      "이렇게 하지말고 밑 오른쪽에 오류를 알려주는걸 흔들면서 넣어줘야지. 수정필요"
-    );
+    // alert(
+    //   "이렇게 하지말고 밑 오른쪽에 오류를 알려주는걸 흔들면서 넣어줘야지. 수정필요"
+    // );
   };
   return (
     <div className={classes.screen}>
@@ -66,25 +78,55 @@ function Login() {
         {/* <label htmlFor="id">
           <MdPermIdentity />
         </label> 😀라벨 일단 제거 */}
-
-        <input
-          className={classes.inputbar}
-          placeholder="아이디"
-          onChange={(e) => {
-            setUsername(e.target.value);
-          }}
-          id="username"
-        />
+        <div className={isError ? classes.vibration : ""}>
+          <MdPermIdentity className={classes.icon} />
+          <input
+            className={`${classes.inputbar}`}
+            placeholder="아이디"
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+            id="username"
+          />
+        </div>
         <br />
         {/* <label htmlFor="password">PW: </label>😀라벨 일단 제거 */}
-        <input
-          className={classes.inputbar}
-          placeholder="비밀번호"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          id="password"
-        />
+
+        <div>
+          <div className={isError ? classes.vibration : ""}>
+            <MdLockOutline className={classes.icon} />
+            <input
+              className={classes.inputbar}
+              placeholder="비밀번호"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              id="password"
+              type={showPassword ? "text" : "password"}
+            />
+            {showPassword ? (
+              <AiFillEyeInvisible
+                className={classes.smallicon}
+                onClick={() => {
+                  setShowPassword(!showPassword);
+                }}
+              />
+            ) : (
+              <AiFillEye
+                className={classes.smallicon}
+                onClick={() => {
+                  setShowPassword(!showPassword);
+                }}
+              />
+            )}
+          </div>
+          {isError && (
+            <span className={`${errMessage ? classes.errMessage : ""}`}>
+              {errMessage}
+            </span>
+          )}
+        </div>
+
         <br />
 
         <div className={classes.marginSpacing}>
@@ -93,17 +135,16 @@ function Login() {
           </Button>
         </div>
       </form>
-      {/* 로그인버튼. 아직 어떤 인자를 넣어서 비동기 요청 보낼지 안정함. 연결된 userSlice도 수정필요 */}
       <div className={classes.marginSpacing}>
         <KakaoLogin />
       </div>
       <Button
-        className={classes.loginButton} //이거 색깔 왜 안먹지? 수정필요
+        className={classes.loginButton}
         onClick={() => {
           navigate("/sign-up");
         }}
       >
-        이거는 회원가입버튼
+        회원가입
       </Button>
     </div>
   );
