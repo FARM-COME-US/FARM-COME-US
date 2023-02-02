@@ -1,11 +1,8 @@
-import { React, useState } from "react";
+import { React } from "react";
 import { useLocation } from "react-router-dom";
 
 import classes from "./BroadCast.module.scss";
 import OvContainer from "../utils/OvContainer";
-
-const sessionId = "sessionA";
-const username = "Participant" + Math.floor(Math.random() * 100);
 
 const BroadCast = () => {
   // const width = window.innerWidth;
@@ -13,14 +10,16 @@ const BroadCast = () => {
   // const height = window.innerHeight;
   const width = 1280;
   const height = 720;
-  console.log(width, height);
+
+  const { state } = useLocation();
 
   return (
     <OvContainer
       width={width}
       height={height}
-      sessionId={sessionId}
-      username={username}
+      sessionId={state.id}
+      username={state.username}
+      liveInfo={state.liveInfo}
       className={classes.ovContainer}
     />
   );

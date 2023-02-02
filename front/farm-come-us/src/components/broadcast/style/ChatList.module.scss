@@ -1,8 +1,7 @@
 .chatList {
   width: 100%;
   height: 100%;
-  // background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
+  // background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -10,8 +9,16 @@
   color: #fff;
   margin: 0;
   padding: 16px;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   overflow: hidden;
+  font-family: "NanumSquareRoundB";
+  -webkit-mask-image: -webkit-gradient(
+    linear,
+    left 50%,
+    left bottom,
+    to(rgba(0, 0, 0, 1)),
+    from(rgba(0, 0, 0, 0))
+  );
 
   li {
     margin: 4px 0;

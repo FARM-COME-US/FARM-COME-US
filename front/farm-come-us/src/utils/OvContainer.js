@@ -10,12 +10,10 @@ import LiveChat from "../components/broadcast/LiveChat";
 import LiveHeader from "../components/broadcast/LiveHeader";
 import LiveInfo from "../components/broadcast/LiveInfo";
 import LiveFooter from "../components/broadcast/LiveFooter";
+import LeaveButton from "../components/broadcast/LeaveButton";
+import LiveProductInfo from "../components/broadcast/LiveProductInfo";
 
 const OV_SERVER_URL = "http://localhost:5000/";
-const DUMMY = {
-  stock: 240,
-  unit: "개",
-};
 
 const OvContainer = (props) => {
   const navigate = useNavigate();
@@ -42,7 +40,6 @@ const OvContainer = (props) => {
     window.addEventListener("beforeunload", onbeforeunload);
     joinSession();
     return () => {
-      leaveSession();
       window.removeEventListener("beforeunload", onbeforeunload);
     };
   }, []);
@@ -157,7 +154,6 @@ const OvContainer = (props) => {
 
   const leaveSession = () => {
     if (!window.confirm("방송을 종료하시겠습니까?")) return;
-
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     if (session) {
       session.disconnect();
@@ -287,13 +283,16 @@ const OvContainer = (props) => {
               className={classes.liveHeader}
               isSubscriber={props.isSubscriber}
               isMute={isMute}
+              title={props.liveInfo.title}
+              onCameraSwitch={switchCamera}
               onLiveClose={liveCloseHandler}
               onToggleMute={toggleMuteHandler}
             />
             <LiveInfo
               subCnt={subscribers.length}
-              stock={DUMMY.stock}
-              unit={DUMMY.unit}
+              title={props.liveInfo.title}
+              stock={props.liveInfo.stock}
+              unit={props.liveInfo.unit}
             />
             <LiveChat
               chatList={chatList}
@@ -301,10 +300,16 @@ const OvContainer = (props) => {
               onSubmit={sendChatMsgHandler}
               msg={chatMsg}
             />
-            <LiveFooter
-              isSubscriber={props.isSubscriber}
-              onLiveClose={liveCloseHandler}
-            />
+            <LiveFooter>
+              {props.isSubscriber ? (
+                <div></div>
+              ) : (
+                <Fragment>
+                  <LiveProductInfo liveInfo={props.liveInfo} />
+                  <LeaveButton onClick={liveCloseHandler} />
+                </Fragment>
+              )}
+            </LiveFooter>
           </div>
           <UserVideoComponent
             className={classes.streamContainer}

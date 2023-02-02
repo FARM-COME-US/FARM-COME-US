@@ -2,17 +2,16 @@ import React, { Fragment } from "react";
 
 import classes from "./style/ChatList.module.scss";
 
-import { IoChatbubbleEllipses } from "react-icons/io5";
+import ChatItem from "./ChatItem";
 
 const ChatList = (props) => {
   return (
     <Fragment>
       <ul className={classes.chatList}>
         {props.chatList.map((chatItem, idx) => (
-          <li key={idx}>{`${chatItem.sender} : ${chatItem.msg}`}</li>
+          <ChatItem key={idx} sender={chatItem.sender} msg={chatItem.msg} />
         ))}
       </ul>
-      <IoChatbubbleEllipses className={classes.btnChatToggle} />
     </Fragment>
   );
 };

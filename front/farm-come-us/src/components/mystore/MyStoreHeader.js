@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import classes from "./style/MyStoreHeader.module.scss";
 
@@ -12,25 +12,48 @@ const DUMMY_STORE_INFO = {
 };
 
 const MyStoreHeader = () => {
+  const inputBgRef = useRef();
+  const bgImgRef = useRef();
+
   const addBgImageHandler = () => {
     alert("이미지 추가 이벤트");
     return;
+  };
+
+  const loadBgFile = () => {
+    const file = inputBgRef.current.files[0]; //선택된 파일 가져오기
+    //이미지 source 가져오기
+    bgImgRef.current.src = URL.createObjectURL(file);
   };
 
   return (
     <div className={classes.storeHeader}>
       <div className={classes.headerBg}>
         <div className={classes.backdrop}></div>
-        <img src="https://via.placeholder.com/300" alt="header-bg" />
+        <img
+          ref={bgImgRef}
+          src="https://via.placeholder.com/300"
+          alt="header-bg"
+        />
       </div>
-      <div className={classes.header}>
-        <MdAddCircle className={classes.btnAddBg} onClick={addBgImageHandler} />
+      <form className={classes.header}>
+        <label htmlFor="select-bg">
+          <MdAddCircle className={classes.btnAddBg} />
+        </label>
         <MyStoreHeaderInfo
           storeName={DUMMY_STORE_INFO.storeName}
           desc={DUMMY_STORE_INFO.desc}
         />
         <MyStoreMenu />
-      </div>
+        <input
+          ref={inputBgRef}
+          id="select-bg"
+          className={classes.imgInput}
+          type="file"
+          accept=".gif, .jpg, .png"
+          onChange={loadBgFile}
+        />
+      </form>
     </div>
   );
 };
