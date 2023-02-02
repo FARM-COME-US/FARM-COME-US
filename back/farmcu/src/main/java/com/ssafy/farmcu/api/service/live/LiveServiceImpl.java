@@ -29,7 +29,7 @@ public class LiveServiceImpl implements LiveService {
     public boolean saveLive(LiveInsertReq liveInsertReq) {
         try {
             Item item = itemRepository.findByItemId(liveInsertReq.getItemId()).get();
-            Store store = storeRepository.findByStoreId(liveInsertReq.getStoreId());
+            Store store = storeRepository.findByStoreId(liveInsertReq.getStoreId()).get();
             Live live = Live.builder()
                     .liveTitle(liveInsertReq.getLiveTitle())
                     .liveDiscount(liveInsertReq.getLiveDiscount())
