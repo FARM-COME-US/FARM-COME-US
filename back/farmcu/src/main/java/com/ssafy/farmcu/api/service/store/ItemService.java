@@ -1,7 +1,7 @@
-package com.ssafy.farmcu.api.service.item;
+package com.ssafy.farmcu.api.service.store;
 
-import com.ssafy.farmcu.api.dto.item.ItemDto;
-import com.ssafy.farmcu.api.dto.item.ItemSearchReq;
+import com.ssafy.farmcu.api.dto.store.ItemDto;
+import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
 
 import java.util.List;
 

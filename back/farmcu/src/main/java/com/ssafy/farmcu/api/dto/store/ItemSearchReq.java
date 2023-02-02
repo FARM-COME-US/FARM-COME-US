@@ -1,4 +1,4 @@
-package com.ssafy.farmcu.api.dto.item;
+package com.ssafy.farmcu.api.dto.store;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

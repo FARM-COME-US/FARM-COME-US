@@ -14,6 +14,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Optional<Item> findByItemId(Long itemId);
     //    List<Item> findByItemName(String itemName);
 //    List<Item> findByCategory(Long categoryCode);
-    List<Item> findByCategoryAndItemName(Category category, String itemName);
-
+    List<Item> findByCategoryAndItemNameLike(Category category, String itemName);
+    void deleteByItemId(Long itemId);
 }

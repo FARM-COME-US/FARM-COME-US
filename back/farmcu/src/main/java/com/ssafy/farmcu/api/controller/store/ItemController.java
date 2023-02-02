@@ -1,14 +1,15 @@
-package com.ssafy.farmcu.api.controller;
+package com.ssafy.farmcu.api.controller.store;
 
-import com.ssafy.farmcu.api.dto.item.ItemDto;
-import com.ssafy.farmcu.api.dto.item.ItemSearchReq;
-import com.ssafy.farmcu.api.service.item.ItemService;
+import com.ssafy.farmcu.api.dto.store.ItemDto;
+import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
+import com.ssafy.farmcu.api.service.store.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,9 +39,9 @@ public class ItemController {
         return ResponseEntity.ok(itemService.findOne(itemId));
     }
 
-    @PostMapping("/keyword")
+    @GetMapping("/keyword")
     @ApiOperation(value = "상품 목록 조회")
-    public ResponseEntity<List<ItemDto>> selectItemList(@RequestBody ItemSearchReq itemSearchReq) {
+    public ResponseEntity<List<ItemDto>> selectItemList(ItemSearchReq itemSearchReq, Pageable pageable) {
         return ResponseEntity.ok(itemService.findItemsByCategoryAndItemName(itemSearchReq));
     }
 

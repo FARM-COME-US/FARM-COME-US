@@ -5,12 +5,14 @@ import com.ssafy.farmcu.api.entity.store.Store;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "live")
 public class Live {
@@ -19,6 +21,12 @@ public class Live {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long liveId;
+
+    @Column
+    private String liveTitle;
+
+    @Column
+    private int liveStock;
 
     @Column
     private int liveDiscount;
@@ -43,12 +51,16 @@ public class Live {
 
     //빌더
     @Builder
-    public Live(Long liveId, int liveDiscount, int liveViewers, LocalDateTime liveStart, LocalDateTime liveEnd) {
+    public Live(Long liveId, String liveTitle, int liveStock, int liveDiscount, int liveViewers, LocalDateTime liveStart, LocalDateTime liveEnd, Item item, Store store) {
         this.liveId = liveId;
+        this.liveTitle = liveTitle;
+        this.liveStock = liveStock;
         this.liveDiscount = liveDiscount;
         this.liveViewers = liveViewers;
         this.liveStart = liveStart;
         this.liveEnd = liveEnd;
+        this.item = item;
+        this.store = store;
     }
 
 }
