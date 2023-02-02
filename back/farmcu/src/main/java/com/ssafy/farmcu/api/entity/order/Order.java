@@ -1,10 +1,7 @@
 package com.ssafy.farmcu.api.entity.order;
 
 import com.ssafy.farmcu.api.entity.member.Member;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -17,7 +14,7 @@ import java.util.Optional;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "order")
+@Table(name = "order_info")
 // 주문 그 자체, 예: order_info(pk = 1) = 배추*3 + 당근*4 의 값이 담겨 있음
 public class Order {
 
@@ -38,9 +35,9 @@ public class Order {
     @CreationTimestamp
     private Timestamp orderCreateAt;
 
-    // 주문 - 결제 대기 - 결제 완료 - 배송 중 - 배송 완료 - 주문취소 / B = before, A = after
+    // 주문 - 결제 대기 - 결제 완료 - 주문취소 / B = before, A = after
     public enum OrderStatus{
-        ORDER, BPAY, APAY, BSHIPPING, ASHIPPING, CANCEL
+        ORDER, BPAY, APAY, BSHIPPING, CANCEL
     }
 
     @Enumerated(EnumType.STRING)
@@ -51,12 +48,19 @@ public class Order {
     @JoinColumn(name = "member_id", updatable = false)
     private Member member;
 
-    @OneToOne
+//    @ManyToOne
+//    @JoinColumn(name = "payment")
+//    private Payment payment;
+//
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // ====>> 02.01 delivery test 수정
     @JoinColumn(name="delivery_id")
     private DeliveryInfo delivery;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order_info")
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    // 주문 정보에 배송 정보 추가
+
 
     @Builder
     public Order(Member member, Timestamp orderCreateAt, OrderStatus orderStatus, List<OrderItem> orderItems) {
@@ -69,7 +73,7 @@ public class Order {
     // 주문에 주문 상품 주입 -> OrderItem.java 의 setOrder
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
-        orderItem.setOrder(this);
+        orderItem.setOrder_info(this);
     }
 
     //** 주문 생성 **//

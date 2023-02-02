@@ -52,7 +52,6 @@ public class OrderServiceImpl implements OrderService {
         return order.getOrderId();
     }
 
-
     //** 다양한 상품 주문 **//
     // (장바구니 주문)
     public Long orders(List<OrderDto> orderDtoList, String id) {
@@ -95,7 +94,8 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderItem> findMyItems(Member member){
         return orderItemRepository.findByOrderMember(member);
     }
-
+    //** 주문 번호 조회 **//
     public Optional<Order> findById(Long order_num) {
-        return orderRepository.findById(order_num);}
+        return orderRepository.findById(order_num);
+    }
 }

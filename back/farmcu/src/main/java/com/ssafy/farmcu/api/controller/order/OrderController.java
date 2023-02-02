@@ -45,6 +45,10 @@ public class OrderController {
     }
 
     //** 상품 주문 **//                  <======== 장바구니 상품 주문은 CartController
+    //** 주문 == 결제하기인데 다시 생각해 봐야 할듯 **//
+    // ( 장바구니 / 상품 주문 페이지 ) 구매하기 버튼 클릭 -> 구매 페이지 이동: 배송 번호랑 결제 수단 입력 받고
+    // ( 구매 페이지 ) 결제 버튼 클릭 : 간편 결제 -> 카카오 간편 결제 / 계좌 이체 -> 계좌 이체
+
     @PostMapping(value = "")
     public ResponseEntity order(OrderDto orderDto, BindingResult bindingResult, Principal principal){
         if(bindingResult.hasErrors()){
@@ -67,6 +71,7 @@ public class OrderController {
 
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
+
 
     //** 주문 취소 **//
     @PutMapping
