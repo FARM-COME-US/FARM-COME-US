@@ -1,6 +1,6 @@
 .myPageHeader {
   position: relative;
-  padding: 1rem;
+  padding: 5%;
   width: 100%;
   aspect-ratio: 5/3;
   background-color: #f7863b;
@@ -42,7 +42,7 @@
 .imgWrapper {
   width: 5rem;
   height: 5rem;
-  border-radius: 70%;
+  border-radius: 80%;
   overflow: hidden;
   border: 2px white;
   box-shadow: 0px 2px 4px black;
@@ -56,17 +56,26 @@
 
 .flexbox {
   display: flex;
+  padding: 16px;
   align-items: flex-end;
+  justify-content: space-between;
+}
+
+.innerflexbox {
+  display: flex;
+  align-items: flex-end;
+  width: 80%;
 }
 
 .nicknameTxt {
   font-size: 2rem;
   color: white;
+  font-weight: bold;
 }
 
 .normalTxt {
-  font-size: 1rem;
-  margin-left: 1.2rem;
+  font-size: 0.9rem;
+  margin-left: 3%;
   color: white;
 }
 
