@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 @Table(name = "live_like")
 public class LiveLike {
+
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "live_like_id")
-    private Long id;
+    private Long liveLikeId;
 
     // 연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Member.class)
@@ -25,8 +25,6 @@ public class LiveLike {
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Live.class)
     @JoinColumn(name = "live_id", updatable = false)
     private Live live;
-
-
 
 }
 
