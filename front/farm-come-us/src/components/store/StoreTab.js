@@ -10,15 +10,15 @@ const StoreTab = () => {
         className={({ isActive }) => (isActive ? classes.active : null)}
         to="live"
       >
-        <span className={classes.highlight}>Store</span>
-        <span>live</span>
+        <span>Store</span>
+        <span className={classes.highlight}> live</span>
       </NavLink>
       <NavLink
         className={({ isActive }) => (isActive ? classes.active : null)}
         to="products"
       >
         <span className={classes.highlight}>판매</span>
-        <span>상품</span>
+        <span> 상품</span>
       </NavLink>
     </div>
   );
