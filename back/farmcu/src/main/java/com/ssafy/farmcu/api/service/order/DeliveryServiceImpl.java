@@ -1,27 +1,14 @@
 package com.ssafy.farmcu.api.service.order;
 
-import com.ssafy.farmcu.api.dto.item.ItemDto;
 import com.ssafy.farmcu.api.dto.order.DeliveryInfoDto;
-import com.ssafy.farmcu.api.dto.order.OrderDto;
-import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.DeliveryInfo;
 import com.ssafy.farmcu.api.entity.order.Order;
-import com.ssafy.farmcu.api.entity.order.OrderItem;
-import com.ssafy.farmcu.api.entity.store.Category;
-import com.ssafy.farmcu.api.entity.store.Item;
-import com.ssafy.farmcu.api.entity.store.Store;
 import com.ssafy.farmcu.api.repository.DeliveryInfoRepository;
 import com.ssafy.farmcu.api.repository.ItemRepository;
 import com.ssafy.farmcu.api.repository.MemberRepository;
 import com.ssafy.farmcu.api.repository.OrderRepository;
-import com.ssafy.farmcu.exception.ItemNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
