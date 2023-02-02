@@ -26,10 +26,16 @@ public class StoreServiceImpl implements StoreService{
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
 
+    public boolean checkStoreExist(Long memberId){
+        Store store = storeRepository.findByMemberId(memberId).orElse(null);
+        if(store==null) return false;
+        else return true;
+    }
+
     @Transactional// 스토어 생성 save service
-    public boolean saveStore(StoreDto storeDto, String id){
+    public boolean saveStore(StoreDto storeDto){
         try {
-            Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
+//            Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
             Store store = Store.builder()
                     .storeDeliveryCost(storeDto.getStoreDeliveryCost())
                     .storeDeliveryFree(storeDto.getStoreDeliveryFree())
@@ -40,7 +46,7 @@ public class StoreServiceImpl implements StoreService{
                     .storeStreetAddr(storeDto.getStoreStreetAddr())
                     .storeZipcode(storeDto.getStoreZipcode())
                     .storeName(storeDto.getStoreName())
-                    .member(member)
+                    .member(storeDto.getMember())
                     .build();
             storeRepository.save(store);
             return true;
@@ -50,13 +56,13 @@ public class StoreServiceImpl implements StoreService{
         }
     }
 
-    public StoreDto findStore(Long storeId){ // 스토어 정보 찾아오기
+    public StoreDto findStoreInfo(Long storeId){ // 스토어 정보 찾아오기
         Store store = storeRepository.findByStoreId(storeId).orElseThrow(()-> new NotFoundStoreException("스토어가 존재하지 않음"));
 
         try {
             StoreDto finded = StoreDto.builder()
+                    .storeId(store.getStoreId())
                     .storeDeliveryCost(store.getStoreDeliveryCost())
-                    .storeLike(store.getStoreLike())
                     .storeName(store.getStoreName())
                     .storeZipcode(store.getStoreZipcode())
                     .storeDeliveryFree(store.getStoreDeliveryFree())
