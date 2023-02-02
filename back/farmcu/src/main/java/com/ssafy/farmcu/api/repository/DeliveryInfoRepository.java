@@ -2,6 +2,7 @@ package com.ssafy.farmcu.api.repository;
 
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.DeliveryInfo;
+import com.ssafy.farmcu.api.entity.order.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,7 @@ public interface DeliveryInfoRepository extends JpaRepository <DeliveryInfo, Lon
 
     List<DeliveryInfo> findAll();
     List<DeliveryInfo> findByMember(Member member);
+    List<DeliveryInfo> findByOrdrer(Order order);
 
-    void deleteById(Long id);
+//    void deleteById(Long id);
 }
