@@ -11,6 +11,7 @@ import {
   MdSearch,
 } from "react-icons/md";
 import axios from "axios";
+import _ from "lodash";
 
 const SignUp = () => {
   const REGISTER_USERS_URL = "http://Backend" + "/member/join";
@@ -52,6 +53,30 @@ const SignUp = () => {
   // 회원가입 정보 날리는 함수
   const submitHandler = async (e) => {
     e.preventDefault();
+    const adjArr = [
+      "귀여운 ",
+      "새콤 ",
+      "부끄러운 ",
+      "아삭한 ",
+      "보은 ",
+      "지친 ",
+      "착한 ",
+      "매운 ",
+    ];
+    const vegeArr = [
+      "양파",
+      "상추",
+      "사과",
+      "배추",
+      "자몽",
+      "포도",
+      "양배추",
+      "고구마",
+      "쪽파",
+      "달걀",
+    ];
+    nickname = _.sample(adjArr) + _.sample(vegeArr);
+    console.log(nickname);
     try {
       const newUser = {
         id,

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import classes from "./style/MyPageHeader.module.scss";
 import { MdAddCircle } from "react-icons/md";
 import axios from "axios";
+import MyPageMenu from "../../pages/mypage/MyPageMenu";
 // import MyStoreHeaderInfo from "./MyStoreHeaderInfo";
 // import MyStoreMenu from "./MyStoreMenu";
 
@@ -23,8 +24,10 @@ const MyPageHeader = (props) => {
   return (
     <div className={classes.myPageHeader}>
       <div className={classes.flexbox}>
-        <div className={classes.nicknameTxt}>{props.nickname}</div>
-        <div className={classes.normalTxt}>{"님 안녕하세요."}</div>
+        <div className={classes.innerflexbox}>
+          <div className={classes.nicknameTxt}>{props.nickname}</div>
+          <div className={classes.normalTxt}>{"님 안녕하세요."}</div>
+        </div>
         <div className={classes.imgWrapper}>
           <img
             className={classes.profileImg}
@@ -38,28 +41,8 @@ const MyPageHeader = (props) => {
           {/* props로 경로 받아오거나, 이미지 던짐. */}
         </div>
       </div>
-      <div>
-        두개 들어가있음 중에 1개 4개 덩어리 들어간 칸.
-        <div>
-          필요하면flex로 여백다르게. 필요없으면 없애자.
-          <div>
-            가입정보<div>이미지</div>
-            <div>글자</div>
-          </div>
-          <div>
-            구매내역<div>이미지</div>
-            <div>글자</div>
-          </div>
-          <div>
-            마이스토어<div>이미지</div>
-            <div>글자</div>
-          </div>
-          <div>
-            관심스토어<div>이미지</div>
-            <div>글자</div>
-          </div>
-        </div>
-      </div>
+
+      <MyPageMenu />
     </div>
 
     // <div className={classes.storeHeader}>

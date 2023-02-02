@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import MyPageHeader from "../../components/mypage/MyPageHeader";
 import axios from "axios";
+import Button from "../../components/common/Button";
+import MyPageInput from "./MyPageInput";
+import classes from "./style/MyPage.module.scss";
 
 const MyPage = (props) => {
   // 유저정보 관리 변수
@@ -34,18 +37,53 @@ const MyPage = (props) => {
     <div>
       <MyPageHeader profileImg={profileImg} nickname={nickname} />
       <div>
-        마이페이지 바디 큰 덩어리. 폼태그 위에 마진살짝 주기
-        <div>가입정보</div>
+        <div className={classes.title}>가입정보</div>
         <hr />
-        <div>이름 라벨</div>
-        <div>이름인풋</div>
-        <div>이메일 라벨</div>
-        <div>이메일 인풋</div>
-        <div>주소 라벨</div>
-        <div>주소 인풋</div>
-        <div>연락처 라벨</div>
-        <div>연락처 인풋</div>
-        <div>버튼 위에 마진 살짝 줘서 스페이싱</div>
+        <div>
+          <div className={classes.label} htmlFor="">
+            이름
+          </div>
+
+          <MyPageInput
+            className={classes.input}
+            disabled={true}
+            placeholder={name}
+          />
+        </div>
+        <div>
+          <div className={classes.label} htmlFor="">
+            이메일
+          </div>
+
+          <MyPageInput
+            className={classes.input}
+            disabled={true}
+            placeholder={email}
+          />
+        </div>
+        <div>
+          <div className={classes.label} htmlFor="">
+            주소
+          </div>
+
+          <MyPageInput
+            className={classes.input}
+            disabled={true}
+            placeholder={fullAddress}
+          />
+        </div>
+        <div>
+          <div className={classes.label} htmlFor="">
+            연락처
+          </div>
+
+          <MyPageInput
+            className={classes.input}
+            disabled={true}
+            placeholder={phoneNumber}
+          />
+        </div>
+        <Button className={classes.button}>가입정보 수정</Button>
       </div>
     </div>
   );
