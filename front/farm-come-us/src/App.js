@@ -14,6 +14,9 @@ import Backdrop from "./components/common/Backdrop";
 import Products from "./pages/product/Products";
 
 import MyPage from "./pages/mypage/MyPage";
+import MyPageInfo from "./pages/mypage/MyPageInfo";
+import MyPageEdit from "./pages/mypage/MyPageEdit";
+import LikeStores from "./pages/mypage/LikeStores";
 
 import ProductDetail from "./pages/product/ProductDetail";
 import Payment from "./pages/product/Payment";
@@ -56,7 +59,9 @@ const App = () => {
         </Route>
         {/* 마이페이지 */}
         <Route path="/mypage" element={<MyPage />}>
-          <Route path="edit" element={<MyPage />}></Route>
+          <Route path="info" element={<MyPageInfo />} />
+          <Route path="edit" element={<MyPageEdit />} />
+          <Route path="likestores" element={<LikeStores />} />
         </Route>
         {/* 스토어페이지 렌더링용. */}
         <Route path="/" element={<Home />} />
