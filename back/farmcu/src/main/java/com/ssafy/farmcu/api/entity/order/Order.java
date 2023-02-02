@@ -73,7 +73,7 @@ public class Order {
     // 주문에 주문 상품 주입 -> OrderItem.java 의 setOrder
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
-        orderItem.setOrder(this);
+        orderItem.setOrder_info(this);
     }
 
     //** 주문 생성 **//
