@@ -49,12 +49,14 @@ const MyStoreLiveItem = (props) => {
       </div>
       <div className={classes.liveInfo}>
         <div className={classes.productInfo}>
-          <span className={classes.title}>{props.item.liveTitle}</span>
-          <span className={classes.stock}>{`${props.item.stock}상자`}</span>
+          <span className={classes.title}>{props.item.title}</span>
+          <span
+            className={classes.stock}
+          >{`남은 수량: ${props.item.stock}${props.item.unit}`}</span>
         </div>
         <div
           className={classes.unitPrice}
-        >{`${convertedPrice}/${props.item.unit}상자`}</div>
+        >{`${convertedPrice}/${props.item.count}${props.item.unit}`}</div>
         <div className={classes.date}>{`${reservedDate()}`}</div>
       </div>
     </div>
