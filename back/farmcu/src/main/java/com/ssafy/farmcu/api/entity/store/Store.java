@@ -13,24 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 @Entity
-//@Table(name = "store")
+@NoArgsConstructor
+@Table(name = "store")
 public class Store {
 
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "store_id", unique = true, nullable = false)
     private Long storeId;
 
     @Column(length = 15, nullable = false)
     private String storeName;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     private String storeDescription;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     private String storeImg;
 
     @Column(length = 50, nullable = false)
@@ -51,7 +50,7 @@ public class Store {
     @Column
     private Integer storeDeliveryFree;
 
-    @Column(name = "created_at")
+    @Column
     @CreationTimestamp
     private Timestamp createdAt;
 
@@ -64,17 +63,14 @@ public class Store {
     private Member member;
 
     @OneToMany(mappedBy = "store")
-    private List<Item> item = new ArrayList<>();
-
-    @OneToMany(mappedBy = "store")
     private List<StoreLike> storeLike = new ArrayList<>();
 
     //빌더
     @Builder
-    public Store(Long storeId, String store_name, String store_description, String storeImg, String storeStreetAddr, String storeDetailAddr, String storeZipcode, Integer storeDeliveryCost, Integer storeDeliveryFree, Timestamp createdAt ) {
+    public Store(Long storeId, String storeName, String storeDescription, String storeImg, String storeStreetAddr, String storeDetailAddr, String storeZipcode, String storePhoneNumber, Integer storeDeliveryCost, Integer storeDeliveryFree, Timestamp createdAt) {
         this.storeId = storeId;
         this.storeName = storeName;
-        this.storeDescription = store_description;
+        this.storeDescription = storeDescription;
         this.storeImg = storeImg;
         this.storeStreetAddr = storeStreetAddr;
         this.storeDetailAddr = storeDetailAddr;
