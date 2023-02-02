@@ -4,21 +4,24 @@ import classes from "./style/SignUp.module.scss";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import {
   MdPermIdentity,
+  MdEmail,
   MdPhoneIphone,
   MdLockOutline,
   MdCheck,
   MdSearch,
 } from "react-icons/md";
 import axios from "axios";
+import _ from "lodash";
 
 const SignUp = () => {
-  const REGISTER_USERS_URL = "http://signupURL";
+  const REGISTER_USERS_URL = "http://Backend" + "/member/join";
 
   const [openModal, setOpenModal] = useState(false);
   //이름, 닉네임, 전화번호, 비밀번호, 비밀번호 확인, 주소, 상세주소(얘는 유효성검사 안함. 주택이면 없으니까.), 우편번호(주소 들어오면 있는거니까 얘도 유효성X)
   //이름, 이메일, 비밀번호, 비밀번호 확인
   const [id, setId] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  // const [nickname, setNickname] = useState("");
   const [tel, setTel] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -28,7 +31,8 @@ const SignUp = () => {
 
   //오류메시지 상태저장
   const [idMessage, setIdMessage] = useState("");
-  const [nicknameMessage, setNicknameMessage] = useState("");
+  const [emailMessage, setEmailMessage] = useState("");
+  // const [nicknameMessage, setNicknameMessage] = useState("");
   const [telMessage, setTelMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
@@ -36,19 +40,47 @@ const SignUp = () => {
 
   // 유효성 검사
   const [isId, setIsId] = useState(false);
-  const [isNickname, setIsNickname] = useState(false);
+  const [isEmail, setIsEmail] = useState(false);
+  // const [isNickname, setIsNickname] = useState(false);
   const [isTel, setIsTel] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [isRoadAddress, setIsRoadAddress] = useState(false);
   const navigate = useNavigate();
 
+  let nickname = ""; //랜덤 넣어서 뿌려주는거 필요
+
   // 회원가입 정보 날리는 함수
   const submitHandler = async (e) => {
     e.preventDefault();
+    const adjArr = [
+      "귀여운 ",
+      "새콤 ",
+      "부끄러운 ",
+      "아삭한 ",
+      "보은 ",
+      "지친 ",
+      "착한 ",
+      "매운 ",
+    ];
+    const vegeArr = [
+      "양파",
+      "상추",
+      "사과",
+      "배추",
+      "자몽",
+      "포도",
+      "양배추",
+      "고구마",
+      "쪽파",
+      "달걀",
+    ];
+    nickname = _.sample(adjArr) + _.sample(vegeArr);
+    console.log(nickname);
     try {
       const newUser = {
         id,
+        email,
         nickname,
         tel,
         password,
@@ -87,32 +119,33 @@ const SignUp = () => {
     }
   }, []);
 
-  // 닉네임
-  const onChangeNickname = useCallback((e) => {
-    setNickname(e.target.value);
-    if (e.target.value.length < 2 || e.target.value.length > 10) {
-      setNicknameMessage("닉네임을 2글자 이상 10글자 미만으로 입력해주세요.");
-      setIsNickname(false);
-    } else {
-      setNicknameMessage("올바른 닉네임 형식입니다 :)");
-      setIsNickname(true);
-    }
-  }, []);
-  // // 이메일 유효성검사 (예비로 남겨둠)
-  // const onChangeEmail = useCallback((e) => {
-  //   const emailRegex =
-  //     /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-  //   const emailCurrent = e.target.value;
-  //   setEmail(emailCurrent);
-
-  //   if (!emailRegex.test(emailCurrent)) {
-  //     setEmailMessage("이메일 형식이 틀렸어요! 다시 확인해주세요 ㅜ ㅜ");
-  //     setIsEmail(false);
+  // // 닉네임 😀 랜덤으로 보내주기로 했음.
+  // const onChangeNickname = useCallback((e) => {
+  //   setNickname(e.target.value);
+  //   if (e.target.value.length < 2 || e.target.value.length > 10) {
+  //     setNicknameMessage("닉네임을 2글자 이상 10글자 미만으로 입력해주세요.");
+  //     setIsNickname(false);
   //   } else {
-  //     setEmailMessage("올바른 이메일 형식이에요 : )");
-  //     setIsEmail(true);
+  //     setNicknameMessage("올바른 닉네임 형식입니다 :)");
+  //     setIsNickname(true);
   //   }
   // }, []);
+
+  // // 이메일 유효성검사 (예비로 남겨둠)
+  const onChangeEmail = useCallback((e) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const emailCurrent = e.target.value;
+    setEmail(emailCurrent);
+
+    if (!emailRegex.test(emailCurrent)) {
+      setEmailMessage("이메일 형식이 틀렸어요! 다시 확인해주세요 ㅜ ㅜ");
+      setIsEmail(false);
+    } else {
+      setEmailMessage("올바른 이메일 형식이에요 : )");
+      setIsEmail(true);
+    }
+  }, []);
 
   //전화번호
   const onBlurTel = useCallback((e) => {
@@ -225,6 +258,30 @@ const SignUp = () => {
 
         <div className={classes.formbox}>
           <div>
+            <MdEmail className={classes.icon} />
+            <input
+              className={classes.outerInput}
+              text="이메일"
+              type="email"
+              placeholder="이메일"
+              typename="email"
+              onChange={onChangeEmail}
+            />
+          </div>
+          {email.length > 0 && (
+            <span
+              className={`${classes.message} ${
+                isEmail ? classes.success : classes.error
+              }`}
+            >
+              {emailMessage}
+            </span>
+          )}
+        </div>
+
+        {/* 닉네임 */}
+        {/* <div className={classes.formbox}>
+          <div>
             <MdPermIdentity className={classes.icon} />
             <input
               className={classes.outerInput}
@@ -244,7 +301,8 @@ const SignUp = () => {
               {nicknameMessage}
             </span>
           )}
-        </div>
+        </div> */}
+
         <div className={classes.formbox}>
           <div>
             <MdPhoneIphone className={classes.icon} />
@@ -365,7 +423,7 @@ const SignUp = () => {
             onChange={(e) => {
               console.log({
                 isId,
-                isNickname,
+                isEmail,
                 isTel,
                 isPassword,
                 isPasswordConfirm,
@@ -386,7 +444,7 @@ const SignUp = () => {
           className={`${classes.button} ${
             !(
               isId &&
-              isNickname &&
+              isEmail &&
               isTel &&
               isPassword &&
               isPasswordConfirm &&
@@ -399,7 +457,7 @@ const SignUp = () => {
           disabled={
             !(
               isId &&
-              isNickname &&
+              isEmail &&
               isTel &&
               isPassword &&
               isPasswordConfirm &&
@@ -418,6 +476,14 @@ const SignUp = () => {
             defaultQuery="동서대로 98-39" // 팝업을 열때 기본적으로 입력되는 검색어. 대전캠주소 해놨음.
           />
         </div>
+      )}
+      {openModal && (
+        <div
+          className={classes.backdrop}
+          onClick={() => {
+            setOpenModal(false);
+          }}
+        />
       )}
     </form>
   );
