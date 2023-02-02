@@ -1,0 +1,17 @@
+.chatItem {
+  padding: 0px;
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+
+  p {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    span {
+      margin-right: 8px;
+      color: #ccc;
+    }
+  }
+}
