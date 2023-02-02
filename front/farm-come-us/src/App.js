@@ -38,7 +38,11 @@ import StoreLive from "./pages/store/StoreLive";
 import StoreProducts from "./pages/store/StoreProducts";
 
 const App = () => {
-  const menu = useSelector((state) => state.menu.isOpen); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
+  const menu = useSelector((state) => {
+    console.log("잘되긴해");
+    console.log(state);
+    return state.menuSlice.isOpen;
+  }); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
 
   return (
     <div id="app">
