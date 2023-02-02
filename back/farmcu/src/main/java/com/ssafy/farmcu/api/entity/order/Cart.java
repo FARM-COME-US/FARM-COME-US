@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Getter @Setter
@@ -23,12 +24,15 @@ public class Cart {
     @Column(name = "cart_id", unique = true)
     private Long cartId;
 
-    @Column(name = "cart_item_count")
-    private Integer cartItemCount;
+    private int cartItemCount;
 
+    private int itemPrice;
+
+    private int salePrice;
+
+    private int getTotalPrice;
 
     // 연결
-
     @ManyToOne
     @JoinColumn(name="memberId", nullable=false)
     private Member member;
@@ -37,10 +41,15 @@ public class Cart {
     @JoinColumn(name = "item_id", updatable = false)
     private Item item;
 
-
     @Builder
-    public Cart(Integer cartItemCount) {
+    public Cart(Long cartId,Item item, int itemPrice, int salePrice, int getTotalPrice,int cartItemCount, Member member) {
+        this.cartId = cartId;
+        this.item = item;
+        this.getTotalPrice = getTotalPrice();
         this.cartItemCount = cartItemCount;
+        this.salePrice = item.getItemDiscount();
+        this.itemPrice = item.getItemPrice();
+        this.member = member;
     }
 
     // create: cart
@@ -54,8 +63,8 @@ public class Cart {
     }
 
     //총액
-//    public int getTotalPrice(){
-//        return Item.getItem
-//    }
+    public int getTotalPrice(){
+        return (itemPrice-salePrice)*cartItemCount;
+    }
 
 }
