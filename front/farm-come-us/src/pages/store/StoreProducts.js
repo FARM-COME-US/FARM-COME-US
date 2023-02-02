@@ -13,6 +13,7 @@ const ITEM_LIST = [
     productOption: 1,
     productAmount: 140,
     productPrice: 14000,
+    discountRate: 20,
   },
 
   {
@@ -25,6 +26,7 @@ const ITEM_LIST = [
     productOption: 1,
     productAmount: 20,
     productPrice: 22000,
+    discountRate: 20,
   },
 
   {
@@ -37,6 +39,7 @@ const ITEM_LIST = [
     productOption: 1,
     productAmount: 20,
     productPrice: 25000,
+    discountRate: 20,
   },
 ];
 
