@@ -1,62 +1,37 @@
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    #    url: jdbc:mysql://localhost:3306/farmcu?serverTimezone=Asia/Seoul
-    #    username: ssafy
-    #    password: ssafy
+server:
+  port: 9090
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
-    # 지은 - 임시 사용
-    url: jdbc:mysql://localhost:3306/fcmus?serverTimezone=Asia/Seoul
-    username: root
-    password: ssafyB10312345
+spring:
+  profiles:
+    include: oauth, local
 
   # swagger
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        # show_sql: true
-        format_sql: true
-
-  security:
-    oauth2:
-      client:
-        registration:
-          kakao:
-            client-id: 186db3a276355426492e41a502011b88
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
-            client-authentication-method: POST
-            client-secret: n9EZSS2eagtrsOO1U5kR2YuO1XZUgk62
-            authorization-grant-type: authorization_code
-            scope:
-              - profile_nickname
-              - profile_image
-              - account_email
-            client_name: kakao
-
-
-          google: # /oauth2/authorization/google 이 주소를 동작하게 한다.
-            client-id: 112610492279-v01g2d5juv2bvd9d42q4b19ii168q36h.apps.googleusercontent.com
-            client-secret: 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
-            scope:
-              - email
-              - profile
-
-        provider:
-          kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize
-            token-uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user-name-attribute: id
 jwt:
   secretKey: "d21b5b9c6ee776cac626c60a1d113ee43e9055c04f17cafb37bcfb4b128e01fe2566a1b7c159343279cab64b375ed3eee848b7a2efb65f17325a1f15f50bc5d10427108b5452bf8ca62cdb7ab1ce7c69713746c26121760be8eac9f231258b473416640dd60d68a591ddec2ce55bc1a4fe65332aedf45ab9ce2dd0d0a3c358d9"
   algorithm: "HS256"
+cors:
+  allowed-origins: http://localhost:8080
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: authorization,content-type,x-auth-token
+  max-age: 3600
 
+app:
+  auth:
+    token-secret: 926D96C90030DD58429D2751AC1BDBBC
+    token-expiry: 1800000
+    refresh-token-expiry: 604800000
+  oauth2:
+    authorized-redirect-uris: http://localhost:8080/oauth/redirect
 logging.level:
   org.hibernate.SQL: debug
 # org.hibernate.type: trace
