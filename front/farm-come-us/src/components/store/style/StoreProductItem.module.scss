@@ -13,6 +13,7 @@
   }
 
   .scriptspace {
+    width: 15.625rem;
     margin-left: 1rem;
     padding-top: 0.5rem;
 
@@ -34,7 +35,7 @@
     }
 
     .secondline {
-      margin-top: 16px;
+      margin-top: 0.5rem;
       display: flex;
       color: #f7863b;
       font-size: 0.875rem;
@@ -44,6 +45,15 @@
     .thirdline {
       margin-top: 0.5rem;
       color: #777777;
+      width: 100%;
+      display: -webkit-box;
+      max-height: 1.875rem;
+      overflow: hidden;
+      vertical-align: top;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
   }
 }

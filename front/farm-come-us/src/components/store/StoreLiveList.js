@@ -11,7 +11,7 @@ const StoreLiveList = (props) => {
     ));
   }
 
-  return <ul className={classes.liveList}>{list}</ul>;
+  return <ul className={classes.livelist}>{list}</ul>;
 };
 
 export default StoreLiveList;

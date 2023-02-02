@@ -26,7 +26,6 @@ const ProductDetail = () => {
       setAmount(amount - 1);
     }
   };
-  const customamount = () => {};
 
   const [modalOpen, setModalOpen] = useState(false);
 
