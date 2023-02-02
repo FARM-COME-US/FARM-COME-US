@@ -44,7 +44,7 @@ public class CartServiceImpl implements CartService{
         return cartRepository.findByMember(member);
     }
 
-     //** 장바구니 상품 추가 **//
+    //** 장바구니 상품 추가 **//
     public Long addCart(CartRequestDto cartDto, String Id) {
         Item item = itemRepository.findById(cartDto.getItemId()).orElseThrow(() -> new ItemNotFoundException("상품에 대한 정보가 없습니다."));
         Member member = memberRepository.findById(Id).get();

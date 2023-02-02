@@ -27,7 +27,7 @@ public class ItemServiceImpl implements ItemService {
     public boolean saveItem(ItemDto itemDto) {
         try {
             Category category = categoryRepository.findByCategoryCode(itemDto.getCategoryCode());
-            Store store = storeRepository.findByStoreId(itemDto.getStoreId());
+            Store store = storeRepository.findByStoreId(itemDto.getStoreId()).get();
             Item item = Item.builder()
                     .itemId(itemDto.getItemId())
                     .itemName(itemDto.getItemName())
@@ -54,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
     public boolean updateItem(ItemDto itemDto) {
         try {
             Category category = categoryRepository.findByCategoryCode(itemDto.getCategoryCode());
-            Store store = storeRepository.findByStoreId(itemDto.getStoreId());
+            Store store = storeRepository.findByStoreId(itemDto.getStoreId()).get();
             Item item = Item.builder()
                     .itemId(itemDto.getItemId())
                     .itemName(itemDto.getItemName())

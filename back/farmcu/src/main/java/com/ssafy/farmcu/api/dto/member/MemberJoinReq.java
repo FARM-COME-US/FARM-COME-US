@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import static com.ssafy.farmcu.api.entity.member.RoleType.ROLE_USER;
+
 @Getter
 @Setter
 @ToString
@@ -32,8 +34,10 @@ public class MemberJoinReq {
     @ApiModelProperty(name = "사용자 전화번호")
     String phoneNumber;
 
+    String role;
+
     @Builder
-    public MemberJoinReq(String id, String password, String nickname, String name, String email, String streetAddr, String detailAddr, String zipcode, String phoneNumber) {
+    public MemberJoinReq(String id, String password, String nickname, String name, String email, String streetAddr, String detailAddr, String zipcode, String phoneNumber, String role) {
         this.id = id;
         this.password = password;
         this.nickname = nickname;
@@ -43,6 +47,11 @@ public class MemberJoinReq {
         this.detailAddr = detailAddr;
         this.zipcode = zipcode;
         this.phoneNumber = phoneNumber;
+//        this.role = ROLE_USER;
+    }
+
+    public void updatePW(String pw){
+        this.password = pw;
     }
 
     public Member ToEntity(){
@@ -56,6 +65,7 @@ public class MemberJoinReq {
                 .detailAddr(this.detailAddr)
                 .zipcode(this.zipcode)
                 .phoneNumber(this.phoneNumber)
+                .role(ROLE_USER)
                 .build();
     }
 
