@@ -1,20 +1,101 @@
-.infoContainer {
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding: 0 20px;
+.myPageHeader {
+  position: relative;
+  padding: 1rem;
+  width: 100%;
+  aspect-ratio: 5/3;
+  background-color: #f7863b;
 
-  .storeName {
-    font-size: 1.4rem;
-    margin: 10px 0 20px 0;
+  .headerBg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    z-index: -1;
+
+    .backdrop {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
   }
 
-  .storeDesc {
-    width: 80%;
-    text-align: right;
-    font-size: 1.02rem;
-    word-break: keep-all;
-    margin: 0;
+  .btnAddBg {
+    color: #fff;
+    font-size: 2rem;
+    transition: all 0.6s ease;
+
+    &:hover {
+      transform: rotate(180deg);
+      cursor: pointer;
+    }
+
+    &:active {
+      color: #f7863b;
+    }
+  }
+}
+
+.imgWrapper {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 70%;
+  overflow: hidden;
+  border: 2px white;
+  box-shadow: 0px 2px 4px black;
+}
+
+.profileImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flexbox {
+  display: flex;
+  align-items: flex-end;
+}
+
+.nicknameTxt {
+  font-size: 2rem;
+  color: white;
+}
+
+.normalTxt {
+  font-size: 1rem;
+  margin-left: 1.2rem;
+  color: white;
+}
+
+.menuBtnWrapper {
+  background-color: #265040;
+  display: flex;
+  align-items: center;
+}
+
+.menuBtn {
+  // 수정필요 불러온 이미지 크기 일단 고정시켜뒀음.
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  background-color: #265040;
+  color: white;
+}
+
+.btnAddBg {
+  color: #fff;
+  font-size: 2rem;
+  transition: all 0.6s ease;
+
+  &:hover {
+    transform: rotate(180deg);
+    cursor: pointer;
+  }
+
+  &:active {
+    color: #f7863b;
   }
 }
