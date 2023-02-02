@@ -4,6 +4,7 @@ import classes from "./style/LiveHeader.module.scss";
 
 import { MdOutlineClose } from "react-icons/md";
 import { MdVideocam } from "react-icons/md";
+import { MdFlipCameraIos } from "react-icons/md";
 import { BsMicMuteFill } from "react-icons/bs";
 import { BsMicFill } from "react-icons/bs";
 
@@ -21,9 +22,24 @@ const LiveHeader = (props) => {
       {props.isSubscriber ? (
         <MdOutlineClose className={classes.btn} onClick={props.onLiveClose} />
       ) : props.isMute ? (
-        <BsMicMuteFill className={classes.btn} onClick={props.onToggleMute} />
+        <div className={classes.btnList}>
+          <MdFlipCameraIos
+            className={classes.btn}
+            onClick={props.onCameraSwitch}
+          />
+          <BsMicMuteFill
+            className={`${classes.btn} ${classes.red}`}
+            onClick={props.onToggleMute}
+          />
+        </div>
       ) : (
-        <BsMicFill className={classes.btn} onClick={props.onToggleMute} />
+        <div className={classes.btnList}>
+          <MdFlipCameraIos
+            className={classes.btn}
+            onClick={props.onCameraSwitch}
+          />
+          <BsMicFill className={classes.btn} onClick={props.onToggleMute} />
+        </div>
       )}
     </div>
   );

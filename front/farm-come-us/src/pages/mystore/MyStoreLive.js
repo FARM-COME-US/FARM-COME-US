@@ -11,23 +11,29 @@ import AddLiveModal from "../../components/mystore/AddLiveModal";
 const DUMMY_LIVE_LIST = [
   {
     liveId: 1,
-    liveTitle: "신선한 유기농 강원 고랭 배추",
+    title: "신선한 유기농 강원 고랭 배추",
     productId: 1,
     productName: "강원도 고랭지 배추",
+    storeName: "강원고랭",
     stock: 140,
+    discount: 14,
     price: 14000,
-    unit: 1,
+    count: 1,
+    unit: "개",
     startDate: new Date(2023, 1, 10, 23, 0, 0),
     imgSrc: "https://via.placeholder.com/300",
   },
   {
     liveId: 2,
-    liveTitle: "신선한 유기농 강원 고랭 배추",
+    title: "신선한 유기농 강원 고랭 배추",
     productId: 2,
     productName: "강원도 고랭지 배추",
+    storeName: "강원고랭",
     stock: 140,
+    discount: 14,
     price: 14000,
-    unit: 1,
+    count: 1,
+    unit: "개",
     startDate: new Date(2023, 0, 30, 6, 0, 0),
     imgSrc: "https://via.placeholder.com/300",
   },
@@ -76,11 +82,12 @@ const MyStoreLive = () => {
         id: liveInfo.liveId + "",
         username: "KEVIN",
       });
-      // alert("라이브 시작 로직 구현");
+
       navigate("/broadcast", {
         state: {
-          id: sessionInfo.id,
-          username: sessionInfo.username,
+          id: liveInfo.liveId + "",
+          username: "KEVIN",
+          liveInfo: liveInfo,
         },
       });
     }

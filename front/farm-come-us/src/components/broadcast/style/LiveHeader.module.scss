@@ -20,17 +20,26 @@
   }
 }
 
-.btn {
-  font-size: 1.4rem;
+.btnList {
   color: #fff;
-  margin-right: 16px;
+  font-size: 1.4rem;
+  position: relative;
+  top: 1px;
 
-  &:hover {
-    color: #eee;
-    cursor: pointer;
-  }
+  .btn {
+    margin-right: 24px;
 
-  &:active {
-    color: red;
+    & + .red {
+      color: red;
+    }
+
+    &:hover {
+      color: #eee;
+      cursor: pointer;
+    }
+
+    &:active {
+      color: red;
+    }
   }
 }
