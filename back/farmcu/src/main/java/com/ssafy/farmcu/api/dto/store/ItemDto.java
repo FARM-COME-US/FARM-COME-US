@@ -1,4 +1,4 @@
-package com.ssafy.farmcu.api.dto.item;
+package com.ssafy.farmcu.api.dto.store;
 
 import com.ssafy.farmcu.api.entity.store.Item;
 import lombok.AllArgsConstructor;
@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ItemDto {
 
-    Long itemId;
-    String itemName;
-    String itemDescription;
-    String itemImg;
-    int itemPrice;
-    int itemDiscount;
-    int itemStock;
-    String itemCreatedAt;
-    Long categoryCode;
-    Long storeId;
+    private Long itemId;
+    private String itemName;
+    private String itemDescription;
+    private  String itemImg;
+    private int itemPrice;
+    private int itemDiscount;
+    private int itemStock;
+    private String itemCreatedAt;
+    private  Long categoryCode;
+    private  Long storeId;
 
     public ItemDto(Item item) {
         this.itemId = item.getItemId();
