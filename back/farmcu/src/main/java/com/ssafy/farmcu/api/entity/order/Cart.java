@@ -33,8 +33,9 @@ public class Cart {
     @JoinColumn(name="memberId", nullable=false)
     private Member member;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
+//    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
     @JoinColumn(name = "item_id", updatable = false)
+    @ManyToOne
     private Item item;
 
 

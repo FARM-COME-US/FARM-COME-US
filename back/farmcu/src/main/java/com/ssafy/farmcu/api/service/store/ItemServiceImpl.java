@@ -1,7 +1,7 @@
-package com.ssafy.farmcu.api.service.store;
+package com.ssafy.farmcu.api.service.item;
 
-import com.ssafy.farmcu.api.dto.store.ItemDto;
-import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
+import com.ssafy.farmcu.api.dto.item.ItemDto;
+import com.ssafy.farmcu.api.dto.item.ItemSearchReq;
 import com.ssafy.farmcu.api.entity.store.Category;
 import com.ssafy.farmcu.api.entity.store.Item;
 import com.ssafy.farmcu.api.entity.store.Store;
@@ -27,7 +27,7 @@ public class ItemServiceImpl implements ItemService {
     public boolean saveItem(ItemDto itemDto) {
         try {
             Category category = categoryRepository.findByCategoryCode(itemDto.getCategoryCode());
-            Store store = storeRepository.findByStoreId(itemDto.getStoreId());
+            Store store = storeRepository.findByStoreId(itemDto.getStoreId()).get();
             Item item = Item.builder()
                     .itemId(itemDto.getItemId())
                     .itemName(itemDto.getItemName())
@@ -54,16 +54,19 @@ public class ItemServiceImpl implements ItemService {
     public boolean updateItem(ItemDto itemDto) {
         try {
             Category category = categoryRepository.findByCategoryCode(itemDto.getCategoryCode());
-            Store store = storeRepository.findByStoreId(itemDto.getStoreId());
-
-            Item item = itemRepository.findByItemId(itemDto.getItemId()).get();
-            item.setItemName(itemDto.getItemName());
-            item.setItemDescription(itemDto.getItemDescription());
-            item.setItemImg(itemDto.getItemImg());
-            item.setItemPrice(itemDto.getItemPrice());
-            item.setItemDiscount(itemDto.getItemDiscount());
-            item.setItemStock(itemDto.getItemStock());
-            item.setStore(store);
+            Store store = storeRepository.findByStoreId(itemDto.getStoreId()).get();
+            Item item = Item.builder()
+                    .itemId(itemDto.getItemId())
+                    .itemName(itemDto.getItemName())
+                    .itemDescription(itemDto.getItemDescription())
+                    .itemImg(itemDto.getItemImg())
+                    .itemPrice(itemDto.getItemPrice())
+                    .itemDiscount(itemDto.getItemDiscount())
+                    .itemStock(itemDto.getItemStock())
+                    .itemCreatedAt(null)
+                    .category(category)
+                    .store(store)
+                    .build();
 
             itemRepository.save(item);
             return true;
@@ -76,7 +79,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public boolean deleteItem(Long itemId) {
         try {
-            itemRepository.deleteByItemId(itemId);
+            itemRepository.deleteById(itemId);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,6 +90,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto findOne(Long itemId) {
         Item item = itemRepository.findByItemId(itemId).orElseThrow(NullPointerException::new);
+//        Item item = itemRepository.findByItemId(itemId);
+//        Category category = categoryRepository.findByCategoryCode(item.getCategory().getCategoryCode());
+//        Store store = storeRepository.findByStoreId(item.getStore().getStoreId());
+
         ItemDto result = new ItemDto(item);
         return result;
     }
@@ -94,7 +101,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> findItemsByCategoryAndItemName(ItemSearchReq itemSearchReq) {
         Category category = categoryRepository.findByCategoryCode(itemSearchReq.getCategoryCode());
-        List<Item> items = itemRepository.findByCategoryAndItemNameLike(category, itemSearchReq.getItemName());
+        List<Item> items = itemRepository.findByCategoryAndItemName(category, itemSearchReq.getItemName());
         List<ItemDto> result = items.stream()
                 .map(i -> new ItemDto(i))
                 .collect(toList());

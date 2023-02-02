@@ -7,6 +7,7 @@ import com.ssafy.farmcu.api.dto.member.MemberResponseDto;
 import com.ssafy.farmcu.api.dto.member.MemberUpdateReq;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.member.MemberRefreshToken;
+import com.ssafy.farmcu.api.service.member.MemberRefreshTokenServiceImpl;
 import com.ssafy.farmcu.oauth.repository.MemberRefreshTokenRepository;
 import com.ssafy.farmcu.oauth.token.AuthTokenProvider;
 import com.ssafy.farmcu.oauth.token.JwtServiceImpl;
@@ -40,6 +41,7 @@ public class MemberController {
 
     private final AuthTokenProvider tokenProvider; // jwt provider
     private final JwtServiceImpl jwtService;
+    private final MemberRefreshTokenServiceImpl refreshService;
     private final PasswordEncoder passwordEncoder;
     private final MessageSource messageSource;
 
@@ -48,11 +50,14 @@ public class MemberController {
     @PostMapping("/join")
     @ApiOperation(value="회원 가입", notes = "")
     public ResponseEntity joinMember(@Validated @RequestBody MemberJoinReq request){
+        log.debug("MemberJoinReq DTO : {}", request);
         if(memberService.createMember(request)){
-            return ResponseEntity.status(HttpStatus.CREATED).body(null);
+            return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse(messageSource.getMessage("error.duplicate", null, LocaleContextHolder.getLocale())));
+        else {
+            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 
@@ -77,6 +82,7 @@ public class MemberController {
     @ApiOperation(value = "일반 로그인", notes = "access-Token, refresh-Token, 로그인 결과 메시지", response = Map.class)
     public ResponseEntity<?> login(@RequestBody MemberLoginReq loginReq){
         Member loginMember = memberService.findUser(loginReq.getId());
+        log.debug("HHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEE");
         if(loginMember==null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ErrorResponse(messageSource.getMessage("error.not.exist.user", null, LocaleContextHolder.getLocale())));
@@ -87,26 +93,38 @@ public class MemberController {
         }
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
+        System.out.println("HHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEE");
+
         try {
 
-            String accessToken = jwtService.createAccessToken("memberid", loginMember.getMemberId());
-            String refreshToken = jwtService.createRefreshToken("memberid", loginMember.getMemberId());
+            String accessToken = jwtService.createAccessToken("userid", loginMember.getMemberId());
+            String refreshToken = jwtService.createRefreshToken("userid", loginMember.getMemberId());
             resultMap.put("access-token", accessToken);
             resultMap.put("refresh-token", refreshToken);
             resultMap.put("message", "success");
             status = HttpStatus.ACCEPTED;
+            log.debug("status : {}", status);
+            System.out.println("HHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEE");
 
             // DB 저장
-            MemberRefreshToken memberRefreshToken = refreshTokenRepository.findById(loginMember.getId());
-            if (memberRefreshToken != null) {
-                // 처음 로그인하는 사용자라면, 토큰 저장
-                memberRefreshToken.setRefreshToken(refreshToken);
+//            MemberRefreshToken memberRefreshToken = refreshTokenRepository.findById(loginMember.getId());
+//            MemberRefreshToken memberRefreshToken =
+            if (refreshService.refreshTokenExists(loginMember.getId())) {
+                System.out.println("// 처음 로그인하는 사용자라면, 토큰 저장");
+//                memberRefreshToken.setRefreshToken(refreshToken);
+                refreshService.saveRefreshTokenTable(refreshToken, loginMember.getId());
+
             } else {
-                // 이미 리프레시 토큰을 가지고 있다면 만들어서 저장
-                memberRefreshToken = new MemberRefreshToken(loginMember.getId(), refreshToken);
-                refreshTokenRepository.saveAndFlush(memberRefreshToken);
+                System.out.println("// 이미 리프레시 토큰을 가지고 있다면 만들어서 저장");
+//                MemberRefreshToken memberRefreshToken = MemberRefreshToken.builder()
+//                        .refreshToken(refreshToken)
+//                        .id(loginMember.getId())
+//                        .build();
+//                refreshTokenRepository.save(memberRefreshToken);
+                refreshService.saveRefreshTokenTable(refreshToken, loginMember.getId());
             }
         }catch (Exception e){
+            e.printStackTrace();
             resultMap.put("message", "fail");
             status = HttpStatus.ACCEPTED;
         }
