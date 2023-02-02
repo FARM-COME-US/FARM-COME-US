@@ -27,7 +27,7 @@ const MyPageMenu = () => {
       </li>
       <li>
         <NavLink
-          to="live"
+          to="receipts"
           className={({ isActive }) => (isActive ? classes.active : null)}
         >
           <ImageButton
@@ -51,7 +51,7 @@ const MyPageMenu = () => {
       </li>
       <li>
         <NavLink
-          to="receipt"
+          to="likestores"
           className={({ isActive }) => (isActive ? classes.active : null)}
         >
           <ImageButton

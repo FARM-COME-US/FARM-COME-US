@@ -16,6 +16,7 @@ import Products from "./pages/product/Products";
 import MyPage from "./pages/mypage/MyPage";
 import MyPageInfo from "./pages/mypage/MyPageInfo";
 import MyPageEdit from "./pages/mypage/MyPageEdit";
+import MyReceipts from "./pages/mypage/MyReceipts";
 import LikeStores from "./pages/mypage/LikeStores";
 
 import ProductDetail from "./pages/product/ProductDetail";
@@ -61,6 +62,7 @@ const App = () => {
         <Route path="/mypage" element={<MyPage />}>
           <Route path="info" element={<MyPageInfo />} />
           <Route path="edit" element={<MyPageEdit />} />
+          <Route path="receipts" element={<MyReceipts />} />
           <Route path="likestores" element={<LikeStores />} />
         </Route>
         {/* 스토어페이지 렌더링용. */}
