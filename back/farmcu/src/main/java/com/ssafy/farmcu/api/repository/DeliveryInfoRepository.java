@@ -15,7 +15,7 @@ public interface DeliveryInfoRepository extends JpaRepository <DeliveryInfo, Lon
 
     List<DeliveryInfo> findAll();
     List<DeliveryInfo> findByMember(Member member);
-    List<DeliveryInfo> findByOrdrer(Order order);
+//    List<DeliveryInfo> findByOrdrer(Order order);
 
 //    void deleteById(Long id);
 }

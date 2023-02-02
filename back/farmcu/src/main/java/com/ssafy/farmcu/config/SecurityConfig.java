@@ -52,7 +52,13 @@ public class SecurityConfig {
                 .and()
                 // authorizeRequest 권한 관리 요청 시작
                 .authorizeRequests()
-                .antMatchers("/", "/css/**", "/images/**",
+                .antMatchers("/",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/v2/api-docs",
+                        "/webjars/**",
+                        "/item/**", "/live/**",
+                        "/css/**", "/images/**",
                         "/js/**", "/h2-console/**","/*/signin", "/*/signin/**",  "/*/signup", "/*/signup/**", "/find/**", "/social/**", "/book/**", "/test/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
