@@ -1,17 +1,13 @@
 import React from "react";
-import ImageButton from "../common/ImageButton";
+import CategoryItem from "./CategoryItem";
 import classes from "./style/Category.module.scss";
 
+const Category = (props) => {
+  let list = props.list.map((item) => (
+    <CategoryItem key={item.categoryId} name={item.categoryName}></CategoryItem>
+  ));
 
-const Category = () => {
-  return (
-    <div className={classes.container}>
-      <ImageButton />
-      <ImageButton />
-      <ImageButton />
-      <ImageButton />
-    </div>
-  );
+  return <div className={classes.container}>{list}</div>;
 };
 
 export default Category;
