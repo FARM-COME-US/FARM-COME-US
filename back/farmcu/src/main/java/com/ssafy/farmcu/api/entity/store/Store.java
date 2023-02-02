@@ -81,5 +81,4 @@ public class Store {
         this.createdAt = createdAt;
         this.member = member;
     }
-
 }

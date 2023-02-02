@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -22,13 +20,13 @@ public class Live {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long liveId;
 
+    @Column
+    private int liveDiscount;
+
+    @Column
+    private int liveViewers;
+
     @Column(nullable = false)
-    private Integer liveDiscount;
-
-    @Column
-    private Integer liveViewers;
-
-    @Column
     private LocalDateTime liveStart;
 
     @Column
@@ -43,12 +41,9 @@ public class Live {
     @JoinColumn(name="store_id")
     private Store store;
 
-    @OneToMany(mappedBy = "live")
-    private List<LiveLike> liveLike = new ArrayList<>();
-
     //빌더
     @Builder
-    public Live(Long liveId, Integer liveDiscount, Integer liveViewers, LocalDateTime liveStart, LocalDateTime liveEnd) {
+    public Live(Long liveId, int liveDiscount, int liveViewers, LocalDateTime liveStart, LocalDateTime liveEnd) {
         this.liveId = liveId;
         this.liveDiscount = liveDiscount;
         this.liveViewers = liveViewers;
