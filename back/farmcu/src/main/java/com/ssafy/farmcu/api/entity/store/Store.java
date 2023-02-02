@@ -67,7 +67,7 @@ public class Store {
 
     //빌더
     @Builder
-    public Store(Long storeId, String storeName, String storeDescription, String storeImg, String storeStreetAddr, String storeDetailAddr, String storeZipcode, String storePhoneNumber, Integer storeDeliveryCost, Integer storeDeliveryFree, Timestamp createdAt) {
+    public Store(Long storeId, String storeName, String storeDescription, String storeImg, String storeStreetAddr, String storeDetailAddr, String storeZipcode, String storePhoneNumber, Integer storeDeliveryCost, Integer storeDeliveryFree, Timestamp createdAt, Member member) {
         this.storeId = storeId;
         this.storeName = storeName;
         this.storeDescription = storeDescription;
@@ -79,6 +79,6 @@ public class Store {
         this.storeDeliveryCost = storeDeliveryCost;
         this.storeDeliveryFree = storeDeliveryFree;
         this.createdAt = createdAt;
+        this.member = member;
     }
-
 }

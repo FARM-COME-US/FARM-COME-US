@@ -8,6 +8,7 @@ import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.exception.NotFoundUserException;
 import com.ssafy.farmcu.api.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Slf4j
 @Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
@@ -23,17 +25,20 @@ public class MemberServiceImpl implements MemberService{
     @Autowired
     private MemberRepository memberRepository;
 
-    private PasswordEncoder pwEncoder;
+    private final PasswordEncoder pwEncoder;
 
     @Transactional
     @Override
     public boolean createMember(MemberJoinReq memberJoinInfo) {
-        if(memberRepository.findById(memberJoinInfo.getId())!= null){
+        log.debug("memberJoinInfo DTO : {}", memberJoinInfo);
+        if(memberRepository.findById(memberJoinInfo.getId()).isPresent()){
             return false;
         }
         String pw = pwEncoder.encode(memberJoinInfo.getPassword());
-        memberJoinInfo.setPassword(pw);
+
+        memberJoinInfo.updatePW(pw);
         Member newMember = memberRepository.save(memberJoinInfo.ToEntity());
+        System.out.println(newMember.getCreatedAt());
         return true;
     }
 
