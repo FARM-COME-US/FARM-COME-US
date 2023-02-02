@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import MyPageHeader from "../../components/mypage/MyPageHeader";
 import axios from "axios";
 import Button from "../../components/common/Button";
@@ -8,10 +9,10 @@ import classes from "./style/MyPage.module.scss";
 const MyPage = (props) => {
   // 유저정보 관리 변수
   const [userInfo, setUserInfo] = useState("");
-
   const header = "";
   const param = "";
   const fetchURL = "backend/userinfo";
+
   const profileImg = "";
   const [nickname, setNickname] = useState("귀여운 양파");
   const [name, setName] = useState("sjkim");
@@ -36,55 +37,7 @@ const MyPage = (props) => {
   return (
     <div>
       <MyPageHeader profileImg={profileImg} nickname={nickname} />
-      <div>
-        <div className={classes.title}>가입정보</div>
-        <hr />
-        <div>
-          <div className={classes.label} htmlFor="">
-            이름
-          </div>
-
-          <MyPageInput
-            className={classes.input}
-            disabled={true}
-            placeholder={name}
-          />
-        </div>
-        <div>
-          <div className={classes.label} htmlFor="">
-            이메일
-          </div>
-
-          <MyPageInput
-            className={classes.input}
-            disabled={true}
-            placeholder={email}
-          />
-        </div>
-        <div>
-          <div className={classes.label} htmlFor="">
-            주소
-          </div>
-
-          <MyPageInput
-            className={classes.input}
-            disabled={true}
-            placeholder={fullAddress}
-          />
-        </div>
-        <div>
-          <div className={classes.label} htmlFor="">
-            연락처
-          </div>
-
-          <MyPageInput
-            className={classes.input}
-            disabled={true}
-            placeholder={phoneNumber}
-          />
-        </div>
-        <Button className={classes.button}>가입정보 수정</Button>
-      </div>
+      <Outlet />
     </div>
   );
 };
