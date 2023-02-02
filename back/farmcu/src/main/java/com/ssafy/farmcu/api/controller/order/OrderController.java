@@ -1,6 +1,6 @@
 package com.ssafy.farmcu.api.controller.order;
 
-import com.ssafy.farmcu.api.dto.order.OrderDto;
+import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
 import com.ssafy.farmcu.api.service.order.OrderService;
@@ -50,7 +50,7 @@ public class OrderController {
     // ( 구매 페이지 ) 결제 버튼 클릭 : 간편 결제 -> 카카오 간편 결제 / 계좌 이체 -> 계좌 이체
 
     @PostMapping(value = "")
-    public ResponseEntity order(OrderDto orderDto, BindingResult bindingResult, Principal principal){
+    public ResponseEntity order(OrderInfoDto orderInfoDto, BindingResult bindingResult, Principal principal){
         if(bindingResult.hasErrors()){
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -64,7 +64,7 @@ public class OrderController {
         Long orderId; //주문번호 생성
 
         try {
-            orderId = orderService.order(orderDto, name); //주문 시도 및 주문번호 가져오기
+            orderId = orderService.order(orderInfoDto, name); //주문 시도 및 주문번호 가져오기
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

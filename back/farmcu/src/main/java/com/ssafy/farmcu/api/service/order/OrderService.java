@@ -1,6 +1,6 @@
 package com.ssafy.farmcu.api.service.order;
 
-import com.ssafy.farmcu.api.dto.order.OrderDto;
+import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
@@ -33,14 +33,14 @@ public class OrderService {
 
     //**  단일 상품 주문 **//
     // (한 종류의 상품만 주문 가능, 상품 바로 구매 or live 주문)
-    public Long order(OrderDto orderDto, String id) {
-        Item item = itemRepository.findByItemId(orderDto.getItem_id()).orElseThrow(() -> new ItemNotFoundException("상품에 대한 정보가 없습니다."));
+    public Long order(OrderInfoDto orderInfoDto, String id) {
+        Item item = itemRepository.findByItemId(orderInfoDto.getItemId()).orElseThrow(() -> new ItemNotFoundException("상품에 대한 정보가 없습니다."));
 
         // 로그인 중인 사용자
         Member member = memberRepository.findById(id).get();
         // item 객체에서 OrderItem 객체 생성
         List<OrderItem> orderItems = new ArrayList<>();
-        OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getOrderCount());
+        OrderItem orderItem = OrderItem.createOrderItem(item, orderInfoDto.getOrderItemCount());
         orderItems.add(orderItem);
         Order order = Order.createOrder(member, orderItems);
         orderRepository.save(order);
@@ -54,16 +54,16 @@ public class OrderService {
 
     //** 다양한 상품 주문 **//
     // (장바구니 주문)
-    public Long orders(List<OrderDto> orderDtoList, String id) {
+    public Long orders(List<OrderInfoDto> orderInfoDtoList, String id) {
 
         // 로그인 중인 사용자
         Member member = memberRepository.findById(id).get();
 
         // OrderDto 객체에서 item 객체, count 값을 얻음 =>  OrderItem 객체들 생성해서 추가
         List<OrderItem> orderItemList = new ArrayList<>();
-        for (OrderDto orderDto : orderDtoList) {
-            Item item = itemRepository.findByItemId(orderDto.getItem_id()).orElseThrow();
-            OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getOrderCount());
+        for (OrderInfoDto orderInfoDto : orderInfoDtoList) {
+            Item item = itemRepository.findByItemId(orderInfoDto.getItemId()).orElseThrow();
+            OrderItem orderItem = OrderItem.createOrderItem(item, orderInfoDto.getOrderItemCount());
             orderItemList.add(orderItem);
         }
 
