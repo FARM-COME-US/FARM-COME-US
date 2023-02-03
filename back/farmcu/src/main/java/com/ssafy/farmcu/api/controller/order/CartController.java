@@ -1,53 +1,72 @@
-//package com.ssafy.farmcu.api.controller.order;
-//
-//
-//import com.ssafy.farmcu.api.dto.order.CartOrderDto;
-//import com.ssafy.farmcu.api.dto.order.CartRequestDto;
-//import com.ssafy.farmcu.api.entity.member.Member;
-//import com.ssafy.farmcu.api.entity.order.Cart;
-//import com.ssafy.farmcu.api.service.order.CartServiceImpl;
-//import io.swagger.annotations.ApiOperation;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.ui.Model;
-//import org.springframework.validation.BindingResult;
-//import org.springframework.validation.FieldError;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.security.Principal;
-//import java.util.List;
-//
+package com.ssafy.farmcu.api.controller.order;
+
+
+
+import com.ssafy.farmcu.api.dto.order.CartInfoDto;
+import com.ssafy.farmcu.api.entity.member.Member;
+import com.ssafy.farmcu.api.entity.order.Cart;
+import com.ssafy.farmcu.api.service.order.CartService;
+import com.ssafy.farmcu.api.service.order.CartServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Model;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+
 //@RequiredArgsConstructor
-//@RestController
-//@RequestMapping("/cart")
-//public class CartController {
-//    @Autowired
-//    private final CartServiceImpl cartServiceImpl;
+@RestController
+@RequestMapping("/cart")
+@Component
+@Api(value = "장바구니 관련 API")
+public class CartController {
+
+//    private final CartService cartService;
 //
-//    // Controller method
-//    //
-//    //- create ex) createItem
-//    //- select ex) selectMember (조회)
-//    //- 7update ex) updateMemberInfo (업데이트)
-//    //- Delete ex) deleteMember (삭제)
-//
-//
-//    //** 로그인 한 사용자의 장바구니 목록 조회 **//
-//    @GetMapping("")
-//    @ApiOperation(value="회원 탈퇴", notes="")
-//    public String selectMyCart(Model model) {
-//        Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //현재 로그인 정보
-//        List<Cart> cart = cartServiceImpl.findMyCart(member); //멤버의 주문목록 불러오기
-//        model.addAttribute("cart", cart); //멤버의 주문리스트 뷰로 전송
-//
-//        model.addAttribute("cart", cart); //멤버의 주문리스트 뷰로 전송
-//        return "/member/myCart";
+//    public CartController(CartService cartService) {
+//        this.cartService = cartService;
 //    }
-//
-//
+
+    //    @Autowired
+    public final  CartService cartService;
+    public final CartServiceImpl cartServiceImpl;
+
+    CartController(@Lazy CartService cartService, @Lazy CartServiceImpl cartServiceImpl) {
+        this.cartService = cartService;
+        this.cartServiceImpl = cartServiceImpl;
+    }
+
+    //    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(CartController.class);
+//    CartService cartService = applicationContext.getBean("cartService", CartService.class);
+
+    @PostMapping
+    @ApiOperation(value = "장바구니 상품 추가")
+    public ResponseEntity<HashMap<String, Boolean>> saveCart(@RequestBody CartInfoDto cartInfoDto) {
+        boolean isSuccess = cartService.addCart(cartInfoDto);
+
+        HashMap<String, Boolean> resultMap = new HashMap<>();
+        if(isSuccess) resultMap.put("success", true);
+        else resultMap.put("success", false);
+
+        return ResponseEntity.ok(resultMap);
+    }
+    //** 로그인 한 사용자의 장바구니 목록 조회 **//
+
+
+
 //    @PostMapping(value = "") //주문하기,
 //    public ResponseEntity createCart(CartRequestDto cartDto, BindingResult bindingResult, Principal principal) {
 //        if (bindingResult.hasErrors()) {
@@ -91,5 +110,6 @@
 //        return "redirect:/myCart";
 ////        return new ResponseEntity(HttpStatus.NO_CONTENT);
 //    }
-//
-//}
+
+
+}
