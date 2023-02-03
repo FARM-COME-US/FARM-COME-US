@@ -1,11 +1,20 @@
 
 package com.ssafy.farmcu.api.controller.order;
 
+<<<<<<< HEAD
 import com.ssafy.farmcu.api.dto.order.OrderDto;
 import com.ssafy.farmcu.api.service.order.OrderServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Lazy;
+=======
+import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
+import com.ssafy.farmcu.api.entity.member.Member;
+import com.ssafy.farmcu.api.entity.order.OrderItem;
+import com.ssafy.farmcu.api.service.order.OrderService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -23,6 +32,7 @@ import java.util.List;
 @Api(value = "주문 관련 API")
 public class OrderController {
 
+<<<<<<< HEAD
     //    @Autowired
 //    private final OrderService orderService;
     public final OrderServiceImpl orderServiceImpl;
@@ -49,6 +59,29 @@ public class OrderController {
 //        model.addAttribute("orders", orders); //멤버의 주문리스트 뷰로 전송
 //        return "/order/myOrder";
 //    }
+=======
+    @Autowired
+    private final OrderService orderService;
+
+    //** 전체 주문 목록 조회 **//
+    @GetMapping("") //전체 주문 목록 확인
+    public String selectOrders(Model model){
+        List<OrderItem> orders = orderService.findAllItems(); //모든 주문 불러오기
+
+        model.addAttribute("orders", orders); //주문 리스트를 뷰로 전송
+        return "/admin/orderList";
+    }
+
+    //** 로그인 사용자 주문 조회 **//
+    @GetMapping("")
+    public String selectMyOrders(Model model){
+        Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //현재 로그인 정보
+        List<OrderItem> orders = orderService.findMyItems(member); //멤버의 주문목록 불러오기
+
+        model.addAttribute("orders", orders); //멤버의 주문리스트 뷰로 전송
+        return "/order/myOrder";
+    }
+>>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
 
     //** 상품 주문 **//                  <======== 장바구니 상품 주문은 CartController
     //** 주문 == 결제하기인데 다시 생각해 봐야 할듯 **//
@@ -56,8 +89,12 @@ public class OrderController {
     // ( 구매 페이지 ) 결제 버튼 클릭 : 간편 결제 -> 카카오 간편 결제 / 계좌 이체 -> 계좌 이체
 
     @PostMapping(value = "")
+<<<<<<< HEAD
     @ApiOperation(value = "단건 주문")
     public ResponseEntity order(OrderDto orderDto, BindingResult bindingResult, Principal principal){
+=======
+    public ResponseEntity order(OrderInfoDto orderInfoDto, BindingResult bindingResult, Principal principal){
+>>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
         if(bindingResult.hasErrors()){
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -71,7 +108,7 @@ public class OrderController {
         Long orderId; //주문번호 생성
 
         try {
-            orderId = orderServiceImpl.order(orderDto, name); //주문 시도 및 주문번호 가져오기
+            orderId = orderService.order(orderInfoDto, name); //주문 시도 및 주문번호 가져오기
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -83,7 +120,12 @@ public class OrderController {
     @PutMapping
     @ApiOperation(value = "주문 취소")
     public String updateOrder(Long orderId){
+<<<<<<< HEAD
         orderServiceImpl.updateOrder(orderId);
+=======
+        orderService.updateOrder(orderId);
+
+>>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
         return "redirect:/myOrders";
     }
 }
