@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../../components/common/Button";
-import MyPageInput from "./MyPageInput";
+import MyPageInput from "../../components/mypage/MyPageInput";
 import classes from "./style/MyPageInfo.module.scss";
 
 const MyPageInfo = (props) => {

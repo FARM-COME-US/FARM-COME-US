@@ -5,7 +5,6 @@ import ImageButton from "../../components/common/ImageButton";
 import { HiUser } from "react-icons/hi";
 import { MdStoreMallDirectory } from "react-icons/md";
 import { MdOutlineCreditCard } from "react-icons/md";
-import { MdLocalGroceryStore } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 
 import classes from "./style/MyPageMenu.module.scss";
