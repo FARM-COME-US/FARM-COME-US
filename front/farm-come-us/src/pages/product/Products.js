@@ -40,8 +40,8 @@ const SUBCATEGORY_LIST = [
 
 const PRODUCT_LIST = [
   {
-    mainId: 1,
-    subId: 1,
+    mainCategoryId: 1,
+    subCategoryId: 1,
     productId: 1,
     productName: "[청송] 무농약 당도 높은 가을 사과, 박스",
     discount: 0,
@@ -51,8 +51,8 @@ const PRODUCT_LIST = [
     storeName: "애플 인 더 청송",
   },
   {
-    mainId: 1,
-    subId: 1,
+    mainCategoryId: 1,
+    subCategoryId: 2,
     productId: 2,
     productName: "[청송] 무농약 당도 높은 가을 사과, 박스",
     discount: 0,
@@ -62,8 +62,8 @@ const PRODUCT_LIST = [
     storeName: "애플 인 더 청송",
   },
   {
-    mainId: 1,
-    subId: 1,
+    mainCategoryId: 2,
+    subCategoryId: 1,
     productId: 3,
     productName: "[청송] 무농약 당도 높은 가을 사과, 박스",
     discount: 0,
