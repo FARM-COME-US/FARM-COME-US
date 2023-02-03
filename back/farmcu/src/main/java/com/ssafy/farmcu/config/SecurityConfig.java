@@ -61,7 +61,7 @@ public class SecurityConfig {
                         "/h2-console/**",
                         "/favicon.ico").permitAll()
                 .antMatchers("/", "/*/swagger-ui.html#","/css/**", "/images/**",
-                        "/js/**", "/h2-console/**","/*/login", "/*/login/**",  "/*/join", "/*/join/**", "/find/**", "/social/**", "/book/**", "/test/**").permitAll()
+                        "/js/**", "/h2-console/**","/*/login", "/*/login/**",  "/*/join", "/*/join/**", "/find/**", "/social/**", "/book/**", "/test/**", "/api/v1/item/**", "/api/v1/live/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout()

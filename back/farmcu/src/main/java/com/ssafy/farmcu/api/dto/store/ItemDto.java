@@ -15,7 +15,6 @@ public class ItemDto {
     private Long itemId;
     private String itemName;
     private String itemDescription;
-    private  String itemImg;
     private int itemPrice;
     private int itemDiscount;
     private int itemStock;
@@ -27,7 +26,6 @@ public class ItemDto {
         this.itemId = item.getItemId();
         this.itemName = item.getItemName();
         this.itemDescription = item.getItemDescription();
-        this.itemImg = item.getItemImg();
         this.itemPrice = item.getItemPrice();
         this.itemDiscount = item.getItemDiscount();
         this.itemStock = item.getItemStock();
