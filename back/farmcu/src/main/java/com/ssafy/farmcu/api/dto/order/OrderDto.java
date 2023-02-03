@@ -1,10 +1,8 @@
 package com.ssafy.farmcu.api.dto.order;
 
-import com.ssafy.farmcu.api.entity.store.Item;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import java.security.Timestamp;
 import java.util.List;
 
 @Getter @Setter
