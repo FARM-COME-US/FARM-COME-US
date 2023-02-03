@@ -29,6 +29,6 @@ public interface ItemService {
 //    public List<Item> findItemsByCategoryCode(Long categoryCode);
 
     //상품 이름, 카테고리 검색
-    public List<ItemDto> findItemsByCategoryAndItemName(ItemSearchReq itemSearchReq);
+    public List<ItemDto> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq);
 
 }

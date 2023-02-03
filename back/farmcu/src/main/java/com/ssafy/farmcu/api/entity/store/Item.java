@@ -33,9 +33,6 @@ public class Item {
     private String itemDescription;
 
     @Column(nullable = false)
-    private String itemImg;
-
-    @Column(nullable = false)
     private int itemPrice;
 
     @Column(nullable = false)
@@ -69,11 +66,10 @@ public class Item {
 
     //빌더
     @Builder
-    public Item(Long itemId, String itemName, String itemDescription, String itemImg, int itemDiscount, int itemPrice, int itemStock, Timestamp itemCreatedAt, Category category, Store store ) {
+    public Item(Long itemId, String itemName, String itemDescription, int itemDiscount, int itemPrice, int itemStock, Timestamp itemCreatedAt, Category category, Store store ) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
-        this.itemImg = itemImg;
         this.itemPrice = itemPrice;
         this.itemDiscount = itemDiscount;
         this.itemStock = itemStock;

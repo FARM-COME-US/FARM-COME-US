@@ -29,10 +29,8 @@ public class ItemServiceImpl implements ItemService {
             Category category = categoryRepository.findByCategoryCode(itemDto.getCategoryCode());
             Store store = storeRepository.findByStoreId(itemDto.getStoreId()).get();
             Item item = Item.builder()
-                    .itemId(itemDto.getItemId())
                     .itemName(itemDto.getItemName())
                     .itemDescription(itemDto.getItemDescription())
-                    .itemImg(itemDto.getItemImg())
                     .itemPrice(itemDto.getItemPrice())
                     .itemDiscount(itemDto.getItemDiscount())
                     .itemStock(itemDto.getItemStock())
@@ -54,19 +52,15 @@ public class ItemServiceImpl implements ItemService {
     public boolean updateItem(ItemDto itemDto) {
         try {
             Category category = categoryRepository.findByCategoryCode(itemDto.getCategoryCode());
-            Store store = storeRepository.findByStoreId(itemDto.getStoreId()).get();
-            Item item = Item.builder()
-                    .itemId(itemDto.getItemId())
-                    .itemName(itemDto.getItemName())
-                    .itemDescription(itemDto.getItemDescription())
-                    .itemImg(itemDto.getItemImg())
-                    .itemPrice(itemDto.getItemPrice())
-                    .itemDiscount(itemDto.getItemDiscount())
-                    .itemStock(itemDto.getItemStock())
-                    .itemCreatedAt(null)
-                    .category(category)
-                    .store(store)
-                    .build();
+            Store store = storeRepository.findByStoreId(itemDto.getStoreId()).orElseThrow(NullPointerException::new);
+            Item item = itemRepository.findByItemId(itemDto.getItemId()).orElseThrow(NullPointerException::new);
+
+            item.setItemName(itemDto.getItemName());
+            item.setItemDescription(itemDto.getItemDescription());
+            item.setItemPrice(itemDto.getItemPrice());
+            item.setItemDiscount(itemDto.getItemDiscount());
+            item.setItemStock(itemDto.getItemStock());
+            item.setCategory(category);
 
             itemRepository.save(item);
             return true;
@@ -79,7 +73,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public boolean deleteItem(Long itemId) {
         try {
-            itemRepository.deleteById(itemId);
+            itemRepository.deleteByItemId(itemId);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,9 +93,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> findItemsByCategoryAndItemName(ItemSearchReq itemSearchReq) {
-        Category category = categoryRepository.findByCategoryCode(itemSearchReq.getCategoryCode());
-        List<Item> items = itemRepository.findByCategoryAndItemNameLike(category, itemSearchReq.getItemName());
+    public List<ItemDto> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq) {
+        List<Item> items;
+
+        if (itemSearchReq.getCategoryCode() == 0) {
+            items = itemRepository.findByItemNameLike(itemSearchReq.getItemName());
+        } else {
+            Category category = categoryRepository.findByCategoryCode(itemSearchReq.getCategoryCode());
+            items = itemRepository.findByCategoryAndItemNameLike(category, itemSearchReq.getItemName());
+        }
+
         List<ItemDto> result = items.stream()
                 .map(i -> new ItemDto(i))
                 .collect(toList());
