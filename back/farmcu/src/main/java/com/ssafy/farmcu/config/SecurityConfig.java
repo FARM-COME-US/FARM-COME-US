@@ -2,6 +2,7 @@ package com.ssafy.farmcu.config;
 
 import com.ssafy.farmcu.config.properties.AppProperties;
 import com.ssafy.farmcu.config.properties.CorsProperties;
+import com.ssafy.farmcu.exception.RestAuthenticationEntryPoint;
 import com.ssafy.farmcu.oauth.filter.TokenAuthenticationFilter;
 import com.ssafy.farmcu.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.ssafy.farmcu.oauth.handler.OAuth2AuthenticationSuccessHandler;
@@ -44,50 +45,47 @@ public class SecurityConfig {
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-
         http
+                // 기본 REST API만 쓰겠다는 소리
                 .httpBasic().disable()
-                .cors()
-                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
+                .cors().and()
                 .csrf().disable()
-                .headers().frameOptions().disable()
+                // SockJS는 기본적으로 HTML iframe 요소를 통한 전송을 허용하지 않도록 설정되는데 해당 내용을 해제한다.
+                .headers()
+                .frameOptions().sameOrigin()
                 .and()
-                // authorizeRequest 권한 관리 요청 시작
+                // 세션 안쓰고 JWT 쓸것이므로 비활성화
+//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//            .and()
                 .authorizeRequests()
-                .antMatchers("/","/api/v1/auth/**","/",
-                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",   // swagger
-                        "/h2-console/**",
-                        "/favicon.ico").permitAll()
-                .antMatchers("/", "/*/swagger-ui.html#","/css/**", "/images/**",
-                        "/js/**", "/h2-console/**","/*/login", "/*/login/**",  "/*/join", "/*/join/**", "/find/**", "/social/**", "/book/**", "/test/**").permitAll()
-                .anyRequest().authenticated()
+//                .antMatchers("/chat/**").hasRole("USER")  // chat으로 시작하는 리소스에 대한 접근 권한 설정 ; TEST!!!
+                .antMatchers("/**").permitAll()
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .and()
-                // oauth 로그인 기능
+                // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter보다 앞으로 설정
+                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+//                .accessDeniedHandler(tokenAccessDeniedHandler)
+//            .and()
+//                .authorizeRequests()
+//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+//                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
+//                .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
+//                .anyRequest().authenticated()
+//                .and()
                 .oauth2Login()
-                // 인가에 대한 요청 서비스
-                // "/oauth2/authorization"로 접근시 oauth 로그인 요청
                 .authorizationEndpoint()
-                .baseUri("/oauth/authorization")
+                .baseUri("/oauth2/authorization")
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .and()
-                // callback 주소
                 .redirectionEndpoint()
                 .baseUri("/*/oauth2/code/*")
                 .and()
-                // user 조회
                 .userInfoEndpoint()
-                // oauth로 유저 정보를 받아오게 되면 oauth2 인증 유저 객체로 등록하게끔 구현된 커스텀 클래스
                 .userService(principalOauth2MemberService)
-                // 조회 성공/실패
                 .and()
-                // 정상적으로 유저 인증되어 등록되면 실행되는 클래스(JWT)
                 .successHandler(oAuth2AuthenticationSuccessHandler())
                 .failureHandler(oAuth2AuthenticationFailureHandler());
+
 
         // 로그인 요청을 가로채 usernamepasswordAuthenticationToken이라는 인증용 객체 생성
         return http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
