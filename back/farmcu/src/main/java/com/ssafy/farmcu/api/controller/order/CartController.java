@@ -2,30 +2,18 @@ package com.ssafy.farmcu.api.controller.order;
 
 
 
-import com.ssafy.farmcu.api.dto.order.CartInfoDto;
-import com.ssafy.farmcu.api.entity.member.Member;
-import com.ssafy.farmcu.api.entity.order.Cart;
+import com.ssafy.farmcu.api.dto.order.CartDeleteDto;
+import com.ssafy.farmcu.api.dto.order.CartDto;
 import com.ssafy.farmcu.api.service.order.CartService;
 import com.ssafy.farmcu.api.service.order.CartServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.Model;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.HashMap;
-import java.util.List;
 
 //@RequiredArgsConstructor
 @RestController
@@ -34,11 +22,6 @@ import java.util.List;
 @Api(value = "장바구니 관련 API")
 public class CartController {
 
-//    private final CartService cartService;
-//
-//    public CartController(CartService cartService) {
-//        this.cartService = cartService;
-//    }
 
     //    @Autowired
     public final  CartService cartService;
@@ -54,8 +37,8 @@ public class CartController {
 
     @PostMapping
     @ApiOperation(value = "장바구니 상품 추가")
-    public ResponseEntity<HashMap<String, Boolean>> saveCart(@RequestBody CartInfoDto cartInfoDto) {
-        boolean isSuccess = cartService.addCart(cartInfoDto);
+    public ResponseEntity<HashMap<String, Boolean>> saveCart(@RequestBody CartDto cartDto) {
+        boolean isSuccess = cartService.addCart(cartDto);
 
         HashMap<String, Boolean> resultMap = new HashMap<>();
         if(isSuccess) resultMap.put("success", true);
@@ -63,7 +46,19 @@ public class CartController {
 
         return ResponseEntity.ok(resultMap);
     }
+
     //** 로그인 한 사용자의 장바구니 목록 조회 **//
+//    @DeleteMapping
+//    @ApiOperation(value = "장바구니 상품 삭제")
+//    public ResponseEntity<HashMap<String, Boolean>> deleteCartItem(@RequestBody CartDeleteDto cartDeleteDto) {
+//        boolean isSuccess = cartService.deleteCart(cartDeleteDto);
+//
+//        HashMap<String, Boolean> resultMap = new HashMap<>();
+//        if(isSuccess) resultMap.put("success", true);
+//        else resultMap.put("success", false);
+//
+//        return ResponseEntity.ok(resultMap);
+//    }
 
 
 

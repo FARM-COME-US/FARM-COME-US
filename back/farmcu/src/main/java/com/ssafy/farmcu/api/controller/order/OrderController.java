@@ -2,20 +2,13 @@
 package com.ssafy.farmcu.api.controller.order;
 
 import com.ssafy.farmcu.api.dto.order.OrderDto;
-import com.ssafy.farmcu.api.entity.member.Member;
-import com.ssafy.farmcu.api.entity.order.OrderItem;
-import com.ssafy.farmcu.api.service.order.CartService;
-import com.ssafy.farmcu.api.service.order.OrderService;
+import com.ssafy.farmcu.api.service.order.OrderServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +25,10 @@ public class OrderController {
 
     //    @Autowired
 //    private final OrderService orderService;
-    public final OrderService orderService;
+    public final OrderServiceImpl orderServiceImpl;
 
-    OrderController(@Lazy OrderService orderService) {
-        this.orderService = orderService;
+    OrderController(@Lazy OrderServiceImpl orderServiceImpl) {
+        this.orderServiceImpl = orderServiceImpl;
     }
 
 //    //** 전체 주문 목록 조회 **//
@@ -78,7 +71,7 @@ public class OrderController {
         Long orderId; //주문번호 생성
 
         try {
-            orderId = orderService.order(orderDto, name); //주문 시도 및 주문번호 가져오기
+            orderId = orderServiceImpl.order(orderDto, name); //주문 시도 및 주문번호 가져오기
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -90,7 +83,7 @@ public class OrderController {
     @PutMapping
     @ApiOperation(value = "주문 취소")
     public String updateOrder(Long orderId){
-        orderService.updateOrder(orderId);
+        orderServiceImpl.updateOrder(orderId);
         return "redirect:/myOrders";
     }
 }
