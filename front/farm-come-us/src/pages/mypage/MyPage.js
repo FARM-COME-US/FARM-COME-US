@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import MyPageHeader from "../../components/mypage/MyPageHeader";
 import axios from "axios";
 import Button from "../../components/common/Button";
-import MyPageInput from "./MyPageInput";
+import MyPageInput from "../../components/mypage/MyPageInput";
 import classes from "./style/MyPage.module.scss";
 
 const MyPage = (props) => {
@@ -19,6 +19,7 @@ const MyPage = (props) => {
   const [email, setEmail] = useState("foobar@naver.com");
   const [fullAddress, setFullAddress] = useState("멀캠 72-13");
   const [phoneNumber, setPhoneNumber] = useState("010-1234-5678");
+
   // useState로 받아와서 갈아치워야할거같음.
 
   // useEffect로 첫 렌더링시 데이터 가져옴.

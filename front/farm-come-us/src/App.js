@@ -39,7 +39,7 @@ import StoreProducts from "./pages/store/StoreProducts";
 
 const App = () => {
   const menu = useSelector((state) => {
-    console.log("잘되긴해");
+    console.log("useSelector 확인용: state.menuSlice.isOpen");
     console.log(state);
     return state.menuSlice.isOpen;
   }); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
