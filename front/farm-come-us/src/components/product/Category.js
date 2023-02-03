@@ -1,27 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import CategoryItem from "./CategoryItem";
-import SubCategory from "./SubCategory";
 import classes from "./style/Category.module.scss";
 
 const Category = (props) => {
-  const [categoryNum, setNum] = useState(0);
-
-  const getNum = (num) => {
-    setNum(num);
+  const sendId = (id) => {
+    props.getid(id);
   };
 
-  let list = props.categorylist.map((item) => (
+  let list = props.list.map((item) => (
     <CategoryItem
-      name={item.categoryName}
-      key={item.categoryId}
-      getNum={getNum}
+      name={item.Name}
+      id={item.Id}
+      key={item.Id}
+      getid={sendId}
     ></CategoryItem>
   ));
 
   return (
     <div>
       <div className={classes.container}>{list}</div>
-      <SubCategory></SubCategory>
     </div>
   );
 };
