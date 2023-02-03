@@ -1,8 +1,6 @@
 package com.ssafy.farmcu.api.dto.order;
 
 import com.ssafy.farmcu.api.entity.order.DeliveryInfo;
-import com.ssafy.farmcu.api.entity.store.Item;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
