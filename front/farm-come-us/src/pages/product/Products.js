@@ -1,9 +1,8 @@
 import React from "react";
 import Category from "../../components/product/Category.js";
 import ProductList from "../../components/product/ProductList.js";
-import SubCategory from "../../components/product/SubCategory.js";
 
-const categoryList = [
+const CATEGORY_LIST = [
   { categoryName: "전체", categoryId: 0 },
   { categoryName: "과일", categoryId: 1 },
   { categoryName: "채소", categoryId: 2 },
@@ -48,8 +47,7 @@ const productList = [
 const Products = () => {
   return (
     <div>
-      <Category list={categoryList} />
-      <SubCategory />
+      <Category categorylist={CATEGORY_LIST} />
       <ProductList list={productList} />
     </div>
   );
