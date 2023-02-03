@@ -1,5 +1,6 @@
 package com.ssafy.farmcu.api.service.order;
 
+<<<<<<< HEAD
 import com.ssafy.farmcu.api.dto.member.MemberInfoRes;
 import com.ssafy.farmcu.api.dto.order.CartDeleteDto;
 import com.ssafy.farmcu.api.dto.order.CartDto;
@@ -26,4 +27,13 @@ public interface CartService {
 
 
 
+=======
+import com.ssafy.farmcu.api.dto.item.ItemDto;
+import com.ssafy.farmcu.api.dto.order.CartInfoDto;
+
+public interface CartService {
+
+    //상품 생성
+    public boolean addCart(CartInfoDto cartInfoDto);
+>>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
 }

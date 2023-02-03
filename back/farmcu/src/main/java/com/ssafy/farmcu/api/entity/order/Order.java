@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+<<<<<<< HEAD
+=======
+import java.sql.Timestamp;
+>>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
