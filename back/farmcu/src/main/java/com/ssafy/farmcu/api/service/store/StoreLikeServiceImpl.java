@@ -4,6 +4,7 @@ import com.ssafy.farmcu.api.dto.member.MemberListRes;
 import com.ssafy.farmcu.api.dto.store.StoreLikeCreateDto;
 import com.ssafy.farmcu.api.dto.store.StoreLikeDto;
 import com.ssafy.farmcu.api.dto.store.StoreLikeStoreListDto;
+import com.ssafy.farmcu.api.dto.store.StoreListRes;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.store.Store;
 import com.ssafy.farmcu.api.entity.store.StoreLike;
@@ -71,17 +72,9 @@ public class StoreLikeServiceImpl implements StoreLikeService{
     }
 
     @Override
-    public List<StoreLikeStoreListDto> findLikes(Long memberId) {
-        List<StoreLike> storeLikes = storeLikeRepository.findStoreLikeByMember(memberId);
-        List<StoreLikeStoreListDto> result = new ArrayList<>();
-        if(storeLikes!=null){
-//            for(StoreLike storeLike : storeLikes){
-//                StoreLikeStoreListDto storeLikeStoreListDto = StoreLikeStoreListDto.builder()
-//                        .storeDto(storeLike.getStore())
-//                        .build();
-//            }
-
-        }
+    public List<StoreListRes> findLikesList(Long memberId) {
+        List<StoreListRes> storeLikes = storeLikeRepository.findStoreByMember(memberId);
+        if(storeLikes!=null) return storeLikes;
 
 
         return null;
