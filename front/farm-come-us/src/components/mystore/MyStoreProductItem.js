@@ -3,7 +3,6 @@ import React from "react";
 import classes from "./style/MyStoreProductItem.module.scss";
 
 const MyStoreProductItem = (props) => {
-  console.log(props.item);
   const convertedPrice = props.item.price
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");

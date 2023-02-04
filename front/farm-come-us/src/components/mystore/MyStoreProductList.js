@@ -11,7 +11,7 @@ const MyStoreProductList = (props) => {
     ) : (
       <ul className={classes.productList}>
         {props.products.map((product, idx) => (
-          <li key={idx} onClick={(e) => props.startLiveHandler(product, e)}>
+          <li key={idx} onClick={(e) => props.onClick(product, e)}>
             <MyStoreProductItem key={idx} item={product} />
           </li>
         ))}

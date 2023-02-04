@@ -17,7 +17,7 @@ const DUMMY_RECEIPT = [
     date: new Date("2023", "0", "30", "02", "42", "24"),
     productId: 2,
     productName: "제주 스윗 당근",
-    orderId: 105616421,
+    orderId: 101561056,
     totalPrice: 121000,
   },
   {
@@ -27,6 +27,14 @@ const DUMMY_RECEIPT = [
     productName: "보성 녹차 건조 차잎",
     orderId: 105641232,
     totalPrice: 126000,
+  },
+  {
+    receiptId: 4,
+    date: new Date("2023", "0", "30", "02", "42", "24"),
+    productId: 4,
+    productName: "김수미 간장 게장",
+    orderId: 105616424,
+    totalPrice: 336000,
   },
 ];
 

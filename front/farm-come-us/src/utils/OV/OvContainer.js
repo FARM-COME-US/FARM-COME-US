@@ -5,13 +5,13 @@ import axios from "axios";
 
 import classes from "./OvContainer.module.scss";
 
-import UserVideoComponent from ".//UserVideoComponent";
-import LiveChat from "../components/broadcast/LiveChat";
-import LiveHeader from "../components/broadcast/LiveHeader";
-import LiveInfo from "../components/broadcast/LiveInfo";
-import LiveFooter from "../components/broadcast/LiveFooter";
-import LeaveButton from "../components/broadcast/LeaveButton";
-import LiveProductInfo from "../components/broadcast/LiveProductInfo";
+import UserVideoComponent from "./UserVideoComponent";
+import LiveChat from "../../components/broadcast/LiveChat";
+import LiveHeader from "../../components/broadcast/LiveHeader";
+import LiveInfo from "../../components/broadcast/LiveInfo";
+import LiveFooter from "../../components/broadcast/LiveFooter";
+import LeaveButton from "../../components/broadcast/LeaveButton";
+import LiveProductInfo from "../../components/broadcast/LiveProductInfo";
 
 const OV_SERVER_URL = "http://localhost:5000/";
 

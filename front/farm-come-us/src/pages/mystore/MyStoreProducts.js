@@ -48,7 +48,7 @@ const MyStoreProduct = () => {
     setIsModalOpen((prev) => !prev);
   };
 
-  const addLiveHandler = (e) => {
+  const addProductHandler = (e) => {
     e.preventDefault();
     alert("상품 등록 이벤트 발생");
 
@@ -56,10 +56,18 @@ const MyStoreProduct = () => {
     return;
   };
 
+  const showProductDetailHandler = (product, event) => {
+    console.log(product, event);
+    alert("상품 디테일로 넘어가는 이벤트");
+  };
+
   return (
     <div className={classes.pageContainer}>
       <MyStoreContentTitle text="판매상품" />
-      <MyStoreProductList products={DUMMY_PRODUCT_LIST} />
+      <MyStoreProductList
+        products={DUMMY_PRODUCT_LIST}
+        onClick={showProductDetailHandler}
+      />
 
       <div className={classes.btnBox}>
         <AddButton className={classes.btnAdd} onClick={modalToggleHandler} />
@@ -70,8 +78,8 @@ const MyStoreProduct = () => {
           title="Live 정보 입력"
           className={isModalOpen ? null : "close"}
           onToggleModal={modalToggleHandler}
-          onSubmit={addLiveHandler}
-          onClick={addLiveHandler}
+          onSubmit={addProductHandler}
+          onClick={addProductHandler}
         />
       ) : null}
     </div>
