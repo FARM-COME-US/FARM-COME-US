@@ -1,19 +1,14 @@
 package com.ssafy.farmcu.api.dto.store;
 
-import com.ssafy.farmcu.api.entity.live.Live;
-import com.ssafy.farmcu.api.entity.member.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.sql.Timestamp;
-@Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StoreCreateReq {
-//    private Long storeId; 자동 생성
+@Getter
+@Builder
+@ToString
+public class StoreUpdateReq {
+    private Long storeId;
     private String storeName;
     private String storeDescription;
     private String storeImg;
@@ -23,6 +18,6 @@ public class StoreCreateReq {
     private String storePhoneNumber;
     private int storeDeliveryCost;
     private int storeDeliveryFree;
-//    private Timestamp createdAt; 자동생성
+    //    private Timestamp createdAt; 자동생성
     private Long memberId;
 }

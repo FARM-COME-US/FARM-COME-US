@@ -1,7 +1,9 @@
 package com.ssafy.farmcu.api.controller.store;
 
 import com.ssafy.farmcu.api.dto.member.MemberJoinReq;
+import com.ssafy.farmcu.api.dto.store.StoreCreateReq;
 import com.ssafy.farmcu.api.dto.store.StoreDto;
+import com.ssafy.farmcu.api.dto.store.StoreUpdateReq;
 import com.ssafy.farmcu.api.service.store.StoreServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +32,7 @@ public class StoreController {
 
     @PostMapping("/")
     @ApiOperation(value="스토어 생성", notes = "")
-    public ResponseEntity createStore(@Validated @RequestBody StoreDto request){
+    public ResponseEntity createStore(@Validated @RequestBody StoreCreateReq request){
         if(storeService.saveStore(request)){
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         }else{
@@ -51,7 +53,7 @@ public class StoreController {
 
     @PutMapping("/{storeId}")
     @ApiOperation(value="스토어 정보 수정", notes = "")
-    public ResponseEntity updateStore(@PathVariable("storeId") Long id, @Validated @RequestBody StoreDto request){
+    public ResponseEntity updateStore(@PathVariable("storeId") Long id, @Validated @RequestBody StoreUpdateReq request){
         if(storeService.updateStore(id, request)){
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         }else{
