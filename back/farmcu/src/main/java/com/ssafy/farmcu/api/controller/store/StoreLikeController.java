@@ -4,6 +4,7 @@ import com.ssafy.farmcu.api.dto.member.MemberListRes;
 import com.ssafy.farmcu.api.dto.store.StoreDto;
 import com.ssafy.farmcu.api.dto.store.StoreLikeCreateDto;
 import com.ssafy.farmcu.api.dto.store.StoreLikeDto;
+import com.ssafy.farmcu.api.dto.store.StoreListRes;
 import com.ssafy.farmcu.api.service.store.StoreLikeServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +45,17 @@ public class StoreLikeController {
             return new ResponseEntity<String>("uninterest success!!", HttpStatus.ACCEPTED);
         }else{
             return new ResponseEntity<String>("uninterest fail", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{memberId}")
+    public ResponseEntity<?> findStoreList(@PathVariable("memberId")Long id){
+        List<StoreListRes> list = storeLikeService.findLikesList(id);
+
+        if(list != null){
+            return new ResponseEntity<StoreListRes>((StoreListRes) list, HttpStatus.ACCEPTED);
+        }else{
+            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.ssafy.farmcu.api.repository;
 
 import com.ssafy.farmcu.api.dto.member.MemberListRes;
+import com.ssafy.farmcu.api.dto.store.StoreListRes;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.store.Store;
 import com.ssafy.farmcu.api.entity.store.StoreLike;
@@ -12,8 +13,8 @@ import java.util.Optional;
 
 public interface StoreLikeRepository extends JpaRepository<StoreLike, Long> {
 
-    @Query(value = "SELECT s FROM StoreLike s WHERE s.member.memberId = :memberId")
-    List<StoreLike> findStoreLikeByMember(Long memberId);
+//    @Query(value = "SELECT s FROM StoreLike s WHERE s.member.memberId = :memberId")
+//    List<StoreLike> findStoreLikeByMember(Long memberId);
 
 //    @Query(value = "SELECT s.member FROM StoreLike s WHERE s.store.storeId = :storeId")
 //    List<Member> findStoreLikeByStore(Long storeId);
@@ -23,4 +24,7 @@ public interface StoreLikeRepository extends JpaRepository<StoreLike, Long> {
 
     @Query("select new com.ssafy.farmcu.api.dto.member.MemberListRes(m.memberId, m.id, m.name, m.nickname, m.profileImg) from Member m join StoreLike sl where sl.store.storeId = :storeId")
     List<MemberListRes> findStoreLikeByStore(Long storeId);
+
+    @Query("select new com.ssafy.farmcu.api.dto.store.StoreListRes(s.storeId, s.storeName, s.storeDescription, s.storeImg) from Store s join StoreLike sl where sl.member.memberId = :memberId")
+    List<StoreListRes> findStoreByMember(Long memberId);
 }
