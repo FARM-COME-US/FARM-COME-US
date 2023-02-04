@@ -2,7 +2,7 @@ import { React } from "react";
 import { useLocation } from "react-router-dom";
 
 import classes from "./BroadCast.module.scss";
-import OvContainer from "../utils/OvContainer";
+import OvContainer from "../utils/OV/OvContainer";
 
 const BroadCast = () => {
   // const width = window.innerWidth;
