@@ -1,6 +1,8 @@
 package com.ssafy.farmcu.api.controller.store;
 
+import com.ssafy.farmcu.api.dto.member.MemberListRes;
 import com.ssafy.farmcu.api.dto.store.StoreDto;
+import com.ssafy.farmcu.api.dto.store.StoreLikeCreateDto;
 import com.ssafy.farmcu.api.dto.store.StoreLikeDto;
 import com.ssafy.farmcu.api.service.store.StoreLikeServiceImpl;
 import io.swagger.annotations.Api;
@@ -24,9 +26,9 @@ public class StoreLikeController {
 
     @PostMapping
     @ApiOperation(value="스토어 찜하기", notes = "")
-    public ResponseEntity<?> createStore(@Validated @RequestBody StoreLikeDto request){
-        List<String> memberList = storeLikeService.findLikesId(request.getStoreId());
-        if(!memberList.contains(request.getMemberId())){
+    public ResponseEntity<?> createStore(@Validated @RequestBody StoreLikeCreateDto request){
+        List<Long> memberIdList = storeLikeService.findLikesId(request.getStoreId());
+        if(!memberIdList.contains(request.getMemberId())){
             if(storeLikeService.saveLike(request)){
                 return new ResponseEntity<String>("interest success!!", HttpStatus.ACCEPTED);
             }else{

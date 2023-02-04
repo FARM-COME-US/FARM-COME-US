@@ -1,6 +1,7 @@
 package com.ssafy.farmcu.api.service.store;
 
-import com.ssafy.farmcu.api.dto.store.StoreDto;
+import com.ssafy.farmcu.api.dto.member.MemberListRes;
+import com.ssafy.farmcu.api.dto.store.StoreLikeCreateDto;
 import com.ssafy.farmcu.api.dto.store.StoreLikeDto;
 import com.ssafy.farmcu.api.dto.store.StoreLikeStoreListDto;
 import com.ssafy.farmcu.api.entity.member.Member;
@@ -28,7 +29,7 @@ public class StoreLikeServiceImpl implements StoreLikeService{
 
     @Transactional
     @Override
-    public boolean saveLike(StoreLikeDto storeLikeDto) {
+    public boolean saveLike(StoreLikeCreateDto storeLikeDto) {
         Member member = memberRepository.findById(storeLikeDto.getMemberId()).orElse(null);
         Store store = storeRepository.findByStoreId(storeLikeDto.getStoreId()).orElse(null);
         if(member!=null && store!=null){
@@ -54,6 +55,7 @@ public class StoreLikeServiceImpl implements StoreLikeService{
         Store store = storeRepository.findByStoreId(storeLikeDto.getStoreId()).orElse(null);
         if(member!=null && store!=null){
             StoreLike storeLike = StoreLike.builder()
+                    .id(storeLikeDto.getId())
                     .member(member)
                     .store(store)
                     .build();
@@ -70,7 +72,7 @@ public class StoreLikeServiceImpl implements StoreLikeService{
 
     @Override
     public List<StoreLikeStoreListDto> findLikes(Long memberId) {
-        List<StoreLike> storeLikes = storeLikeRepository.findStoreLikeByMember(memberId).orElse(null);
+        List<StoreLike> storeLikes = storeLikeRepository.findStoreLikeByMember(memberId);
         List<StoreLikeStoreListDto> result = new ArrayList<>();
         if(storeLikes!=null){
 //            for(StoreLike storeLike : storeLikes){
@@ -86,8 +88,18 @@ public class StoreLikeServiceImpl implements StoreLikeService{
     }
 
     @Override
-    public List<String> findLikesId(Long storeId) {
-        return null;
+    public List<Long> findLikesId(Long storeId) { //해당 스토어에 좋아요 누른 멤버 아이디 리턴
+        List<Long> memberIdList = storeLikeRepository.findMemberIdByStoreId(storeId);
+        return memberIdList;
+    }
+
+
+    @Override
+    public List<MemberListRes> findLikesMembers(Long storeId) { // 해당 스토어에 좋아요 누른 멤버 리스트 리턴
+        List<MemberListRes> memberList = storeLikeRepository.findStoreLikeByStore(storeId);
+
+
+        return memberList;
     }
 
     @Override
