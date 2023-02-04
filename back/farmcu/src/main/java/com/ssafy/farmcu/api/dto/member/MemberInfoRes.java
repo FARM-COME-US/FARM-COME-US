@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MemberInfoRes {
+    private Long memberId;
     private String id;
     private String nickname;
     private String name;
