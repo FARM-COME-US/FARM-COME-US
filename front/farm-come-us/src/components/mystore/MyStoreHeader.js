@@ -11,7 +11,7 @@ const DUMMY_STORE_INFO = {
   desc: "저희 농장은 강원도 고산 지대에서 재배한 신선한 작물들을 제공합니다",
 };
 
-const MyStoreHeader = () => {
+const MyStoreHeader = (props) => {
   const inputBgRef = useRef();
   const bgImgRef = useRef();
 
@@ -30,19 +30,15 @@ const MyStoreHeader = () => {
     <div className={classes.storeHeader}>
       <div className={classes.headerBg}>
         <div className={classes.backdrop}></div>
-        <img
-          ref={bgImgRef}
-          src="https://via.placeholder.com/300"
-          alt="header-bg"
-        />
+        <img ref={bgImgRef} src={props.info.imgSrc} alt="header-bg" />
       </div>
       <form className={classes.header}>
         <label htmlFor="select-bg">
           <MdAddCircle className={classes.btnAddBg} />
         </label>
         <MyStoreHeaderInfo
-          storeName={DUMMY_STORE_INFO.storeName}
-          desc={DUMMY_STORE_INFO.desc}
+          storeName={props.info.storeName}
+          desc={props.info.desc}
         />
         <MyStoreMenu />
         <input

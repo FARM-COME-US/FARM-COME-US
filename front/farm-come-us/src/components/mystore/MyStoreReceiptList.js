@@ -45,8 +45,6 @@ const MyStoreReceiptList = (props) => {
     return codeArr;
   };
 
-  console.log(diassembledReceiptHandler());
-
   const diassembledReceipt = diassembledReceiptHandler();
 
   return (
@@ -62,9 +60,12 @@ const MyStoreReceiptList = (props) => {
               >{`${dateItem[0][0].date.getFullYear()}.${
                 dateItem[0][0].date.getMonth() + 1
               }.${dateItem[0][0].date.getDate()}`}</div>
-              {dateItem.map((item, iIdx) => (
-                // <MyStoreReceiptItem key={iIdx} itemInfo={item} />
-                <div>{item[0].receiptId}</div>
+              {dateItem.map((receiptItem, iIdx) => (
+                <MyStoreReceiptItem
+                  key={iIdx}
+                  receipt={receiptItem}
+                  onClick={props.showReceiptDetailHandler}
+                />
               ))}
             </div>
           ))}
