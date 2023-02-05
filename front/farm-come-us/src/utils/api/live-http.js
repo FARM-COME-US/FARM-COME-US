@@ -1,27 +1,28 @@
+import axios from "axios";
+
 const DUMMY_SERVER_URL = "https:localhost:3000";
 const LIVE_API_URL = `${DUMMY_SERVER_URL}/live`;
 
-const localLiveObjFormatter = (obj) => {
-  const parsedObj = JSON.parse(obj);
+const clientLiveObjFormatter = (obj) => {
   return {
-    liveId: parsedObj.live_id,
-    productId: parsedObj.item_id,
-    startTime: parsedObj.live_Start,
-    endTime: parsedObj.live_end,
-    discount: parsedObj.live_discount,
-    storeId: parsedObj.store_id,
+    liveId: obj.live_id,
+    productId: obj.item_id,
+    startTime: obj.live_Start,
+    endTime: obj.live_end,
+    discount: obj.live_discount,
+    storeId: obj.store_id,
   };
 };
 
 const serverLiveObjFormatter = (obj) => {
-  return JSON.stringify({
+  return {
     liveId: obj.liveId,
     itemId: obj.productId,
     liveStart: obj.startTime,
     liveEnd: obj.endTime,
     liveDiscount: obj.discount,
     storeId: obj.storeId,
-  });
+  };
 };
 
 /* 라이브 등록 */
@@ -88,7 +89,7 @@ export async function updateLive(liveInfo) {
         liveInsertReq: serverLiveObjFormatter(liveInfo),
       },
     });
-    console.log(resposne.success);
+    console.log(response.success);
   } catch (err) {
     console.err(err);
   }
