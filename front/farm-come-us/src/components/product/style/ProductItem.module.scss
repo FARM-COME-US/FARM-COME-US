@@ -26,6 +26,19 @@
 
     .productName {
       margin-bottom: 5px;
+      overflow: hidden;
+      white-space: nowrap;
+      margin-bottom: 5px;
+
+      .text {
+        display: inline-block;
+        animation-name: scroll-text;
+        animation-duration: 7s;
+        animation-timing-function: linear;
+        animation-delay: 0s;
+        animation-iteration-count: infinite;
+        animation-direction: normal;
+      }
     }
 
     .priceInfo {
@@ -48,5 +61,20 @@
         color: #000;
       }
     }
+  }
+}
+
+@keyframes scroll-text {
+  0% {
+    transform: translateX(0%);
+  }
+  90% {
+    transform: translateX(-50%);
+  }
+  95% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(0%);
   }
 }

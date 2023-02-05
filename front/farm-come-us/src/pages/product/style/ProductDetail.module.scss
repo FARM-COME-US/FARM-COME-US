@@ -8,6 +8,7 @@
     font-weight: bold;
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
 
   .imagecard {
@@ -36,7 +37,7 @@
   }
 
   .option {
-    margin-top: 16px;
+    margin-top: 1.5rem;
     display: flex;
 
     .discountspace {
@@ -47,10 +48,12 @@
 
       .salepercent {
         font-size: 20px;
-        color: #FF0000;
+        font-weight: bold;
+        color: #ff0000;
       }
-  
+
       .originalprice {
+        color: #cccccc;
         text-decoration: line-through;
         display: flex;
         justify-content: center;
@@ -61,13 +64,14 @@
     .saleprice {
       margin-left: 10px;
       font-size: 20px;
+      font-weight: bold;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
     .won {
-      margin-left: 5px;
+      font-weight: bold;
       height: 30px;
       display: flex;
       justify-content: start;
@@ -110,10 +114,12 @@
   }
 
   .finalprice {
+    margin-top: 0.5rem;
     height: 40px;
     display: flex;
 
     .firstblock {
+      font-weight: bold;
       margin-left: auto;
       display: flex;
       justify-content: end;
@@ -122,14 +128,15 @@
 
     .secondblock {
       font-size: 20px;
+      font-weight: bold;
       margin-left: 10px;
-      margin-right: 5px;
       display: flex;
       justify-content: end;
       align-items: end;
     }
 
     .thirdblock {
+      font-weight: bold;
       width: 12px;
       display: flex;
       justify-content: start;
