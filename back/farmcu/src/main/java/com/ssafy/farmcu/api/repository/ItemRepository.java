@@ -2,6 +2,8 @@ package com.ssafy.farmcu.api.repository;
 
 import com.ssafy.farmcu.api.entity.store.Category;
 import com.ssafy.farmcu.api.entity.store.Item;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,8 +17,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     //    List<Item> findByItemName(String itemName);
 //    List<Item> findByCategory(Long categoryCode);
-    List<Item> findByItemNameLike(String itemName);
-    List<Item> findByCategoryAndItemNameLike(Category category, String itemName);
+    Slice<Item> findByItemNameLike(String itemName, Pageable pageable);
+    Slice<Item> findByCategoryAndItemNameLike(Category category, String itemName, Pageable pageable);
     void deleteByItemId(Long itemId);
 
 }
