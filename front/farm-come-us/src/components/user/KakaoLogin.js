@@ -1,18 +1,10 @@
-import { KAKAO_AUTH_URL } from "./OAuth";
-
 const KakaoLogin = (props) => {
-  // <Button href={KAKAO_AUTH_URL}>카카오로 로그인하기</Button>
-  // function kakaoLoginHandler() {
-  //   fetch(KAKAO_AUTH_URL)
-  // } onClick={kakaoLoginHandler}
-
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
   return (
     <a href={KAKAO_AUTH_URL}>
       <img src="img/kakao_login.png" alt="" />
     </a>
   );
-
-  // (<button type='button' href={KAKAO_AUTH_URL}><img src="image/kakao_login.png" alt=""/></button>);
 };
 
 export default KakaoLogin;
