@@ -22,6 +22,6 @@ public interface StoreLikeService {
     public List<Long> findLikesId(Long storeId); // 해당 스토어의 좋아요 누른 유저 리스트
     public List<MemberListRes> findLikesMembers(Long storeId); // 해당 스토어의 좋아요 누른 유저 리스트
 
-    public int getCount(Long storeId); // 해당 스토어 좋아요 누른 유저 count
+    public Long getCount(Long storeId); // 해당 스토어 좋아요 누른 유저 count
 
 }

@@ -50,12 +50,28 @@ public class StoreLikeController {
 
     @GetMapping("/{memberId}")
     public ResponseEntity<?> findStoreList(@PathVariable("memberId")Long id){
-        List<StoreListRes> list = storeLikeService.findLikesList(id);
+        try{
+            List<StoreListRes> list = storeLikeService.findLikesList(id);
+            if(!list.isEmpty()) {
+                return new ResponseEntity<>(list, HttpStatus.ACCEPTED);
+            }else{
+                return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+            }
 
-        if(list != null){
-            return new ResponseEntity<StoreListRes>((StoreListRes) list, HttpStatus.ACCEPTED);
-        }else{
+        }catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
+    @GetMapping("/count/{storeId}")
+    public ResponseEntity<?> CountLikes(@PathVariable("storeId") Long id){
+        try{
+            return new ResponseEntity<>(storeLikeService.getCount(id), HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(0, HttpStatus.OK);
         }
     }
 }

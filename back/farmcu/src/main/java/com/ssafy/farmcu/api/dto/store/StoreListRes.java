@@ -14,5 +14,5 @@ public class StoreListRes {
     private String storeName;
     private String storeDescription;
     private String storeImg;
-//    private String memberName;
+    private String memberName;
 }
