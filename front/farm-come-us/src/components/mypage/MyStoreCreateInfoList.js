@@ -4,8 +4,8 @@ import classes from "./style/MyStoreInfoList.module.scss";
 import MyStoreInput from "../mystore/MyStoreInput";
 
 const MyStoreCreateInfoList = (props) => {
-    const []
-    const validityHandler = () => {};
+  // const []
+  const validityHandler = () => {};
   return (
     <ul className={classes.infoList}>
       <li className={classes.infoItem}>
