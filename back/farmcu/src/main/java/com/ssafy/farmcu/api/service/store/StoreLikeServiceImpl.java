@@ -74,10 +74,10 @@ public class StoreLikeServiceImpl implements StoreLikeService{
     @Override
     public List<StoreListRes> findLikesList(Long memberId) {
         List<StoreListRes> storeLikes = storeLikeRepository.findStoreByMember(memberId);
-        if(storeLikes!=null) return storeLikes;
 
 
-        return null;
+
+        return storeLikes;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class StoreLikeServiceImpl implements StoreLikeService{
     }
 
     @Override
-    public int getCount(Long storeId) {
-        return 0;
+    public Long getCount(Long storeId) {
+        return storeLikeRepository.getStoreLikesByStoreId(storeId);
     }
 }
