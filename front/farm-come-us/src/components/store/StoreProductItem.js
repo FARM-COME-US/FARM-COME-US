@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import classes from "./style/StoreProductItem.module.scss";
 
 const StoreProductItem = (props) => {
-  const convertedPrice = props.product.productPrice
+  const convertedPrice = props.product.price
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
