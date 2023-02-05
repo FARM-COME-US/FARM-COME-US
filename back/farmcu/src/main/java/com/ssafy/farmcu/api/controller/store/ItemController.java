@@ -9,11 +9,12 @@ import com.ssafy.farmcu.api.service.store.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Pageable;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,11 +34,11 @@ public class ItemController {
 
     @PostMapping
     @ApiOperation(value = "상품 등록")
-    public ResponseEntity<HashMap<String, Boolean>> createItem(@RequestBody ItemDto itemDto, MultipartFile[] uploadFile) throws IOException {
+    public ResponseEntity<HashMap<String, Boolean>> createItem(@RequestBody ItemDto itemDto, List<MultipartFile> uploadFile) throws IOException {
         boolean isSuccess = itemService.saveItem(itemDto);
 
         //이미지 첨부
-        if(uploadFile != null && uploadFile.length > 0) {
+        if(uploadFile != null && uploadFile.size() > 0) {
             String uploadPath = "C:/Workspace/S08P12B103/back/farmcu/src/assets/itemImg";
             File uploadDir = new File(uploadPath);
 
@@ -81,13 +82,13 @@ public class ItemController {
 
     @GetMapping("/keyword")
     @ApiOperation(value = "상품 목록 조회")
-    public ResponseEntity<List<ItemDto>> selectItemList(ItemSearchReq itemSearchReq) {
-        List<ItemDto> itemDtos = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq);
+    public ResponseEntity<Slice<ItemDto>> selectItemList(ItemSearchReq itemSearchReq, Pageable pageable) {
+        Slice<ItemDto> itemDtos = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq, pageable);
         List<ItemImageDto> itemImageDtos = itemDtos.stream()
                 .map(i -> itemImageService.findItemImagesByItemId(i.getItemId()).get(0))
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(itemService.findItemsByCategoryAndItemNameLike(itemSearchReq));
+        return ResponseEntity.ok(itemService.findItemsByCategoryAndItemNameLike(itemSearchReq, pageable));
     }
 
     @DeleteMapping()

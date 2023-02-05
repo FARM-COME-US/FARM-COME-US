@@ -9,6 +9,8 @@ import com.ssafy.farmcu.api.repository.CategoryRepository;
 import com.ssafy.farmcu.api.repository.ItemRepository;
 import com.ssafy.farmcu.api.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -93,17 +95,17 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq) {
-        List<Item> items;
+    public Slice<ItemDto> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq, Pageable pageable) {
+        Slice<Item> items;
 
         if (itemSearchReq.getCategoryCode() == 0) {
-            items = itemRepository.findByItemNameLike(itemSearchReq.getItemName());
+            items = itemRepository.findByItemNameLike(itemSearchReq.getItemName(), pageable);
         } else {
             Category category = categoryRepository.findByCategoryCode(itemSearchReq.getCategoryCode());
-            items = itemRepository.findByCategoryAndItemNameLike(category, itemSearchReq.getItemName());
+            items = itemRepository.findByCategoryAndItemNameLike(category, itemSearchReq.getItemName(), pageable);
         }
 
-        List<ItemDto> result = items.stream()
+        Slice<ItemDto> result = (Slice<ItemDto>) items.stream()
                 .map(i -> new ItemDto(i))
                 .collect(toList());
 
