@@ -21,7 +21,7 @@ const SignUp = () => {
   //이름, 이메일, 비밀번호, 비밀번호 확인
   const [id, setId] = useState("");
   const [email, setEmail] = useState("");
-  // const [nickname, setNickname] = useState("");
+  const [name, setName] = useState("");
   const [tel, setTel] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -32,7 +32,7 @@ const SignUp = () => {
   //오류메시지 상태저장
   const [idMessage, setIdMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
-  // const [nicknameMessage, setNicknameMessage] = useState("");
+  const [nameMessage, setNameMessage] = useState("");
   const [telMessage, setTelMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
@@ -41,7 +41,7 @@ const SignUp = () => {
   // 유효성 검사
   const [isId, setIsId] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
-  // const [isNickname, setIsNickname] = useState(false);
+  const [isName, setIsName] = useState(false);
   const [isTel, setIsTel] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
@@ -130,6 +130,18 @@ const SignUp = () => {
   //     setIsNickname(true);
   //   }
   // }, []);
+
+  // // 닉네임 😀 랜덤으로 보내주기로 했음.
+  const onChangeName = useCallback((e) => {
+    setName(e.target.value);
+    if (e.target.value.length < 2 || e.target.value.length > 10) {
+      setNameMessage("이름을 입력해주세요.");
+      setIsName(false);
+    } else {
+      setNameMessage("올바른 이름 형식입니다 :)");
+      setIsName(true);
+    }
+  }, []);
 
   // // 이메일 유효성검사 (예비로 남겨둠)
   const onChangeEmail = useCallback((e) => {
@@ -252,6 +264,30 @@ const SignUp = () => {
               }`}
             >
               {idMessage}
+            </span>
+          )}
+        </div>
+
+        <div className={classes.formbox}>
+          <div>
+            <MdPermIdentity className={classes.icon} />
+            <input
+              className={classes.outerInput}
+              text="이름"
+              type="text"
+              placeholder="이름"
+              typename="name"
+              onChange={onChangeName}
+            />
+          </div>
+
+          {id.length > 0 && (
+            <span
+              className={`${classes.message} ${
+                isName ? classes.success : classes.error
+              }`}
+            >
+              {nameMessage}
             </span>
           )}
         </div>
