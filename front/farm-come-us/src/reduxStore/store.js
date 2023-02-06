@@ -7,14 +7,16 @@ import {
 import storageSession from "redux-persist/lib/storage/session";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
+import { createBrowserHistory } from "history";
 
 import userSlice from "./userSlice";
 import menuSlice from "./menuSlice";
 
+export const history = createBrowserHistory();
+
 const persistConfig = {
   key: "root",
-  sessionStorage: storageSession,
-  localStorage: storage,
+  storage: storage,
   whitelist: ["userSlice, menuSlice"],
   //User 이거 뭔지 수정필요
 };

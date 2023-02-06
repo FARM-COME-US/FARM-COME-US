@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
 import menuSlice from "./reduxStore/menuSlice";
+import { history } from "./reduxStore/store";
 import classes from "./App.scss";
 
 import Header from "./components/common/Header";
@@ -45,6 +46,25 @@ const App = () => {
     console.log(state);
     return state.menuSlice.isOpen;
   }); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
+
+  useEffect(
+    () => {
+      const listenBackEvent = () => {
+        dispatch(menuSlice.actions.close());
+      };
+
+      const unlistenHistoryEvent = history.listen(({ action }) => {
+        if (action === "POP") {
+          listenBackEvent();
+        }
+      });
+
+      return unlistenHistoryEvent;
+    },
+    [
+      // effect에서 사용하는 state를 추가
+    ]
+  );
 
   return (
     <div id="app">
