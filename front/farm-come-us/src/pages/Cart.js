@@ -1,11 +1,16 @@
 import React from "react";
 import classes from "./style/Cart.module.scss";
-import Card from "../components/common/Card";
+import CartHeader from "../components/cart/CartHeader";
+import CartCard from "../components/cart/CartCard";
+import CartFooter from "../components/cart/CartFooter";
 
 const Cart = () => {
   return (
     <div className={classes.container}>
-      <div className={classes.head}>
+      <CartHeader></CartHeader>
+      <CartCard></CartCard>
+      <CartFooter></CartFooter>
+      {/* <div className={classes.head}>
         <div className={classes.title}>장바구니</div>
       </div>
       <div className={classes.body}>
@@ -56,6 +61,7 @@ const Cart = () => {
         <div className={classes.pricetext}>전체 결제 금액: 200,000</div>
         <div className={classes.buybutton}>구매하기</div>
       </div>
+      */}
     </div>
   );
 };
