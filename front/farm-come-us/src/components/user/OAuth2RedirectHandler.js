@@ -6,7 +6,7 @@ import userSlice from "../../reduxStore/userSlice";
 
 // import Spinner from "../spinner";
 
-const myServerURL = "myserverURL";
+const myServerURL = "BEserverURL";
 const optionalREST = "optionalURL";
 
 function OAuth2RedirectHandler(props) {
