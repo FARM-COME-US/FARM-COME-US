@@ -22,10 +22,12 @@ const MyStoreInfo = () => {
   return (
     <div className={classes.storeInfo}>
       <MyStoreContentTitle text="스토어 정보" />
-      <MyStoreInfoList className={classes.infoList} info={DUMMY_STORE_INFO} />
-      <Button className={classes.btnEditInfo} onClick={editInfoHandler}>
-        스토어 정보 수정
-      </Button>
+      <form>
+        <MyStoreInfoList className={classes.infoList} info={DUMMY_STORE_INFO} />
+        <Button className={classes.btnEditInfo} onClick={editInfoHandler}>
+          스토어 정보 수정
+        </Button>
+      </form>
     </div>
   );
 };
