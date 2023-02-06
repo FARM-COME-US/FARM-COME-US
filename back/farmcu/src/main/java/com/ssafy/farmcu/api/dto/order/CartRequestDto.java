@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartDto {
+public class CartRequestDto {
 
     private int cartItemCount;
 
@@ -28,7 +28,7 @@ public class CartDto {
     @ToString
     public static class CartInfo {
 
-        private Long cartId;
+//        private Long cartId;
         private ItemDto item;
         private int cartItemCount;
         private int getTotalPrice;
@@ -44,6 +44,4 @@ public class CartDto {
 //        this.itemSalePercent = cart.getItem().getItemDiscount();
 //        this.getTotalPrice = cartItemCount*cart.getItem().getItemPrice();
     }
-
-
 }

@@ -11,12 +11,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderInfoDto {
-    private Long oitemId;
+
+    @NonNull
     private Long itemId;
+
+    private Long oitemId;
+
     private Long orderInfo;
 
     private int orderItemCount;
+
     private LocalDateTime oitemCratedAt;
+
     private int oitemPrice;
 
     public OrderInfoDto(OrderItem orderItem) {

@@ -1,10 +1,6 @@
 package com.ssafy.farmcu.api.service.order;
 
-import com.ssafy.farmcu.api.dto.order.CartDto;
 import com.ssafy.farmcu.api.dto.order.OrderDto;
-import com.ssafy.farmcu.api.entity.member.Member;
-import com.ssafy.farmcu.api.entity.order.Cart;
-import com.ssafy.farmcu.api.entity.order.Order;
 
 import java.util.List;
 
