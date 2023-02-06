@@ -9,11 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-<<<<<<< HEAD
-=======
-import java.sql.Timestamp;
-import java.util.Optional;
->>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
 
 @Getter @Setter
 @NoArgsConstructor
@@ -27,21 +22,13 @@ public class Cart {
     private Long cartId;
 
     private int cartItemCount;
-<<<<<<< HEAD
 
     private int itemPrice;
 
-    private int salePrice;
+    private int sale;
 
     private int getTotalPrice;
-=======
->>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
 
-    private int itemPrice;
-
-    private int salePrice;
-
-    private int getTotalPrice;
 
     // 연결
     @ManyToOne
@@ -53,55 +40,26 @@ public class Cart {
     private Item item;
 
     @Builder
-    public Cart(Long cartId,Item item, int itemPrice, int salePrice, int getTotalPrice,int cartItemCount, Member member) {
+    public Cart(Long cartId,Item item, int itemPrice, int sale, int getTotalPrice,int cartItemCount, Member member) {
         this.cartId = cartId;
         this.item = item;
-<<<<<<< HEAD
         this.member = member;
-=======
->>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
         this.getTotalPrice = getTotalPrice();
         this.cartItemCount = cartItemCount;
-        this.salePrice = item.getItemDiscount();
+        this.sale = item.getItemDiscount();
         this.itemPrice = item.getItemPrice();
-<<<<<<< HEAD
     }
     public int getTotalPrice(){
-        return (itemPrice-salePrice)*cartItemCount;
-=======
-        this.member = member;
->>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
+        return itemPrice*(100-sale)/100*cartItemCount;
     }
 
+    public static Cart createCart(Member member, Item item, int cartItemCount){
+        Cart cart = new Cart(); // 새 장바구니
+        cart.setMember(member);
+        cart.setItem(item);//장바구니 속 상품 정보
+        cart.setCartItemCount(cartItemCount); //장바구니에 담은 상품 개수
 
-
-<<<<<<< HEAD
-//    private Cart(int cartItemCount, Member member, Item item) {
-//        this.cartItemCount = cartItemCount;
-//        this.member = member;
-//        this.item = item;
-//    }
-//
-//    public static Cart of(int cartItemCount, Member member, Item item) {
-//        return new Cart(cartItemCount, member, item);
-//    }
-=======
-    //총액
-    public int getTotalPrice(){
-        return (itemPrice-salePrice)*cartItemCount;
+        return cart;
     }
->>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
-
-    // create: cart
-//    public static Cart createCart(Member member, Item item, Integer cartItemCount){
-//        Cart cart = new Cart(); // 새 장바구니
-//        cart.setMember(member);
-//        cart.setItem(item);//장바구니 속 상품 정보
-//        cart.setCartItemCount(cartItemCount); //장바구니에 담은 상품 개수
-//        return cart;
-//    }
-
-    //총액
-
 
 }

@@ -99,8 +99,8 @@ public class OrderServiceImpl implements OrderService{
     }
 
     //** 나의 주문 조회 **//
-//    public List<OrderItem> findMyItems(Member member){
-//        return orderItemRepository.findByOrderMember(member);
+//    public List<OrderItem> findMyDetails(Long num)
+//        return orderRepository.findById(num);
 //    }
 
     //** 주문 번호 조회 **//
