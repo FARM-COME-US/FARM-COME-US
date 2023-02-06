@@ -23,11 +23,11 @@ public class Cart {
 
     private int cartItemCount;
 
-    private int itemPrice;
-
-    private int sale;
-
-    private int getTotalPrice;
+//    private int itemPrice;
+//
+//    private int sale;
+//
+//    private int getTotalPrice;
 
 
     // 연결
@@ -44,17 +44,16 @@ public class Cart {
         this.cartId = cartId;
         this.item = item;
         this.member = member;
-        this.getTotalPrice = getTotalPrice();
+//        this.getTotalPrice = getTotalPrice();
         this.cartItemCount = cartItemCount;
-        this.sale = item.getItemDiscount();
-        this.itemPrice = item.getItemPrice();
+//        this.sale = item.getItemDiscount();
+//        this.itemPrice = item.getItemPrice();
     }
 
     // 상품 총합
     public int getTotalPrice(){
-        return itemPrice*(100-sale)/100*cartItemCount;
+        return item.getItemPrice()*(100-item.getItemDiscount())/100*cartItemCount;
     }
-
 
     public static Cart createCart(Member member, Item item, int cartItemCount){
         Cart cart = new Cart(); // 새 장바구니

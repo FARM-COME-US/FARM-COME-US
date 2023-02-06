@@ -1,8 +1,7 @@
-package com.ssafy.farmcu.api.entity.order.pay;
+package com.ssafy.farmcu.api.entity.order;
 
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
