@@ -49,9 +49,12 @@ public class Cart {
         this.sale = item.getItemDiscount();
         this.itemPrice = item.getItemPrice();
     }
+
+    // 상품 총합
     public int getTotalPrice(){
         return itemPrice*(100-sale)/100*cartItemCount;
     }
+
 
     public static Cart createCart(Member member, Item item, int cartItemCount){
         Cart cart = new Cart(); // 새 장바구니

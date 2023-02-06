@@ -12,7 +12,6 @@ public interface CartService {
     // 장바구니에 상품 담기
     public Long addCart(CartDto cartDto);
 
-
     // 로그인 사용자 장바구니 목록 조회
     public List<Cart> findMyCart(Member member);
 

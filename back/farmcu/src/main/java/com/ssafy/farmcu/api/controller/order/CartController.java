@@ -15,7 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 //@RequiredArgsConstructor
 @RestController
@@ -50,6 +51,7 @@ public class CartController {
         return new ResponseEntity<Long>(cartId, HttpStatus.CREATED);
     }
 
+
     @DeleteMapping("/{cartId}")
     @ApiOperation(value = "장바구니 상품 삭제")
     public ResponseEntity deleteCart(@PathVariable Long cartId) {
@@ -61,10 +63,18 @@ public class CartController {
     @GetMapping("/{memberId}")
     @ApiOperation(value = "장바구니 목록")
     public ResponseEntity<?> findMyCart(@PathVariable Long memberId) {
-//        Cart cart = cartService.findMyCart(memberId);
+//        Cart cart = cartService.findMyCart(Member.builder().build());
+//        Cart.save(cart);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
+    /* 장바구니 목록 조회 API */
+//    @GetMapping
+//    public ResponseEntity<?> getCarts(@RequestHeader Long memberId) {
+//
+//        Map<Long, List<cart>> carts = cartService.getCarts(memberId);
+//
+//        return Response.success(carts);
+//    }
 
 }

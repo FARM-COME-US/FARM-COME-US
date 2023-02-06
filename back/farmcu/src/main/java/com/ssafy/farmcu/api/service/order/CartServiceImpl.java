@@ -1,8 +1,6 @@
 package com.ssafy.farmcu.api.service.order;
 
-import com.ssafy.farmcu.api.dto.order.CartAddDto;
 import com.ssafy.farmcu.api.dto.order.CartDto;
-import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.entity.store.Item;
@@ -12,9 +10,7 @@ import com.ssafy.farmcu.api.repository.MemberRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -47,6 +43,9 @@ public class CartServiceImpl implements CartService {
 
     }
 
+
+
+    //** 장바구니 상품 찾기 **//
     public List<Cart> findMyCart(Member member) {
         return cartRepository.findByMember(member);
     }
