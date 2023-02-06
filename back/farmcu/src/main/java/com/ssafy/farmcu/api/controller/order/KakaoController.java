@@ -44,10 +44,51 @@ public class KakaoController {
         this.memberService = memberService;
     }
 
+    // Client 에서 카카오 인증들 통해서 받은 인가코드 받기
+    @GetMapping("kakao")
+    @ApiOperation(value = "카카오 로그인")
+    public ResponseEntity<?> KaKaoLogIn(@RequestParam("code") String code, HttpServletResponse response) {
+
+        System.out.println("KaKaoLogIn() 진입 KaKao -> Controller -> p31 ");
+        System.out.println("카카오 인가 코드 : " + code);
+
+        try {
+            // 받아온 code를 작성한 양식에 맞춰서 카카오 유저 생성
+            Member kakaoUser = kakaoService.Create(code);
+            System.out.println("kakaoService.Create(code) KaKao -> Controller -> p38 ");
+            // 카카오 유저가 생성되면 해당 데이터로 JWT 토큰 생성
+//            String kakaoToken = MemberRefreshToken.RefreshTokenTable(kakaoUser);
+
+            return ResponseEntity.ok().body(new HashMap<>() {{
+//                put("token", kakaoToken);
+                put("kakaoInfo", kakaoUser);
+
+            }});
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(500).body("데이터를 찾을 수 없습니다.\n" + e);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(500).body("해당 카카오 데이터 ‘조회’ 할 수 없습니다. \n" + e);
+
+        }
+    }
+
+    @GetMapping("kakao/logout")
+    @ApiOperation(value = "카카오 로그아웃")
+    public ResponseEntity<?> KaKaoLogOut(@RequestParam String code) {
+
+        try {
+
+            Object kakaoLogout = kakaoService.getAccessToken(code);
+            return ResponseEntity.ok().body(kakaoLogout);
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(500).body("데이터를 찾을 수 없습니다.\n" + e);
+        }
+
+    }
 
     // 카카오페이 결제
     @PostMapping("kakaopay")
-    @ApiOperation(value = "카카옿 페이 결제")
+    @ApiOperation(value = "카카오 페이 결제")
     public String KakaoPay(@RequestBody KaKaoPayDTO kaKaoPayDTO) {
 
         // kaKaoPayDTO 에 맞춰서 카카오페이 결제 진행
