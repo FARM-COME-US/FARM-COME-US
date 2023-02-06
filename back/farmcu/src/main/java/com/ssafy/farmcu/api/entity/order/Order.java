@@ -1,14 +1,15 @@
 package com.ssafy.farmcu.api.entity.order;
 
 import com.ssafy.farmcu.api.entity.member.Member;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @Setter
@@ -31,39 +32,33 @@ public class Order {
     @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "order_created_at")
-    @CreationTimestamp
-    private Timestamp orderCreateAt;
+    private LocalDateTime orderCreateAt;
 
-    // 주문 - 결제 대기 - 결제 완료 - 주문취소 / B = before, A = after
+    // 주문 - (결제 대기 - 결제 완료) - 주문 완료 - 주문취소 / B = before, A = after
     public enum OrderStatus{
-        ORDER, BPAY, APAY, BSHIPPING, CANCEL
+        BORDER, ORDER, CANCEL
     }
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private OrderStatus orderStatus = OrderStatus.BORDER;
 
     //연결
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Member.class)
-    @JoinColumn(name = "member_id", updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
-//    @ManyToOne
-//    @JoinColumn(name = "payment")
-//    private Payment payment;
-//
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // ====>> 02.01 delivery test 수정
+    @OneToOne
     @JoinColumn(name="delivery_id")
     private DeliveryInfo delivery;
 
-    @OneToMany(mappedBy = "order_info")
+    @OneToMany(mappedBy = "orderInfo")
     private List<OrderItem> orderItems = new ArrayList<>();
 
     // 주문 정보에 배송 정보 추가
 
 
     @Builder
-    public Order(Member member, Timestamp orderCreateAt, OrderStatus orderStatus, List<OrderItem> orderItems) {
+    public Order(Member member, LocalDateTime orderCreateAt, OrderStatus orderStatus, List<OrderItem> orderItems) {
         this.member = member;
         this.orderCreateAt = orderCreateAt;
         this.orderStatus = orderStatus;
@@ -73,7 +68,7 @@ public class Order {
     // 주문에 주문 상품 주입 -> OrderItem.java 의 setOrder
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
-        orderItem.setOrder_info(this);
+        orderItem.setOrderInfo(this);
     }
 
     //** 주문 생성 **//
@@ -86,7 +81,7 @@ public class Order {
         }
 
         order.setOrderStatus(OrderStatus.ORDER); //주문상태를 ORDER로 set
-        order.setOrderCreateAt(Timestamp.valueOf("?")); //주문시간
+        order.setOrderCreateAt(LocalDateTime.now()); //주문시간
         return order; //완성된 주문정보
     }
     //** 전체 주문 가격 조회 **//

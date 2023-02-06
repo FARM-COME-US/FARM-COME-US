@@ -2,10 +2,9 @@ package com.ssafy.farmcu.api.entity.order;
 
 import com.ssafy.farmcu.api.entity.store.Item;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -21,35 +20,30 @@ public class OrderItem {
     @Column(name = "oitem_id", unique = true, nullable = false)
     private Long oitemId;
 
-//    @Column(length = 10, nullable = false)
-//    private String oitemStatus;
+    private int oitemCount;
 
-    @Column(name = "oitem_count")
-    private Integer oitemCount;
-
-    @Column(name = "oitem_created_at")
-    @CreationTimestamp
-    private Timestamp oitemCreatedAt;
+    private LocalDateTime oitemCreatedAt;
 
     private int orderPrice;
 
     // 연결
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Order.class)
-    @JoinColumn(name = "order_id", updatable = false)
-    private Order order_info;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order orderInfo;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
-    @JoinColumn(name = "item_id", updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "item_id")
     private Item item;
 
     //빌더
     @Builder
-    public OrderItem(Long oitemId, Integer oitemCount, Timestamp oitemCreatedAt ) {
+    public OrderItem(Order orderInfo, Item item, Long oitemId, int oitemCount, LocalDateTime oitemCreatedAt, int orderPrice ) {
+        this.orderInfo = orderInfo;
+        this.item = item;
         this.oitemId = oitemId;
         this.oitemCount = oitemCount;
-//      this.oitemStatus = oitemStatus;
         this.oitemCreatedAt = oitemCreatedAt;
-
+        this.orderPrice = item.getItemPrice() - item.getItemDiscount();
     }
 
     // 주문 상품 상세 정보 생성
@@ -57,18 +51,17 @@ public class OrderItem {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setOitemCount(oitemCount);
+        orderItem.setOrderPrice(builder().orderPrice); //이 주문의 당시 가격
 
         // 주문 상품 재고 차감
-//        orderItem.removeStock(oitemCount);
+        item.removeStock(builder().oitemCount);
         return orderItem;
     }
 
     // 주문 번호 주입
     public  void addOrderNum(Order order){
-        this.order_info = order;
+        this.orderInfo = order;
     }
-    // 주문 상품에 주문 번호 주입
-    public void addOrderId(Order order) { this.order_info = order; }
 
     //총액
     public int getTotalPrice(){

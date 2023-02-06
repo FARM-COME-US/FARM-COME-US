@@ -2,7 +2,7 @@
   margin-top: 16px;
   // color: white;
   width: 100%;
-  height: 20%;
+  height: 48px;
 
   &:visited {
     color: wheat;
@@ -32,4 +32,5 @@
 .itemTxt {
   margin-left: 16px;
   font: bold; //bold 왜 안먹는지 모르겠음. 수정필요
+  color: black;
 }

@@ -11,6 +11,11 @@
     margin: 0 10px;
     a {
       margin: 0;
+
+      &.active {
+        color: #f7863b;
+      }
+
       .menuItem {
         margin: 0;
       }
