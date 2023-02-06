@@ -29,8 +29,8 @@ public class StoreDto {
     private String storeDetailAddr;
     private String storeZipcode;
     private String storePhoneNumber;
-    private Integer storeDeliveryCost;
-    private Integer storeDeliveryFree;
+    private int storeDeliveryCost;
+    private int storeDeliveryFree;
     private Timestamp createdAt;
     private Live live;
     private Member member;
