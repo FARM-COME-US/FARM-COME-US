@@ -1,14 +1,14 @@
 import React from "react";
 import classes from "./style/Cart.module.scss";
 import CartHeader from "../components/cart/CartHeader";
-import CartCard from "../components/cart/CartCard";
+import CartList from "../components/cart/CartList";
 import CartFooter from "../components/cart/CartFooter";
 
 const Cart = () => {
   return (
     <div className={classes.container}>
       <CartHeader></CartHeader>
-      <CartCard></CartCard>
+      <CartList></CartList>
       <CartFooter></CartFooter>
       {/* <div className={classes.head}>
         <div className={classes.title}>장바구니</div>
