@@ -18,14 +18,17 @@ public class PrincipalDetails implements OAuth2User, OidcUser {
 
     private Member member;
     private Map<String, Object> attributes;
+    private String status;
 
     public PrincipalDetails(Member member) {
         this.member = member;
+        this.status = "LOGIN";
     }
 
-    public PrincipalDetails(Member member, Map<String, Object> attributes) {
+    public PrincipalDetails(Member member, Map<String, Object> attributes, String join) {
         this.member = member;
         this.attributes = attributes;
+        this.status = join;
     }
 
     @Override
@@ -56,6 +59,10 @@ public class PrincipalDetails implements OAuth2User, OidcUser {
     @Override
     public String getName() {
         return member.getName();
+    }
+
+    public String getStatus(){
+        return this.status;
     }
 }
 
