@@ -1,27 +1,26 @@
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
-import classes from "./style/MyPageInfo.module.scss";
+import classes from "./style/MyStoreInfo.module.scss";
 
-import MyPageContentTitle from "../../components/mypage/MyPageContentTItle";
-import MyPageInfoList from "../../components/mypage/MyPageInfoList";
+import MyStoreContentTitle from "../../components/mystore/MyStoreContentTItle";
+import MyStoreInfoList from "../../components/mystore/MyStoreInfoList";
 import Button from "../../components/common/Button";
 
-const MyuserInfo = () => {
+const MyStoreInfo = () => {
   const { info } = useOutletContext();
-  const [userInfo, setUserInfo] = useState({
-    id: info.id,
-    nickname: info.nickname,
-    name: info.name,
-    email: info.email,
-    pno: info.pno,
+  const [storeInfo, setStoreInfo] = useState({
+    storeId: info.storeId,
+    storeName: info.storeName,
+    desc: info.desc,
     addr: info.addr,
+    pno: info.pno,
   });
   const [isEditting, setIsEditting] = useState(false);
 
   const onChangeInfoHandler = (e) => {
     const name = e.target.name;
-    setUserInfo((prev) => {
+    setStoreInfo((prev) => {
       return {
         ...prev,
         [name]: e.target.value,
@@ -32,18 +31,18 @@ const MyuserInfo = () => {
   const editInfoHandler = (e) => {
     e.preventDefault();
 
-    alert("사용자 정보가 수정되었습니다.");
+    alert("스토어 정보가 수정되었습니다.");
     setIsEditting((prev) => !prev);
   };
 
   const cancelInfoEditHandler = () => {
-    setUserInfo((prev) => {
+    setStoreInfo((prev) => {
       return {
-        nickname: info.nickname,
-        name: info.name,
-        email: info.email,
-        pno: info.pno,
+        storeId: info.storeId,
+        storeName: info.storeName,
+        desc: info.desc,
         addr: info.addr,
+        pno: info.pno,
       };
     });
 
@@ -58,12 +57,12 @@ const MyuserInfo = () => {
   };
 
   return (
-    <div className={classes.userInfo}>
-      <MyPageContentTitle text="스토어 정보" />
+    <div className={classes.storeInfo}>
+      <MyStoreContentTitle text="스토어 정보" />
       <form>
-        <MyPageInfoList
+        <MyStoreInfoList
           className={classes.infoList}
-          info={userInfo}
+          info={storeInfo}
           isEditting={isEditting}
           onChange={onChangeInfoHandler}
         />
@@ -81,7 +80,7 @@ const MyuserInfo = () => {
           </div>
         ) : (
           <Button className={classes.btnEditInfo} onClick={toggleIsEditting}>
-            사용자 정보 수정
+            스토어 정보 수정
           </Button>
         )}
       </form>
@@ -89,4 +88,4 @@ const MyuserInfo = () => {
   );
 };
 
-export default MyuserInfo;
+export default MyStoreInfo;
