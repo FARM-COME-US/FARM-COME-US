@@ -42,8 +42,8 @@ const DUMMY_LIVE_LIST = [
 const MyStoreLive = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sessionInfo, setSessionInfo] = useState({
-    id: null,
-    username: null,
+    id: "sessionA",
+    username: "Participant" + Math.floor(Math.random() * 100),
   });
 
   const navigate = useNavigate();
@@ -80,13 +80,13 @@ const MyStoreLive = () => {
 
       setSessionInfo({
         id: liveInfo.liveId + "",
-        username: "KEVIN",
+        username: sessionInfo.username,
       });
 
       navigate("/broadcast", {
         state: {
           id: liveInfo.liveId + "",
-          username: "KEVIN",
+          username: sessionInfo.username,
           liveInfo: liveInfo,
         },
       });
