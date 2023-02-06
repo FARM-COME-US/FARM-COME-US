@@ -2,6 +2,8 @@ package com.ssafy.farmcu.api.service.store;
 
 import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
@@ -29,6 +31,6 @@ public interface ItemService {
 //    public List<Item> findItemsByCategoryCode(Long categoryCode);
 
     //상품 이름, 카테고리 검색
-    public List<ItemDto> findItemsByCategoryAndItemName(ItemSearchReq itemSearchReq);
+    public Slice<ItemDto> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq, Pageable pageable);
 
 }
