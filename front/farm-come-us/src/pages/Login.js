@@ -86,16 +86,16 @@ function Login() {
   };
   return (
     <div className={classes.screen}>
-      <h1>로그인</h1>
+      <h1 className={classes.headertxt}>로그인</h1>
       <form
-        className={`${classes.centeralign} ${classes.marginSpacing}`}
+        className={`${classes.centeralign} ${classes.marginSpacing20px}`}
         onSubmit={LoginSubmit}
       >
         {/* <label htmlFor="id">
           <MdPermIdentity />
         </label> 😀라벨 일단 제거 */}
         <div className={isError ? classes.vibration : ""}>
-          <MdPermIdentity className={classes.icon} />
+          <MdPermIdentity className={classes.idicon} />
           <input
             className={`${classes.inputbar}`}
             placeholder="아이디"
@@ -107,19 +107,9 @@ function Login() {
         </div>
         <br />
         {/* <label htmlFor="password">PW: </label>😀라벨 일단 제거 */}
-
-        <div>
+        <div className="asdasd">
           <div className={isError ? classes.vibration : ""}>
-            <MdLockOutline className={classes.icon} />
-            <input
-              className={classes.inputbar}
-              placeholder="비밀번호"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              id="password"
-              type={showPassword ? "text" : "password"}
-            />
+            <MdLockOutline className={classes.pwicon} />
             {showPassword ? (
               <AiFillEyeInvisible
                 className={classes.smallicon}
@@ -135,6 +125,15 @@ function Login() {
                 }}
               />
             )}
+            <input
+              className={classes.inputbar}
+              placeholder="비밀번호"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              id="password"
+              type={showPassword ? "text" : "password"}
+            />
           </div>
           {isError && (
             <span className={`${errMessage ? classes.errMessage : ""}`}>
@@ -142,20 +141,22 @@ function Login() {
             </span>
           )}
         </div>
-
         <br />
 
-        <div className={classes.marginSpacing}>
-          <Button type="submit" className={`${classes.signUpButton}`}>
+        <div className={classes.marginSpacing_ratio}>
+          <Button
+            type="submit"
+            className={`${classes.loginButton} ${classes.marginSpacing16px}`}
+          >
             사용자 로그인
           </Button>
         </div>
       </form>
-      <div className={classes.marginSpacing}>
+      <div className={`${classes.marginSpacing16px}`}>
         <KakaoLogin />
       </div>
       <Button
-        className={classes.loginButton}
+        className={`${classes.signUpButton} ${classes.marginSpacing16px}`}
         onClick={() => {
           navigate("/sign-up");
         }}
