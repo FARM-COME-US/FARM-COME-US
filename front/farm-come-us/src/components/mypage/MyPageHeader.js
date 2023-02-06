@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import classes from "./style/MyPageHeader.module.scss";
 import { MdAddCircle } from "react-icons/md";
 import axios from "axios";
@@ -12,10 +12,16 @@ const DUMMY_STORE_INFO = {
 };
 
 const MyPageHeader = (props) => {
-  const profileImg = props.profileImg;
+  const inputProfileRef = useRef();
+  const profileImgref = useRef();
   // const nickname = props.nickname;
   const nickname = "귀여운 양파";
 
+  const loadProfileFile = () => {
+    const file = inputProfileRef.current.files[0]; //선택된 파일 가져오기
+    //이미지 source 가져오기
+    profileImgref.current.src = URL.createObjectURL(file);
+  };
   const addBgImageHandler = () => {
     alert("이미지 추가 이벤트");
     return;
@@ -34,10 +40,16 @@ const MyPageHeader = (props) => {
             src={process.env.PUBLIC_URL + "/img/defaultProfile.png"}
             alt="이미지"
           />
-          <MdAddCircle
-            className={classes.btnAddBg}
-            onClick={addBgImageHandler}
-          />
+          <input
+            ref={inputProfileRef}
+            id="select-profile"
+            className={classes.imgInput}
+            type="file"
+            accept=".gif, .jpg, .png"
+            onChange={loadProfileFile}
+          ></input>
+          <MdAddCircle className={classes.btnAddBg} onClick={loadProfileFile} />
+
           {/* props로 경로 받아오거나, 이미지 던짐. */}
         </div>
       </div>
