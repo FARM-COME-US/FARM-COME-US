@@ -74,13 +74,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         OidcUser user = ((OidcUser) authentication.getPrincipal());
         OAuth2MemberInfo memberInfo = new KakaoMemberInfo(user.getAttributes());
+
         Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();
 
         RoleType roleType = hasAuthority(authorities, RoleType.ROLE_ADMIN.toString()) ? RoleType.ROLE_ADMIN : RoleType.ROLE_USER;
 
         Date now = new Date();
         AuthToken accessToken = tokenProvider.createAuthToken(
-                memberInfo.getEmail(),
+                memberInfo.getProvider()+"-"+memberInfo.getProviderId(),
                 roleType.toString(),
                 new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
         );
@@ -98,9 +99,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if (memberRefreshToken != null) {
             // 처음 로그인하는 사용자라면, 토큰 저장
             memberRefreshToken.setRefreshToken(refreshToken.getToken());
+
         } else {
             // 이미 리프레시 토큰을 가지고 있다면 만들어서 저장
-            memberRefreshToken = new MemberRefreshToken(memberInfo.getProviderId(), refreshToken.getToken());
+            memberRefreshToken = new MemberRefreshToken(memberInfo.getProvider()+"-"+memberInfo.getProviderId(), refreshToken.getToken());
             memberRefreshTokenRepository.saveAndFlush(memberRefreshToken);
         }
 
@@ -109,8 +111,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         CookieUtil.deleteCookie(request, response, OAuth2AuthorizationRequestBasedOnCookieRepository.REFRESH_TOKEN);
         CookieUtil.addCookie(response, OAuth2AuthorizationRequestBasedOnCookieRepository.REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
+        System.out.println("HHH%%%%%%%%%%%%%%%%%%%%%%%%%%%%% : " );
+
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", "Bearer " + accessToken.getToken())
+
                 .build().toUriString();
     }
 
