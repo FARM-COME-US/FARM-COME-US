@@ -10,14 +10,18 @@ const Cart = () => {
       </div>
       <div className={classes.body}>
         <div className={classes.bodyhead}>
-          <input type="checkbox" />
-          <div className={classes.boxtext}>전체 선택</div>
+          <div className={classes.boxtext}>
+            <input type="checkbox" />
+            <div>전체 선택</div>
+          </div>
           <div className={classes.deletetext}>선택 삭제</div>
         </div>
         <Card className={classes.cartcard}>
           <div className={classes.cardhead}>
-            <input type="checkbox" />
-            <div className={classes.storename}>title</div>
+            <div className={classes.storename}>
+              <input type="checkbox" />
+              <div>title</div>
+            </div>
             <div className={classes.productcount}>상품 n개</div>
           </div>
           <div className={classes.cardbody}>

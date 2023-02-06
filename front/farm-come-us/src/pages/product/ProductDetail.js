@@ -4,7 +4,7 @@ import Card from "../../components/common/Card";
 import { MdShoppingCart } from "react-icons/md";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ProductDetail = () => {
   const [amount, setAmount] = useState(1);
@@ -17,6 +17,8 @@ const ProductDetail = () => {
       setAmount(amount - 1);
     }
   };
+
+  const navigate = useNavigate();
 
   const location = useLocation();
   /*
@@ -42,12 +44,22 @@ const ProductDetail = () => {
 
   let resultPrice = discountPrice * amount;
 
+  const convertedPrice = (price) =>
+    price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   return (
     <div className={classes.container}>
       <div className={classes.header}>
-        <MdOutlineArrowBackIos></MdOutlineArrowBackIos>
+        <MdOutlineArrowBackIos
+          onClick={() => navigate(-1)}
+        ></MdOutlineArrowBackIos>
         <div className={classes.storename}>
-          {location.state.productInfo.storeName}
+          <Link
+            to="/store"
+            state={{ storeId: location.state.productInfo.storeId }}
+          >
+            {location.state.productInfo.storeName}
+          </Link>
         </div>
       </div>
       <Card className={classes.imagecard}>
@@ -65,10 +77,10 @@ const ProductDetail = () => {
             {location.state.productInfo.discount}%
           </div>
           <div className={classes.originalprice}>
-            {location.state.productInfo.price}원
+            {convertedPrice(location.state.productInfo.price)}원
           </div>
         </div>
-        <div className={classes.saleprice}>{discountPrice}</div>
+        <div className={classes.saleprice}>{convertedPrice(discountPrice)}</div>
         <div className={classes.won}>원</div>
         <div className={classes.selectamount}>
           <div className={classes.firstblock} onClick={minusAmount}>
@@ -82,7 +94,7 @@ const ProductDetail = () => {
       </div>
       <div className={classes.finalprice}>
         <div className={classes.firstblock}>총 상품 금액:</div>
-        <div className={classes.secondblock}>{resultPrice}</div>
+        <div className={classes.secondblock}>{convertedPrice(resultPrice)}</div>
         <div className={classes.thirdblock}>원</div>
       </div>
       <div className={classes.buttonspace}>

@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./style/CategoryItem.module.scss";
-import ImageButton from "../common/ImageButton";
+import CategoryButton from "./CategoryButton";
 
 const CategoryItem = (props) => {
   const sendId = () => {
@@ -9,7 +9,10 @@ const CategoryItem = (props) => {
 
   return (
     <div className={classes.container} onClick={sendId}>
-      <ImageButton text={props.name}></ImageButton>
+      <CategoryButton
+        className={classes.categoryItem}
+        text={props.name}
+      ></CategoryButton>
     </div>
   );
 };
