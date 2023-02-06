@@ -15,14 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 @RestController
 @Component
+@RequestMapping("/kakao")
 @Api(value = "pay API")
 public class KakaoController {
 
@@ -45,12 +48,13 @@ public class KakaoController {
     }
 
     // Client 에서 카카오 인증들 통해서 받은 인가코드 받기
-    @GetMapping("kakao")
+    // 카카오 로그인 순서 -> 1. (클라이언트 -> 카카오서버) : 인가 코트 요청 /
+    @GetMapping
     @ApiOperation(value = "카카오 로그인")
     public ResponseEntity<?> KaKaoLogIn(@RequestParam("code") String code, HttpServletResponse response) {
 
         System.out.println("KaKaoLogIn() 진입 KaKao -> Controller -> p31 ");
-        System.out.println("카카오 인가 코드 : " + code);
+        System.out.println("카카오 인가 코드@@@@@@@@@@@@@@ : " + code);
 
         try {
             // 받아온 code를 작성한 양식에 맞춰서 카카오 유저 생성
@@ -72,7 +76,7 @@ public class KakaoController {
         }
     }
 
-    @GetMapping("kakao/logout")
+    @GetMapping("/logout")
     @ApiOperation(value = "카카오 로그아웃")
     public ResponseEntity<?> KaKaoLogOut(@RequestParam String code) {
 
@@ -98,7 +102,7 @@ public class KakaoController {
     }
 
     // 카카오 페이 결제가 성공적으로 진행됬을 경우
-    @GetMapping("kakao/success")
+    @GetMapping("/success")
     @ApiOperation(value = "카카오 페이 결제 성공")
     public ResponseEntity KaKaoSuccess(@RequestParam String pg_token) {
 
@@ -108,7 +112,7 @@ public class KakaoController {
     }
 
     // 카카오 페이 결제가 취소 됬을 경우
-    @GetMapping("kakao/cancel")
+    @GetMapping("/cancel")
     @ApiOperation(value = "카카오 페이 결제 취소")
     public String KaKaoCancel() {
 
@@ -117,7 +121,7 @@ public class KakaoController {
 
 
     // 카카오 페이 결제가 실패 했을 경우
-    @GetMapping("kakao/fail")
+    @GetMapping("/fail")
     @ApiOperation(value = "카카오 페이 결제 실패")
     public String KaKaoFail() {
 

@@ -41,6 +41,7 @@ public class OrderServiceImpl implements OrderService{
 
     //**  단일 상품 주문 **//
     // (한 종류의 상품만 주문 가능, 상품 바로 구매 or live 주문)
+    @Override
     public Long order(OrderDto orderDto, String id) {
         Item item = itemRepository.findByItemId(orderDto.getItem_id()).orElseThrow(() -> new ItemNotFoundException("상품에 대한 정보가 없습니다."));
 
@@ -61,6 +62,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     //** 다양한 상품 주문 **//
+
     // (장바구니 주문)
     public Long orders(List<OrderDto> orderDtoList, String id) {
 

@@ -1,8 +1,11 @@
 
 package com.ssafy.farmcu.api.controller.order;
 
+import com.ssafy.farmcu.api.dto.order.CartOrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderDto;
 import com.ssafy.farmcu.api.entity.member.Member;
+import com.ssafy.farmcu.api.entity.order.Cart;
+import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
 import com.ssafy.farmcu.api.service.order.OrderServiceImpl;
 import io.swagger.annotations.Api;
@@ -29,20 +32,30 @@ public class OrderController {
 
     //    @Autowired
 //    private final OrderService orderService;
-    public final OrderServiceImpl orderService;
+    public final OrderServiceImpl orderServiceImpl;
 
-    OrderController(@Lazy OrderServiceImpl orderService) {
-        this.orderService = orderService;
+    OrderController(@Lazy OrderServiceImpl orderServiceImpl) {
+        this.orderServiceImpl = orderServiceImpl;
     }
 
     //** 전체 주문 목록 조회 **//
     @GetMapping("/{memberId}")
     @ApiOperation(value = "주문 목록 조회")
     public ResponseEntity getMyOrders(Member member){
-//        List<OrderItem> orders = orderService.findAll(member); //멤버의 주문목록 불러오기
+    //    List<OrderItem> orders = orderService.findAll(member); //멤버의 주문목록 불러오기
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    //** 장바구니 주문 **//
+    @PostMapping("/{cartId}")
+    @ApiOperation(value = "장바구니 상품 주문")
+    public ResponseEntity<?> orders(@RequestBody CartOrderDto cartOrderDto, Cart cart) {
+//        Order order = orderService.orders(cartOrderDto.getCartId(cart.getCartId()));
+//        return Response.success(MessageFormat.CREATE_ORDER_SUCCESS);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     //** 상품 주문 **//                  <======== 장바구니 상품 주문은 CartController
     //** 주문 == 결제하기인데 다시 생각해 봐야 할듯 **//
@@ -65,7 +78,7 @@ public class OrderController {
         Long orderId; //주문번호 생성
 
         try {
-            orderId = orderService.order(orderDto, name); //주문 시도 및 주문번호 가져오기
+            orderId = orderServiceImpl.order(orderDto, name); //주문 시도 및 주문번호 가져오기
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -77,7 +90,7 @@ public class OrderController {
     @PutMapping("/{orderId}")
     @ApiOperation(value = "주문 취소")
     public ResponseEntity updateOrder(@PathVariable Long orderId){
-        orderService.updateOrder(orderId);
+        orderServiceImpl.updateOrder(orderId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
