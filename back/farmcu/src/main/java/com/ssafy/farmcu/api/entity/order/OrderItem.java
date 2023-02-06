@@ -4,10 +4,6 @@ import com.ssafy.farmcu.api.entity.store.Item;
 import lombok.*;
 
 import javax.persistence.*;
-<<<<<<< HEAD
-=======
-import java.sql.Timestamp;
->>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
 import java.time.LocalDateTime;
 
 
@@ -33,11 +29,7 @@ public class OrderItem {
     // 연결
     @ManyToOne
     @JoinColumn(name = "order_id")
-<<<<<<< HEAD
     private Order orderInfo;
-=======
-    private Order order_info;
->>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
 
     @ManyToOne
     @JoinColumn(name = "item_id")
@@ -45,13 +37,9 @@ public class OrderItem {
 
     //빌더
     @Builder
-<<<<<<< HEAD
     public OrderItem(Order orderInfo, Item item, Long oitemId, int oitemCount, LocalDateTime oitemCreatedAt, int orderPrice ) {
         this.orderInfo = orderInfo;
         this.item = item;
-=======
-    public OrderItem(Item item,Long oitemId, int oitemCount, LocalDateTime oitemCreatedAt, int orderPrice ) {
->>>>>>> 2d99473e31c4dc920fee036e1f2adb0c639f1bf5
         this.oitemId = oitemId;
         this.oitemCount = oitemCount;
         this.oitemCreatedAt = oitemCreatedAt;
