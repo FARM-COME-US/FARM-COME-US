@@ -16,26 +16,26 @@ const CATEGORY_LIST = [
 ];
 
 const SUBCATEGORY_LIST = [
-  { Name: "sub1", Id: 1 },
-  { Name: "sub2", Id: 2 },
-  { Name: "sub3", Id: 3 },
-  { Name: "sub4", Id: 4 },
-  { Name: "sub5", Id: 5 },
-  { Name: "sub6", Id: 6 },
-  { Name: "sub7", Id: 7 },
-  { Name: "sub8", Id: 8 },
-  { Name: "sub9", Id: 9 },
-  { Name: "sub10", Id: 10 },
-  { Name: "sub11", Id: 11 },
-  { Name: "sub12", Id: 12 },
-  { Name: "sub13", Id: 13 },
-  { Name: "sub14", Id: 14 },
-  { Name: "sub15", Id: 15 },
-  { Name: "sub16", Id: 16 },
-  { Name: "sub17", Id: 17 },
-  { Name: "sub18", Id: 18 },
-  { Name: "sub19", Id: 19 },
-  { Name: "sub20", Id: 20 },
+  { Name: "전체", Id: 0 },
+  { Name: "sub2", Id: 1 },
+  { Name: "sub3", Id: 2 },
+  { Name: "sub4", Id: 3 },
+  { Name: "sub5", Id: 4 },
+  { Name: "sub6", Id: 5 },
+  { Name: "sub7", Id: 6 },
+  { Name: "sub8", Id: 7 },
+  { Name: "sub9", Id: 8 },
+  { Name: "sub10", Id: 9 },
+  { Name: "sub11", Id: 10 },
+  { Name: "sub12", Id: 11 },
+  { Name: "sub13", Id: 12 },
+  { Name: "sub14", Id: 13 },
+  { Name: "sub15", Id: 14 },
+  { Name: "sub16", Id: 15 },
+  { Name: "sub17", Id: 16 },
+  { Name: "sub18", Id: 17 },
+  { Name: "sub19", Id: 18 },
+  { Name: "sub20", Id: 19 },
 ];
 
 const PRODUCT_LIST = [
@@ -61,7 +61,7 @@ const PRODUCT_LIST = [
     price: 44800,
     unit: 1,
     storeId: 2,
-    storeName: "애플 인 더 청송",
+    storeName: "페어 인 더 청송",
   },
   {
     mainCategoryId: 2,
@@ -73,7 +73,7 @@ const PRODUCT_LIST = [
     price: 44800,
     unit: 1,
     storeId: 3,
-    storeName: "애플 인 더 청송",
+    storeName: "퍼시먼 인 더 청송",
   },
 ];
 
@@ -84,13 +84,11 @@ const Products = () => {
   });
 
   const getId = (id) => {
-    setState({ firstId: id });
-    console.log(`firstId ${idState.firstId} secondId ${idState.secondId}`);
+    setState({ ...idState, firstId: id });
   };
 
   const getSecondId = (id) => {
     setState({ ...idState, secondId: id });
-    console.log(`firstId ${idState.firstId} secondId ${idState.secondId}`);
   };
 
   return (
