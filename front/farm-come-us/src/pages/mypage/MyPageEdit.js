@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../../components/common/Button";
@@ -19,10 +19,10 @@ const MyPageEdit = (props) => {
   const [email, setEmail] = useState("foobar@naver.com");
 
   const [phoneNumber, setPhoneNumber] = useState("010-1234-5678");
-  const [roadAddress, setRoadAddress] = useState("기본도로명주소");
+  const [roadAddress, setRoadAddress] = useState("주소를 검색해주세요.");
   const [specificAddress, setSpecificAddress] =
     useState("상세주소를 입력해주세요.");
-  const [zonecode, setZonecode] = useState("");
+  const [zonecode, setZonecode] = useState("주소를 검색해주세요.");
   const [openModal, setOpenModal] = useState(false);
   const selectAddress = (data) => {
     setRoadAddress(data.roadAddress);
@@ -42,6 +42,36 @@ const MyPageEdit = (props) => {
 
     return;
   }, []);
+
+  const onBlurName = useCallback((e) => {
+    // console.log(e.target.value);
+    setName(e.target.value);
+  }, []);
+
+  const onBlurEmail = useCallback((e) => setEmail(e.target.value), []);
+
+  const onChangeRoadAddress = useCallback(
+    (e) => setRoadAddress(e.target.value),
+    []
+  );
+
+  const onChangeSpecificAddress = useCallback(
+    (e) => setSpecificAddress(e.target.value),
+    []
+  );
+
+  const onChangeZonecode = useCallback((e) => setZonecode(e.target.value), []);
+
+  const onBlurPhoneNumber = useCallback(
+    (e) => setPhoneNumber(e.target.value),
+    []
+  );
+
+  const submitData = () => {
+    // 수정함수 어떻게 param줄지, BE와 연동필요. 수정필요.
+    axios.post();
+  };
+
   return (
     <div className={classes.flexbox_col}>
       {openModal && (
@@ -71,6 +101,7 @@ const MyPageEdit = (props) => {
         </div>
 
         <MyPageInput
+          onBlur={onBlurName}
           className={classes.input}
           disabled={false}
           placeholder={name}
@@ -82,6 +113,7 @@ const MyPageEdit = (props) => {
         </div>
 
         <MyPageInput
+          onBlur={onBlurEmail}
           className={classes.input}
           disabled={false}
           placeholder={email}
@@ -93,6 +125,7 @@ const MyPageEdit = (props) => {
         </div>
 
         <MyPageInput
+          onChange={onChangeRoadAddress}
           onFocus={() => {
             setOpenModal(!openModal);
           }}
@@ -110,6 +143,7 @@ const MyPageEdit = (props) => {
         </div>
 
         <MyPageInput
+          onChange={onChangeSpecificAddress}
           className={classes.input}
           disabled={false}
           placeholder={specificAddress}
@@ -121,6 +155,7 @@ const MyPageEdit = (props) => {
         </div>
 
         <MyPageInput
+          onChange={onChangeZonecode}
           className={classes.input}
           disabled={true}
           placeholder={zonecode}
@@ -132,6 +167,7 @@ const MyPageEdit = (props) => {
         </div>
 
         <MyPageInput
+          onBlur={onBlurPhoneNumber}
           className={classes.input}
           disabled={false}
           placeholder={phoneNumber}
@@ -140,6 +176,7 @@ const MyPageEdit = (props) => {
       <Button
         className={classes.button}
         onClick={() => {
+          submitData();
           navigate("/mypage/info");
         }}
       >
