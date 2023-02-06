@@ -58,18 +58,8 @@ public class SecurityConfig {
 //            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //            .and()
                 .authorizeRequests()
-<<<<<<< HEAD
-                .antMatchers("/","/api/v1/auth/**","/",
-                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",   // swagger
-                        "/h2-console/**",
-                        "/favicon.ico").permitAll()
-                .antMatchers("/", "/*/swagger-ui.html#","/css/**", "/images/**",
-                        "/js/**", "/h2-console/**","/*/login", "/*/login/**",  "/*/join", "/*/join/**", "/find/**", "/social/**", "/book/**", "/test/**", "/api/v1/item/**", "/api/v1/live/**").permitAll()
-                .anyRequest().authenticated()
-=======
 //                .antMatchers("/chat/**").hasRole("USER")  // chat으로 시작하는 리소스에 대한 접근 권한 설정 ; TEST!!!
                 .antMatchers("/**").permitAll()
->>>>>>> b1c6a2a7939defbe1d268f877369e3350399c3d8
                 .and()
                 // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter보다 앞으로 설정
                 .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)

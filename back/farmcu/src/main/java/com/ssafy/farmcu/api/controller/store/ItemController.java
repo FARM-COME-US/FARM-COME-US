@@ -1,9 +1,10 @@
 package com.ssafy.farmcu.api.controller.store;
 
+import com.ssafy.farmcu.api.dto.store.CategoryDto;
 import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.dto.store.ItemImageDto;
 import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
-import com.ssafy.farmcu.api.entity.store.Item;
+import com.ssafy.farmcu.api.service.store.CategoryService;
 import com.ssafy.farmcu.api.service.store.ItemImageService;
 import com.ssafy.farmcu.api.service.store.ItemService;
 import io.swagger.annotations.Api;
@@ -19,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -29,16 +29,29 @@ import java.util.stream.Collectors;
 @Api(value = "상품 관련 API")
 public class ItemController {
 
+    private final CategoryService categoryService;
     private final ItemService itemService;
     private final ItemImageService itemImageService;
 
+    @GetMapping("/title")
+    @ApiOperation(value = "부류 목록")
+    public ResponseEntity<List<CategoryDto>> selectTitles() {
+        return ResponseEntity.ok(categoryService.findTitles());
+    }
+
+    @GetMapping("/detail")
+    @ApiOperation(value = "품목 목록")
+    public ResponseEntity<List<CategoryDto>> selectDetails(String titleName) {
+        return ResponseEntity.ok(categoryService.findDetails(titleName));
+    }
+
     @PostMapping
     @ApiOperation(value = "상품 등록")
-    public ResponseEntity<HashMap<String, Boolean>> createItem(@RequestBody ItemDto itemDto, List<MultipartFile> uploadFile) throws IOException {
+    public ResponseEntity<HashMap<String, Boolean>> createItem(@RequestBody ItemDto itemDto, MultipartFile[] uploadFile) throws IOException {
         boolean isSuccess = itemService.saveItem(itemDto);
 
         //이미지 첨부
-        if(uploadFile != null && uploadFile.size() > 0) {
+        if(uploadFile != null && uploadFile.length > 0) {
             String uploadPath = "C:/Workspace/S08P12B103/back/farmcu/src/assets/itemImg";
             File uploadDir = new File(uploadPath);
 
