@@ -3,6 +3,7 @@ package com.ssafy.farmcu.oauth.filter;
 import com.ssafy.farmcu.oauth.token.AuthToken;
 import com.ssafy.farmcu.oauth.token.AuthTokenProvider;
 import com.ssafy.farmcu.utils.HeaderUtil;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
