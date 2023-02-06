@@ -1,8 +1,8 @@
-import { React } from "react";
+import { React, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import classes from "./BroadCast.module.scss";
-import OvContainer from "../utils/OvContainer";
+import OvContainer from "../utils/OV/OvContainer";
 
 const BroadCast = () => {
   // const width = window.innerWidth;
@@ -12,6 +12,19 @@ const BroadCast = () => {
   const height = 720;
 
   const { state } = useLocation();
+
+  const onbeforeunload = (event) => {
+    console.log("onbeforeunload============");
+    event.returnValue = "";
+  };
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", onbeforeunload);
+
+    return () => {
+      // window.removeEventListener("beforeunload", onbeforeunload);
+    };
+  }, []);
 
   return (
     <OvContainer
