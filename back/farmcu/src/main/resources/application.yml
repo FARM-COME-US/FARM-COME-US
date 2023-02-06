@@ -32,4 +32,6 @@ app:
     authorized-redirect-uris: http://localhost:8080/oauth/redirect
 logging.level:
   org.hibernate.SQL: debug
+  org:
+    springframework: info
 # org.hibernate.type: trace

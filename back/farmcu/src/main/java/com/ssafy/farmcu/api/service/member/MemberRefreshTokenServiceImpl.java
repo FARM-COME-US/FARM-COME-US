@@ -1,5 +1,6 @@
 package com.ssafy.farmcu.api.service.member;
 
+import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.member.MemberRefreshToken;
 import com.ssafy.farmcu.oauth.repository.MemberRefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,15 @@ public class MemberRefreshTokenServiceImpl {
 
     @Transactional
     public MemberRefreshToken saveRefreshTokenTable(String Token, String id){
-        MemberRefreshToken memberRefreshToken = MemberRefreshToken.builder()
-                .refreshToken(Token)
-                .id(id)
-                .build();
+        MemberRefreshToken memberRefreshToken = memberRefreshTokenRepository.findById(id);
+        if(memberRefreshToken!= null) {
+            memberRefreshToken.setRefreshToken(Token);
+        }else{
+            memberRefreshToken = MemberRefreshToken.builder()
+                    .refreshToken(Token)
+                    .id(id)
+                    .build();
+        }
         return memberRefreshTokenRepository.save(memberRefreshToken);
     }
 }
