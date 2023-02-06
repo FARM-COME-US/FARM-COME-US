@@ -56,6 +56,189 @@ public class KakaoServiceImpl implements KakaoService {
 
     private int count = 0001;
 
+    // 카카오 유저 생성
+    @Override
+    public Member Create(String code) {
+
+        System.out.println("Create() KaKao -> Service -> KaKaoSerImpl p57");
+        // 1번 인증코드 요청 전달
+        String accessToken = getAccessToken(code);
+
+        // accessToken 의 값이 잘 받아왔는지 체크
+        if (accessToken == null) throw new NullPointerException("NO access Token");
+
+        // 2번 인증코드로 토큰 전달
+        HashMap<String, Object> userInfo = getUserInfo(accessToken);
+
+        // userInfo 가 잘받아 왔는지를 체크
+        if (userInfo == null) throw new NullPointerException("NO userInfo");
+
+        // 콘솔창에 받아온 userInfo 출력
+        System.out.println("userInfo : " + userInfo.toString());
+
+        // userInfo 안에 있는 값들을 형변환을 통해서 저장
+        String email = (String) userInfo.get("email");
+        String username = (String) userInfo.get("username");
+
+        // 위에서 받아온 데이터를 기반으로 동일한 유저이름이 있는지 DB 내에서 검색
+        Optional<Member> getUserCheck = memberRepository.findById(username);
+
+        // 이미 가입되어 있는 회원이면 기존 회원 정보를 리턴
+        if (!getUserCheck.isEmpty()) {
+            return getUserCheck.get();
+        }
+
+        // 카카오 로그인 에서 Email 선택 동의를 체크 안한경우 Guest_KaKao 로 Email 입력;
+        if (email == null) {
+            email = "Guest_KaKao_" + Integer.toString(count);
+            count++;
+        }
+
+        String encodePass = passwordEncoder.encode("0000");
+        // 유효성 검사 통과하면 유저 객체 안에 저장
+        Date now = new Date();
+        Member member = Member.builder()
+                .email(email)
+                .id(username)
+                .password(encodePass)
+                .build();
+
+        return memberRepository.save(member);
+    }
+
+    // 클라이언트에서 인가코드를 받아온뒤 해당 코드를 사용하여 카카오 로부터
+    // AccessToken 받아오기
+    @Override
+    public String getAccessToken(String code) {
+
+        System.out.println("getAccessToken() 진입 KaKao -> Service -> KaKaoSerImpl p110");
+
+        // 카카오 API양식에 맞춰 reqURL, client_id, redirect_uri, 를 변수에 담아놓고 사용하기
+        String reqURL = "https://kauth.kakao.com/oauth/token";
+//        String redirect_uri = "http://localhost:3000/kakao";
+        String redirect_uri = "http://mywinefindbucket.s3-website.ap-northeast-2.amazonaws.com/kakao.html";
+
+        // 스프링에서 제공하는 http 통신에 유용하게 쓸 수 있는 템플릿사용
+        // getAccessToken 에 맞춰서 사용
+        RestTemplate getAccess = new RestTemplate();
+
+        // 카카오에서 요구하는 양식에 맞춰서 HttpHeader 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        // MultiValueMap 을 통하여 카카오에서 요구하는 데이터를 담을 HttpBody 작성
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", "authorization_code");
+        body.add("client_id", client_id);
+        body.add("redirect_uri", redirect_uri);
+        body.add("code", code);
+
+        // 위에서 작성 HttpHeader HttpBody 담기
+        HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(body, headers);
+
+        // 요청보낼 주소와, POST 매소드, HttpHead HttpBody , 응답받을 형식 String 작성
+        ResponseEntity<String> response = getAccess.exchange(reqURL, HttpMethod.POST, tokenRequest, String.class);
+
+        System.out.println("KaKao -> Service -> KaKaoSerImpl p138");
+
+        // 응답받은 데이터들을 파싱하기 위해서 Jackson 라이브러리의 ObjectMapper 사용
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            // 응답받은 내용을 OAuthToken 양식에 맞춰서 파싱
+            oAuthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
+        } catch (JsonProcessingException e) {
+            System.out.println("AccessToken 을 파싱하는대 실패를 하였습니다. 양식을 다시한번 확인해 주세요 " + e);
+        }
+
+        // 파싱한 내용이 잘 들어왔는지 콘솔로그로 확인
+        System.out.println("카카오 Access_Token :" + oAuthToken.getAccess_token());
+
+        // Access_token 리턴
+        return oAuthToken.getAccess_token();
+    }
+
+    // 카카오 유저정보 받아오기
+    @Override
+    public HashMap<String, Object> getUserInfo(String accessToken) {
+        HashMap<String, Object> userInfo = new HashMap<String, Object>();
+        String reqUrl = "https://kapi.kakao.com/v2/user/me";
+
+        System.out.println("getUserInfo() 진입 KaKao -> Service -> KaKaoSerImpl p162");
+
+        // getUserInfo 를 얻기 위한 기본 양식으로 사용
+        RestTemplate getUser = new RestTemplate();
+
+        // 카카오 에서 요구하는 양식에 맞춰서 HttpHeader 생성
+        // ! 주의 Bearer 앞에 공백으로 한칸 뛰어 놓는거 잊지 않기!
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        // 위에서 작성한 HttpHeader HttpBody 담기
+        HttpEntity<MultiValueMap<String, String>> userRequest = new HttpEntity<>(headers);
+
+        // 요청보낼 주소와, POST 매소드, HttpHead HttpBody , 응답받을 형식 String 작성
+        ResponseEntity<String> response = getUser.exchange(reqUrl, HttpMethod.POST, userRequest, String.class);
+
+        // response 된 데이터를 출력
+        System.out.println("response get body " + response.getBody());
+
+        // 카카오에서 보내용 유저정보를 파싱하기위해서 생성
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // 혹시라도 딴대 쓸일 있을때 전역으로 관리하기
+        KakaoProfile kakaoProfile = null;
+        try {
+            // kakaoProfile 양식에 맞춰서 데이터들을 파싱
+            kakaoProfile = objectMapper.readValue(response.getBody(), KakaoProfile.class);
+        } catch (JsonProcessingException e) {
+            System.out.println("userInfo 를 파싱하는대 실패를 하였습니다. 양식을 다시한번 확인해 주세요 " + e);
+        }
+
+        // 파싱된 내용을 추출하여 저장
+        String email = kakaoProfile.getKakao_account().getEmail();
+        String username = kakaoProfile.getProperties().getNickname();
+
+        // 값이 잘 나오는지를 확인
+        System.out.println("email : " + email);
+        System.out.println("username : " + username);
+
+
+        // userInfo 에 값을 저장후 리턴
+        userInfo.put("email", email);
+        userInfo.put("username", username);
+
+        return userInfo;
+    }
+
+    @Override
+    public String getLogout() {
+
+        String reqUrl = "https://kapi.kakao.com/oauth/token";
+
+        System.out.println("getLogout() 진입 KaKao -> Service -> KaKaoSerImpl p215");
+
+        // getUserInfo 를 얻기 위한 기본 양식으로 사용
+        RestTemplate getLogout = new RestTemplate();
+
+        // Access_token 확인
+        System.out.println("Access_Token : " + oAuthToken.getAccess_token());
+        // 카카오 에서 요구하는 양식에 맞춰서 HttpHeader 생성
+        // ! 주의 Bearer 앞에 공백으로 한칸 뛰어 놓는거 잊지 않기!
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + oAuthToken.getAccess_token());
+
+        HttpEntity<MultiValueMap<String, String>> logoutRequest = new HttpEntity<>(headers);
+
+        // 요청보낼 주소와, POST 매소드, HttpHead HttpBody , 응답받을 형식 String 작성
+        ResponseEntity<String> response = getLogout.exchange(reqUrl, HttpMethod.POST, logoutRequest, String.class);
+
+        System.out.println("로그아웃된 사용자 회원번호는 : " + response.getBody());
+
+
+        return "카카오 로그아웃이 성공 했습니다.";
+    }
+
 
     // 카카오 페이
     @Override
