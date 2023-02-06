@@ -3,12 +3,13 @@ import { NavLink } from "react-router-dom";
 
 import classes from "./style/StoreTab.module.scss";
 
-const StoreTab = () => {
+const StoreTab = (props) => {
   return (
     <div className={classes.LiveTab}>
       <NavLink
         className={({ isActive }) => (isActive ? classes.active : null)}
         to="live"
+        state={{ storeId: props.storeId }}
       >
         <span>Store</span>
         <span className={classes.highlight}> live</span>
@@ -16,6 +17,7 @@ const StoreTab = () => {
       <NavLink
         className={({ isActive }) => (isActive ? classes.active : null)}
         to="products"
+        state={{ storeId: props.storeId }}
       >
         <span className={classes.highlight}>판매</span>
         <span> 상품</span>
