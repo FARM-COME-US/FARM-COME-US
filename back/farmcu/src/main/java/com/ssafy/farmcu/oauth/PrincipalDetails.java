@@ -58,7 +58,7 @@ public class PrincipalDetails implements OAuth2User, OidcUser {
 
     @Override
     public String getName() {
-        return member.getName();
+        return this.member.getName();
     }
 
     public String getStatus(){

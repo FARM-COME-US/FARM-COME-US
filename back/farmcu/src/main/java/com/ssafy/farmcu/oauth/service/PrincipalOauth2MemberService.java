@@ -36,7 +36,7 @@ public class PrincipalOauth2MemberService extends DefaultOAuth2UserService {
         //provider 판별
         ProviderType providerType = ProviderType.valueOf(request.getClientRegistration().getRegistrationId().toUpperCase());
         log.info("현재 provider: " + providerType);
-        OAuth2MemberInfo oAuthMemberInfo = null;
+        OAuth2MemberInfo oAuthMemberInfo;
         String profileImg = "";
         String ProviderId = "";
         String nickname = "";
@@ -63,13 +63,12 @@ public class PrincipalOauth2MemberService extends DefaultOAuth2UserService {
         String email = oAuthMemberInfo.getEmail();
 
         Map<String, Object> attributes = oAuth2User.getAttributes();
-
         // DB에 없는 Member라면 회원가입
         if (member.isEmpty()) {
             log.info("소셜 회원가입");
             log.info("**************************kakao login********************");
             attributes.put("Join", true);
-            member = Optional.ofNullable(Member.builder()
+            Member newMember = Member.builder()
                     .id(ID)
                     .detailAddr("")
                     .profileImg(profileImg)
@@ -79,8 +78,8 @@ public class PrincipalOauth2MemberService extends DefaultOAuth2UserService {
                     .password("")
                     .phoneNumber("")
                     .role(ROLE_USER)
-                    .build());
-            memberRepository.save(member.get());
+                    .build();
+            memberRepository.save(newMember);
 
             return new
                     PrincipalDetails(member.get(),attributes, "JOIN");
