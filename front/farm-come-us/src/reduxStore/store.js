@@ -3,7 +3,9 @@ import {
   combineReducers,
   getDefaultMiddleware,
 } from "@reduxjs/toolkit";
+
 import storageSession from "redux-persist/lib/storage/session";
+import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 
 import userSlice from "./userSlice";
@@ -11,7 +13,8 @@ import menuSlice from "./menuSlice";
 
 const persistConfig = {
   key: "root",
-  storage: storageSession,
+  sessionStorage: storageSession,
+  localStorage: storage,
   whitelist: ["userSlice, menuSlice"],
   //User 이거 뭔지 수정필요
 };

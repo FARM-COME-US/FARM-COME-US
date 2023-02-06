@@ -1,7 +1,8 @@
 import "./App.scss";
-
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
+import menuSlice from "./reduxStore/menuSlice";
 import classes from "./App.scss";
 
 import Header from "./components/common/Header";
@@ -38,6 +39,7 @@ import StoreLive from "./pages/store/StoreLive";
 import StoreProducts from "./pages/store/StoreProducts";
 
 const App = () => {
+  const dispatch = useDispatch();
   const menu = useSelector((state) => {
     console.log("useSelector 확인용: state.menuSlice.isOpen");
     console.log(state);
