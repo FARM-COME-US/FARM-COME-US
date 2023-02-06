@@ -9,12 +9,11 @@ import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.member.MemberRefreshToken;
 import com.ssafy.farmcu.api.service.member.MemberRefreshTokenServiceImpl;
 import com.ssafy.farmcu.oauth.repository.MemberRefreshTokenRepository;
+import com.ssafy.farmcu.oauth.token.AuthToken;
 import com.ssafy.farmcu.oauth.token.AuthTokenProvider;
 import com.ssafy.farmcu.oauth.token.JwtServiceImpl;
 import com.ssafy.farmcu.api.service.member.MemberServiceImpl;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,15 +39,13 @@ public class MemberController {
 
     private final MemberServiceImpl memberService;
     private final MemberRefreshTokenRepository refreshTokenRepository;
+    private final AuthTokenProvider tokenProvider;
 
-    private final AuthTokenProvider tokenProvider; // jwt provider
     private final JwtServiceImpl jwtService;
     private final MemberRefreshTokenServiceImpl refreshService;
     private final PasswordEncoder passwordEncoder;
     private final MessageSource messageSource;
 
-    private static final int ACCESS_TOKEN_EXPIRE_MINUTES = 60; // 분단위
-    private static final int REFRESH_TOKEN_EXPIRE_MINUTES = 2; // 주단위
     @PostMapping("/join")
     @ApiOperation(value="회원 가입", notes = "")
     public ResponseEntity joinMember(@Validated @RequestBody MemberJoinReq request){
@@ -120,11 +117,6 @@ public class MemberController {
 
             } else {
                 System.out.println("// 이미 리프레시 토큰을 가지고 있다면 만들어서 저장");
-//                MemberRefreshToken memberRefreshToken = MemberRefreshToken.builder()
-//                        .refreshToken(refreshToken)
-//                        .id(loginMember.getId())
-//                        .build();
-//                refreshTokenRepository.save(memberRefreshToken);
                 refreshService.saveRefreshTokenTable(refreshToken, loginMember.getId());
             }
         }catch (Exception e){
@@ -183,7 +175,7 @@ public class MemberController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         String token = request.getHeader("token"); // 리프레시 토큰
-
+        String id = jwtService.getUserId();
         if (jwtService.checkToken(token)) {
             if (token.equals(refreshTokenRepository.findById(memberid).getRefreshToken())) {
                 String accessToken = jwtService.createAccessToken("userid", memberid);
@@ -225,6 +217,35 @@ public class MemberController {
 
     }
 
+    @GetMapping("/")
+    public ResponseEntity<?> selectMemberInfo( HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        String token = request.getHeader("token");
+        AuthToken authToken = tokenProvider.convertAuthToken(token);
+
+        if (jwtService.checkToken(request.getHeader("token"))) {
+            log.info("token is avvailable!");
+            try{
+                Long id = tokenProvider.getId(authToken);
+//                MemberResponseDto memberDto = memberService.getUserInfo(memberId);
+                MemberResponseDto memberDto = memberService.getUserInfo(id);
+                resultMap.put("userInfo", memberDto);
+                resultMap.put("message", "success");
+                status = HttpStatus.ACCEPTED;
+            }catch(Exception e){
+                log.debug("정보 조회 실패 : ", e);
+                resultMap.put("message", e.getMessage());
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+        }else{
+            log.info("사용 불가능한 토큰");
+            resultMap.put("message", "fail");
+            status = HttpStatus.UNAUTHORIZED;
+        }
+        return  new ResponseEntity<>(resultMap, status);
+
+    }
     @GetMapping("/me/{id}")
     public ResponseEntity<MemberResponseDto> fetchUser(@PathVariable Long id) {
         log.info("/me");
