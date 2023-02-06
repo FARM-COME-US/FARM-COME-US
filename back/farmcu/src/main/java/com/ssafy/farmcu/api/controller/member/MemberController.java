@@ -13,6 +13,8 @@ import com.ssafy.farmcu.oauth.token.AuthTokenProvider;
 import com.ssafy.farmcu.oauth.token.JwtServiceImpl;
 import com.ssafy.farmcu.api.service.member.MemberServiceImpl;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -93,7 +95,6 @@ public class MemberController {
         }
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
-        System.out.println("HHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEE");
 
         try {
 
@@ -104,7 +105,6 @@ public class MemberController {
             resultMap.put("message", "success");
             status = HttpStatus.ACCEPTED;
             log.debug("status : {}", status);
-            System.out.println("HHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEE");
 
             // DB 저장
 //            MemberRefreshToken memberRefreshToken = refreshTokenRepository.findById(loginMember.getId());
@@ -156,7 +156,7 @@ public class MemberController {
     public ResponseEntity<?> refreshToken(@RequestBody MemberResponseDto memberDto, HttpServletRequest request) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
-        String token = request.getHeader("refresh-token");
+        String token = request.getHeader("token"); // 리프레시 토큰
         if (jwtService.checkToken(token)) {
             if (token.equals(refreshTokenRepository.findById(memberDto.getId()).getRefreshToken())) {
                 String accessToken = jwtService.createAccessToken("userid", memberDto.getId());
@@ -178,7 +178,7 @@ public class MemberController {
     public ResponseEntity<?> refreshToken(@RequestBody MemberUpdateReq requset, @RequestParam String memberid, HttpServletRequest request) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
-        String token = request.getHeader("refresh-token");
+        String token = request.getHeader("token"); // 리프레시 토큰
 
         if (jwtService.checkToken(token)) {
             if (token.equals(refreshTokenRepository.findById(memberid).getRefreshToken())) {
@@ -196,12 +196,36 @@ public class MemberController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
+    @GetMapping("/{memberId}")
+    public ResponseEntity<?> selectMemberInfo(@PathVariable("memberId") Long memberId, HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        if (jwtService.checkToken(request.getHeader("token"))) {
+            log.debug("token is avvailable!");
+            try{
+                MemberResponseDto memberDto = memberService.getUserInfo(memberId);
+                resultMap.put("userInfo", memberDto);
+                resultMap.put("message", "success");
+                status = HttpStatus.ACCEPTED;
+            }catch(Exception e){
+                log.debug("정보 조회 실패 : ", e);
+                resultMap.put("message", e.getMessage());
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+        }else{
+            log.debug("사용 불가능한 토큰");
+            resultMap.put("message", "fail");
+            status = HttpStatus.UNAUTHORIZED;
+        }
+        return  new ResponseEntity<>(resultMap, status);
 
+    }
 
-    @GetMapping("/me")
-    public ResponseEntity<MemberResponseDto> fetchUser(Member member) {
+    @GetMapping("/me/{id}")
+    public ResponseEntity<MemberResponseDto> fetchUser(@PathVariable Long id) {
         log.debug("/me");
-        return ResponseEntity.ok(new MemberResponseDto(member));
+        MemberResponseDto memberDto = memberService.getUserInfo(id);
+        return ResponseEntity.ok(memberDto);
     }
 
 
