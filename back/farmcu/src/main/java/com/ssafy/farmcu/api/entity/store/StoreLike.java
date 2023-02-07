@@ -28,7 +28,8 @@ public class StoreLike {
     private Store store;
 
     @Builder
-    public StoreLike( Member member, Store store){
+    public StoreLike( Long id, Member member, Store store){
+        this.id = id;
         this.member = member;
         this.store= store;
     }
