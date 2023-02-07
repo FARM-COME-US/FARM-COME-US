@@ -33,6 +33,6 @@ public interface ItemService {
 //    public List<Item> findItemsByCategoryCode(Long categoryCode);
 
     //상품 이름, 카테고리 검색
-    public Slice<ItemListRes> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq);
+    public HashMap<String, Object> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq);
 
 }
