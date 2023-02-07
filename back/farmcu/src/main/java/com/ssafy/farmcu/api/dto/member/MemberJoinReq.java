@@ -13,6 +13,7 @@ import static com.ssafy.farmcu.api.entity.member.RoleType.ROLE_USER;
 @ApiModel("MemberJoinRequest")
 public class MemberJoinReq {
 
+//    Long memberId; 자동 생성 (요청 필요X)
     @ApiModelProperty(name = "사용자 id")
     String id;
     @ApiModelProperty(name = "사용자 password")

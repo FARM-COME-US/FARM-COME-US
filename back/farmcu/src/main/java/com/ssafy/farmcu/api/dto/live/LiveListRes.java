@@ -14,7 +14,6 @@ public class LiveListRes {
 
     private Long liveId;
     private String liveTitle;
-    private String itemImage;
     private int itemPrice;
     private int liveDiscount;
     private String liveStart;
@@ -24,7 +23,6 @@ public class LiveListRes {
     public LiveListRes(Live live) {
         this.liveId = live.getLiveId();
         this.liveTitle = live.getLiveTitle();
-        this.itemImage = live.getItem().getItemImg();
         this.itemPrice = live.getItem().getItemPrice();
         this.liveDiscount = live.getLiveDiscount();
         this.liveStart = String.valueOf(live.getLiveStart());

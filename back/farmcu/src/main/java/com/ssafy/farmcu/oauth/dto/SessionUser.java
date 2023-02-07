@@ -10,7 +10,7 @@ public class SessionUser {
     private final String id;
 
     public SessionUser(Member member) {
-        this.name = member.getName();
+        this.name = member.getNickname();
         this.email = member.getEmail();
         this.id = member.getId();
     }

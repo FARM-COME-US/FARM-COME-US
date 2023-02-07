@@ -28,8 +28,8 @@ public class LiveServiceImpl implements LiveService {
     @Override
     public boolean saveLive(LiveInsertReq liveInsertReq) {
         try {
-            Item item = itemRepository.findByItemId(liveInsertReq.getItemId()).get();
-            Store store = storeRepository.findByStoreId(liveInsertReq.getStoreId()).get();
+            Item item = itemRepository.findByItemId(liveInsertReq.getItemId()).orElseThrow(NullPointerException::new);
+            Store store = storeRepository.findByStoreId(liveInsertReq.getStoreId()).orElseThrow(NullPointerException::new);
             Live live = Live.builder()
                     .liveTitle(liveInsertReq.getLiveTitle())
                     .liveDiscount(liveInsertReq.getLiveDiscount())
