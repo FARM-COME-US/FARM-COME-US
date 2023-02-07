@@ -47,37 +47,56 @@ public class AuthToken { // JwtUtil
                 .setExpiration(expiry)
                 .compact();
     }
-
-    public boolean validate() {
-        log.debug("validate");
-        return this.getTokenClaims() != null;
+    public Claims getTokenClaims() {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    /*
-    토큰 뜯어보기
-     */
-    public Claims getTokenClaims() {
-        log.debug("getTokenClaims");
-        log.debug("key = {}", key);
-        try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (SecurityException e) {
-            log.info("Invalid JWT signature.");
-        } catch (MalformedJwtException e) {
-            log.info("Invalid JWT token.");
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token.");
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT token.");
-        } catch (IllegalArgumentException e) {
-            log.info("JWT token compact of handler are invalid.");
-            log.debug(e.getMessage());
-        }
-        return null;
+    public boolean validate() {
+        Jws<Claims> claimsJws = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+        return !claimsJws.getBody().isEmpty();
+    }
+//    public boolean validate() {
+//        log.info("validate");
+//        return this.getTokenClaims() != null;
+//    }
+//
+//    /*
+//    토큰 뜯어보기
+//     */
+//    public Claims getTokenClaims() {
+//        log.info("getTokenClaims");
+//        log.info("key = {}", key);
+//        try {
+//            return Jwts.parserBuilder()
+//                    .setSigningKey(key)
+//                    .build()
+//                    .parseClaimsJws(token)
+//                    .getBody();
+//        } catch (SecurityException e) {
+//            log.info("Invalid JWT signature.");
+//        } catch (MalformedJwtException e) {
+//            log.info("Invalid JWT token.");
+//        } catch (ExpiredJwtException e) {
+//            log.info("Expired JWT token.");
+//        } catch (UnsupportedJwtException e) {
+//            log.info("Unsupported JWT token.");
+//        } catch (IllegalArgumentException e) {
+//            log.info("JWT token compact of handler are invalid.");
+//            log.info(e.getMessage());
+//        }
+//        return null;
+//    }
+
+    public Long getMemberIdFromJwt(String token){
+        Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        return Long.parseLong(String.valueOf(claims.getBody().get("userid")));
     }
 
     public Claims getExpiredTokenClaims() {

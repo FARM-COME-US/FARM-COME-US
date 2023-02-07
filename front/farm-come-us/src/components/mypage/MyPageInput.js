@@ -1,27 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
+
 import classes from "./style/MyPageInput.module.scss";
 
-const MyPageInput = (props) => {
+import Input from "../common/Input";
+
+const MyStoreInput = (props) => {
+  const [isFocused, setIsFocused] = useState(false);
+
+  const toggleFocusHandler = () => {
+    setIsFocused((prev) => !prev);
+  };
+
   return (
-    <input
-      className={`${classes.input} ${props.className}`}
-      type={props.type}
-      name={props.name}
-      value={props.value}
-      onFocus={props.onFocus}
-      onBlur={props.onBlur}
-      id={props.id} // 추가했습니다.
-      placeholder={props.placeholder} // 추가
-      readOnly={props.readOnly}
-      min={props.min}
-      max={props.max}
-      step={props.step}
-      onChange={props.onChange}
-      disabled={props.disabled ? true : false}
+    <div
+      className={`${classes.itemContainer}
+      ${!props.readOnly && isFocused ? classes.active : null}`}
     >
-      {props.innerText}
-    </input>
+      <span className={`${classes.label} title`}>{props.label}</span>
+      <Input
+        className={`${classes.itemInput}`}
+        value={props.value}
+        name={props.name}
+        readOnly={props.readOnly}
+        type={props.type}
+        min={props.min}
+        max={props.max}
+        step={props.step}
+        onChange={props.onChange}
+        id={props.id}
+        isActive={!props.readOnly}
+        onFocus={toggleFocusHandler}
+        onBlur={toggleFocusHandler}
+      />
+    </div>
   );
 };
 
-export default MyPageInput;
+export default MyStoreInput;

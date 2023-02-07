@@ -3,6 +3,7 @@ package com.ssafy.farmcu.api.controller.member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.farmcu.oauth.dto.TokenVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,11 +24,13 @@ import java.security.SecureRandom;
 @RestController
 public class LoginController {
 
-    private static String CLIENT_ID = "186db3a276355426492e41a502011b88";
-    private static String CLIENT_SECRET = "n9EZSS2eagtrsOO1U5kR2YuO1XZUgk62";
+    @Value("#{config['KAKAO_CLIENT_ID']}")
+    private static String CLIENT_ID;
+    @Value("#{config['KAKAO_CLIENT_SECRET']}")
+    private static String CLIENT_SECRET;
 
     @GetMapping("/oauth")
-    public String naverConnect() throws UnsupportedEncodingException {
+    public String kakaoConnect() throws UnsupportedEncodingException {
         log.info("kakao 로그인 바로가기");
 
         String REDIRECT_URL = URLEncoder.encode("http://localhost:8080/login/oauth2/code/kakao", "UTF-8");
