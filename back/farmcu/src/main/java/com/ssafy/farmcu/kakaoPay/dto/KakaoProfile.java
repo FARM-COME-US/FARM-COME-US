@@ -1,4 +1,4 @@
-package com.ssafy.farmcu.api.dto.pay;
+package com.ssafy.farmcu.kakaoPay.dto;
 
 
 import lombok.Getter;

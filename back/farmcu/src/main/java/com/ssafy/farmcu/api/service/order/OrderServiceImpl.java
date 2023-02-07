@@ -1,6 +1,7 @@
 package com.ssafy.farmcu.api.service.order;
 
 import com.ssafy.farmcu.api.dto.order.OrderDto;
+import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
@@ -24,7 +25,7 @@ import java.util.Optional;
 @Component // 왜 있는지 모르겠어
 public class OrderServiceImpl implements OrderService{
 
-//    @Autowired
+    //    @Autowired
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
@@ -64,16 +65,16 @@ public class OrderServiceImpl implements OrderService{
     //** 다양한 상품 주문 **//
 
     // (장바구니 주문)
-    public Long orders(List<OrderDto> orderDtoList, String id) {
+    public Long orders(List<OrderInfoDto> orderInfoDtoList, String id) {
 
         // 로그인 중인 사용자
         Member member = memberRepository.findById(id).get();
 
         // OrderDto 객체에서 item 객체, count 값을 얻음 =>  OrderItem 객체들 생성해서 추가
         List<OrderItem> orderItemList = new ArrayList<>();
-        for (OrderDto orderDto : orderDtoList) {
-            Item item = itemRepository.findByItemId(orderDto.getItem_id()).orElseThrow();
-            OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getOrderCount());
+        for (OrderInfoDto orderInfoDto : orderInfoDtoList) {
+            Item item = itemRepository.findByItemId(orderInfoDto.getItemId()).orElseThrow();
+            OrderItem orderItem = OrderItem.createOrderItem(item, orderInfoDto.getOrderItemCount());
             orderItemList.add(orderItem);
         }
 

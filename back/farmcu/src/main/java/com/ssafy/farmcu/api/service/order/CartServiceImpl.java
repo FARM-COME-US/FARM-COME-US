@@ -23,13 +23,15 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
+    private final OrderServiceImpl orderServiceImpl;
 
 
     CartServiceImpl(@Lazy CartRepository cartRepository, @Lazy ItemRepository itemRepository,
-                    @Lazy MemberRepository memberRepository) {
+                    @Lazy MemberRepository memberRepository, @Lazy OrderServiceImpl orderServiceImpl) {
         this.cartRepository = cartRepository;
         this.itemRepository = itemRepository;
         this.memberRepository = memberRepository;
+        this.orderServiceImpl = orderServiceImpl;
     }
 
     //** 장바구니 상품 추가 **//
@@ -59,21 +61,25 @@ public class CartServiceImpl implements CartService {
             orderInfoDtoList.add(orderInfoDto);
         }
 
-//        //주문 로직
-//        Long orderId = orderService.orders(orderInfoDtoList, username);
-//
-//        //주문완료 후 장바구니 삭제
-//        for (CartOrderDto cartOrderDto : cartOrderDtoList){
-//            Cart cart = cartRepository.findById(cartOrderDto.getCart_num()).orElseThrow();
-//            cartRepository.delete(cart);
-//        }
-//        return orderId;
+        //주문 로직
+        Long orderId = orderServiceImpl.orders(orderInfoDtoList, name);
+
+        //주문완료 후 장바구니 삭제
+        for (CartOrderDto cartOrderDto : cartOrderDtoList){
+            Cart cart = cartRepository.findById(cartOrderDto.getCartId()).orElseThrow();
+            cartRepository.delete(cart);
+        }
+        return orderId;
     }
 
     //** 장바구니 조회 **//
+//    @Override
+//    public List<Cart> findMyCart(Member member) {
+//        return cartRepository.findByMember(member);
+//    }
     @Override
-    public List<Cart> findMyCart(Member member) {
-        return cartRepository.findByMember(member);
+    public List<Cart> findMyCart(Long memberId) {
+        return cartRepository.findByMember(memberId);
     }
 
     //** 장바구니 삭제 **//

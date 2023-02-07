@@ -2,11 +2,10 @@ package com.ssafy.farmcu.api.dto.order;
 
 import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.entity.order.Cart;
+import com.ssafy.farmcu.api.entity.store.Item;
+import com.ssafy.farmcu.api.entity.store.Store;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Getter @ToString
 @AllArgsConstructor
@@ -15,30 +14,27 @@ public class CartResponseDto {
 
     private Long cartId;
     private Long itemId;
-    private String sale;
+
+    private int sale;
     private int cartItemCount;
-//    private Integer unitPrice;
-//    private Long sellerId;
+    private int itemPrice;
+    private int totalPrice;
 
+    private String itemImg;
+    private String storeName;
 
-//    public static CartResponseDto createCart (Cart cart, CartProductDto cartProductDto) {
-//        return new CartResponseDto(cart, cartProductDto);
-//    }
-//
-//    @Builder
-//    public CartResponseDto(Cart cart, CartProductDto cartProductDto) {
-//        if (cartProductDto == null) {
-//            this.cartId = cart.getId();
-//            this.productId = -1L;
-//        }
-//        else {
-//            this.cartId = cart.getId();
-//            this.productId = cartProductDto.getId();
-//            this.productThumbnail = cartProductDto.getThumbnail();
-//            this.productName = cartProductDto.getName();
-//            this.qty = cart.getQty();
-//            this.unitPrice = cartProductDto.getPrice();
-//            this.sellerId = cartProductDto.getSellerId();
-//        }
-//    }
+    @Builder
+    public CartResponseDto(Cart cart, Item item, Store store, Long itemId, Long cartId,
+                           int sale, int cartItemCount, int itemPrice, int totalPrice,
+                           String itemImg, String storeName) {
+
+        this.cartId = cart.getCartId();
+        this.itemId = cart.getItem().getItemId();
+        this.sale = cart.getItem().getItemDiscount();
+        this.cartItemCount = cart.getCartItemCount();
+        this.itemPrice = cart.getItem().getItemPrice();
+        this.totalPrice = cart.getTotalPrice();
+        this.itemImg = cart.getItem().getItemImg();
+        this.storeName = cart.getItem().getStore().getStoreImg();
+    }
 }
