@@ -35,47 +35,40 @@ public class PrincipalOauth2MemberService extends DefaultOAuth2UserService {
 
         //provider 판별
         ProviderType providerType = ProviderType.valueOf(request.getClientRegistration().getRegistrationId().toUpperCase());
-        log.debug("현재 provider: " + providerType);
-        OAuth2MemberInfo oAuthMemberInfo = null;
+        log.info("현재 provider: " + providerType);
+        OAuth2MemberInfo oAuthMemberInfo;
         String profileImg = "";
         String ProviderId = "";
         String nickname = "";
         if (providerType.equals(ProviderType.KAKAO)) {
-            log.debug("KAKAO");
+            log.info("KAKAO");
             System.out.println("카카오다!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//            System.out.println(oAuth2User.getAttributes().toString());
-//            System.out.println(oAuth2User.getAttributes().get("kakao_account"));
-//            Map<String, Object> map = (Map<String, Object>) oAuth2User.getAttributes().get("kakao_account");
             Map<String, Object> properties = (Map<String, Object>) oAuth2User.getAttributes().get("properties");
-//            String id = "kakao" + (String) map.get("id");
+            oAuthMemberInfo = new KakaoMemberInfo((Map<String, Object>) oAuth2User.getAttributes().get("kakao_account"));
+
             nickname  = (String) properties.get("nickname");
             profileImg = (String) properties.get("profile_image");
-//            System.out.println(map.get("email"));
-            oAuthMemberInfo = new KakaoMemberInfo((Map<String, Object>) oAuth2User.getAttributes().get("kakao_account"));
             ProviderId = oAuth2User.getAttributes().get("id") +"";
-//            System.out.println(oAuthMemberInfo.getProviderId());
 
 
         } else {
-            log.debug("not KAKAO");
+            log.info("not KAKAO");
             oAuthMemberInfo = new KakaoMemberInfo((Map<String, Object>) oAuth2User.getAttributes().get("kakao_account"));
         }
-//        System.out.println("HHHHHHHHHHHHEEEEEEEERRRRRRRRRREEEEEEEEEEE: " +;
-//        log.debug("oAuthMemberInfo: " + oAuthMemberInfo.getProviderId());
+
+        log.info("oAuthMemberInfo: " + oAuthMemberInfo.getProviderId());
         Optional<Member> member = memberRepository.findById(oAuthMemberInfo.getProvider() + "-"+ ProviderId);
 
         String ID = oAuthMemberInfo.getProvider() + "-"+ ProviderId;
-        String passwrod = "null";
         String email = oAuthMemberInfo.getEmail();
 
-
-
+        Map<String, Object> attributes = oAuth2User.getAttributes();
         // DB에 없는 Member라면 회원가입
         if (member.isEmpty()) {
-            log.debug("소셜 회원가입");
-            System.out.println("**************************kakao login********************");
-
-            member = Optional.ofNullable(Member.builder()
+            log.info("소셜 회원가입");
+            log.info("**************************kakao login********************");
+            attributes.put("Join", true);
+            Member newMember = Member.builder()
                     .id(ID)
                     .detailAddr("")
                     .profileImg(profileImg)
@@ -85,16 +78,14 @@ public class PrincipalOauth2MemberService extends DefaultOAuth2UserService {
                     .password("")
                     .phoneNumber("")
                     .role(ROLE_USER)
-                    .build());
-            memberRepository.save(member.get());
+                    .build();
+            memberRepository.save(newMember);
 
             return new
-                    PrincipalDetails(member.get(), oAuth2User.getAttributes());
-//            Member newMember = createUser(oAuthMemberInfo, providerType);
-//            return new PrincipalDetails(newMember, oAuth2User.getAttributes());
+                    PrincipalDetails(member.get(),attributes, "JOIN");
         } else {
-            log.debug("소셜 로그인");
-            return new PrincipalDetails(member.get(), oAuth2User.getAttributes());
+            log.info("소셜 로그인");
+            return new PrincipalDetails(member.get(), oAuth2User.getAttributes(), "LOGIN");
         }
 
     }

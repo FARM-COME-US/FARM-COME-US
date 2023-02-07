@@ -1,5 +1,7 @@
 package com.ssafy.farmcu.config;
 
+import com.ssafy.farmcu.api.repository.MemberRepository;
+import com.ssafy.farmcu.api.service.member.MemberRefreshTokenServiceImpl;
 import com.ssafy.farmcu.config.properties.AppProperties;
 import com.ssafy.farmcu.config.properties.CorsProperties;
 import com.ssafy.farmcu.exception.RestAuthenticationEntryPoint;
@@ -14,6 +16,7 @@ import com.ssafy.farmcu.oauth.token.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,42 +42,43 @@ public class SecurityConfig {
     private final MemberRefreshTokenRepository memberRefreshTokenRepository;
     private final PrincipalDetailsService principalDetailsService;
     private final CorsProperties corsProperties;
-
+    private final MemberRepository memberRepository;
+    private final MemberRefreshTokenServiceImpl memberRefreshTokenService;
 
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                // 기본 REST API만 쓰겠다는 소리
                 .httpBasic().disable()
                 .cors().and()
                 .csrf().disable()
-                // SockJS는 기본적으로 HTML iframe 요소를 통한 전송을 허용하지 않도록 설정되는데 해당 내용을 해제한다.
+
                 .headers()
-                .frameOptions().sameOrigin()
+                .frameOptions()
+                .sameOrigin()
+
+                // 시큐리티는 기본적으로 세션을 사용
+                // 세션을 사용하지 않을거라 세션 설정을 Stateless 로 설정
                 .and()
-                // 세션 안쓰고 JWT 쓸것이므로 비활성화
-//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//            .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().exceptionHandling()
+                .authenticationEntryPoint(new RestAuthenticationEntryPoint()) // 요청이 들어올 시, 인증 헤더를 보내지 않는 경우 401 응답 처리
+
+                .and()
                 .authorizeRequests()
-//                .antMatchers("/chat/**").hasRole("USER")  // chat으로 시작하는 리소스에 대한 접근 권한 설정 ; TEST!!!
+                .antMatchers(HttpMethod.OPTIONS).permitAll() // 열어두어야 CORS Preflight 막을 수 있음
                 .antMatchers("/**").permitAll()
                 .and()
+
+
                 // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter보다 앞으로 설정
                 .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-//                .accessDeniedHandler(tokenAccessDeniedHandler)
-//            .and()
-//                .authorizeRequests()
-//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-//                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-//                .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
-//                .anyRequest().authenticated()
-//                .and()
                 .oauth2Login()
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorization")
+                .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .and()
                 .redirectionEndpoint()
@@ -124,7 +128,9 @@ public class SecurityConfig {
                 tokenProvider,
                 appProperties,
                 memberRefreshTokenRepository,
-                oAuth2AuthorizationRequestBasedOnCookieRepository()
+                oAuth2AuthorizationRequestBasedOnCookieRepository(),
+                memberRepository,
+                memberRefreshTokenService
         );
 //        return new OAuth2AuthenticationSuccessHandler();
     }
