@@ -11,5 +11,6 @@ public interface MemberRefreshTokenRepository extends JpaRepository<MemberRefres
     MemberRefreshToken findById(String id);
     boolean deleteById(String id);
     MemberRefreshToken findByIdAndRefreshToken(String id, String refreshToken);
+    MemberRefreshToken findByRefreshToken(String refreshToken);
 }
 
