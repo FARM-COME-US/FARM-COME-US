@@ -1,6 +1,5 @@
-package com.ssafy.farmcu.api.dto.order;
+package com.ssafy.farmcu.api.dto.store;
 
-import com.ssafy.farmcu.api.dto.store.StoreDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItemListDto {
-
+public class StoreLikeCreateDto {
     private Long memberId;
-    private StoreDto storeDto;
-
+    private Long storeId;
 }

@@ -4,18 +4,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "category")
-public class Category {
+@Table(name = "category_title")
+public class CategoryTitle {
+
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryCode;
+    private Long titleCode;
+
+    @Column
+    private String titleName;
 
 }
 
