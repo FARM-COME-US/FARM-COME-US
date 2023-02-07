@@ -15,6 +15,8 @@ import SideMenu from "./components/common/SideMenu";
 import Backdrop from "./components/common/Backdrop";
 import Products from "./pages/product/Products";
 
+import ReceiptList from "./components/receipt/ReceiptList";
+
 import MyPage from "./pages/mypage/MyPage";
 import MyPageInfo from "./pages/mypage/MyPageInfo";
 import MyPageEdit from "./pages/mypage/MyPageEdit";
@@ -79,6 +81,7 @@ const App = () => {
         />
       </div>
       <Routes>
+        <Route path="/receipt" element={<ReceiptList />}></Route>
         <Route path="/product-detail" element={<ProductDetail />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
         <Route path="/store" element={<Store />}>

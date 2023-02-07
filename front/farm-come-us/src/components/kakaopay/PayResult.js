@@ -31,8 +31,9 @@ const PayResult = (props) => {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          alert("결제 완료!");
-          navigate("/");
+          alert("결제가 완료되었습니다.");
+          // navigate("/");
+          navigate(`receipt/${tid}`);
         }
       })
       .catch((error) => {
