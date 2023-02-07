@@ -69,15 +69,26 @@ public class MemberServiceImpl implements MemberService{
         return false;
     }
 
+    @Transactional
     @Override
     public boolean updateMember(MemberUpdateReq memberUpdateReq, String id) {
         Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
         if(!pwEncoder.matches(memberUpdateReq.getPassword(), member.getPassword())){ // 비밀번호 검증
             return false;
         }
-
+//        Member update = Member.builder()
+//                        .email(memberUpdateReq.getEmail())
+//                .name(memberUpdateReq.getName())
+//                .detailAddr(memberUpdateReq.getDetailAddr())
+//                .profileImg(memberUpdateReq.getProfileImg())
+//                .nickname(memberUpdateReq.getNickname())
+//                .zipcode(memberUpdateReq.getZipcode())
+//                .streetAddr(memberUpdateReq.getStreetAddr())
+//                .phoneNumber(memberUpdateReq.getPhoneNumber())
+//                .password(memberUpdateReq.getPassword())
+//                                .build();
         member.updateInfo(memberUpdateReq);
-
+        memberRepository.save(member);
         return true;
     }
 }

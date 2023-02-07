@@ -68,7 +68,7 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS).permitAll() // 열어두어야 CORS Preflight 막을 수 있음
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 열어두어야 CORS Preflight 막을 수 있음
                 .antMatchers("/**").permitAll()
                 .and()
 
