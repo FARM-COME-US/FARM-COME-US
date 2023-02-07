@@ -5,6 +5,7 @@ import { MdPermIdentity, MdLockOutline } from "react-icons/md";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 // import jwt_decode from "jwt-decode";
 import axios from "axios";
+import { userSignUp } from "../utils/api/user-http";
 
 // 이 함수도 수정필요 😀 기본형으로 해둠.
 // import { asyncSomethingFetch } from "../reduxStore/userSlice";
@@ -15,6 +16,17 @@ import classes from "./style/Login.module.scss";
 
 function Login() {
   // const dispatch = useDispatch();
+  const [userInfo, setUserInfo] = useState({
+    userId: null,
+    nickname: null,
+    name: null,
+    email: null,
+    streetAddr: null,
+    detailAddr: null,
+    zipcode: null,
+    pno: null,
+  });
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -100,7 +112,7 @@ function Login() {
             className={`${classes.inputbar}`}
             placeholder="아이디"
             onChange={(e) => {
-              setUsername(e.target.value);
+              setUserInfo(e.target.value);
             }}
             id="username"
           />
@@ -129,7 +141,7 @@ function Login() {
               className={classes.inputbar}
               placeholder="비밀번호"
               onChange={(e) => {
-                setPassword(e.target.value);
+                setUserInfo(e.target.value);
               }}
               id="password"
               type={showPassword ? "text" : "password"}

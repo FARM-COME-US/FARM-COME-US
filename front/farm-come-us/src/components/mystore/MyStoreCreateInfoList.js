@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classes from "./style/MyStoreInfoList.module.scss";
 
-import MyStoreInput from "../mystore/MyStoreInput";
+import MyStoreInput from "./MyStoreInput";
 
 const MyStoreCreateInfoList = (props) => {
   // const []
