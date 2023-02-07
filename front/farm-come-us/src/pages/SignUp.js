@@ -20,7 +20,7 @@ const SignUp = () => {
   const [openModal, setOpenModal] = useState(false);
   //이름, 닉네임, 전화번호, 비밀번호, 비밀번호 확인, 주소, 상세주소(얘는 유효성검사 안함. 주택이면 없으니까.), 우편번호(주소 들어오면 있는거니까 얘도 유효성X)
   //이름, 이메일, 비밀번호, 비밀번호 확인
-  // const [userId, setUserId] = useState("");
+  // const [id, setId] = useState("");
   // const [email, setEmail] = useState("");
   // const [name, setName] = useState("");
   // const [pno, setPno] = useState("");
@@ -30,7 +30,7 @@ const SignUp = () => {
   // const [detailAddr, setDetailAddr] = useState("");
   // const [zipcode, setZipcode] = useState("");
 
-  const [userId, setUserId] = useState("myFarm");
+  const [id, setId] = useState("myFarm");
   const [email, setEmail] = useState("myfarm@gmail.com");
   const [name, setName] = useState("팜컴어스");
   const [pno, setPno] = useState("01012341234");
@@ -41,7 +41,7 @@ const SignUp = () => {
   const [zipcode, setZipcode] = useState("34153");
 
   //오류메시지 상태저장
-  const [userIdMessage, setUseruserIdMessage] = useState("");
+  const [idMessage, setUseridMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [nameMessage, setNameMessage] = useState("");
   const [pnoMessage, setPnoMessage] = useState("");
@@ -50,7 +50,7 @@ const SignUp = () => {
   const [streetAddrMessage, setStreetAddrMessage] = useState("");
 
   // 유효성 검사
-  const [isUserId, setIsUserId] = useState(false);
+  const [isid, setIsid] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isName, setIsName] = useState(false);
   const [ispno, setIspno] = useState(false);
@@ -89,29 +89,29 @@ const SignUp = () => {
     nickname = _.sample(adjArr) + _.sample(vegeArr);
 
     const userInfo = {
-      userId,
+      id,
       email,
       nickname,
+      name,
       pno,
       password,
       streetAddr,
       detailAddr,
       zipcode,
     };
-    console.log(userInfo);
 
     userSignUp(userInfo);
   };
 
   // 아이디
   const onChangeId = useCallback((e) => {
-    setUserId(e.target.value);
+    setId(e.target.value);
     if (e.target.value.length < 2 || e.target.value.length > 10) {
-      setUseruserIdMessage("2글자 이상 10글자 미만으로 입력해주세요.");
-      setIsUserId(false);
+      setUseridMessage("2글자 이상 10글자 미만으로 입력해주세요.");
+      setIsid(false);
     } else {
-      setUseruserIdMessage("올바른 아이디 형식입니다 :)");
-      setIsUserId(true);
+      setUseridMessage("올바른 아이디 형식입니다 :)");
+      setIsid(true);
     }
   }, []);
 
@@ -254,13 +254,13 @@ const SignUp = () => {
             />
           </div>
 
-          {userId.length > 0 && (
+          {id.length > 0 && (
             <span
               className={`${classes.message} ${
-                isUserId ? classes.success : classes.error
+                isid ? classes.success : classes.error
               }`}
             >
-              {userIdMessage}
+              {idMessage}
             </span>
           )}
         </div>
@@ -278,7 +278,7 @@ const SignUp = () => {
             />
           </div>
 
-          {userId.length > 0 && (
+          {id.length > 0 && (
             <span
               className={`${classes.message} ${
                 isName ? classes.success : classes.error
@@ -455,7 +455,7 @@ const SignUp = () => {
             className={classes.outerInput}
             onChange={(e) => {
               console.log({
-                isUserId,
+                isid,
                 isEmail,
                 ispno,
                 isPassword,
@@ -476,7 +476,7 @@ const SignUp = () => {
         <button
           className={`${classes.button} ${
             !(
-              isUserId &&
+              isid &&
               isEmail &&
               ispno &&
               isPassword &&
@@ -489,7 +489,7 @@ const SignUp = () => {
           type="submit"
           disabled={
             !(
-              isUserId &&
+              isid &&
               isEmail &&
               ispno &&
               isPassword &&

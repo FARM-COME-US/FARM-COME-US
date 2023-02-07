@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdPermIdentity, MdLockOutline } from "react-icons/md";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-// import jwt_decode from "jwt-decode";
+import jwt_decode from "jwt-decode";
 import axios from "axios";
 
 // 이 함수도 수정필요 😀 기본형으로 해둠.
@@ -32,24 +32,28 @@ function Login() {
   };
 
   const loginHandler = async () => {
-    const response = await axios.post(
-      "/api/member/login",
-      {
-        id: userId,
-        password: password,
-      },
-      config
-    );
     try {
-      const { accessToken, refreshToken } = response.data;
-      // const accessToken = response.data.accessToken;
-      // const refreshToken = response.data.refreshToken;
-      // const decodedAccessToken = jwt_decode(accessToken);
-      // const decodedRefreshToken = jwt_decode(refreshToken);
+      const response = await axios.post(
+        "/api/member/login",
+        {
+          id: userId,
+          password: password,
+        },
+        config
+      );
+
+      const accessToken = response.data["access-token"];
+      const refreshToken = response.data["refresh-token"];
+
+      const decodedAccessToken = jwt_decode(accessToken);
+      const decodedRefreshToken = jwt_decode(refreshToken);
+
       sessionStorage.setItem("accessToken", accessToken);
       sessionStorage.setItem("refreshToken", refreshToken);
-      // sessionStorage.setItem("jwtAccess", JSON.stringify(decodedAccessToken));
-      // sessionStorage.setItem("jwtRefresh", JSON.stringify(decodedRefreshToken));
+
+      console.log(accessToken, refreshToken);
+      sessionStorage.setItem("jwtAccess", JSON.stringify(decodedAccessToken));
+      sessionStorage.setItem("jwtRefresh", JSON.stringify(decodedRefreshToken));
       // dispatch(
       //   userSlice.actions.savetoken({
       //     accessToken: accessToken,
@@ -84,6 +88,7 @@ function Login() {
     //   "이렇게 하지말고 밑 오른쪽에 오류를 알려주는걸 흔들면서 넣어줘야지. 수정필요"
     // );
   };
+
   return (
     <div className={classes.screen}>
       <h1 className={classes.headertxt}>로그인</h1>
