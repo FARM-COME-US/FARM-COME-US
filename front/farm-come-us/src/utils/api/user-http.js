@@ -9,7 +9,7 @@ const clientOrderObjFormatter = (obj) => {
 
 const serverOrderObjFormatter = (obj) => {
   return {
-    id: obj.userId,
+    id: obj.id,
     password: obj.password,
     nickname: obj.nickname,
     name: obj.name,
@@ -22,13 +22,7 @@ const serverOrderObjFormatter = (obj) => {
 };
 
 export async function userSignUp(userInfo) {
-  console.log(userInfo);
   let data = serverOrderObjFormatter(userInfo);
-  data = {
-    ...data,
-    id: data.userId,
-  };
-  data["id"] = userInfo.userId;
   console.log(data);
   try {
     const response = axios.post("api/member/join", {
@@ -48,9 +42,26 @@ export async function userSignUp(userInfo) {
 
 export async function login(id, password) {
   try {
-    const response = axios.post(`${USER_API_URL}/login`, {
+    const response = axios.post(`api/member/login`, {
       id: id,
       password: password,
+    });
+    console.log(response);
+  } catch (err) {
+    console.err(err);
+  }
+}
+
+export async function fetchUserInfo(id) {
+  const accessToken = sessionStorage.getItem("accessToken");
+  console.log(accessToken);
+
+  try {
+    const response = axios.get(`/api/member/`, {
+      params: { memberId: id },
+      headers: {
+        token: accessToken,
+      },
     });
     console.log(response);
   } catch (err) {
