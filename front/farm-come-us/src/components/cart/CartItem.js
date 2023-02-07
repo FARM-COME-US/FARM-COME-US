@@ -1,22 +1,26 @@
 import React, { useState } from "react";
 import classes from "./style/CartItem.module.scss";
+import { MdCheck } from "react-icons/md";
 
 const CartItem = (props) => {
   const [productIdList, setList] = useState([]);
 
-  const appendSetList = () => {
-    setList([...productIdList, props.item.productId]);
-    console.log(productIdList);
-  };
+  const [check, onCheck] = useState(false);
 
-  const removeSetList = (id) => {
-    setList(productIdList.filter((id) => productIdList !== id));
+  const dealOnCheck = () => {
+    onCheck(!check);
+    props.checkItem(props.item);
   };
 
   return (
     <div className={classes.container}>
       <div className={classes.buttonSpace}>
-        <div className={classes.button} onClick={appendSetList}></div>
+        <div
+          onClick={dealOnCheck}
+          className={`${classes.button} ${check ? classes.active : null}`}
+        >
+          <MdCheck className={`${classes.checkIcon}`}></MdCheck>
+        </div>
       </div>
       <div className={classes.imgSpace}>
         <img src="https://via.placeholder.com/300" alt="productImg" />
