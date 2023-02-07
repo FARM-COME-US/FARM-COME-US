@@ -1,6 +1,8 @@
 package com.ssafy.farmcu.api.service.store;
 
+import com.ssafy.farmcu.api.dto.store.StoreCreateReq;
 import com.ssafy.farmcu.api.dto.store.StoreDto;
+import com.ssafy.farmcu.api.dto.store.StoreUpdateReq;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.store.Store;
 import com.ssafy.farmcu.api.repository.MemberRepository;
@@ -33,7 +35,7 @@ public class StoreServiceImpl implements StoreService{
     }
 
     @Transactional// 스토어 생성 save service
-    public boolean saveStore(StoreDto storeDto){
+    public boolean saveStore(StoreCreateReq storeDto){
         try {
 //            Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
             Store store = Store.builder()
@@ -46,7 +48,7 @@ public class StoreServiceImpl implements StoreService{
                     .storeStreetAddr(storeDto.getStoreStreetAddr())
                     .storeZipcode(storeDto.getStoreZipcode())
                     .storeName(storeDto.getStoreName())
-                    .member(storeDto.getMember())
+                    .member(memberRepository.findById(storeDto.getMemberId()).orElseThrow())
                     .build();
             storeRepository.save(store);
             return true;
@@ -71,6 +73,7 @@ public class StoreServiceImpl implements StoreService{
                     .storeImg(store.getStoreImg())
                     .storePhoneNumber(store.getStorePhoneNumber())
                     .storeStreetAddr(store.getStoreStreetAddr())
+                    .member(store.getMember())
                     .build();
             return finded;
         }catch (Exception e){
@@ -78,8 +81,8 @@ public class StoreServiceImpl implements StoreService{
             return null;
         }
     }
-
-    public boolean updateStore(Long storeId, StoreDto storeDto){ // 스토어 정보 수정
+    @Transactional
+    public boolean updateStore(Long storeId, StoreUpdateReq storeDto){ // 스토어 정보 수정
         Store store = storeRepository.findByStoreId(storeId).orElseThrow(()-> new NotFoundStoreException("스토어가 존재하지 않음"));
 
         try{
@@ -104,6 +107,7 @@ public class StoreServiceImpl implements StoreService{
         }
     }
 
+    @Transactional
     public boolean deleteStore(Long storeId){
         Store store = storeRepository.findByStoreId(storeId).orElseThrow(()-> new NotFoundStoreException("스토어가 존재하지 않음"));
 

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class AppProperties {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Auth{
+        @Value("${jwt.secret}")
         private String tokenSecret;
         private long tokenExpiry;
         private long refreshTokenExpiry;

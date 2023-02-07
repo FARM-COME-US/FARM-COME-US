@@ -12,7 +12,6 @@ public interface LiveRepository extends JpaRepository<Live, Long> {
 
     List<Live> findByLiveTitleLike(String liveTitle);
     Optional<Live> findByLiveId(Long liveId);
-
     void deleteByLiveId(Long liveId);
 
 }

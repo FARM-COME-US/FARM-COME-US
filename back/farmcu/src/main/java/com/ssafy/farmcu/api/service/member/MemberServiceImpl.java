@@ -43,8 +43,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Transactional(readOnly = true)
-    public MemberResponseDto getUserInfo(String id){
-        return memberRepository.findById(id).map(MemberResponseDto::of).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
+    public MemberResponseDto getUserInfo(Long id){
+//        return memberRepository.findById(id).map(MemberResponseDto::of).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
+        return memberRepository.findByMemberId(id).map(MemberResponseDto::of).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
     }
 
 //    @Override
@@ -54,7 +55,8 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional(readOnly = true)
     public Member findUser(String id){
-        return memberRepository.findById(id).get();
+        Member member =memberRepository.findById(id).orElse(null);
+        return member;
     }
 
     @Override
