@@ -11,6 +11,7 @@ const DUMMY_MYPAGE_INFO = {
   email: "ssafy123@ssafy.com",
   addr: "강원도 평창군 봉평면 무야리 23-12",
   pno: "010-1234-1234",
+  storeId: null,
 };
 
 const MyPage = (props) => {
@@ -39,10 +40,7 @@ const MyPage = (props) => {
 
   return (
     <div>
-      <MyPageHeader
-        profileImg={profileImg}
-        nickname={DUMMY_MYPAGE_INFO.nickname}
-      />
+      <MyPageHeader profileImg={profileImg} userInfo={DUMMY_MYPAGE_INFO} />
       <Outlet context={{ info: DUMMY_MYPAGE_INFO }} />
     </div>
   );
