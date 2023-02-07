@@ -29,6 +29,7 @@ const Payment = (props) => {
     withCredentials: true,
   };
   const kakaoPay = () => {
+    // axios 요청을, url, payload, config 담아서 보낸다.
     axios
       .post(
         "/credit/KakaoPay/ready",
