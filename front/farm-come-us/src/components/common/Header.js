@@ -6,7 +6,7 @@ import classes from "./style/Header.module.scss";
 
 const Header = (props) => {
   const dispatch = useDispatch();
-  const menu = useSelector((state) => state.menu.isOpen);
+  const menu = useSelector((state) => state.menuSlice.isOpen);
   return (
     <div className={`${classes.header} ${props.className}`}>
       <div className={`${classes.logo}`}>로고</div>

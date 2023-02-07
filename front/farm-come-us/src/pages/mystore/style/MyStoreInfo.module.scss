@@ -7,6 +7,38 @@
     margin-top: 16px;
   }
 
+  .btnBox {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
+    .btnSubmit {
+      width: 40%;
+      margin: 0 8px;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background-color: #f7863b;
+
+      &:hover {
+        background-color: #e47c37;
+      }
+    }
+
+    .btnCancel {
+      width: 40%;
+      margin: 0 8px;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background-color: #777;
+
+      &:hover {
+        background-color: #555;
+      }
+    }
+  }
+
   .btnEditInfo {
     width: 320px;
     margin: 0 auto;

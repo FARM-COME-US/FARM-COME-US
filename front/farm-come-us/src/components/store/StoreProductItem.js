@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import classes from "./style/StoreProductItem.module.scss";
 
 const StoreProductItem = (props) => {
-  const convertedPrice = props.product.productPrice
+  const convertedPrice = props.product.price
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -17,7 +17,9 @@ const StoreProductItem = (props) => {
       state={{ productInfo: props.product, storeInfo: storeProfile }}
     >
       <div className={classes.container}>
-        <div className={classes.imagespace}></div>
+        <div className={classes.imagespace}>
+          <img src="https://via.placeholder.com/300" alt="공백"></img>
+        </div>
         <div className={classes.scriptspace}>
           <div className={classes.firstline}>
             <div className={classes.productname}>

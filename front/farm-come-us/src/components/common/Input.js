@@ -4,7 +4,9 @@ import classes from "./style/Input.module.scss";
 const Input = (props) => {
   return (
     <input
-      className={`${classes.input} ${props.className}`}
+      className={`${classes.input} ${props.className} ${
+        props.isActive ? classes.active : null
+      }`}
       type={props.type}
       name={props.name}
       value={props.value}

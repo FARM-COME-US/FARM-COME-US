@@ -5,7 +5,6 @@ import ImageButton from "../../components/common/ImageButton";
 import { HiUser } from "react-icons/hi";
 import { MdStoreMallDirectory } from "react-icons/md";
 import { MdOutlineCreditCard } from "react-icons/md";
-import { MdLocalGroceryStore } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 
 import classes from "./style/MyPageMenu.module.scss";
@@ -27,7 +26,7 @@ const MyPageMenu = () => {
       </li>
       <li>
         <NavLink
-          to="live"
+          to="receipts"
           className={({ isActive }) => (isActive ? classes.active : null)}
         >
           <ImageButton
@@ -51,7 +50,7 @@ const MyPageMenu = () => {
       </li>
       <li>
         <NavLink
-          to="receipt"
+          to="likestores"
           className={({ isActive }) => (isActive ? classes.active : null)}
         >
           <ImageButton
