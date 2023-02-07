@@ -13,10 +13,11 @@ import java.util.Optional;
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
     Optional<Cart> findById(Long num);
-    List<Cart> findByMember(Member member);
+//    List<Cart> findByMember(Member member);
+    List<Cart> findByMember(Long memberId);
     void deleteByCartId(Long cartId);
     /* 장바구니 아이디 리스트 기반으로 장바구니 상품 가져오기 */
-    List<Cart> findByIdIn(List<Long> ids);
+//    List<Cart> findByIdIn(List<Long> ids);
 
 
 //
