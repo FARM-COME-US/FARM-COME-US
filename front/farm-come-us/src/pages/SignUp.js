@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+
 import classes from "./style/SignUp.module.scss";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import {
@@ -10,8 +11,8 @@ import {
   MdCheck,
   MdSearch,
 } from "react-icons/md";
-import axios from "axios";
 import _ from "lodash";
+import { userSignUp } from "../utils/api/user-http";
 
 const SignUp = () => {
   const REGISTER_USERS_URL = "http://Backend" + "/member/join";
@@ -19,15 +20,25 @@ const SignUp = () => {
   const [openModal, setOpenModal] = useState(false);
   //이름, 닉네임, 전화번호, 비밀번호, 비밀번호 확인, 주소, 상세주소(얘는 유효성검사 안함. 주택이면 없으니까.), 우편번호(주소 들어오면 있는거니까 얘도 유효성X)
   //이름, 이메일, 비밀번호, 비밀번호 확인
-  const [userId, setUserId] = useState("");
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [pno, setPno] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [streetAddr, setStreetAddr] = useState("");
-  const [detailAddr, setDetailAddr] = useState("");
-  const [zipcode, setZipcode] = useState("");
+  // const [userId, setUserId] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [name, setName] = useState("");
+  // const [pno, setPno] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [passwordConfirm, setPasswordConfirm] = useState("");
+  // const [streetAddr, setStreetAddr] = useState("");
+  // const [detailAddr, setDetailAddr] = useState("");
+  // const [zipcode, setZipcode] = useState("");
+
+  const [userId, setUserId] = useState("myFarm");
+  const [email, setEmail] = useState("myfarm@gmail.com");
+  const [name, setName] = useState("팜컴어스");
+  const [pno, setPno] = useState("01012341234");
+  const [password, setPassword] = useState("asd12345!");
+  const [passwordConfirm, setPasswordConfirm] = useState("asd12345!");
+  const [streetAddr, setStreetAddr] = useState("대전 유성구 동서대로 98-39");
+  const [detailAddr, setDetailAddr] = useState("삼성화재 유성캠퍼스");
+  const [zipcode, setZipcode] = useState("34153");
 
   //오류메시지 상태저장
   const [userIdMessage, setUseruserIdMessage] = useState("");
@@ -88,7 +99,8 @@ const SignUp = () => {
       zipcode,
     };
     console.log(userInfo);
-    return;
+
+    userSignUp(userInfo);
   };
 
   // 아이디
