@@ -1,6 +1,7 @@
 package com.ssafy.farmcu.api.service.store;
 
 import com.ssafy.farmcu.api.dto.store.ItemDto;
+import com.ssafy.farmcu.api.dto.store.ItemListRes;
 import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
 import com.ssafy.farmcu.api.entity.store.CategoryDetail;
 import com.ssafy.farmcu.api.entity.store.Item;
@@ -12,6 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+
+import java.awt.event.ItemListener;
+import java.util.HashMap;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -26,6 +31,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public boolean saveItem(ItemDto itemDto) {
         try {
+            System.out.println("itemDto : " + itemDto.toString());
             CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemDto.getCategoryName());
             Store store = storeRepository.findByStoreId(itemDto.getStoreId()).orElseThrow(NullPointerException::new);
             Item item = Item.builder()
@@ -87,19 +93,23 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Slice<ItemDto> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq, Pageable pageable) {
+    public Slice<ItemListRes> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq) {
         Slice<Item> items;
 
-        if (itemSearchReq.getCategoryName().equals("전체")) {
-            items = itemRepository.findByItemNameLike(itemSearchReq.getItemName(), pageable);
+        if (itemSearchReq.getCategoryName().equals("")) {
+            items = itemRepository.findByItemNameLike(itemSearchReq.getItemName());
         } else {
             CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getCategoryName());
-            items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, itemSearchReq.getItemName(), pageable);
+            items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, itemSearchReq.getItemName());
         }
 
-        Slice<ItemDto> result = (Slice<ItemDto>) items.stream()
-                .map(i -> new ItemDto(i))
+        List<ItemListRes> itemList = items.stream()
+                .map(i -> new ItemListRes(i))
                 .collect(toList());
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("itemList", itemList);
+        result.put("hasNextPage", items.hasNext());
 
         return result;
     }

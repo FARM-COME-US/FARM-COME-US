@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Optional<Item> findByItemId(Long itemId);
-    Slice<Item> findByItemNameLike(String itemName, Pageable pageable);
-    Slice<Item> findByCategoryDetailAndItemNameLike(CategoryDetail categoryDetail, String itemName, Pageable pageable);
+    Slice<Item> findByItemNameLike(String itemName);
+    Slice<Item> findByCategoryDetailAndItemNameLike(CategoryDetail categoryDetail, String itemName);
     void deleteByItemId(Long itemId);
 
 }

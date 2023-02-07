@@ -4,6 +4,7 @@ import com.ssafy.farmcu.api.dto.store.CategoryDto;
 import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.dto.store.ItemImageDto;
 import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
+import com.ssafy.farmcu.api.entity.store.Item;
 import com.ssafy.farmcu.api.service.store.CategoryService;
 import com.ssafy.farmcu.api.service.store.ItemImageService;
 import com.ssafy.farmcu.api.service.store.ItemService;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,7 +49,7 @@ public class ItemController {
 
     @PostMapping
     @ApiOperation(value = "상품 등록")
-    public ResponseEntity<HashMap<String, Boolean>> createItem(@RequestBody ItemDto itemDto, MultipartFile[] uploadFile) throws IOException {
+    public ResponseEntity<HashMap<String, Boolean>> createItem(ItemDto itemDto, MultipartFile[] uploadFile) throws IOException {
         boolean isSuccess = itemService.saveItem(itemDto);
 
         //이미지 첨부
@@ -93,15 +95,19 @@ public class ItemController {
         return ResponseEntity.ok(resultMap);
     }
 
-    @GetMapping("/keyword")
+    @PostMapping("/keyword")
     @ApiOperation(value = "상품 목록 조회")
-    public ResponseEntity<Slice<ItemDto>> selectItemList(ItemSearchReq itemSearchReq, Pageable pageable) {
-        Slice<ItemDto> itemDtos = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq, pageable);
-        List<ItemImageDto> itemImageDtos = itemDtos.stream()
+    public ResponseEntity<Slice<ItemDto>> selectItemList(@RequestBody ItemSearchReq itemSearchReq) {
+        System.out.println("*******************" + itemSearchReq.getCategoryName() + " " + itemSearchReq.getItemName());
+
+        HashMap<String, Object> result = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq);
+
+//        Slice<ItemDto> itemDtos = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq);
+        List<ItemImageDto> itemImageDtos = ((List< ItemDto >)(result.get("itemList"))).stream()
                 .map(i -> itemImageService.findItemImagesByItemId(i.getItemId()).get(0))
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(itemService.findItemsByCategoryAndItemNameLike(itemSearchReq, pageable));
+        return ResponseEntity.ok(itemService.findItemsByCategoryAndItemNameLike(itemSearchReq));
     }
 
     @DeleteMapping()
