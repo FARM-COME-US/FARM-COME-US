@@ -9,14 +9,26 @@ const DUMMY_MYPAGE_INFO = {
   nickname: "홍당홍당",
   name: "홍당무",
   email: "ssafy123@ssafy.com",
-  addr: "강원도 평창군 봉평면 무야리 23-12",
   pno: "010-1234-1234",
   storeId: null,
+  streetAddr: "강원도 평창군 봉평면 무야리 23-12",
+  detailAddr: "강원 아파트",
+  zipcode: 34212,
 };
 
 const MyPage = (props) => {
   // 유저정보 관리 변수
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({
+    id: 1,
+    nickname: "",
+    name: "",
+    email: "",
+    pno: "",
+    storeId: null,
+    streetAddr: "",
+    detailAddr: "",
+    zipcode: "",
+  });
   // const header = "";
   // const param = "";
   // const fetchURL = "backend/userinfo";

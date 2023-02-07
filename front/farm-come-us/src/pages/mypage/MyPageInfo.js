@@ -7,7 +7,7 @@ import MyPageContentTitle from "../../components/mypage/MyPageContentTItle";
 import MyPageInfoList from "../../components/mypage/MyPageInfoList";
 import Button from "../../components/common/Button";
 
-const MyuserInfo = () => {
+const MyUserInfo = () => {
   const { info } = useOutletContext();
   const [userInfo, setUserInfo] = useState({
     id: info.id,
@@ -15,16 +15,17 @@ const MyuserInfo = () => {
     name: info.name,
     email: info.email,
     pno: info.pno,
-    addr: info.addr,
+    streetAddr: info.streetAddr,
+    detailAddr: info.detailAddr,
+    zipcode: info.zipcode,
   });
   const [isEditting, setIsEditting] = useState(false);
 
-  const onChangeInfoHandler = (e) => {
-    const name = e.target.name;
+  const onChangeInfoHandler = (name, value) => {
     setUserInfo((prev) => {
       return {
         ...prev,
-        [name]: e.target.value,
+        [name]: value,
       };
     });
   };
@@ -43,7 +44,9 @@ const MyuserInfo = () => {
         name: info.name,
         email: info.email,
         pno: info.pno,
-        addr: info.addr,
+        streetAddr: info.streetAddr,
+        detailAddr: info.detailAddr,
+        zipcode: info.zipcode,
       };
     });
 
@@ -59,7 +62,7 @@ const MyuserInfo = () => {
 
   return (
     <div className={classes.userInfo}>
-      <MyPageContentTitle text="스토어 정보" />
+      <MyPageContentTitle text="가입 정보" />
       <form>
         <MyPageInfoList
           className={classes.infoList}
@@ -89,4 +92,4 @@ const MyuserInfo = () => {
   );
 };
 
-export default MyuserInfo;
+export default MyUserInfo;
