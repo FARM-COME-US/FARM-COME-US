@@ -105,16 +105,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // DB 저장
         MemberRefreshToken memberRefreshToken = memberRefreshTokenRepository.findById(Id);
-//        if (memberRefreshToken != null) {
-//            // 처음 로그인하는 사용자라면, 토큰 저장
-//            memberRefreshToken.setRefreshToken(refreshToken.getToken());
-//
-//        } else {
-//            // 이미 리프레시 토큰을 가지고 있다면 만들어서 저장
-//            memberRefreshToken = new MemberRefreshToken(Long.toString(member.getMemberId()), refreshToken.getToken());
-//            memberRefreshTokenRepository.saveAndFlush(memberRefreshToken);
-//            memberRefreshTokenService.saveRefreshTokenTable(refreshToken.getToken(), member.getId());
-//        }
         memberRefreshTokenService.saveRefreshTokenTable(refreshToken.getToken(), member.getId());
 
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
