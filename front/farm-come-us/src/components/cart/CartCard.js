@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./style/CartCard.module.scss";
 import Card from "../common/Card";
 import CartItem from "./CartItem";
 
 const CartCard = (props) => {
+  const [itemCheckList, setList] = useState([]);
+
+  const plusSetList = (item) => {
+    setList([...itemCheckList, item]);
+  };
+
   let item = props.itemList.map((item) => (
-    <CartItem key={item.productId} item={item}></CartItem>
+    <CartItem
+      key={item.productId}
+      item={item}
+      checkItem={plusSetList}
+    ></CartItem>
   ));
 
   const shippingFee = 2500;
@@ -21,7 +31,9 @@ const CartCard = (props) => {
             <div className={classes.storeName}>
               {props.itemList[0].storeName}
             </div>
-            <div className={classes.productAmount}>상품 n개</div>
+            <div className={classes.productAmount}>
+              상품 {itemCheckList.length}개
+            </div>
           </div>
         </div>
         <div className={classes.cardBody}>{item}</div>

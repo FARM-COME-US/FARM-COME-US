@@ -29,7 +29,7 @@ const DUMMY_CART_LIST = [
     {
       storeId: 2,
       storeName: "페어 인 더 청송",
-      productId: 1,
+      productId: 3,
       productName: "배 1박스",
       productOption: 1,
       price: 20000,
@@ -41,7 +41,7 @@ const DUMMY_CART_LIST = [
     {
       storeId: 3,
       storeName: "퍼시먼 인 더 청송",
-      productId: 1,
+      productId: 4,
       productName: "감 1박스",
       productOption: 1,
       price: 20000,
