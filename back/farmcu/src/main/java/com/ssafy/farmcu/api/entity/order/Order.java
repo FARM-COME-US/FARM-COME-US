@@ -51,7 +51,7 @@ public class Order {
     @JoinColumn(name="delivery_id")
     private DeliveryInfo delivery;
 
-    @OneToMany(mappedBy = "order_info")
+    @OneToMany(mappedBy = "orderInfo")
     private List<OrderItem> orderItems = new ArrayList<>();
 
     // 주문 정보에 배송 정보 추가
@@ -68,7 +68,7 @@ public class Order {
     // 주문에 주문 상품 주입 -> OrderItem.java 의 setOrder
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
-        orderItem.setOrder_info(this);
+        orderItem.setOrderInfo(this);
     }
 
     //** 주문 생성 **//

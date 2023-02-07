@@ -29,7 +29,7 @@ public class OrderItem {
     // 연결
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order_info;
+    private Order orderInfo;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
@@ -37,7 +37,9 @@ public class OrderItem {
 
     //빌더
     @Builder
-    public OrderItem(Item item,Long oitemId, int oitemCount, LocalDateTime oitemCreatedAt, int orderPrice ) {
+    public OrderItem(Order orderInfo, Item item, Long oitemId, int oitemCount, LocalDateTime oitemCreatedAt, int orderPrice ) {
+        this.orderInfo = orderInfo;
+        this.item = item;
         this.oitemId = oitemId;
         this.oitemCount = oitemCount;
         this.oitemCreatedAt = oitemCreatedAt;
@@ -58,7 +60,7 @@ public class OrderItem {
 
     // 주문 번호 주입
     public  void addOrderNum(Order order){
-        this.order_info = order;
+        this.orderInfo = order;
     }
 
     //총액

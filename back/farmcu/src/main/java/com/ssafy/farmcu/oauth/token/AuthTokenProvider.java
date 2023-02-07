@@ -7,6 +7,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class AuthTokenProvider {
+
     private final Key key;
     private static final String AUTHORITIES_KEY = "role";
 
@@ -29,10 +31,10 @@ public class AuthTokenProvider {
     /**
      * 객체 초기화
      *
-     * @param secrete: jwt의 secrete
+     * @param secret: jwt의 secret
      */
-    public AuthTokenProvider(String secrete) {
-        this.key = Keys.hmacShaKeyFor(secrete.getBytes());
+    public AuthTokenProvider(String secret) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     /*
@@ -64,10 +66,22 @@ public class AuthTokenProvider {
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());
 
-            log.debug("claims subject := [{}]", claims.getSubject()); // 이메일 반환
+            log.info("claims subject := [{}]", claims.getSubject());
             // 시큐리티 인증 객체 가져오기
-            PrincipalDetails principalDetails = new PrincipalDetails(memberRepository.findById(claims.getSubject()).get());
+            PrincipalDetails principalDetails = new PrincipalDetails(memberRepository.findByMemberId(Long.parseLong(claims.getSubject())).get());
             return new UsernamePasswordAuthenticationToken(principalDetails, authToken, authorities);
+        } else {
+            throw new TokenValidFailedException();
+        }
+    }
+
+    public Long getId(AuthToken authToken){
+        if (authToken.validate()) {
+
+            // claims 가져오기
+            Claims claims = authToken.getTokenClaims();
+
+            return Long.parseLong(claims.getSubject());
         } else {
             throw new TokenValidFailedException();
         }
