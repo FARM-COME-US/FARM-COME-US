@@ -93,7 +93,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Slice<ItemListRes> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq) {
+    public HashMap<String, Object> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq) {
         Slice<Item> items;
 
         if (itemSearchReq.getCategoryName().equals("")) {
@@ -103,8 +103,8 @@ public class ItemServiceImpl implements ItemService {
             items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, itemSearchReq.getItemName());
         }
 
-        List<ItemListRes> itemList = items.stream()
-                .map(i -> new ItemListRes(i))
+        List<ItemDto> itemList = items.getContent().stream()
+                .map(i -> new ItemDto(i))
                 .collect(toList());
 
         HashMap<String, Object> result = new HashMap<>();

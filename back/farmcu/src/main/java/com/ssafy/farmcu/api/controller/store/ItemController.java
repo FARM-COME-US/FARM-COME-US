@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -97,17 +98,23 @@ public class ItemController {
 
     @PostMapping("/keyword")
     @ApiOperation(value = "상품 목록 조회")
-    public ResponseEntity<Slice<ItemDto>> selectItemList(@RequestBody ItemSearchReq itemSearchReq) {
+    public ResponseEntity<HashMap<String, Object>> selectItemList(@RequestBody ItemSearchReq itemSearchReq) {
         System.out.println("*******************" + itemSearchReq.getCategoryName() + " " + itemSearchReq.getItemName());
+        HashMap<String, Object> resultMap = new HashMap<>();
+        HashMap<String, Object> itemText = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq);
+        List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
+        Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 
-        HashMap<String, Object> result = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq);
+        List<ItemImageDto> itemImage = new ArrayList<>();
+        for(ItemDto it : itemList) {
+            itemImage.add(itemImageService.findItemImagesByItemId(it.getItemId()).get(0));
+        }
 
-//        Slice<ItemDto> itemDtos = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq);
-        List<ItemImageDto> itemImageDtos = ((List< ItemDto >)(result.get("itemList"))).stream()
-                .map(i -> itemImageService.findItemImagesByItemId(i.getItemId()).get(0))
-                .collect(Collectors.toList());
+        resultMap.put("itemList", itemList);
+        resultMap.put("itemImage", itemImage);
+        resultMap.put("hasNextPage", hasNextPage);
 
-        return ResponseEntity.ok(itemService.findItemsByCategoryAndItemNameLike(itemSearchReq));
+        return ResponseEntity.ok(resultMap);
     }
 
     @DeleteMapping()

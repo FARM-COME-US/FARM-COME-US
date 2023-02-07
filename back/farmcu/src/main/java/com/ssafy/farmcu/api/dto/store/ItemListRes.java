@@ -14,16 +14,13 @@ public class ItemListRes {
     private String originalName;
     private String savedPath;
 
-    private Boolean hasNextPage;
-
-    public ItemListRes(Item item, ItemImage itemImage, Boolean hasNextPage) {
+    public ItemListRes(Item item, ItemImage itemImage) {
         this.itemName = item.getItemName();
         this.itemDescription = item.getItemDescription();
         this.itemPrice = item.getItemPrice();
         this.itemDiscount = item.getItemDiscount();
         this.originalName = itemImage.getOriginalName();
         this.savedPath = itemImage.getSavedPath();
-        this.hasNextPage = hasNextPage;
     }
 
 }
