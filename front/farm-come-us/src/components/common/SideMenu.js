@@ -21,7 +21,7 @@ const SideMenu = (props) => {
       imageName: "liveStoreIcon",
     },
     {
-      linkTo: "/store",
+      linkTo: "/products",
       itemName: "스토어",
       imageName: "storeIcon",
     },
