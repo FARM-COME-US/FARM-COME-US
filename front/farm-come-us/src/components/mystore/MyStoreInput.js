@@ -31,6 +31,7 @@ const MyStoreInput = (props) => {
         isActive={!props.readOnly}
         onFocus={toggleFocusHandler}
         onBlur={toggleFocusHandler}
+        placeholder={props.placeholder}
       />
     </div>
   );
