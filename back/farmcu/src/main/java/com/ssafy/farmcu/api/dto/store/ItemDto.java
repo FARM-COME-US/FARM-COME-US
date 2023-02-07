@@ -34,4 +34,19 @@ public class ItemDto {
         this.storeId = item.getStore().getStoreId();
     }
 
+    @Override
+    public String toString() {
+        return "ItemDto{" +
+                "itemId=" + itemId +
+                ", itemName='" + itemName + '\'' +
+                ", itemDescription='" + itemDescription + '\'' +
+                ", itemPrice=" + itemPrice +
+                ", itemDiscount=" + itemDiscount +
+                ", itemStock=" + itemStock +
+                ", itemCreatedAt='" + itemCreatedAt + '\'' +
+                ", categoryName='" + categoryName + '\'' +
+                ", storeId=" + storeId +
+                '}';
+    }
+
 }
