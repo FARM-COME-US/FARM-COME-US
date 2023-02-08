@@ -12,6 +12,7 @@ const CartCard = (props) => {
 
   useEffect(() => {
     if (itemIdList.length === props.itemList.length) {
+      onCheck(true);
       onStyleCheck(true);
     } else if (itemIdList.length !== props.itemList.length) {
       onStyleCheck(false);
@@ -27,10 +28,21 @@ const CartCard = (props) => {
         arr.push(props.itemList[i].productId);
         price = price + props.itemList[i].discountPrice;
       }
+      let uncheckedArr = [];
+      const uncheckedPrice = price - storePrice;
+      if (itemIdList.length === 0) {
+        uncheckedArr = arr;
+      } else {
+        for (let l = 0; l < itemIdList.length; l++) {
+          uncheckedArr = arr.filter((id) => id !== itemIdList[l]);
+        }
+      }
       setList(arr);
       setPrice(price);
+      props.getStoreProducts(uncheckedArr, uncheckedPrice);
     } else {
       onCheck(!check);
+      props.popStoreProducts(itemIdList, storePrice);
       setList([]);
       setPrice(0);
     }
@@ -39,11 +51,13 @@ const CartCard = (props) => {
   const plusSetList = (Id, price) => {
     setList([...itemIdList, Id]);
     setPrice(storePrice + price);
+    props.getProduct(Id, price);
   };
 
   const minusSetList = (Id, price) => {
     setList(itemIdList.filter((id) => id !== Id));
     setPrice(storePrice - price);
+    props.popProduct(Id, price);
   };
 
   let item = props.itemList.map((item) => (

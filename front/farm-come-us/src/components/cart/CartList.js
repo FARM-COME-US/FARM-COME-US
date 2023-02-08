@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./style/CartList.module.scss";
 import CartCard from "./CartCard";
 import { MdCheck } from "react-icons/md";
@@ -55,6 +55,12 @@ const DUMMY_CART_LIST = [
 const CartList = () => {
   const [styleCheck, onStyleCheck] = useState(false);
   const [productIdList, setProductIdList] = useState([]);
+  const [resultPrice, setResultPrice] = useState(0);
+
+  useEffect(() => {
+    console.log(productIdList);
+    console.log(resultPrice);
+  }, [productIdList, resultPrice]);
 
   const dealOnCheck = () => {
     if (styleCheck === false) {
@@ -64,15 +70,39 @@ const CartList = () => {
     }
   };
 
-  const getProductIds = (ids) => {
-    setProductIdList([...productIdList, ...ids]);
+  const getStoreProducts = (idList, price) => {
+    setProductIdList(productIdList.concat(idList));
+    setResultPrice(resultPrice + price);
+  };
+
+  const getProduct = (Id, price) => {
+    setProductIdList([...productIdList, Id]);
+    setResultPrice(resultPrice + price);
+  };
+
+  const popStoreProducts = (idList, price) => {
+    console.log(`popStore ${idList}`);
+    let tmpIdList = [];
+    for (let i = 0; i < idList.length; i++) {
+      tmpIdList = productIdList.filter((id) => id !== idList[i]);
+    }
+    setProductIdList(tmpIdList);
+    setResultPrice(resultPrice - price);
+  };
+
+  const popProduct = (Id, price) => {
+    setProductIdList(productIdList.filter((id) => id !== Id));
+    setResultPrice(resultPrice - price);
   };
 
   let list = DUMMY_CART_LIST.map((array, index) => (
     <CartCard
       key={index}
       itemList={array}
-      getProductIds={getProductIds}
+      getStoreProducts={getStoreProducts}
+      getProduct={getProduct}
+      popStoreProducts={popStoreProducts}
+      popProduct={popProduct}
     ></CartCard>
   ));
 
