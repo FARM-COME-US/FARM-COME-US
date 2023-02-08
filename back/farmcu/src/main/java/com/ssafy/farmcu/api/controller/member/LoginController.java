@@ -22,6 +22,7 @@ import java.security.SecureRandom;
 
 @Slf4j
 @RestController
+@RequestMapping("api/v1/login")
 public class LoginController {
 
     @Value("#{config['KAKAO_CLIENT_ID']}")
