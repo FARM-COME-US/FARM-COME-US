@@ -10,7 +10,7 @@ const ReceiptList = (props) => {
   const navigate = useNavigate();
   useEffect(() => {}, []);
 
-  const asd = [];
+  const reciptCards = <div>주문 내역이 없습니다.</div>;
 
   return (
     <div className={classes.screen}>
@@ -33,11 +33,15 @@ const ReceiptList = (props) => {
             className={classes.orderinfo}
           >{`구매일 : ${"props.orderDate 2023. 01. 18 16:02:19"}`}</div>
         </div>
+        <div
+          className={`${classes.orderinfo} ${classes.orderLength} ${classes.orderlength}`}
+        >
+          상품 {"order.length"} 개
+        </div>
       </div>
-      <div className={`${classes.orderinfo} ${classes.orderLength}`}>
-        상품 {"order.length"} 개
-      </div>
-      영수증목록 페이지
+      <div className={classes.flexR}></div>
+
+      <ReceiptCard />
     </div>
   );
 };
