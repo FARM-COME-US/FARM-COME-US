@@ -25,7 +25,7 @@ import java.util.Optional;
 @Component // 왜 있는지 모르겠어
 public class OrderServiceImpl implements OrderService{
 
-//    @Autowired
+    //    @Autowired
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;

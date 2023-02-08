@@ -1,24 +1,18 @@
-package com.ssafy.farmcu.api.controller.order;
+package com.ssafy.farmcu.kakaoPay.controller;
 
 
 
-import com.ssafy.farmcu.api.dto.order.KaKaoPayDTO;
+import com.ssafy.farmcu.kakaoPay.dto.KaKaoPayDTO;
 import com.ssafy.farmcu.api.entity.member.Member;
-import com.ssafy.farmcu.api.entity.member.MemberRefreshToken;
 import com.ssafy.farmcu.api.service.member.MemberService;
-import com.ssafy.farmcu.api.service.order.CartService;
-import com.ssafy.farmcu.api.service.order.CartServiceImpl;
-import com.ssafy.farmcu.api.service.order.KakaoService;
+import com.ssafy.farmcu.kakaoPay.service.KakaoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -52,6 +46,7 @@ public class KakaoController {
     @GetMapping
     @ApiOperation(value = "카카오 로그인")
     public ResponseEntity<?> KaKaoLogIn(@RequestParam("code") String code, HttpServletResponse response) {
+
 
         System.out.println("KaKaoLogIn() 진입 KaKao -> Controller -> p31 ");
         System.out.println("카카오 인가 코드@@@@@@@@@@@@@@ : " + code);

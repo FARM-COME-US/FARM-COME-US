@@ -1,4 +1,4 @@
-package com.ssafy.farmcu.api.controller.order;
+package com.ssafy.farmcu.kakaoPay.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

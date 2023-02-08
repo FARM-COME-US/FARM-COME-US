@@ -75,6 +75,7 @@ public class CartServiceImpl implements CartService {
     }
 
     //** 장바구니 조회 **//
+<<<<<<< HEAD
 
 
 //    @Override
@@ -93,6 +94,16 @@ public class CartServiceImpl implements CartService {
 //        return response;
 //
 //    }
+=======
+//    @Override
+//    public List<Cart> findMyCart(Member member) {
+//        return cartRepository.findByMember(member);
+//    }
+    @Override
+    public List<Cart> findMyCart(Long memberId) {
+        return cartRepository.findByMember(memberId);
+    }
+>>>>>>> 014bbd1cb2f680038671ebd07db13bc520e70eb1
 
     //** 장바구니 삭제 **//
     @Override

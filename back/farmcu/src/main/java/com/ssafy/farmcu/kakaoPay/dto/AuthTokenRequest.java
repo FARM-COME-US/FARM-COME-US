@@ -1,4 +1,4 @@
-package com.ssafy.farmcu.api.entity;
+package com.ssafy.farmcu.kakaoPay.dto;
 
 
 import io.swagger.annotations.ApiModelProperty;
@@ -15,9 +15,7 @@ public class AuthTokenRequest {
 
     private String grantType;
 
-
     private String clientId;
-
 
     private String redirectUri;
 
