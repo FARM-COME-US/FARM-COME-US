@@ -16,13 +16,13 @@ public class CartOrderDto {
     @NotNull
     private Long cartId;
 
+    private List<CartOrderDto> CartOrderDtoList;
+
     //
     @NotNull
     private Long itemId;
     @NotNull
     private Integer cartItemCount;
     //
-
-    private List<CartOrderDto> CartOrderDtoList;
 
 }

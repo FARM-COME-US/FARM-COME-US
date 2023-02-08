@@ -4,6 +4,7 @@ import com.ssafy.farmcu.api.entity.order.OrderItem;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,11 +16,14 @@ public class OrderInfoDto {
     @NonNull
     private Long itemId;
 
+    private List<OrderInfoDto> OrderInfoDtoList;
+
+    private int orderItemCount;
+
+    //
     private Long oitemId;
 
     private Long orderInfo;
-
-    private int orderItemCount;
 
     private LocalDateTime oitemCratedAt;
 

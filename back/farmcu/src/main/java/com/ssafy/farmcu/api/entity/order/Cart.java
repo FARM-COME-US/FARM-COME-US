@@ -32,11 +32,11 @@ public class Cart {
 
     // 연결
     @ManyToOne
-    @JoinColumn(name="memberId", nullable=false)
+//    @JoinColumn(name="memberId", nullable=false)
     private Member member;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
-    @JoinColumn(name = "item_id", updatable = false)
+//    @JoinColumn(name = "item_id", updatable = false)
     private Item item;
 
     @Builder
