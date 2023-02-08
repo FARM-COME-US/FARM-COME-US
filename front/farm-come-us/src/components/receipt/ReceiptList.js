@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReceiptCard from "./ReceiptCard";
+import ReciptCardSole from "./ReceiptCardSole";
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
@@ -8,9 +9,48 @@ import classes from "./style/ReceiptList.module.scss";
 
 const ReceiptList = (props) => {
   const navigate = useNavigate();
-  useEffect(() => {}, []);
+  useEffect(() => {
+    "axios 주문번호, 유저아이디";
+  }, []);
 
-  const reciptCards = <div>주문 내역이 없습니다.</div>;
+  let reciptCards = <div>주문 내역이 없습니다.</div>;
+  let [orderData, setOrderData] = useState([]);
+  const data = [
+    {
+      img: "첫번째이미지",
+      title: "명이네 과수원",
+      unit: "30",
+      storename: "명이네 과수원",
+      cost: "1597750",
+    },
+    {
+      img: "두번째이미지",
+      title: "싱싱청과마켓",
+      unit: "25",
+      storename: "싱싱청과마켓",
+      cost: "123456",
+    },
+    {
+      img: "첫번째이미지",
+      title: "청정 고랭지 엔비사과",
+      unit: "12",
+      storename: "이것도 가게라고",
+      cost: "429000",
+    },
+  ];
+
+  reciptCards = data.map((itemcard, idx) => (
+    <ReceiptCard
+      key={idx}
+      img={itemcard.img}
+      title={itemcard.title}
+      unit={itemcard.unit}
+      storename={itemcard.storename}
+      cost={itemcard.cost}
+    />
+  ));
+
+  // <ReciptCardSole />;
 
   return (
     <div className={classes.screen}>
@@ -31,7 +71,7 @@ const ReceiptList = (props) => {
           >{`주문번호 : ${"props.orderid 1084165156"}`}</div>
           <div
             className={classes.orderinfo}
-          >{`구매일 : ${"props.orderDate 2023. 01. 18 16:02:19"}`}</div>
+          >{`구매일자 : ${"props.orderDate 2023. 01. 18 16:02:19"}`}</div>
         </div>
         <div
           className={`${classes.orderinfo} ${classes.orderLength} ${classes.orderlength}`}
@@ -39,9 +79,8 @@ const ReceiptList = (props) => {
           상품 {"order.length"} 개
         </div>
       </div>
-      <div className={classes.flexR}></div>
 
-      <ReceiptCard />
+      {data.length === 1 ? ReciptCardSole : reciptCards}
     </div>
   );
 };
