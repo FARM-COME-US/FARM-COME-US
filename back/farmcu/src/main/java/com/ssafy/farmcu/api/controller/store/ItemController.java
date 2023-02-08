@@ -5,15 +5,14 @@ import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.dto.store.ItemImageDto;
 import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
 import com.ssafy.farmcu.api.entity.store.Item;
+import com.ssafy.farmcu.api.service.image.S3Service;
 import com.ssafy.farmcu.api.service.store.CategoryService;
 import com.ssafy.farmcu.api.service.store.ItemImageService;
 import com.ssafy.farmcu.api.service.store.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/item")
@@ -35,6 +33,7 @@ public class ItemController {
     private final CategoryService categoryService;
     private final ItemService itemService;
     private final ItemImageService itemImageService;
+    private final S3Service s3Service;
 
     @GetMapping("/title")
     @ApiOperation(value = "부류 목록")
@@ -50,29 +49,20 @@ public class ItemController {
 
     @PostMapping
     @ApiOperation(value = "상품 등록")
-    public ResponseEntity<HashMap<String, Boolean>> createItem(@RequestPart(value="item") ItemDto itemDto, @RequestPart(value="uploadFile") MultipartFile[] uploadFile) throws IOException {
-        System.out.println(itemDto);
+    public ResponseEntity<HashMap<String, Boolean>> createItem(ItemDto itemDto, MultipartFile[] uploadFile) throws Exception {
         boolean isSuccess = itemService.saveItem(itemDto);
-        System.out.println(itemDto);
+//        Item item = itemService.f
+        //saveItem 메서드에서 return 값으로 itemId를 준다면???
 
         //이미지 첨부
-        if(uploadFile != null && uploadFile.length > 0) {
-            String uploadPath = "C:/Workspace/S08P12B103/back/farmcu/src/assets/itemImg";
-            File uploadDir = new File(uploadPath);
-
-            if(!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-
+        if(uploadFile != null) {
             for(MultipartFile file : uploadFile) {
-                String savedName = new Random().nextInt(1000000000) + "." + file.getOriginalFilename().split("\\.")[1];
-                File savedFile = new File(uploadPath + "/" + savedName);
-                file.transferTo(savedFile);
+                String savedPath = s3Service.uploadFile(file);
 
                 ItemImageDto itemImageDto = ItemImageDto.builder()
                         .itemId(itemDto.getItemId())
                         .originalName(file.getOriginalFilename())
-                        .savedPath(savedName).build();
+                        .savedPath(savedPath).build();
 
                 itemImageService.saveItemImage(itemImageDto);
             }
