@@ -33,7 +33,7 @@ public class LoginController {
     public String kakaoConnect() throws UnsupportedEncodingException {
         log.info("kakao 로그인 바로가기");
 
-        String REDIRECT_URL = URLEncoder.encode("http://localhost:8080/login/oauth2/code/kakao", "UTF-8");
+        String REDIRECT_URL = URLEncoder.encode("http://localhost:3000/login/oauth2/code/kakao", "UTF-8");
         SecureRandom secureRandom = new SecureRandom();
         String state = new BigInteger(130, secureRandom).toString();
         String apiURL = "https://kauth.kakao.com/oauth/authorize?response_type=code";
@@ -49,7 +49,7 @@ public class LoginController {
     public void getAccessToken(@RequestParam(value = "code") String code, @RequestParam(value = "state") String state, HttpServletResponse response) throws UnsupportedEncodingException {
         log.info("토큰 발급/갱신/삭제 요청 URL");
 
-        String REDIRECT_URL = URLEncoder.encode("http://localhost:8080/login/oauth2/code/kakao", "UTF-8");
+        String REDIRECT_URL = URLEncoder.encode("http://localhost:3000/login/oauth2/code/kakao", "UTF-8");
         String apiURL = "https://kauth.kakao.com/oauth/token?grant_type=authorization_code&";
         apiURL += "client_id=" + CLIENT_ID;
         apiURL += "&client_secret=" + CLIENT_SECRET;
@@ -89,8 +89,6 @@ public class LoginController {
             System.out.println(e);
         }
     }
-
-
 
     @GetMapping("/getProfile")
     public void apiExamMemberProfile(){
