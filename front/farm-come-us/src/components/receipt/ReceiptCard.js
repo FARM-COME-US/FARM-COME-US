@@ -1,6 +1,14 @@
 import classes from "./style/ReceiptCard.module.scss";
 
 const ReceiptCard = (props) => {
+  const data = {
+    title: "props.title",
+    img: "props.img",
+    unit: "props.unit",
+    storename: "props.storename",
+    cost: "props.cost",
+  };
+  // api하면서 수정필요
   return (
     <div className={classes.card}>
       <div className={classes.imgWrapper}>
@@ -9,12 +17,12 @@ const ReceiptCard = (props) => {
       <div className={classes.letters}>
         <div>
           <div className={classes.titleWrapper}>
-            <div className={classes.title}>강원도 고랭지 배추</div>
-            <div className={classes.unit}>140kg</div>
+            <div className={classes.title}>{props.title}</div>
+            <div className={classes.unit}>{props.unit}kg</div>
           </div>
-          <div className={classes.store}>고랭강원농장</div>
+          <div className={classes.store}>{props.storename}</div>
         </div>
-        <div className={classes.cost}>234000원</div>
+        <div className={classes.cost}>{props.cost}원</div>
       </div>
     </div>
   );
