@@ -1,10 +1,13 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ReceiptCard from "./ReceiptCard";
+
 import { MdOutlineArrowBackIos } from "react-icons/md";
+
 import classes from "./style/ReceiptList.module.scss";
 
 const ReceiptList = (props) => {
+  const navigate = useNavigate();
   useEffect(() => {}, []);
 
   const asd = [];
@@ -13,7 +16,13 @@ const ReceiptList = (props) => {
     <div className={classes.screen}>
       <div className={classes.upperCard}>
         <div className={classes.flexrow}>
-          <MdOutlineArrowBackIos className={classes.backButton} />
+          <div
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <MdOutlineArrowBackIos className={classes.backButton} />
+          </div>
           <div className={classes.backButton}>주문상세</div>
         </div>
         <div className={classes.orderInfoMt}>
