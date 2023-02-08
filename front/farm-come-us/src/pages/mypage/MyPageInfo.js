@@ -34,6 +34,7 @@ const MyUserInfo = () => {
     e.preventDefault();
 
     alert("사용자 정보가 수정되었습니다.");
+    console.log(userInfo);
     setIsEditting((prev) => !prev);
   };
 

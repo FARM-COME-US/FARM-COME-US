@@ -24,6 +24,10 @@ const MyStoreCreateInfoList = (props) => {
     setOpenModal(!openModal);
   };
 
+  const storeValidation = () => {
+    props.onValidationCheck();
+  };
+
   return (
     <ul className={classes.infoList}>
       <li className={classes.infoItem}>
@@ -33,7 +37,17 @@ const MyStoreCreateInfoList = (props) => {
           readOnly={false}
           name="storeName"
           onChange={onInputChangeHandler}
+          onBlur={storeValidation}
         />
+        {props.storeNameIsValid !== undefined ? (
+          <div className={classes.validationBox}>
+            <span className={props.storeNameIsValid ? classes.valid : null}>
+              {props.storeNameIsValid
+                ? "사용 가능한 스토어명 입니다."
+                : "이미 존재하는 스토어명 입니다."}
+            </span>
+          </div>
+        ) : null}
       </li>
       <li className={classes.infoItem}>
         <MyStoreInput
@@ -64,7 +78,7 @@ const MyStoreCreateInfoList = (props) => {
       </li>
       <li className={classes.infoItem}>
         <MyStoreInput
-          label="배송비 미발생 최소 금액"
+          label="무료배송 기준 금액"
           value={props.info.deliveryFree}
           readOnly={false}
           name="deliveryFree"
@@ -78,7 +92,7 @@ const MyStoreCreateInfoList = (props) => {
           readOnly={true}
           onChange={onInputChangeHandler}
           name="streetAddr"
-          onClick={onEditAddr}
+          onFocus={onEditAddr}
         />
       </li>
       <li className={classes.infoItem}>

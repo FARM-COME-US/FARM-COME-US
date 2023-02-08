@@ -67,11 +67,14 @@ export async function login(id, password) {
 export async function fetchUserInfo(id) {
   const accessToken = sessionStorage.getItem("accessToken");
   console.log(accessToken);
+  const memberId = id;
 
   try {
-    const response = axios.get(`/api/member/`, {
-      params: { memberId: id },
+    const response = axios.get(`/api/member/${memberId}`, {
       headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: accessToken,
         token: accessToken,
       },
     });
