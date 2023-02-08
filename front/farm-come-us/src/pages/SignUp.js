@@ -454,14 +454,6 @@ const SignUp = () => {
           <input
             className={classes.outerInput}
             onChange={(e) => {
-              console.log({
-                isid,
-                isEmail,
-                ispno,
-                isPassword,
-                isPasswordConfirm,
-                isstreetAddr,
-              });
               setDetailAddr(e.target.value);
             }}
             passwordtext=" "
