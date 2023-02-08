@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { createStore } from "../../utils/api/store-http";
 
 import classes from "./style/MyStoreCreate.module.scss";
 
@@ -32,7 +33,7 @@ const MyStoreCreate = () => {
   const createStoreHandler = (e) => {
     e.preventDefault();
     alert("스토어 생성로직");
-    console.log(storeInfo);
+    createStore(storeInfo);
   };
 
   const storeInfoChangeHandler = (name, value) => {

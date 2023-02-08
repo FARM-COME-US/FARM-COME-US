@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 // import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { MdPermIdentity, MdLockOutline } from "react-icons/md";
@@ -23,24 +23,23 @@ function Login() {
   const [isError, setIsError] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const navigate = useNavigate();
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-    withCredentials: false,
-  };
 
   const loginHandler = async () => {
+    const data = {
+      id: userId,
+      password: password,
+    };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      withCredentials: false,
+    };
+
     try {
-      const response = await axios.post(
-        "/api/member/login",
-        {
-          id: userId,
-          password: password,
-        },
-        config
-      );
+      console.log(data);
+      const response = await axios.post("/api/member/login", data, config);
 
       const accessToken = response.data["access-token"];
       const refreshToken = response.data["refresh-token"];
