@@ -1,6 +1,7 @@
 package com.ssafy.farmcu.api.service.order;
 
 import com.ssafy.farmcu.api.dto.order.OrderDto;
+import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface OrderService {
     public Long order(OrderDto orderDto, String id);
 
     // 장바구니 항목 주문
-    public Long orders(List<OrderDto> orderDtoList, String id);
+//    public List<OrderInfoDto> orders(String name);
 
     // 주문 목록 조회
     // public List<Order> findAll()
