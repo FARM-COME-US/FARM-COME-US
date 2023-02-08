@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { createStore } from "../../utils/api/store-http";
 
 import classes from "./style/MyStoreCreate.module.scss";
 
@@ -8,25 +9,18 @@ import MyStoreContentTitle from "../../components/mystore/MyStoreContentTItle";
 import MyStoreCreateInfoList from "../../components/mystore/MyStoreCreateInfoList";
 import Button from "../../components/common/Button";
 
-const DUMMY_STORE_INFO = {
-  storeName: "고랭강원농장",
-  storeDesc:
-    "저희 농장은 강원도 고산지대에서 재배한 신선한 작물들을 제공합니다.",
-  addr: "강원도 평창군 봉평면 무야리 23-12",
-  pno: "010-1234-1234",
-};
-
 const MyStoreCreate = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { userInfo } = location.state;
   const [storeInfo, setStoreInfo] = useState({
     storeId: userInfo.storeId, // 사용자 정보에 storeId가 있다면 가져옴
-    storeName: null,
-    desc: null,
-    addr: null,
-    pno: null,
-    imgSrc: null,
+    storeName: "",
+    desc: "",
+    addr: "",
+    pno: "",
+    minDeliveryPrice: "",
+    imgSrc: "",
   });
 
   // 마이스토어가 있는데 들어왔으면 마이스토어로 redirect
@@ -36,8 +30,10 @@ const MyStoreCreate = () => {
     }
   }, []);
 
-  const createStoreHandler = () => {
+  const createStoreHandler = (e) => {
+    e.preventDefault();
     alert("스토어 생성로직");
+    createStore(storeInfo);
   };
 
   const storeInfoChangeHandler = (name, value) => {
@@ -59,7 +55,8 @@ const MyStoreCreate = () => {
       <form>
         <MyStoreCreateInfoList
           className={classes.infoList}
-          info={DUMMY_STORE_INFO}
+          info={storeInfo}
+          onStoreInfoChange={storeInfoChangeHandler}
         />
         <Button className={classes.btnEditInfo} onClick={createStoreHandler}>
           마이 스토어 생성

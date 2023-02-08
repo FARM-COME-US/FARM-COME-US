@@ -27,7 +27,10 @@ const MyStoreHeader = (props) => {
       <div className={classes.headerBg}>
         <div className={classes.backdrop}></div>
         {props.info.imgSrc ? (
-          <img ref={bgImgRef} src={props.info.imgSrc} alt="header-bg" />
+          <div className={classes.bgBox}>
+            <img ref={bgImgRef} src={props.info.imgSrc} alt="header-bg" />
+            <span>스토어 미리보기</span>
+          </div>
         ) : (
           <div className={classes.noImg}>
             <img
