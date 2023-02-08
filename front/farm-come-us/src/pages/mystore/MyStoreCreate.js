@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { createStore } from "../../utils/api/store-http";
+import { fetchCreateStore, fetchStoreDetail } from "../../utils/api/store-http";
 
 import classes from "./style/MyStoreCreate.module.scss";
 
@@ -14,7 +14,6 @@ const MyStoreCreate = () => {
   const navigate = useNavigate();
   const { userInfo } = location.state;
   const [storeInfo, setStoreInfo] = useState({
-    storeId: userInfo.storeId, // 사용자 정보에 storeId가 있다면 가져옴
     storeName: "",
     desc: "",
     streetAddr: "",
@@ -22,9 +21,11 @@ const MyStoreCreate = () => {
     zipcode: "",
     pno: "",
     imgSrc: "",
+    uploadFile: "",
     deliveryCost: "",
     deliveryFree: "",
   });
+  const [storeNameIsValid, setStoreNameIsValid] = useState();
 
   // 마이스토어가 있는데 들어왔으면 마이스토어로 redirect
   useEffect(() => {
@@ -35,9 +36,8 @@ const MyStoreCreate = () => {
 
   const createStoreHandler = (e) => {
     e.preventDefault();
-    alert("스토어 생성로직");
-    console.log(storeInfo);
-    // createStore(storeInfo);
+    alert("스토어 생성로직 - 멤버 id 더미 데이터 ");
+    fetchCreateStore(storeInfo);
   };
 
   const storeInfoChangeHandler = (name, value) => {
@@ -47,6 +47,15 @@ const MyStoreCreate = () => {
         [name]: value,
       };
     });
+  };
+
+  const validationHandler = () => {
+    if (storeInfo.storeName.length > 0) {
+      alert("스토어 DB에서 조회해서 스토어 명 중복 체크");
+      setStoreNameIsValid((prev) => !prev);
+    } else {
+      setStoreNameIsValid(undefined);
+    }
   };
 
   return (
@@ -61,6 +70,8 @@ const MyStoreCreate = () => {
           className={classes.infoList}
           info={storeInfo}
           onStoreInfoChange={storeInfoChangeHandler}
+          onValidationCheck={validationHandler}
+          storeNameIsValid={storeNameIsValid}
         />
         <Button className={classes.btnEditInfo} onClick={createStoreHandler}>
           마이 스토어 생성

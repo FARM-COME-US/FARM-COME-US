@@ -8,6 +8,9 @@ const MyStoreInput = (props) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const onFocusHandler = () => {
+    if (props.onFocus) {
+      props.onFocus();
+    }
     setIsFocused((prev) => !prev);
   };
 
