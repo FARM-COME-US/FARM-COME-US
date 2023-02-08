@@ -96,12 +96,34 @@ public class ItemServiceImpl implements ItemService {
     public HashMap<String, Object> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq) {
         Slice<Item> items;
 
-        if (itemSearchReq.getCategoryName().equals("")) {
-            items = itemRepository.findByItemNameLike(itemSearchReq.getItemName());
+        if (itemSearchReq.getCategoryName().equals("전체")) {
+            if(itemSearchReq.getItemName().equals("")) items = itemRepository.findByItemNameLike("%");
+            else items = itemRepository.findByItemNameLike(itemSearchReq.getItemName());
         } else {
-            CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getCategoryName());
-            items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, itemSearchReq.getItemName());
+            if(itemSearchReq.getItemName().equals("")) {
+                CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getCategoryName());
+                items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, "%");
+            } else {
+                CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getCategoryName());
+                items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, itemSearchReq.getItemName());
+            }
         }
+
+        List<ItemDto> itemList = items.getContent().stream()
+                .map(i -> new ItemDto(i))
+                .collect(toList());
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("itemList", itemList);
+        result.put("hasNextPage", items.hasNext());
+
+        return result;
+    }
+
+    @Override
+    public HashMap<String, Object> findItemsByStore(Long storeId) {
+        Store store = storeRepository.findByStoreId(storeId).orElseThrow(NullPointerException::new);
+        Slice<Item> items = itemRepository.findByStore(store);
 
         List<ItemDto> itemList = items.getContent().stream()
                 .map(i -> new ItemDto(i))

@@ -9,7 +9,7 @@ public class ItemListRes {
     private String itemDescription;
     private int itemPrice;
     private int itemDiscount;
-    private Long storeName;
+    private String storeName;
 
     private String originalName;
     private String savedPath;
@@ -19,6 +19,7 @@ public class ItemListRes {
         this.itemDescription = item.getItemDescription();
         this.itemPrice = item.getItemPrice();
         this.itemDiscount = item.getItemDiscount();
+        this.storeName = item.getStore().getStoreName();
         this.originalName = itemImage.getOriginalName();
         this.savedPath = itemImage.getSavedPath();
     }

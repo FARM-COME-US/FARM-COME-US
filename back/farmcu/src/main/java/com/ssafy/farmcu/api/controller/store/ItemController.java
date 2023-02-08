@@ -50,8 +50,10 @@ public class ItemController {
 
     @PostMapping
     @ApiOperation(value = "상품 등록")
-    public ResponseEntity<HashMap<String, Boolean>> createItem(ItemDto itemDto, MultipartFile[] uploadFile) throws IOException {
+    public ResponseEntity<HashMap<String, Boolean>> createItem(@RequestPart(value="item") ItemDto itemDto, @RequestPart(value="uploadFile") MultipartFile[] uploadFile) throws IOException {
+        System.out.println(itemDto);
         boolean isSuccess = itemService.saveItem(itemDto);
+        System.out.println(itemDto);
 
         //이미지 첨부
         if(uploadFile != null && uploadFile.length > 0) {
@@ -99,17 +101,38 @@ public class ItemController {
     @PostMapping("/keyword")
     @ApiOperation(value = "상품 목록 조회")
     public ResponseEntity<HashMap<String, Object>> selectItemList(@RequestBody ItemSearchReq itemSearchReq) {
-        System.out.println("*******************" + itemSearchReq.getCategoryName() + " " + itemSearchReq.getItemName());
-        HashMap<String, Object> resultMap = new HashMap<>();
         HashMap<String, Object> itemText = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq);
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
         Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 
+        //상품 대표 이미지
         List<ItemImageDto> itemImage = new ArrayList<>();
-        for(ItemDto it : itemList) {
-            itemImage.add(itemImageService.findItemImagesByItemId(it.getItemId()).get(0));
+        for(ItemDto itemDto : itemList) {
+//            itemImage.add(itemImageService.findItemImagesByItemId(itemDto.getItemId()).get(0));
         }
 
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("itemList", itemList);
+        resultMap.put("itemImage", itemImage);
+        resultMap.put("hasNextPage", hasNextPage);
+
+        return ResponseEntity.ok(resultMap);
+    }
+
+    @GetMapping("/store")
+    @ApiOperation(value = "스토어 상품 목록 조회")
+    public ResponseEntity<HashMap<String, Object>> selectStoreItemList(Long storeId) {
+        HashMap<String, Object> itemText = itemService.findItemsByStore(storeId);
+        List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
+        Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
+
+        //상품 대표 이미지
+        List<ItemImageDto> itemImage = new ArrayList<>();
+        for(ItemDto itemDto : itemList) {
+//            itemImage.add(itemImageService.findItemImagesByItemId(itemDto.getItemId()).get(0));
+        }
+
+        HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("itemList", itemList);
         resultMap.put("itemImage", itemImage);
         resultMap.put("hasNextPage", hasNextPage);
