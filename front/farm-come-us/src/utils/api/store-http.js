@@ -37,18 +37,21 @@ const serverStoreObjFormatter = (obj) => {
 /* 스토어 생성 */
 export async function createStore(storeInfo) {
   const DUMMY_USER_INFO = {
+    memberId: 1,
     id: 1,
     username: "myFarm",
   };
 
   const data = {
-    ...storeInfo,
-    member: DUMMY_USER_INFO,
+    ...serverStoreObjFormatter(storeInfo),
+    memberId: DUMMY_USER_INFO.memberId,
   };
+
   const config = {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
+      "access-token": sessionStorage.getItem("accessToken"),
     },
     withCredentials: false,
   };

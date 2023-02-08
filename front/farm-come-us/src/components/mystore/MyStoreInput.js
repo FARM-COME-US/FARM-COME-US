@@ -32,6 +32,7 @@ const MyStoreInput = (props) => {
         onFocus={toggleFocusHandler}
         onBlur={toggleFocusHandler}
         placeholder={props.placeholder}
+        accept={props.accept}
       />
     </div>
   );
