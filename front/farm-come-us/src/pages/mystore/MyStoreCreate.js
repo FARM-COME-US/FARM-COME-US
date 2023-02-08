@@ -17,10 +17,13 @@ const MyStoreCreate = () => {
     storeId: userInfo.storeId, // 사용자 정보에 storeId가 있다면 가져옴
     storeName: "",
     desc: "",
-    addr: "",
+    streetAddr: "",
+    detailAddr: "",
+    zipcode: "",
     pno: "",
-    minDeliveryPrice: "",
     imgSrc: "",
+    deliveryCost: "",
+    deliveryFree: "",
   });
 
   // 마이스토어가 있는데 들어왔으면 마이스토어로 redirect
@@ -33,7 +36,8 @@ const MyStoreCreate = () => {
   const createStoreHandler = (e) => {
     e.preventDefault();
     alert("스토어 생성로직");
-    createStore(storeInfo);
+    console.log(storeInfo);
+    // createStore(storeInfo);
   };
 
   const storeInfoChangeHandler = (name, value) => {
