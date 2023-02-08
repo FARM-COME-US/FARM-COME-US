@@ -1,4 +1,5 @@
 import axios from "axios";
+import { zip } from "lodash";
 
 const DUMMY_SERVER_URL = "http://localhost:9090";
 const USER_API_URL = `${DUMMY_SERVER_URL}/member`;
@@ -22,17 +23,28 @@ const serverOrderObjFormatter = (obj) => {
 };
 
 export async function userSignUp(userInfo) {
-  let data = serverOrderObjFormatter(userInfo);
-  console.log(data);
+  const data = {
+    id: userInfo.id,
+    email: userInfo.email,
+    nickname: userInfo.nickname,
+    name: userInfo.name,
+    phoneNumber: userInfo.phoneNumber,
+    password: userInfo.password,
+    streetAddr: userInfo.streetAddr,
+    detailAddr: userInfo.detailAddr,
+    zipcode: userInfo.zipcode,
+  };
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    withCredentials: false,
+  };
+
   try {
-    const response = axios.post("api/member/join", {
-      data,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      withCredentials: false,
-    });
+    const response = axios.post("api/member/join", data, config);
 
     console.log(response);
   } catch (err) {
