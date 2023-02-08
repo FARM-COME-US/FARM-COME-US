@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./style/CartItem.module.scss";
 import { MdCheck } from "react-icons/md";
 
 const CartItem = (props) => {
-  const [productIdList, setList] = useState([]);
-
   const [check, onCheck] = useState(false);
 
+  useEffect(() => {
+    onCheck(props.allCheck);
+  }, [props.allCheck]);
+
   const dealOnCheck = () => {
-    onCheck(!check);
-    props.checkItem(props.item);
+    if (check === false) {
+      onCheck(!check);
+      props.checkItem(props.item.productId, props.item.discountPrice);
+    } else {
+      onCheck(!check);
+      props.uncheckItem(props.item.productId, props.item.discountPrice);
+    }
   };
 
   return (
