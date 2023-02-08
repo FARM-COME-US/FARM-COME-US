@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./style/CartList.module.scss";
 import CartCard from "./CartCard";
+import { MdCheck } from "react-icons/md";
 
 const DUMMY_CART_LIST = [
   [
@@ -52,12 +53,47 @@ const DUMMY_CART_LIST = [
 ];
 
 const CartList = () => {
+  const [styleCheck, onStyleCheck] = useState(false);
+  const [productIdList, setProductIdList] = useState([]);
+
+  const dealOnCheck = () => {
+    if (styleCheck === false) {
+      onStyleCheck(!styleCheck);
+    } else {
+      onStyleCheck(!styleCheck);
+    }
+  };
+
+  const getProductIds = (ids) => {
+    setProductIdList([...productIdList, ...ids]);
+  };
+
   let list = DUMMY_CART_LIST.map((array, index) => (
-    <CartCard key={index} itemList={array}></CartCard>
+    <CartCard
+      key={index}
+      itemList={array}
+      getProductIds={getProductIds}
+    ></CartCard>
   ));
 
   return (
     <div className={classes.container}>
+      <div className={classes.subHeader}>
+        <div className={classes.select}>
+          <div
+            onClick={dealOnCheck}
+            className={`${classes.button} ${
+              styleCheck ? classes.active : null
+            }`}
+          >
+            <MdCheck className={`${classes.checkIcon}`}></MdCheck>
+          </div>
+        </div>
+        <div className={classes.text}>
+          <div>전체선택</div>
+          <div>선택삭제</div>
+        </div>
+      </div>
       <div>{list}</div>
     </div>
   );
