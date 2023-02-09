@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { createProduct } from "../../utils/api/product-http";
 
 import classes from "./style/AddLiveModal.module.scss";
 
@@ -7,21 +8,51 @@ import MyStoreProductInfoList from "./MyStoreProductInfoList";
 import Button from "../common/Button";
 
 const AddProductModal = (props) => {
+  const [productInfo, setProductInfo] = useState({
+    categoryName: "",
+    itemCreatedAt: "",
+    itemDescription: "",
+    itemDiscount: 0,
+    itemId: 0,
+    itemName: "",
+    itemPrice: 0,
+    itemStock: 0,
+    storeId: 0,
+    imgSrc: "",
+    file: "",
+  });
+
+  const addProductSubmitHandler = (e) => {
+    e.preventDefault();
+    createProduct(productInfo);
+  };
+
+  const onInputChangeHandler = (name, value) => {
+    setProductInfo((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
   return (
     <BottomUpModal
       className={`${props.className} ${classes.modal}`}
       title={props.title}
       onToggleModal={props.onToggleModal}
     >
-      <form className={classes.form}>
-        <MyStoreProductInfoList className={classes.infoList} />
-        <Button
-          className={classes.btnRegist}
-          onSubmit={props.onSubmit}
-          onClick={props.onClick}
-        >
-          상품 등록
-        </Button>
+      <form
+        className={classes.form}
+        onSubmit={addProductSubmitHandler}
+        encType="multipart/form-data"
+      >
+        <MyStoreProductInfoList
+          className={classes.infoList}
+          productInfo={productInfo}
+          onChange={onInputChangeHandler}
+        />
+        <Button className={classes.btnRegist}>상품 등록</Button>
       </form>
     </BottomUpModal>
   );
