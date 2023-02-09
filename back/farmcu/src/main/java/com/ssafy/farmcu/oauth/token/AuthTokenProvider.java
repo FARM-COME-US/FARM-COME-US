@@ -76,21 +76,9 @@ public class AuthTokenProvider {
     }
 
     public Long getId(AuthToken authToken){
-<<<<<<< HEAD
-        if (authToken.validate()) {
-
-            // claims 가져오기
-            Claims claims = authToken.getTokenClaims();
-
-            return Long.parseLong(claims.getSubject());
-        } else {
-            throw new TokenValidFailedException();
-        }
-=======
         Claims claims = authToken.getTokenClaims();
 
         return Long.parseLong(claims.getSubject());
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
     }
 
 
