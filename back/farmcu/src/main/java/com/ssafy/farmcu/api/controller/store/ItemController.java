@@ -50,12 +50,10 @@ public class ItemController {
     @PostMapping
     @ApiOperation(value = "상품 등록")
     public ResponseEntity<HashMap<String, Boolean>> createItem(ItemDto itemDto, MultipartFile[] uploadFile) throws Exception {
-        boolean isSuccess = itemService.saveItem(itemDto);
-//        Item item = itemService.f
-        //saveItem 메서드에서 return 값으로 itemId를 준다면???
+        Long itemId = itemService.saveItem(itemDto);
 
         //이미지 첨부
-        if(uploadFile != null) {
+        if(itemId > 0L && uploadFile != null) {
             for(MultipartFile file : uploadFile) {
                 String savedPath = s3Service.uploadFile(file);
 
@@ -69,7 +67,7 @@ public class ItemController {
         }
 
         HashMap<String, Boolean> resultMap = new HashMap<>();
-        if(isSuccess) resultMap.put("success", true);
+        if(itemId > 0L) resultMap.put("success", true);
         else resultMap.put("success", false);
 
         return ResponseEntity.ok(resultMap);
@@ -98,7 +96,8 @@ public class ItemController {
         //상품 대표 이미지
         List<ItemImageDto> itemImage = new ArrayList<>();
         for(ItemDto itemDto : itemList) {
-//            itemImage.add(itemImageService.findItemImagesByItemId(itemDto.getItemId()).get(0));
+            if(itemImageService.findItemImagesByItemId(itemDto.getItemId()) != null)
+                itemImage.add(itemImageService.findItemImagesByItemId(itemDto.getItemId()).get(0));
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
@@ -119,7 +118,8 @@ public class ItemController {
         //상품 대표 이미지
         List<ItemImageDto> itemImage = new ArrayList<>();
         for(ItemDto itemDto : itemList) {
-//            itemImage.add(itemImageService.findItemImagesByItemId(itemDto.getItemId()).get(0));
+            if(itemImageService.findItemImagesByItemId(itemDto.getItemId()) != null)
+                itemImage.add(itemImageService.findItemImagesByItemId(itemDto.getItemId()).get(0));
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();

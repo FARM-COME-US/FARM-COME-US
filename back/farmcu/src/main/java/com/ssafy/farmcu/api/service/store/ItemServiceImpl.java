@@ -29,7 +29,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
 
     @Override
-    public boolean saveItem(ItemDto itemDto) {
+    public Long saveItem(ItemDto itemDto) {
         try {
             System.out.println("itemDto : " + itemDto.toString());
             CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemDto.getCategoryName());
@@ -45,10 +45,10 @@ public class ItemServiceImpl implements ItemService {
                     .build();
 
             itemRepository.save(item);
-            return true;
+            return item.getItemId();
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return 0L;
         }
     }
 
