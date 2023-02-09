@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classes from "./style/Payment.module.scss";
 import Card from "../../components/common/Card";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdOutlineArrowBackIos } from "react-icons/md";
+import axios from "axios";
+
+const customerData = {
+  customerName: "김덕배",
+  customerPhoneNumber: "010-5251-1234",
+  customerAddress: "대전광역시 유성구 온천북로7 레자미멀티홈 102-892",
+};
+const orderData = {
+  storeName: "애플 인 더 청송",
+  productName: "[청송] 무농약 당도 높은 가능 사과, 3Kg",
+  option: "3",
+  productCost: "134400",
+  deliveryCost: "2500",
+  // totalCost: parseInt(orderData.productCost) + parseInt(orderData.deliveryCost),
+};
 
 const Payment = () => {
   const location = useLocation();
@@ -11,7 +26,62 @@ const Payment = () => {
 
   const resultPrice = location.state.price + shippingfee;
 
+  // 수정필요 - axios.post()
+  // store의 정보에 fetch해서 기본배송비, 배송비 무시 가격 받아오기.
+
+  const orderRequest = async () => {
+    // const data = {
+    //   item_id: userId,
+    //   member_id: password,
+    // };
+    // const data = [];
+    // const config = [];
+    // const res = await axios.post("/api/order"{});
+  };
+
+  // useEffect(() => {
+  //   orderRequest();
+  // });
+
   const navigate = useNavigate();
+  console.log(location);
+  console.log(location.state);
+
+  const kakaoPayRequest = () => {
+    // axios 요청을, url, payload, config 담아서 보낸다.
+    // axios
+    //   .post(
+    //     "/api/kakao/kakaopay",
+    //     JSON.stringify({
+    //       cid: "TC0ONETIME",
+    //       partner_order_id: userInfo.username, //백엔드에서 hash처리
+    //       partner_user_id: userInfo.username, //백엔드에서 hash처리
+    //       item_name: itemName,
+    //       item_code: itemCode.join(),
+    //       quantity: quantity,
+    //       total_amount: totalAmount,
+    //       //   vat_amount: 200, 필수아님, 자동계산
+    //       tax_free_amount: 0,
+    //       approval_url: "http://localhost:3000/payresult",
+    //       fail_url: "http://localhost:3000/payfail",
+    //       cancel_url: "http://localhost:3000/paycancel",
+    //     }),
+    //     config
+    //   )
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.status === 200) {
+    //       window.localStorage.setItem("tid", response.data.tid);
+    //       //   window.location.href = response.data.next_redirect_pc_url;
+    //       window.location.href = response.data.next_redirect_mobile_url;
+    //       // 받아온 url로 넘김. (app.js의 router 통해서 분기처리된다. fail,cancel,)
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     // 예외처리 추가 예정
+    //     console.log(error);
+    //   });
+  };
 
   const convertedPrice = (price) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -27,10 +97,12 @@ const Payment = () => {
       <Card className={classes.paymentcard}>
         <div className={classes.cardheader}>배송지</div>
         <div className={classes.cardscript}>
-          <div className={classes.username}>김덕배</div>
-          <div className={classes.userphonenumber}>010-5251-1234</div>
+          <div className={classes.username}>{customerData.customerName}</div>
+          <div className={classes.userphonenumber}>
+            {customerData.customerPhoneNumber}
+          </div>
           <div className={classes.useraddress}>
-            대전광역시 유성구 온천북로7 레자미멀티홈 102-892
+            {customerData.customerAddress}
           </div>
         </div>
       </Card>
@@ -63,7 +135,7 @@ const Payment = () => {
         <div className={classes.text}>
           주문 내용을 확인하였으며, 정보 제공 등에 동의합니다.
         </div>
-        <div className={classes.buttonspace}>
+        <div className={classes.buttonspace} onClick={kakaoPayRequest}>
           <div className={classes.button}>카카오페이로 결제하기</div>
         </div>
       </div>
