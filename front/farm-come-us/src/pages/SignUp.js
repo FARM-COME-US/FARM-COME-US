@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+
 import classes from "./style/SignUp.module.scss";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import {
@@ -10,43 +10,50 @@ import {
   MdCheck,
   MdSearch,
 } from "react-icons/md";
-import axios from "axios";
 import _ from "lodash";
+import { userSignUp } from "../utils/api/user-http";
 
 const SignUp = () => {
-  const REGISTER_USERS_URL = "http://Backend" + "/member/join";
-
   const [openModal, setOpenModal] = useState(false);
   //이름, 닉네임, 전화번호, 비밀번호, 비밀번호 확인, 주소, 상세주소(얘는 유효성검사 안함. 주택이면 없으니까.), 우편번호(주소 들어오면 있는거니까 얘도 유효성X)
   //이름, 이메일, 비밀번호, 비밀번호 확인
-  const [id, setId] = useState("");
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [tel, setTel] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [roadAddress, setRoadAddress] = useState("");
-  const [specificAddress, setSpecificAddress] = useState("");
-  const [zonecode, setZonecode] = useState("");
+  // const [id, setId] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [name, setName] = useState("");
+  // const [pno, setPno] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [passwordConfirm, setPasswordConfirm] = useState("");
+  // const [streetAddr, setStreetAddr] = useState("");
+  // const [detailAddr, setDetailAddr] = useState("");
+  // const [zipcode, setZipcode] = useState("");
+
+  const [id, setId] = useState("myFarm");
+  const [email, setEmail] = useState("myfarm@gmail.com");
+  const [name, setName] = useState("팜컴어스");
+  const [pno, setPno] = useState("01012341234");
+  const [password, setPassword] = useState("asd12345!");
+  const [passwordConfirm, setPasswordConfirm] = useState("asd12345!");
+  const [streetAddr, setStreetAddr] = useState("대전 유성구 동서대로 98-39");
+  const [detailAddr, setDetailAddr] = useState("삼성화재 유성캠퍼스");
+  const [zipcode, setZipcode] = useState("34153");
 
   //오류메시지 상태저장
-  const [idMessage, setIdMessage] = useState("");
+  const [idMessage, setUseridMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [nameMessage, setNameMessage] = useState("");
-  const [telMessage, setTelMessage] = useState("");
+  const [pnoMessage, setPnoMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
-  const [roadAddressMessage, setRoadAddressMessage] = useState("");
+  const [streetAddrMessage, setStreetAddrMessage] = useState("");
 
   // 유효성 검사
-  const [isId, setIsId] = useState(false);
+  const [isid, setIsid] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isName, setIsName] = useState(false);
-  const [isTel, setIsTel] = useState(false);
+  const [ispno, setIspno] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
-  const [isRoadAddress, setIsRoadAddress] = useState(false);
-  const navigate = useNavigate();
+  const [isstreetAddr, setIsStreetAddr] = useState(false);
 
   let nickname = ""; //랜덤 넣어서 뿌려주는거 필요
 
@@ -76,46 +83,31 @@ const SignUp = () => {
       "달걀",
     ];
     nickname = _.sample(adjArr) + _.sample(vegeArr);
-    console.log(nickname);
-    try {
-      const newUser = {
-        id,
-        email,
-        nickname,
-        tel,
-        password,
-        roadAddress,
-        specificAddress,
-        zonecode,
-      };
-      const body = JSON.stringify(newUser);
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      // console.log(newUser);
 
-      await axios.post(REGISTER_USERS_URL, body, config).then((res) => {
-        console.log("response:", res);
-        if (res.status === 200) {
-          navigate("/"); // 가입성공시 목적지 URL 바꿔야함. 수정필요
-        }
-      });
-    } catch (err) {
-      console.error(err);
-    }
+    const userInfo = {
+      id,
+      email,
+      nickname,
+      name,
+      pno,
+      password,
+      streetAddr,
+      detailAddr,
+      zipcode,
+    };
+
+    userSignUp(userInfo);
   };
 
   // 아이디
   const onChangeId = useCallback((e) => {
     setId(e.target.value);
     if (e.target.value.length < 2 || e.target.value.length > 10) {
-      setIdMessage("2글자 이상 10글자 미만으로 입력해주세요.");
-      setIsId(false);
+      setUseridMessage("2글자 이상 10글자 미만으로 입력해주세요.");
+      setIsid(false);
     } else {
-      setIdMessage("올바른 아이디 형식입니다 :)");
-      setIsId(true);
+      setUseridMessage("올바른 아이디 형식입니다 :)");
+      setIsid(true);
     }
   }, []);
 
@@ -160,14 +152,14 @@ const SignUp = () => {
   }, []);
 
   //전화번호
-  const onBlurTel = useCallback((e) => {
-    setTel(e.target.value);
+  const onBlurpno = useCallback((e) => {
+    setPno(e.target.value);
     if (e.target.value.length === 11) {
-      setTelMessage("올바른 전화번호 형식입니다. :)");
-      setIsTel(true);
+      setPnoMessage("올바른 전화번호 형식입니다. :)");
+      setIspno(true);
     } else {
-      setTelMessage("- 를 빼고 숫자만 입력해주세요.");
-      setIsTel(false);
+      setPnoMessage("- 를 빼고 숫자만 입력해주세요.");
+      setIspno(false);
     }
   }, []);
 
@@ -208,36 +200,37 @@ const SignUp = () => {
   );
 
   // 주소확인// 주소바뀌면 동작 - 만들고 수정필요(주소컴포넌트에서 값을 줬을때, useState바꿔줘야함.)
-  const onChangeRoadAddress = useCallback(
+  const onChangestreetAddr = useCallback(
     (e) => {
-      if (roadAddress.length === 0) {
-        // setRoadAddressMessage("주소를 입력해주세요."); 클릭눌렀을때..
-        setIsRoadAddress(false);
+      if (streetAddr.length === 0) {
+        // setStreetAddrMessage("주소를 입력해주세요."); 클릭눌렀을때..
+        setIsStreetAddr(false);
       } else {
-        setIsRoadAddress(true);
+        setIsStreetAddr(true);
       }
     },
-    [roadAddress]
+    [streetAddr]
   );
 
   const selectAddress = (data) => {
-    setIsRoadAddress(true);
-    setRoadAddress(data.roadAddress);
-    setZonecode(data.zonecode);
+    console.log(data);
+    setIsStreetAddr(true);
+    setStreetAddr(data.roadAddress);
+    setZipcode(data.zonecode);
     setOpenModal(!openModal);
   };
 
-  // const onChangezonecode = useCallback(
+  // const onChangezipcode = useCallback(
   //   (e) => {
-  //     setZonecode(e.target.value);
-  //     if (zonecode.length === 0) {
-  //       // setRoadAddressMessage("주소를 입력해주세요."); 클릭눌렀을때..
-  //       setIsRoadAddress(false);
+  //     setZipcode(e.target.value);
+  //     if (zipcode.length === 0) {
+  //       // setStreetAddrMessage("주소를 입력해주세요."); 클릭눌렀을때..
+  //       setIsStreetAddr(false);
   //     } else {
-  //       setIsRoadAddress(true);
+  //       setIsStreetAddr(true);
   //     }
   //   },
-  //   [zonecode]
+  //   [zipcode]
   // );
 
   return (
@@ -260,7 +253,7 @@ const SignUp = () => {
           {id.length > 0 && (
             <span
               className={`${classes.message} ${
-                isId ? classes.success : classes.error
+                isid ? classes.success : classes.error
               }`}
             >
               {idMessage}
@@ -344,23 +337,23 @@ const SignUp = () => {
             <MdPhoneIphone className={classes.icon} />
             <input
               className={classes.outerInput}
-              type="tel"
+              type="pno"
               // class="form-control m-input"
               text="전화번호"
               placeholder="전화번호"
-              typename="tel"
+              typename="pno"
               pattern="[0-9]{11}"
               maxLength="13"
-              onBlur={onBlurTel}
+              onBlur={onBlurpno}
             />
           </div>
-          {tel.length > 0 && (
+          {pno.length > 0 && (
             <span
               className={`${classes.message} ${
-                isTel ? classes.success : classes.error
+                ispno ? classes.success : classes.error
               }`}
             >
-              {telMessage}
+              {pnoMessage}
             </span>
           )}
         </div>
@@ -424,20 +417,20 @@ const SignUp = () => {
                 setOpenModal(!openModal);
               }}
               className={classes.outerInput}
-              onChange={onChangeRoadAddress}
+              onChange={onChangestreetAddr}
               addresstext=" "
               placeholder="주소를 검색해주세요."
-              typetitle="roadAddress"
-              value={roadAddress}
+              typetitle="streetAddr"
+              value={streetAddr}
             />
           </div>
-          {roadAddressMessage.length > 0 && (
+          {streetAddrMessage.length > 0 && (
             <span
               className={`${classes.message} ${
-                roadAddressMessage ? classes.success : classes.error
+                streetAddrMessage ? classes.success : classes.error
               }`}
             >
-              {roadAddressMessage}
+              {streetAddrMessage}
             </span>
           )}
         </div>
@@ -445,11 +438,11 @@ const SignUp = () => {
         <div className={classes.formbox}>
           <input
             className={classes.outerInput}
-            onChange={(e) => setZonecode(e.target.value)}
+            onChange={(e) => setZipcode(e.target.value)}
             passwordtext=" "
             placeholder="우편번호"
-            typetitle="zonecode"
-            value={zonecode}
+            typetitle="zipcode"
+            value={zipcode}
           />
         </div>
 
@@ -457,19 +450,11 @@ const SignUp = () => {
           <input
             className={classes.outerInput}
             onChange={(e) => {
-              console.log({
-                isId,
-                isEmail,
-                isTel,
-                isPassword,
-                isPasswordConfirm,
-                isRoadAddress,
-              });
-              setSpecificAddress(e.target.value);
+              setDetailAddr(e.target.value);
             }}
             passwordtext=" "
             placeholder="상세주소"
-            typetitle="specificRoadAddress"
+            typetitle="specificstreetAddr"
           />
         </div>
       </div>
@@ -479,12 +464,12 @@ const SignUp = () => {
         <button
           className={`${classes.button} ${
             !(
-              isId &&
+              isid &&
               isEmail &&
-              isTel &&
+              ispno &&
               isPassword &&
               isPasswordConfirm &&
-              isRoadAddress
+              isstreetAddr
             )
               ? classes.disabled
               : ""
@@ -492,12 +477,12 @@ const SignUp = () => {
           type="submit"
           disabled={
             !(
-              isId &&
+              isid &&
               isEmail &&
-              isTel &&
+              ispno &&
               isPassword &&
               isPasswordConfirm &&
-              isRoadAddress
+              isstreetAddr
             )
           }
         >

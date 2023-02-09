@@ -6,21 +6,6 @@
 
   .infoItem {
     margin-bottom: 16px;
-
-    .validationBox {
-      display: flex;
-      width: 100%;
-      justify-content: flex-end;
-      padding-right: 16px;
-      margin-top: 4px;
-      position: absolute;
-      right: 32px;
-      color: red;
-
-      .valid {
-        color: #265040;
-      }
-    }
   }
 }
 
