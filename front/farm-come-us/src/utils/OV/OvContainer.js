@@ -158,8 +158,6 @@ const OvContainer = (props) => {
 
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-    console.log("===============================================");
-    console.log(session);
     if (session) {
       console.log(session);
       session.disconnect();
