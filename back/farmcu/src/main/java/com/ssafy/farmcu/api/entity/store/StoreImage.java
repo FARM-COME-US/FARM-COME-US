@@ -25,7 +25,7 @@ public class StoreImage {
     @Column
     private String savedPath;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Store.class)
     @JoinColumn(name = "store_id", updatable = false)
     private Store store;
 

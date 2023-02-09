@@ -27,7 +27,7 @@ public class MemberImage {
     @Column
     private String savedPath;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Member.class)
     @JoinColumn(name = "member_id", updatable = false)
     private Member member;
 
