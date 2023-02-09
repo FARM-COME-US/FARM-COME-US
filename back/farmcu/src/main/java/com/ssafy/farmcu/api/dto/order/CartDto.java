@@ -14,10 +14,15 @@ public class CartDto {
     @NotNull
     private int cartItemCount;
 
+<<<<<<< HEAD
     @NotNull
     private Long memberId;
 
     @NotNull
+=======
+    private Long memberId;
+
+>>>>>>> 9611c9a0c605f1aa899f830650098fa3282b4b3e
     private Long itemId;
 
 //    private Long storeId;   // => 같은 상점끼리 묶어서 보여주기
@@ -46,7 +51,10 @@ public class CartDto {
 //        this.storeName = cart.getItem().getStore().getStoreName();
 //        this.itemSalePercent = cart.getItem().getItemDiscount();
 //        this.getTotalPrice = cartItemCount*cart.getItem().getItemPrice();
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9611c9a0c605f1aa899f830650098fa3282b4b3e
     }
 
 
