@@ -52,7 +52,7 @@ const DUMMY_CART_LIST = [
   ],
 ];
 
-const CartList = () => {
+const CartList = (props) => {
   const [styleCheck, onStyleCheck] = useState(false);
   const [productIdList, setProductIdList] = useState([]);
   const [resultPrice, setResultPrice] = useState(0);
@@ -78,6 +78,7 @@ const CartList = () => {
   const getProduct = (Id, price) => {
     setProductIdList([...productIdList, Id]);
     setResultPrice(resultPrice + price);
+    props.plusSetList(Id, price);
   };
 
   const popStoreProducts = (idList, price) => {
@@ -93,6 +94,7 @@ const CartList = () => {
   const popProduct = (Id, price) => {
     setProductIdList(productIdList.filter((id) => id !== Id));
     setResultPrice(resultPrice - price);
+    props.minusSetList(Id, price);
   };
 
   let list = DUMMY_CART_LIST.map((array, index) => (

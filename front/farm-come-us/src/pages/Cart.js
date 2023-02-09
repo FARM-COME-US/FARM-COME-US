@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./style/Cart.module.scss";
 import CartHeader from "../components/cart/CartHeader";
 import CartList from "../components/cart/CartList";
 import CartFooter from "../components/cart/CartFooter";
 
-/*
 const DUMMY_CART_LIST = [
   {
     storeId: 1,
@@ -47,14 +46,33 @@ const DUMMY_CART_LIST = [
     discountPrice: 16000,
   },
 ];
-*/
 
 const Cart = () => {
+  const [itemIdList, setList] = useState([]);
+  const [resultPrice, setPrice] = useState(0);
+
+  const plusSetList = (Id, price) => {
+    setList([...itemIdList, Id]);
+    setPrice(resultPrice + price);
+  };
+
+  const minusSetList = (Id, price) => {
+    setList(itemIdList.filter((id) => id !== Id));
+    setPrice(resultPrice - price);
+  };
+
   return (
     <div className={classes.container}>
       <CartHeader></CartHeader>
-      <CartList></CartList>
-      <CartFooter></CartFooter>
+      <CartList
+        plusSetList={plusSetList}
+        minusSetList={minusSetList}
+      ></CartList>
+      <CartFooter
+        DUMMY_CART_LIST={DUMMY_CART_LIST}
+        itemIdList={itemIdList}
+        resultPrice={resultPrice}
+      ></CartFooter>
     </div>
   );
 };
