@@ -3,7 +3,7 @@ package com.ssafy.farmcu.api.controller.member;
 import com.ssafy.farmcu.api.dto.ErrorResponse;
 import com.ssafy.farmcu.api.dto.member.MemberJoinReq;
 import com.ssafy.farmcu.api.dto.member.MemberLoginReq;
-import com.ssafy.farmcu.api.dto.member.MemberResponseDto;
+import com.ssafy.farmcu.api.dto.member.MemberDto;
 import com.ssafy.farmcu.api.dto.member.MemberUpdateReq;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.member.MemberRefreshToken;
@@ -124,7 +124,7 @@ public class MemberController {
             log.info("token is avvailable!");
             try {
                 Long id = tokenProvider.getId(authToken);
-                MemberResponseDto memberDto = memberService.getUserInfo(id);
+                MemberDto memberDto = memberService.getUserInfo(id);
                 resultMap.put("userInfo", memberDto);
                 resultMap.put("message", "success");
                 status = HttpStatus.ACCEPTED;
@@ -198,7 +198,7 @@ public class MemberController {
         String token = request.getHeader("token"); // 리프레시 토큰
         AuthToken authToken = tokenProvider.convertAuthToken(token);
         Long id = tokenProvider.getId(authToken);
-        MemberResponseDto member = memberService.getUserInfo(id);
+        MemberDto member = memberService.getUserInfo(id);
         if (authToken.validate()) {
             memberService.updateMember(memberUpdateReq, member.getId());
             resultMap.put("message", "success");
@@ -220,7 +220,7 @@ public class MemberController {
         if (accessToken.validate()) { // 토큰 검증
             log.info("token is avvailable!");
             try {
-                MemberResponseDto memberDto = memberService.getUserInfo(memberId);
+                MemberDto memberDto = memberService.getUserInfo(memberId);
                 resultMap.put("userInfo", memberDto);
                 resultMap.put("message", "success");
                 status = HttpStatus.ACCEPTED;
@@ -256,9 +256,9 @@ public class MemberController {
 
     @ApiOperation(value = "회원 조회 / 테스트용", notes = "사용자 아이디(PK)")
     @GetMapping("/me/{id}")
-    public ResponseEntity<MemberResponseDto> fetchUser(@PathVariable Long id) {
+    public ResponseEntity<MemberDto> fetchUser(@PathVariable Long id) {
         log.info("/me");
-        MemberResponseDto memberDto = memberService.getUserInfo(id);
+        MemberDto memberDto = memberService.getUserInfo(id);
         return ResponseEntity.ok(memberDto);
     }
 

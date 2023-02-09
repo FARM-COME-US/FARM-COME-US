@@ -4,7 +4,7 @@ import com.ssafy.farmcu.api.entity.member.Member;
 import lombok.Getter;
 
 @Getter
-public class MemberResponseDto {
+public class MemberDto {
     private Long memberId;
     private String id;
     private String nickname;
@@ -16,7 +16,7 @@ public class MemberResponseDto {
     private String phoneNumber;
     private String profileImg;
 
-    public MemberResponseDto(Member member){
+    public MemberDto(Member member){
         this.memberId = member.getMemberId();
         this.id = member.getId();
         this.nickname = member.getNickname();
@@ -28,8 +28,8 @@ public class MemberResponseDto {
         this.phoneNumber = member.getPhoneNumber();
         this.profileImg = member.getProfileImg();
     }
-    public static MemberResponseDto of(Member member) {
-        return new MemberResponseDto(member);
+    public static MemberDto of(Member member) {
+        return new MemberDto(member);
     }
 
 
