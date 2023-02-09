@@ -1,6 +1,7 @@
 package com.ssafy.farmcu.api.service.store;
 
 import com.ssafy.farmcu.api.dto.store.ItemDto;
+import com.ssafy.farmcu.api.dto.store.ItemListRes;
 import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
 import com.ssafy.farmcu.api.entity.store.CategoryDetail;
 import com.ssafy.farmcu.api.entity.store.Item;
@@ -13,6 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+import java.awt.event.ItemListener;
+import java.util.HashMap;
+import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -24,8 +29,9 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
 
     @Override
-    public boolean saveItem(ItemDto itemDto) {
+    public Long saveItem(ItemDto itemDto) {
         try {
+            System.out.println("itemDto : " + itemDto.toString());
             CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemDto.getCategoryName());
             Store store = storeRepository.findByStoreId(itemDto.getStoreId()).orElseThrow(NullPointerException::new);
             Item item = Item.builder()
@@ -39,10 +45,10 @@ public class ItemServiceImpl implements ItemService {
                     .build();
 
             itemRepository.save(item);
-            return true;
+            return item.getItemId();
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return 0L;
         }
     }
 
@@ -87,19 +93,45 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Slice<ItemDto> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq, Pageable pageable) {
+    public HashMap<String, Object> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq) {
         Slice<Item> items;
 
         if (itemSearchReq.getCategoryName().equals("전체")) {
-            items = itemRepository.findByItemNameLike(itemSearchReq.getItemName(), pageable);
+            if(itemSearchReq.getItemName().equals("")) items = itemRepository.findByItemNameLike("%");
+            else items = itemRepository.findByItemNameLike(itemSearchReq.getItemName());
         } else {
-            CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getCategoryName());
-            items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, itemSearchReq.getItemName(), pageable);
+            if(itemSearchReq.getItemName().equals("")) {
+                CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getCategoryName());
+                items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, "%");
+            } else {
+                CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getCategoryName());
+                items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, itemSearchReq.getItemName());
+            }
         }
 
-        Slice<ItemDto> result = (Slice<ItemDto>) items.stream()
+        List<ItemDto> itemList = items.getContent().stream()
                 .map(i -> new ItemDto(i))
                 .collect(toList());
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("itemList", itemList);
+        result.put("hasNextPage", items.hasNext());
+
+        return result;
+    }
+
+    @Override
+    public HashMap<String, Object> findItemsByStore(Long storeId) {
+        Store store = storeRepository.findByStoreId(storeId).orElseThrow(NullPointerException::new);
+        Slice<Item> items = itemRepository.findByStore(store);
+
+        List<ItemDto> itemList = items.getContent().stream()
+                .map(i -> new ItemDto(i))
+                .collect(toList());
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("itemList", itemList);
+        result.put("hasNextPage", items.hasNext());
 
         return result;
     }
