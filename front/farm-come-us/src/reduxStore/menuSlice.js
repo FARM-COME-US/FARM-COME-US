@@ -13,6 +13,9 @@ const menuSlice = createSlice({
     toggle: (state, action) => {
       state.isOpen = !state.isOpen;
     },
+    close: (state) => {
+      state.isOpen = false;
+    },
   },
 });
 

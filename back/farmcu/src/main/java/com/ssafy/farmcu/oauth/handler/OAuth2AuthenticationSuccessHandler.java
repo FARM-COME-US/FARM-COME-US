@@ -1,5 +1,8 @@
 package com.ssafy.farmcu.oauth.handler;
 
+import com.ssafy.farmcu.api.entity.member.Member;
+import com.ssafy.farmcu.api.repository.MemberRepository;
+import com.ssafy.farmcu.api.service.member.MemberRefreshTokenServiceImpl;
 import com.ssafy.farmcu.config.properties.AppProperties;
 import com.ssafy.farmcu.api.entity.member.MemberRefreshToken;
 import com.ssafy.farmcu.api.entity.member.ProviderType;
@@ -40,17 +43,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final AppProperties appProperties;
     private final MemberRefreshTokenRepository memberRefreshTokenRepository;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
+    private final MemberRepository memberRepository;
+    private final MemberRefreshTokenServiceImpl memberRefreshTokenService;
 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        log.debug("onAuthenticationSuccess");
+        log.info("onAuthenticationSuccess");
         // 인증한 url
         String targetUrl = determineTargetUrl(request, response, authentication);
-        log.debug("targetUrl: " + targetUrl);
+        log.info("targetUrl: " + targetUrl);
 
         if (response.isCommitted()) {
-            log.debug("이미 commit된 응답");
+            log.info("이미 commit된 응답");
             return;
         }
 
@@ -74,14 +79,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         OidcUser user = ((OidcUser) authentication.getPrincipal());
         OAuth2MemberInfo memberInfo = new KakaoMemberInfo(user.getAttributes());
+
         Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();
 
-        RoleType roleType = hasAuthority(authorities, RoleType.ROLE_ADMIN.toString()) ? RoleType.ROLE_ADMIN : RoleType.ROLE_USER;
+        RoleType roleType = RoleType.ROLE_USER;
+
+        String Id = memberInfo.getProvider()+"-"+memberInfo.getProviderId();
+        Member member = memberRepository.findById(Id).orElse(null);
+
 
         Date now = new Date();
         AuthToken accessToken = tokenProvider.createAuthToken(
-                memberInfo.getEmail(),
-                roleType.toString(),
+                Long.toString(member.getMemberId()),
+                member.getRoleType(),
                 new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
         );
 
@@ -94,23 +104,18 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         );
 
         // DB 저장
-        MemberRefreshToken memberRefreshToken = memberRefreshTokenRepository.findById(memberInfo.getProviderId());
-        if (memberRefreshToken != null) {
-            // 처음 로그인하는 사용자라면, 토큰 저장
-            memberRefreshToken.setRefreshToken(refreshToken.getToken());
-        } else {
-            // 이미 리프레시 토큰을 가지고 있다면 만들어서 저장
-            memberRefreshToken = new MemberRefreshToken(memberInfo.getProviderId(), refreshToken.getToken());
-            memberRefreshTokenRepository.saveAndFlush(memberRefreshToken);
-        }
+        MemberRefreshToken memberRefreshToken = memberRefreshTokenRepository.findById(Id);
+        memberRefreshTokenService.saveRefreshTokenTable(refreshToken.getToken(), member.getId());
 
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
 
         CookieUtil.deleteCookie(request, response, OAuth2AuthorizationRequestBasedOnCookieRepository.REFRESH_TOKEN);
         CookieUtil.addCookie(response, OAuth2AuthorizationRequestBasedOnCookieRepository.REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
+
         return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", "Bearer " + accessToken.getToken())
+                .queryParam("token", accessToken.getToken())
+                .queryParam("nickname", member.getNickname())
                 .build().toUriString();
     }
 

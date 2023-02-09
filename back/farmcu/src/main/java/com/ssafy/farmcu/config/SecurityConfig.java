@@ -1,7 +1,10 @@
 package com.ssafy.farmcu.config;
 
+import com.ssafy.farmcu.api.repository.MemberRepository;
+import com.ssafy.farmcu.api.service.member.MemberRefreshTokenServiceImpl;
 import com.ssafy.farmcu.config.properties.AppProperties;
 import com.ssafy.farmcu.config.properties.CorsProperties;
+import com.ssafy.farmcu.exception.RestAuthenticationEntryPoint;
 import com.ssafy.farmcu.oauth.filter.TokenAuthenticationFilter;
 import com.ssafy.farmcu.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.ssafy.farmcu.oauth.handler.OAuth2AuthenticationSuccessHandler;
@@ -13,6 +16,7 @@ import com.ssafy.farmcu.oauth.token.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,56 +42,55 @@ public class SecurityConfig {
     private final MemberRefreshTokenRepository memberRefreshTokenRepository;
     private final PrincipalDetailsService principalDetailsService;
     private final CorsProperties corsProperties;
-
+    private final MemberRepository memberRepository;
+    private final MemberRefreshTokenServiceImpl memberRefreshTokenService;
 
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-
         http
                 .httpBasic().disable()
-                .cors()
-                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
+                .cors().and()
                 .csrf().disable()
-                .headers().frameOptions().disable()
+
+                .headers()
+                .frameOptions()
+                .sameOrigin()
+
+                // 시큐리티는 기본적으로 세션을 사용
+                // 세션을 사용하지 않을거라 세션 설정을 Stateless 로 설정
                 .and()
-                // authorizeRequest 권한 관리 요청 시작
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().exceptionHandling()
+                .authenticationEntryPoint(new RestAuthenticationEntryPoint()) // 요청이 들어올 시, 인증 헤더를 보내지 않는 경우 401 응답 처리
+
+                .and()
                 .authorizeRequests()
-                .antMatchers("/","/api/v1/auth/**","/",
-                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",   // swagger
-                        "/h2-console/**",
-                        "/favicon.ico").permitAll()
-                .antMatchers("/", "/*/swagger-ui.html#","/css/**", "/images/**",
-                        "/js/**", "/h2-console/**","/*/login", "/*/login/**",  "/*/join", "/*/join/**", "/find/**", "/social/**", "/book/**", "/test/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 열어두어야 CORS Preflight 막을 수 있음
+                .antMatchers("/**").permitAll()
+
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .and()
-                // oauth 로그인 기능
+
+
+                // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter보다 앞으로 설정
+                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login()
-                // 인가에 대한 요청 서비스
-                // "/oauth2/authorization"로 접근시 oauth 로그인 요청
                 .authorizationEndpoint()
-                .baseUri("/oauth/authorization")
+                .baseUri("/oauth2/authorization")
+                .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .and()
-                // callback 주소
                 .redirectionEndpoint()
                 .baseUri("/*/oauth2/code/*")
                 .and()
-                // user 조회
                 .userInfoEndpoint()
-                // oauth로 유저 정보를 받아오게 되면 oauth2 인증 유저 객체로 등록하게끔 구현된 커스텀 클래스
                 .userService(principalOauth2MemberService)
-                // 조회 성공/실패
                 .and()
-                // 정상적으로 유저 인증되어 등록되면 실행되는 클래스(JWT)
                 .successHandler(oAuth2AuthenticationSuccessHandler())
                 .failureHandler(oAuth2AuthenticationFailureHandler());
+
 
         // 로그인 요청을 가로채 usernamepasswordAuthenticationToken이라는 인증용 객체 생성
         return http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
@@ -126,7 +129,9 @@ public class SecurityConfig {
                 tokenProvider,
                 appProperties,
                 memberRefreshTokenRepository,
-                oAuth2AuthorizationRequestBasedOnCookieRepository()
+                oAuth2AuthorizationRequestBasedOnCookieRepository(),
+                memberRepository,
+                memberRefreshTokenService
         );
 //        return new OAuth2AuthenticationSuccessHandler();
     }

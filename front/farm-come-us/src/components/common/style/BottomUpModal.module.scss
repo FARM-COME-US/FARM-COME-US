@@ -21,7 +21,7 @@
     z-index: 11;
     background-color: #fff;
 
-    animation: slideIn 0.7s ease-out forwards;
+    animation: slideIn 0.4s ease-out forwards;
 
     .modalHeader {
       width: 100%;
@@ -66,13 +66,11 @@
 
 @keyframes slideIn {
   0% {
-    transform: translateY(80vh);
-    animation-timing-function: ease-out;
-  }
-  80% {
-    transform: translateY(10px);
+    transform: translateY(100vh);
+    animation-timing-function: ease;
   }
   100% {
     transform: translateY(0px);
+    animation-timing-function: ease;
   }
 }
