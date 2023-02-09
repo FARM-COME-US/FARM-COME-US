@@ -1,26 +1,7 @@
 import axios from "axios";
-import { zip } from "lodash";
 
 const DUMMY_SERVER_URL = "http://localhost:9090";
 const USER_API_URL = `${DUMMY_SERVER_URL}/member`;
-
-const clientOrderObjFormatter = (obj) => {
-  return {};
-};
-
-const serverOrderObjFormatter = (obj) => {
-  return {
-    id: obj.id,
-    password: obj.password,
-    nickname: obj.nickname,
-    name: obj.name,
-    email: obj.email,
-    streetAddr: obj.streetAddr,
-    detailAddr: obj.detailAddr,
-    zipcode: obj.zipcode,
-    phoneNumber: obj.pno,
-  };
-};
 
 export async function userSignUp(userInfo) {
   const data = {
@@ -74,8 +55,7 @@ export async function fetchUserInfo(id) {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        Authorization: accessToken,
-        token: accessToken,
+        token: `${accessToken}`,
       },
     });
     console.log(response);
