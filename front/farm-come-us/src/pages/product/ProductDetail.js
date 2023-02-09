@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import classes from "./style/ProductDetail.module.scss";
 import Card from "../../components/common/Card";
 import { MdShoppingCart } from "react-icons/md";
+import { MdOutlineArrowBackIos } from "react-icons/md";
 import { Link } from "react-router-dom";
-import CartModal from "../../components/product/CartModal";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ProductDetail = () => {
   const [amount, setAmount] = useState(1);
@@ -18,11 +18,7 @@ const ProductDetail = () => {
     }
   };
 
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const showModal = () => {
-    setModalOpen(true);
-  };
+  const navigate = useNavigate();
 
   const location = useLocation();
   /*
@@ -43,12 +39,29 @@ const ProductDetail = () => {
   */
 
   const discountPrice =
-    location.state.productInfo.productPrice *
-    (1 - location.state.productInfo.discountRate / 100);
+    location.state.productInfo.price *
+    (1 - location.state.productInfo.discount / 100);
+
+  let resultPrice = discountPrice * amount;
+
+  const convertedPrice = (price) =>
+    price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return (
     <div className={classes.container}>
-      <div className={classes.header}>{location.state.storeInfo.storeName}</div>
+      <div className={classes.header}>
+        <MdOutlineArrowBackIos
+          onClick={() => navigate(-1)}
+        ></MdOutlineArrowBackIos>
+        <div className={classes.storename}>
+          <Link
+            to="/store"
+            state={{ storeId: location.state.productInfo.storeId }}
+          >
+            {location.state.productInfo.storeName}
+          </Link>
+        </div>
+      </div>
       <Card className={classes.imagecard}>
         <img src="https://via.placeholder.com/300" alt="공백"></img>
       </Card>
@@ -61,13 +74,13 @@ const ProductDetail = () => {
       <div className={classes.option}>
         <div className={classes.discountspace}>
           <div className={classes.salepercent}>
-            {location.state.productInfo.discountRate}%
+            {location.state.productInfo.discount}%
           </div>
           <div className={classes.originalprice}>
-            {location.state.productInfo.productPrice}원
+            {convertedPrice(location.state.productInfo.price)}원
           </div>
         </div>
-        <div className={classes.saleprice}>{discountPrice}</div>
+        <div className={classes.saleprice}>{convertedPrice(discountPrice)}</div>
         <div className={classes.won}>원</div>
         <div className={classes.selectamount}>
           <div className={classes.firstblock} onClick={minusAmount}>
@@ -81,16 +94,24 @@ const ProductDetail = () => {
       </div>
       <div className={classes.finalprice}>
         <div className={classes.firstblock}>총 상품 금액:</div>
-        <div className={classes.secondblock}>{discountPrice * amount}</div>
+        <div className={classes.secondblock}>{convertedPrice(resultPrice)}</div>
         <div className={classes.thirdblock}>원</div>
       </div>
       <div className={classes.buttonspace}>
-        <div className={classes.cartbutton} onClick={showModal}>
+        <div className={classes.cartbutton}>
           <MdShoppingCart className={classes.carticon} />
         </div>
-        {modalOpen && <CartModal setModalOpen={setModalOpen} />}
         <div className={classes.buybutton}>
-          <Link to="/payment" className={classes.buybuttonlink}>
+          <Link
+            to="/payment"
+            state={{
+              storename: location.state.productInfo.storeName,
+              productname: location.state.productInfo.productName,
+              price: resultPrice,
+              amount: amount,
+            }}
+            className={classes.buybuttonlink}
+          >
             구매하기
           </Link>
         </div>

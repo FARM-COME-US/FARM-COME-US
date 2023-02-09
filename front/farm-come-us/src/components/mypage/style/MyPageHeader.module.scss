@@ -23,18 +23,35 @@
     }
   }
 
-  .btnAddBg {
-    color: #fff;
-    font-size: 2rem;
-    transition: all 0.6s ease;
+  label {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+    right: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
 
-    &:hover {
-      transform: rotate(180deg);
-      cursor: pointer;
-    }
+    .btnAddBg {
+      color: #fff;
+      font-size: 2rem;
+      transition: all 0.6s ease;
+      z-index: 2;
 
-    &:active {
-      color: #f7863b;
+      &:hover {
+        transform: rotate(180deg);
+        cursor: pointer;
+      }
+
+      &:active {
+        color: #f7863b;
+      }
     }
   }
 }
@@ -43,9 +60,13 @@
   width: 5rem;
   height: 5rem;
   border-radius: 80%;
-  overflow: hidden;
   border: 2px white;
-  box-shadow: 0px 2px 4px black;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 8px;
+  overflow: hidden;
+
+  .imgInput {
+    visibility: hidden;
+  }
 }
 
 .profileImg {
@@ -68,7 +89,7 @@
 }
 
 .nicknameTxt {
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: white;
   font-weight: bold;
 }
