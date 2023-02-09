@@ -93,7 +93,7 @@ function Login() {
       // setTimeout(onSilentRefresh, JWT_EXPIRE_TIME - 60000)
       navigate("/");
     } catch (err) {
-      setIsError(true); // 수정필요. 이부분 괜찮은지 확인필요함.
+      setIsError(true);
       setErrMessage("입력 정보를 확인해주세요.");
       setTimeout(() => {
         setIsError(false);
