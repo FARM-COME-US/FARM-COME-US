@@ -6,8 +6,8 @@ import userSlice from "../../reduxStore/userSlice";
 
 // import Spinner from "../spinner";
 
-const myServerURL = "BEserverURL";
-const optionalREST = "optionalURL";
+// const myServerURL = "http://localhost:9090/kakao";
+const myServerURL = "api/oauth/";
 
 function OAuth2RedirectHandler(props) {
   const dispatch = useDispatch();
@@ -15,10 +15,41 @@ function OAuth2RedirectHandler(props) {
 
   // 인가코드
   let code = new URL(window.location.href).searchParams.get("code");
+  console.log(code);
+  // const config = {
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     "Access-Control-Allow-Origin": "*",
+  //   },
+  //   withCredentials: false,
+  // };
+  // 원래 있던거.
+
+  const data = {
+    code: code,
+  };
+  const getAxios = async () => {
+    await axios
+      .get(myServerURL, { params: { code: code } })
+      .then((res) => {
+        console.log(res);
+        KakaoLoginMatch(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getAxios();
+  }, []);
+  // 로딩중인 화면을 띄우면서, 뒤의 로직이 발동되는것임.
+  //
 
   const KakaoLoginMatch = (value) => {
     if (value?.status === 200) {
       console.log("로그인 성공!");
+      console.log(value);
       dispatch(userSlice.actions.login(value?.data));
       // 백엔드에서 넘겨주는 데이터를 dispatch로 내 리덕스에 넘김.
       navigate("/");
@@ -29,39 +60,21 @@ function OAuth2RedirectHandler(props) {
     }
   };
 
-  const data = JSON.stringify({
-    grant_type: "authorization_code",
-    client_id: REST_API_KEY,
-    redirect_uri: REDIRECT_URI,
-    code: code,
-    client_secret: KAKAO_CLIENT_ID,
-  });
+  // const data = JSON.stringify({
+  //   grant_type: "authorization_code",
+  //   // client_id: REST_API_KEY,
+  //   // redirect_uri: REDIRECT_URI,
+  //   code: code,
+  //   // client_secret: KAKAO_CLIENT_ID,
+  // });
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    withCredentials: false,
+  };
 
-  useEffect(async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-      accesscode: code,
-    };
-
-    try {
-      const postingAccessCode = await axios
-        .post(myServerURL + optionalREST, config)
-        .then((res) => {
-          KakaoLoginMatch(res);
-        });
-      // 이 컴포넌트가 렌더링된다는것 자체가 code를 받아와서 실행된다는뜻임. post로 내 backend쪽에 accesscode와 함께 쏴준다.
-      // 기본URL + optional REST주소에 accesscode:code를 담아서 post로 보냄.
-
-      // 이것도 optional API 담아서 진행. 받아오고, 받아와지면 전역으로 보낸다. 그리고 로그인 상태로 true로 바꿀것임.
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-  // 로딩중인 화면을 띄우면서, 뒤의 로직이 발동되는것임.
-  //
   return <div>Kakao Loging...</div>;
 }
 

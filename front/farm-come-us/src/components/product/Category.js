@@ -4,14 +4,14 @@ import classes from "./style/Category.module.scss";
 
 const Category = (props) => {
   const sendId = (id) => {
-    props.getid(id);
+    props.getCategoryId(id);
   };
 
   let list = props.list.map((item) => (
     <CategoryItem
-      name={item.Name}
-      id={item.Id}
-      key={item.Id}
+      category_name={item.category_name}
+      category_id={item.category_id}
+      key={item.category_id}
       getid={sendId}
     ></CategoryItem>
   ));
