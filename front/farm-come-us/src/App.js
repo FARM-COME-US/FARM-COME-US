@@ -23,6 +23,7 @@ import LikeStores from "./pages/mypage/LikeStores";
 
 import ProductDetail from "./pages/product/ProductDetail";
 import Payment from "./pages/product/Payment";
+import CartPayment from "./pages/product/CartPayment";
 
 import Live from "./pages/live/Live";
 import RunningLive from "./pages/live/RunningLive";
@@ -81,6 +82,7 @@ const App = () => {
       <Routes>
         <Route path="/product-detail" element={<ProductDetail />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
+        <Route path="/cart-payment" element={<CartPayment />}></Route>
         <Route path="/store" element={<Store />}>
           <Route path="live" element={<StoreLive />}></Route>
           <Route path="products" element={<StoreProducts />}></Route>

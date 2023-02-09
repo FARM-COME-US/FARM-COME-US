@@ -3,16 +3,16 @@ import classes from "./style/SubCategory.module.scss";
 import SubCategoryItem from "./SubCategoryItem";
 
 const SubCategory = (props) => {
-  const sendSecondId = (secondid) => {
-    props.getsecondid(secondid);
+  const sendSubCategoryId = (id) => {
+    props.getSubCategoryId(id);
   };
 
-  let list = props.list.map((item) => (
+  let list = props.SUB_CATEGORY_LIST.map((item) => (
     <SubCategoryItem
-      name={item.Name}
-      key={item.Id}
-      id={item.Id}
-      getsecondid={sendSecondId}
+      sub_category_name={item.sub_category_name}
+      sub_category_key={item.sub_category_key}
+      sub_category_id={item.sub_category_id}
+      getSubCategoryId={sendSubCategoryId}
     ></SubCategoryItem>
   ));
 
