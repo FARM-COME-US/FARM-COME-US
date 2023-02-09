@@ -77,19 +77,14 @@ const MyStoreInfoList = (props) => {
           readOnly={!props.isEditting}
           onChange={onInputChangeHandler}
           name="streetAddr"
-          onFocus={() => {
-            onEditAddr();
-          }}
-          onClick={() => {
-            onEditAddr();
-          }}
+          onFocus={onEditAddr}
         />
       </li>
       <li className={classes.infoItem}>
         <MyStoreInput
           label="우편번호"
           value={props.info.zipcode}
-          readOnly={!props.isEditting}
+          readOnly={true}
           onChange={onInputChangeHandler}
           name="zipcode"
         />

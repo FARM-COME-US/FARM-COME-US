@@ -41,6 +41,7 @@ function Login() {
 
     try {
       console.log(data);
+
       const response = await axios.post("/api/member/login", data, config);
       console.log(response);
 
@@ -69,6 +70,17 @@ function Login() {
       // } catch (err) {
       //   console.log("유저정보 가져와서 dispatch 하는 도중 문제!");
       // }
+
+      // const response = await axios.post(
+      //   "/api/api/v1/member/login",
+      //   data,
+      //   config
+      // );
+
+      // const accessToken = response.data["token"];
+      // const decodedAccessToken = jwt_decode(accessToken);
+      // sessionStorage.setItem("accessToken", accessToken);
+      // sessionStorage.setItem("jwtAccess", JSON.stringify(decodedAccessToken));
 
       // dispatch(
       //   userSlice.actions.savetoken({

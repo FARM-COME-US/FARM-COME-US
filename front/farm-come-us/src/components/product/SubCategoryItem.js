@@ -2,13 +2,13 @@ import React from "react";
 import classes from "./style/SubCategoryItem.module.scss";
 
 const SubCategoryItem = (props) => {
-  const sendSecondId = () => {
-    props.getsecondid(props.id);
+  const sendSubCategoryId = () => {
+    props.getSubCategoryId(props.sub_category_id);
   };
 
   return (
-    <div className={classes.container} onClick={sendSecondId}>
-      {props.name}
+    <div className={classes.container} onClick={sendSubCategoryId}>
+      {props.sub_category_name}
     </div>
   );
 };

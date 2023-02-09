@@ -34,16 +34,49 @@ const serverProductObjFormatter = (obj) => {
 };
 
 /* 상품 등록 */
-export async function createProduct(product) {
+export async function createProduct(productInfo) {
+  const DUMMY_STORE_ID = 1;
+  const formData = new FormData();
+
+  // formData.append("itemName", productInfo.itemName);
+  // formData.append("itemDescription", productInfo.itemDescription);
+  // formData.append("itemPrice", productInfo.itemPrice);
+  // formData.append("itemStock", productInfo.itemStock);
+  // formData.append("storeId", productInfo.storeId);
+  // formData.append("categoryName", productInfo.categoryName);
+  const data = {
+    storeId: DUMMY_STORE_ID,
+    itemName: productInfo.itemName,
+    itemDescription: productInfo.itemDescription,
+    itemPrice: productInfo.itemPrice,
+    itemStock: productInfo.itemStock,
+    categoryName: productInfo.categoryName,
+  };
+  formData.append("uploadFile", productInfo.file);
+  console.log(data);
+
+  formData.append(
+    "item",
+    new Blob([JSON.stringify(data)], {
+      type: "application/json",
+    })
+  );
+
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Access-Control-Allow-Origin": "*",
+    },
+  };
+
   try {
-    const response = axios({
-      method: "post",
-      url: PRODUCT_API_URL,
-      data: {
-        itemDto: serverProductObjFormatter(product),
+    const response = axios.post("/api/api/v1/item", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
     });
-    console.log(response.success);
+
+    console.log(response);
   } catch (err) {
     console.err(err);
   }

@@ -15,10 +15,6 @@ public class CartOrderDto {
     // not null 새로 적용
     @NotNull
     private Long cartId;
-    @NotNull
-    private Long itemId;
-    @NotNull
-    private Integer cartItemCount;
 
     private List<CartOrderDto> CartOrderDtoList;
 

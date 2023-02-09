@@ -1,4 +1,4 @@
-import React, { Fragment, useRef } from "react";
+import React, { useRef } from "react";
 
 import classes from "./style/MyStoreHeader.module.scss";
 
@@ -10,16 +10,11 @@ const MyStoreHeader = (props) => {
   const inputBgRef = useRef();
   const bgImgRef = useRef();
 
-  const addBgImageHandler = () => {
-    alert("이미지 추가 이벤트");
-    return;
-  };
-
   const loadBgFile = () => {
-    const file = inputBgRef.current.files[0]; //선택된 파일 가져오기
-    //이미지 source 가져오기
+    const file = inputBgRef.current.files[0];
     bgImgRef.current.src = URL.createObjectURL(file);
     props.onStoreInfoChange("imgSrc", URL.createObjectURL(file));
+    props.onStoreInfoChange("uploadFile", file);
   };
 
   return (
@@ -29,7 +24,6 @@ const MyStoreHeader = (props) => {
         {props.info.imgSrc ? (
           <div className={classes.bgBox}>
             <img ref={bgImgRef} src={props.info.imgSrc} alt="header-bg" />
-            <span>스토어 미리보기</span>
           </div>
         ) : (
           <div className={classes.noImg}>
@@ -44,7 +38,10 @@ const MyStoreHeader = (props) => {
         )}
       </div>
       <form className={classes.header}>
-        <label htmlFor="select-bg">
+        <label
+          className={!props.isEditting ? classes.hidden : null}
+          htmlFor="select-bg"
+        >
           <MdAddCircle className={classes.btnAddBg} />
         </label>
         <MyStoreHeaderInfo
