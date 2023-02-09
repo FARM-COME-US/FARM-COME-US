@@ -94,7 +94,11 @@ const Products = () => {
 
   return (
     <div>
-      <Category list={CATEGORY_LIST} getCategoryId={getCategoryId} />
+      <Category
+        list={CATEGORY_LIST}
+        getCategoryId={getCategoryId}
+        getSubCategoryId={getSubCategoryId}
+      />
       <SubCategory
         SUB_CATEGORY_LIST={SUB_CATEGORY_LIST}
         category_id={categoryIdState}
