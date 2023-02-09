@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Button from "../common/Button";
 
-const Payment = (props) => {
+const KakaoPayment = (props) => {
   const itemData = useSelector((state) => state.state.userSlice);
   //   itemData대신 cartSlice 만들어서 넣어놔야함. 아니면, useParam써서 아이템, 개수 넣어서 넘기던지
   const userInfo = useSelector((state) => state.state.userSlice);
@@ -29,6 +29,7 @@ const Payment = (props) => {
     withCredentials: true,
   };
   const kakaoPay = () => {
+    // axios 요청을, url, payload, config 담아서 보낸다.
     axios
       .post(
         "/credit/KakaoPay/ready",
@@ -80,4 +81,4 @@ const Payment = (props) => {
   );
 };
 
-export default Payment;
+export default KakaoPayment;

@@ -39,20 +39,17 @@ function Login() {
 
     try {
       console.log(data);
-      const response = await axios.post("/api/member/login", data, config);
+      const response = await axios.post(
+        "/api/api/v1/member/login",
+        data,
+        config
+      );
 
-      const accessToken = response.data["access-token"];
-      const refreshToken = response.data["refresh-token"];
-
+      const accessToken = response.data["token"];
       const decodedAccessToken = jwt_decode(accessToken);
-      const decodedRefreshToken = jwt_decode(refreshToken);
-
       sessionStorage.setItem("accessToken", accessToken);
-      sessionStorage.setItem("refreshToken", refreshToken);
-
-      console.log(accessToken, refreshToken);
       sessionStorage.setItem("jwtAccess", JSON.stringify(decodedAccessToken));
-      sessionStorage.setItem("jwtRefresh", JSON.stringify(decodedRefreshToken));
+
       // dispatch(
       //   userSlice.actions.savetoken({
       //     accessToken: accessToken,

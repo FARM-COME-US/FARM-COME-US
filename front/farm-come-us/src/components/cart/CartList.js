@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./style/CartList.module.scss";
 import CartCard from "./CartCard";
+import { MdCheck } from "react-icons/md";
 
 const DUMMY_CART_LIST = [
   [
@@ -29,7 +30,7 @@ const DUMMY_CART_LIST = [
     {
       storeId: 2,
       storeName: "페어 인 더 청송",
-      productId: 1,
+      productId: 3,
       productName: "배 1박스",
       productOption: 1,
       price: 20000,
@@ -41,7 +42,7 @@ const DUMMY_CART_LIST = [
     {
       storeId: 3,
       storeName: "퍼시먼 인 더 청송",
-      productId: 1,
+      productId: 4,
       productName: "감 1박스",
       productOption: 1,
       price: 20000,
@@ -51,13 +52,80 @@ const DUMMY_CART_LIST = [
   ],
 ];
 
-const CartList = () => {
+const CartList = (props) => {
+  const [styleCheck, onStyleCheck] = useState(false);
+  const [productIdList, setProductIdList] = useState([]);
+  const [resultPrice, setResultPrice] = useState(0);
+
+  useEffect(() => {
+    console.log(productIdList);
+    console.log(resultPrice);
+  }, [productIdList, resultPrice]);
+
+  const dealOnCheck = () => {
+    if (styleCheck === false) {
+      onStyleCheck(!styleCheck);
+    } else {
+      onStyleCheck(!styleCheck);
+    }
+  };
+
+  const getStoreProducts = (idList, price) => {
+    setProductIdList(productIdList.concat(idList));
+    setResultPrice(resultPrice + price);
+  };
+
+  const getProduct = (Id, price) => {
+    setProductIdList([...productIdList, Id]);
+    setResultPrice(resultPrice + price);
+    props.plusSetList(Id, price);
+  };
+
+  const popStoreProducts = (idList, price) => {
+    console.log(`popStore ${idList}`);
+    let tmpIdList = [];
+    for (let i = 0; i < idList.length; i++) {
+      tmpIdList = productIdList.filter((id) => id !== idList[i]);
+    }
+    setProductIdList(tmpIdList);
+    setResultPrice(resultPrice - price);
+  };
+
+  const popProduct = (Id, price) => {
+    setProductIdList(productIdList.filter((id) => id !== Id));
+    setResultPrice(resultPrice - price);
+    props.minusSetList(Id, price);
+  };
+
   let list = DUMMY_CART_LIST.map((array, index) => (
-    <CartCard key={index} itemList={array}></CartCard>
+    <CartCard
+      key={index}
+      itemList={array}
+      getStoreProducts={getStoreProducts}
+      getProduct={getProduct}
+      popStoreProducts={popStoreProducts}
+      popProduct={popProduct}
+    ></CartCard>
   ));
 
   return (
     <div className={classes.container}>
+      <div className={classes.subHeader}>
+        <div className={classes.select}>
+          <div
+            onClick={dealOnCheck}
+            className={`${classes.button} ${
+              styleCheck ? classes.active : null
+            }`}
+          >
+            <MdCheck className={`${classes.checkIcon}`}></MdCheck>
+          </div>
+        </div>
+        <div className={classes.text}>
+          <div>전체선택</div>
+          <div>선택삭제</div>
+        </div>
+      </div>
       <div>{list}</div>
     </div>
   );
