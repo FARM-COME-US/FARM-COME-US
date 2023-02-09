@@ -30,14 +30,18 @@ const Payment = () => {
   // store의 정보에 fetch해서 기본배송비, 배송비 무시 가격 받아오기.
 
   const orderRequest = async () => {
-    const data = [];
-    const config = [];
-    const res = await axios.post("/api/order");
+    // const data = {
+    //   item_id: userId,
+    //   member_id: password,
+    // };
+    // const data = [];
+    // const config = [];
+    // const res = await axios.post("/api/order"{});
   };
 
-  useEffect(() => {
-    orderRequest();
-  });
+  // useEffect(() => {
+  //   orderRequest();
+  // });
 
   const navigate = useNavigate();
   console.log(location);
