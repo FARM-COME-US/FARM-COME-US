@@ -55,7 +55,8 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional(readOnly = true)
     public Member findUser(String id){
-        return memberRepository.findById(id).get();
+        Member member =memberRepository.findById(id).orElse(null);
+        return member;
     }
 
     @Override

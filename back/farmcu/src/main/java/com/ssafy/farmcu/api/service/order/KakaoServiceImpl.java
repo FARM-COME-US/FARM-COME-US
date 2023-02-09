@@ -1,17 +1,14 @@
-package com.ssafy.farmcu.kakaoPay.service;
+package com.ssafy.farmcu.api.service.order;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.farmcu.kakaoPay.dto.KaKaoPayDTO;
-
+import com.ssafy.farmcu.api.dto.order.KaKaoPayDTO;
 import com.ssafy.farmcu.api.entity.member.Member;
+import com.ssafy.farmcu.api.entity.order.pay.*;
+import com.ssafy.farmcu.api.repository.KaKaoPayRepository;
 import com.ssafy.farmcu.api.repository.MemberRepository;
-import com.ssafy.farmcu.kakaoPay.KaKaoPay;
-import com.ssafy.farmcu.kakaoPay.KaKaoPayRepository;
-import com.ssafy.farmcu.kakaoPay.dto.OAuthToken;
-import com.ssafy.farmcu.kakaoPay.dto.KaKaoPayment;
-import com.ssafy.farmcu.kakaoPay.dto.KakaoApprove;
-import com.ssafy.farmcu.kakaoPay.dto.KakaoProfile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -145,7 +142,6 @@ public class KakaoServiceImpl implements KakaoService {
         System.out.println("KaKao -> Service -> KaKaoSerImpl p138");
 
         // 응답받은 데이터들을 파싱하기 위해서 Jackson 라이브러리의 ObjectMapper 사용
-        // java에서의 시리얼라이저 - 지은
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             // 응답받은 내용을 OAuthToken 양식에 맞춰서 파싱

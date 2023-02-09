@@ -9,12 +9,15 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartRequestDto {
+public class CartDto {
 
+    @NotNull
     private int cartItemCount;
 
+    @NotNull
     private Long memberId;
 
+    @NotNull
     private Long itemId;
 
 //    private Long storeId;   // => 같은 상점끼리 묶어서 보여주기
@@ -28,7 +31,7 @@ public class CartRequestDto {
     @ToString
     public static class CartInfo {
 
-//        private Long cartId;
+        private Long cartId;
         private ItemDto item;
         private int cartItemCount;
         private int getTotalPrice;
@@ -43,5 +46,8 @@ public class CartRequestDto {
 //        this.storeName = cart.getItem().getStore().getStoreName();
 //        this.itemSalePercent = cart.getItem().getItemDiscount();
 //        this.getTotalPrice = cartItemCount*cart.getItem().getItemPrice();
+
     }
+
+
 }

@@ -18,11 +18,4 @@ public class CartOrderDto {
 
     private List<CartOrderDto> CartOrderDtoList;
 
-    //
-    @NotNull
-    private Long itemId;
-    @NotNull
-    private Integer cartItemCount;
-    //
-
 }
