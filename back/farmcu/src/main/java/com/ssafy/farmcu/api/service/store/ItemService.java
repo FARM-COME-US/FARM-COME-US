@@ -12,7 +12,7 @@ import java.util.List;
 public interface ItemService {
 
     //상품 생성
-    public boolean saveItem(ItemDto itemDto);
+    public Long saveItem(ItemDto itemDto);
 
     //상품 수정
     public boolean updateItem(ItemDto itemDto);
