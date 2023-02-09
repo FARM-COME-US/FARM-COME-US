@@ -12,6 +12,7 @@ import com.ssafy.farmcu.api.service.store.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,7 @@ public class ItemController {
 
     @PostMapping
     @ApiOperation(value = "상품 등록")
-    public ResponseEntity<HashMap<String, Boolean>> createItem(ItemDto itemDto, MultipartFile[] uploadFile) throws Exception {
+    public ResponseEntity<HashMap<String, Boolean>> createItem(@RequestPart("item") ItemDto itemDto, MultipartFile[] uploadFile) throws Exception {
         Long itemId = itemService.saveItem(itemDto);
 
         //이미지 첨부
@@ -58,7 +59,7 @@ public class ItemController {
                 String savedPath = s3Service.uploadFile(file);
 
                 ItemImageDto itemImageDto = ItemImageDto.builder()
-                        .itemId(itemDto.getItemId())
+                        .itemId(itemId)
                         .originalName(file.getOriginalFilename())
                         .savedPath(savedPath).build();
 
@@ -88,8 +89,8 @@ public class ItemController {
 
     @PostMapping("/keyword")
     @ApiOperation(value = "상품 목록 조회")
-    public ResponseEntity<HashMap<String, Object>> selectItemList(@RequestBody ItemSearchReq itemSearchReq) {
-        HashMap<String, Object> itemText = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq);
+    public ResponseEntity<HashMap<String, Object>> selectItemList(@RequestBody ItemSearchReq itemSearchReq, Pageable pageable) {
+        HashMap<String, Object> itemText = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq, pageable);
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
         Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 
@@ -110,8 +111,8 @@ public class ItemController {
 
     @GetMapping("/store")
     @ApiOperation(value = "스토어 상품 목록 조회")
-    public ResponseEntity<HashMap<String, Object>> selectStoreItemList(Long storeId) {
-        HashMap<String, Object> itemText = itemService.findItemsByStore(storeId);
+    public ResponseEntity<HashMap<String, Object>> selectStoreItemList(Long storeId, Pageable pageable) {
+        HashMap<String, Object> itemText = itemService.findItemsByStore(storeId, pageable);
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
         Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 
