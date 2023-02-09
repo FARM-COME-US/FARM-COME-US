@@ -45,21 +45,13 @@ public class SecurityConfig {
     private final CorsProperties corsProperties;
     private final MemberRepository memberRepository;
     private final MemberRefreshTokenServiceImpl memberRefreshTokenService;
-<<<<<<< HEAD
-
-=======
 //    private final TokenAuthenticationFilter tokenAuthenticationFilter;
 //    private final JwtAuthenticationFilter jwtAuthenticationFilter;
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-<<<<<<< HEAD
-        http
-=======
         return http
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
                 .httpBasic().disable()
                 .cors().and()
                 .csrf().disable()
@@ -67,24 +59,9 @@ public class SecurityConfig {
                 .headers()
                 .frameOptions()
                 .sameOrigin()
-<<<<<<< HEAD
-
-                // 시큐리티는 기본적으로 세션을 사용
-                // 세션을 사용하지 않을거라 세션 설정을 Stateless 로 설정
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().exceptionHandling()
-                .authenticationEntryPoint(new RestAuthenticationEntryPoint()) // 요청이 들어올 시, 인증 헤더를 보내지 않는 경우 401 응답 처리
-
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS).permitAll() // 열어두어야 CORS Preflight 막을 수 있음
-=======
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 열어두어야 CORS Preflight 막을 수 있음
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
                 .antMatchers("/**").permitAll()
                 .antMatchers("*/member/**").permitAll()
 
@@ -99,15 +76,9 @@ public class SecurityConfig {
 
 
                 .and()
-
-
                 // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter보다 앞으로 설정
-<<<<<<< HEAD
-                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-=======
 //                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
                 .oauth2Login()
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorization")

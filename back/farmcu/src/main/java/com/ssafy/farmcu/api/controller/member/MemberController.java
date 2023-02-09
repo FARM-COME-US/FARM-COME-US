@@ -43,27 +43,12 @@ public class MemberController {
     private final MemberServiceImpl memberService;
     private final MemberRefreshTokenRepository refreshTokenRepository;
     private final AuthTokenProvider tokenProvider;
-<<<<<<< HEAD
-
-    private final JwtServiceImpl jwtService;
-=======
     private final AppProperties appProperties;
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
     private final MemberRefreshTokenServiceImpl refreshService;
     private final PasswordEncoder passwordEncoder;
     private final MessageSource messageSource;
 
     @PostMapping("/join")
-<<<<<<< HEAD
-    @ApiOperation(value="회원 가입", notes = "")
-    public ResponseEntity joinMember(@Validated @RequestBody MemberJoinReq request){
-        log.debug("MemberJoinReq DTO : {}", request);
-        Member loginMember = memberService.findUser(request.getId());
-        if(loginMember!=null)
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                .body(new ErrorResponse("error.already.exit"));
-        if(memberService.createMember(request)){
-=======
     @ApiOperation(value = "회원 가입", notes = "")
     public ResponseEntity joinMember(@Validated @RequestBody MemberJoinReq request) {
         log.info("MemberJoinReq DTO : {}", request);
@@ -71,7 +56,6 @@ public class MemberController {
         if (loginMember != null)
             return new ResponseEntity<String>("already exist member", HttpStatus.ACCEPTED);
         if (memberService.createMember(request)) {
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
@@ -84,12 +68,8 @@ public class MemberController {
     public ResponseEntity<?> login(@RequestBody MemberLoginReq loginReq) {
         Member loginMember = memberService.findUser(loginReq.getId());
         log.info("here login start");
-<<<<<<< HEAD
-        if(loginMember==null){
-=======
         if (loginMember == null) {
             log.info("not exist user");
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ErrorResponse("error.not.exist.user"));
         }
@@ -116,23 +96,12 @@ public class MemberController {
             resultMap.put("message", "success");
             status = HttpStatus.ACCEPTED;
             log.info("status : {}", status);
-<<<<<<< HEAD
-=======
             log.info("login id : {}", loginMember.getId());
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
 
             // 리프레시 토큰 DB 저장
             refreshService.saveRefreshTokenTable(refreshToken.getToken(), loginMember.getId());
 
-<<<<<<< HEAD
-            } else {
-                System.out.println("// 이미 리프레시 토큰을 가지고 있다면 만들어서 저장");
-                refreshService.saveRefreshTokenTable(refreshToken, loginMember.getId());
-            }
-        }catch (Exception e){
-=======
         } catch (Exception e) {
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
             e.printStackTrace();
             resultMap.put("message", "fail");
             status = HttpStatus.ACCEPTED;
@@ -227,18 +196,6 @@ public class MemberController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         String token = request.getHeader("token"); // 리프레시 토큰
-<<<<<<< HEAD
-        String id = jwtService.getUserId();
-        if (jwtService.checkToken(token)) {
-            if (token.equals(refreshTokenRepository.findById(memberid).getRefreshToken())) {
-                String accessToken = jwtService.createAccessToken("userid", memberid);
-//                logger.debug("token : {}", accessToken);
-//                logger.debug("정상적으로 액세스토큰 재발급!!!");
-                resultMap.put("access-token", accessToken);
-                resultMap.put("message", "success");
-                status = HttpStatus.ACCEPTED;
-            }
-=======
         AuthToken authToken = tokenProvider.convertAuthToken(token);
         Long id = tokenProvider.getId(authToken);
         MemberResponseDto member = memberService.getUserInfo(id);
@@ -247,7 +204,6 @@ public class MemberController {
             resultMap.put("message", "success");
 
             status = HttpStatus.ACCEPTED;
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
         } else {
             resultMap.put("message", "fail");
             status = HttpStatus.UNAUTHORIZED;
@@ -260,16 +216,10 @@ public class MemberController {
     public ResponseEntity<?> selectMemberInfo(@PathVariable("memberId") Long memberId, HttpServletRequest request) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.UNAUTHORIZED;
-<<<<<<< HEAD
-        if (jwtService.checkToken(request.getHeader("token"))) {
-            log.info("token is avvailable!");
-            try{
-=======
         AuthToken accessToken = tokenProvider.convertAuthToken(request.getHeader("token"));
         if (accessToken.validate()) { // 토큰 검증
             log.info("token is avvailable!");
             try {
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
                 MemberResponseDto memberDto = memberService.getUserInfo(memberId);
                 resultMap.put("userInfo", memberDto);
                 resultMap.put("message", "success");
@@ -279,11 +229,7 @@ public class MemberController {
                 resultMap.put("message", e.getMessage());
                 status = HttpStatus.INTERNAL_SERVER_ERROR;
             }
-<<<<<<< HEAD
-        }else{
-=======
         } else {
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
             log.info("사용 불가능한 토큰");
             resultMap.put("message", "fail");
             status = HttpStatus.UNAUTHORIZED;
@@ -291,37 +237,6 @@ public class MemberController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-<<<<<<< HEAD
-    @GetMapping("/")
-    public ResponseEntity<?> selectMemberInfo( HttpServletRequest request){
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.UNAUTHORIZED;
-        String token = request.getHeader("token");
-        AuthToken authToken = tokenProvider.convertAuthToken(token);
-
-        if (jwtService.checkToken(request.getHeader("token"))) {
-            log.info("token is avvailable!");
-            try{
-                Long id = tokenProvider.getId(authToken);
-//                MemberResponseDto memberDto = memberService.getUserInfo(memberId);
-                MemberResponseDto memberDto = memberService.getUserInfo(id);
-                resultMap.put("userInfo", memberDto);
-                resultMap.put("message", "success");
-                status = HttpStatus.ACCEPTED;
-            }catch(Exception e){
-                log.debug("정보 조회 실패 : ", e);
-                resultMap.put("message", e.getMessage());
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
-            }
-        }else{
-            log.info("사용 불가능한 토큰");
-            resultMap.put("message", "fail");
-            status = HttpStatus.UNAUTHORIZED;
-        }
-        return  new ResponseEntity<>(resultMap, status);
-
-    }
-=======
     @DeleteMapping
     @ApiOperation(value = "회원 탈퇴", notes = "사용자 아이디, 비밀번호 request")
     public ResponseEntity<?> deleteMember(HttpServletRequest token, @RequestBody MemberLoginReq loginReq) {
@@ -340,7 +255,6 @@ public class MemberController {
     }
 
     @ApiOperation(value = "회원 조회 / 테스트용", notes = "사용자 아이디(PK)")
->>>>>>> 81ccf037b06d5ae3ed20bf5fc27151772e29b27a
     @GetMapping("/me/{id}")
     public ResponseEntity<MemberResponseDto> fetchUser(@PathVariable Long id) {
         log.info("/me");
