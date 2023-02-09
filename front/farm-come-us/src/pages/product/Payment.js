@@ -34,14 +34,29 @@ const Payment = () => {
     //   item_id: userId,
     //   member_id: password,
     // };
-    // const data = [];
+    const params = { item_id: 1, member_id: 1, orderCount: 1 };
     // const config = [];
-    // const res = await axios.post("/api/order"{});
+    const accessToken = sessionStorage.getItem("accessToken");
+    console.log(accessToken);
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      withCredentials: false,
+    };
+    try {
+      const res = await axios.post("/api/v1/order", params);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  // useEffect(() => {
-  //   orderRequest();
-  // });
+  useEffect(() => {
+    orderRequest();
+  });
 
   const navigate = useNavigate();
   console.log(location);
