@@ -6,41 +6,49 @@ import { MdAddCircle } from "react-icons/md";
 import MyStoreHeaderInfo from "./MyStoreHeaderInfo";
 import MyStoreMenu from "./MyStoreMenu";
 
-const DUMMY_STORE_INFO = {
-  storeName: "고랭강원농장",
-  desc: "저희 농장은 강원도 고산 지대에서 재배한 신선한 작물들을 제공합니다",
-};
-
 const MyStoreHeader = (props) => {
   const inputBgRef = useRef();
   const bgImgRef = useRef();
 
-  const addBgImageHandler = () => {
-    alert("이미지 추가 이벤트");
-    return;
-  };
-
   const loadBgFile = () => {
-    const file = inputBgRef.current.files[0]; //선택된 파일 가져오기
-    //이미지 source 가져오기
+    const file = inputBgRef.current.files[0];
     bgImgRef.current.src = URL.createObjectURL(file);
+    props.onStoreInfoChange("imgSrc", URL.createObjectURL(file));
+    props.onStoreInfoChange("uploadFile", file);
   };
 
   return (
     <div className={classes.storeHeader}>
       <div className={classes.headerBg}>
         <div className={classes.backdrop}></div>
-        <img ref={bgImgRef} src={props.info.imgSrc} alt="header-bg" />
+        {props.info.imgSrc ? (
+          <div className={classes.bgBox}>
+            <img ref={bgImgRef} src={props.info.imgSrc} alt="header-bg" />
+          </div>
+        ) : (
+          <div className={classes.noImg}>
+            <img
+              className={classes.hiddenImg}
+              ref={bgImgRef}
+              src=""
+              alt="header-bg"
+            />
+            <span>스토어 이미지를 추가해주세요</span>
+          </div>
+        )}
       </div>
       <form className={classes.header}>
-        <label htmlFor="select-bg">
+        <label
+          className={!props.isEditting ? classes.hidden : null}
+          htmlFor="select-bg"
+        >
           <MdAddCircle className={classes.btnAddBg} />
         </label>
         <MyStoreHeaderInfo
           storeName={props.info.storeName}
           desc={props.info.desc}
         />
-        <MyStoreMenu />
+        {props.info.storeId ? <MyStoreMenu /> : null}
         <input
           ref={inputBgRef}
           id="select-bg"

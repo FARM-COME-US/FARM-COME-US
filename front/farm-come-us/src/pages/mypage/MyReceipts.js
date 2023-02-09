@@ -26,7 +26,7 @@ const MyReceipts = (props) => {
   // list = <MyReceiptItem />;
 
   return (
-    <div>
+    <div className={classes.screen}>
       <div className={classes.header}>구매내역</div>
 
       <div

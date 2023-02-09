@@ -1,9 +1,11 @@
 package com.ssafy.farmcu.api.dto.order;
 
 import com.ssafy.farmcu.api.entity.order.OrderItem;
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,19 +13,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderInfoDto {
-    private Long oitemId;
+
+    @NonNull
     private Long itemId;
-    private Long orderInfo;
 
-    private int orderItemCount;
-    private LocalDateTime oitemCratedAt;
-    private int oitemPrice;
+    @NotNull
+    private Long memberId;
 
-    public OrderInfoDto(OrderItem orderItem) {
-        this.oitemId = orderItem.getOitemId();
-        this.itemId = orderItem.getItem().getItemId();
-        this.orderInfo = getOrderInfo();
-        this.orderItemCount = orderItem.getOitemCount();
+    private int oitemCount;
 
-    }
+    private List<OrderInfoDto> OrderInfoDtoList;
 }
