@@ -32,7 +32,7 @@ public class LoginController {
 
     @GetMapping("/oauth")
     public String kakaoConnect() throws UnsupportedEncodingException {
-        log.info("kakao 로그인 바로가기");
+        log.info("kakao 로그인 바로가기-  여기 뜨나요:?");
 
         String REDIRECT_URL = URLEncoder.encode("http://localhost:3000/login/oauth2/code/kakao", "UTF-8");
         SecureRandom secureRandom = new SecureRandom();
