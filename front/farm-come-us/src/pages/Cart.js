@@ -1,23 +1,32 @@
 import React from "react";
 import classes from "./style/Cart.module.scss";
-import Card from "../components/common/Card";
+import CartHeader from "../components/cart/CartHeader";
+import CartCard from "../components/cart/CartCard";
+import CartFooter from "../components/cart/CartFooter";
 
 const Cart = () => {
   return (
     <div className={classes.container}>
-      <div className={classes.head}>
+      <CartHeader></CartHeader>
+      <CartCard></CartCard>
+      <CartFooter></CartFooter>
+      {/* <div className={classes.head}>
         <div className={classes.title}>장바구니</div>
       </div>
       <div className={classes.body}>
         <div className={classes.bodyhead}>
-          <input type="checkbox" />
-          <div className={classes.boxtext}>전체 선택</div>
+          <div className={classes.boxtext}>
+            <input type="checkbox" />
+            <div>전체 선택</div>
+          </div>
           <div className={classes.deletetext}>선택 삭제</div>
         </div>
         <Card className={classes.cartcard}>
           <div className={classes.cardhead}>
-            <input type="checkbox" />
-            <div className={classes.storename}>title</div>
+            <div className={classes.storename}>
+              <input type="checkbox" />
+              <div>title</div>
+            </div>
             <div className={classes.productcount}>상품 n개</div>
           </div>
           <div className={classes.cardbody}>
@@ -52,6 +61,7 @@ const Cart = () => {
         <div className={classes.pricetext}>전체 결제 금액: 200,000</div>
         <div className={classes.buybutton}>구매하기</div>
       </div>
+      */}
     </div>
   );
 };

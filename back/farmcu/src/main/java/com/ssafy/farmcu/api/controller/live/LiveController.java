@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/live")
+@RequestMapping("api/v1/live")
 @RequiredArgsConstructor
 @Api(value = "라이브 관련 API")
 public class LiveController {

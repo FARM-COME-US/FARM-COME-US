@@ -1,7 +1,10 @@
 package com.ssafy.farmcu.api.controller.store;
 
+import com.ssafy.farmcu.api.dto.member.MemberListRes;
 import com.ssafy.farmcu.api.dto.store.StoreDto;
+import com.ssafy.farmcu.api.dto.store.StoreLikeCreateDto;
 import com.ssafy.farmcu.api.dto.store.StoreLikeDto;
+import com.ssafy.farmcu.api.dto.store.StoreListRes;
 import com.ssafy.farmcu.api.service.store.StoreLikeServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/storelikes")
+@RequestMapping("api/v1/storelikes")
 @RestController
 @Api("스토어 컨트롤러 API v1")
 public class StoreLikeController {
@@ -24,9 +27,9 @@ public class StoreLikeController {
 
     @PostMapping
     @ApiOperation(value="스토어 찜하기", notes = "")
-    public ResponseEntity<?> createStore(@Validated @RequestBody StoreLikeDto request){
-        List<String> memberList = storeLikeService.findLikesId(request.getStoreId());
-        if(!memberList.contains(request.getMemberId())){
+    public ResponseEntity<?> createStore(@Validated @RequestBody StoreLikeCreateDto request){
+        List<Long> memberIdList = storeLikeService.findLikesId(request.getStoreId());
+        if(!memberIdList.contains(request.getMemberId())){
             if(storeLikeService.saveLike(request)){
                 return new ResponseEntity<String>("interest success!!", HttpStatus.ACCEPTED);
             }else{
@@ -42,6 +45,33 @@ public class StoreLikeController {
             return new ResponseEntity<String>("uninterest success!!", HttpStatus.ACCEPTED);
         }else{
             return new ResponseEntity<String>("uninterest fail", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{memberId}")
+    public ResponseEntity<?> findStoreList(@PathVariable("memberId")Long id){
+        try{
+            List<StoreListRes> list = storeLikeService.findLikesList(id);
+            if(!list.isEmpty()) {
+                return new ResponseEntity<>(list, HttpStatus.ACCEPTED);
+            }else{
+                return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
+    @GetMapping("/count/{storeId}")
+    public ResponseEntity<?> CountLikes(@PathVariable("storeId") Long id){
+        try{
+            return new ResponseEntity<>(storeLikeService.getCount(id), HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(0, HttpStatus.OK);
         }
     }
 }

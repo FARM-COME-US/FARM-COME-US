@@ -4,7 +4,7 @@ import classes from "./style/Backdrop.module.scss";
 
 const Backdrop = () => {
   const dispatch = useDispatch();
-  const menu = useSelector((state) => state.menu.isOpen);
+  const menu = useSelector((state) => state.menuSlice.isOpen);
   return (
     <div
       className={classes.backdrop}

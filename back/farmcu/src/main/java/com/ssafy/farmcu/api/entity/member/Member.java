@@ -17,6 +17,7 @@ public class Member {
     @Column(name = "member_id")
     private Long memberId;
 
+//    @Column(unique = true)
     private String id;
 
     @Column(length = 255)
