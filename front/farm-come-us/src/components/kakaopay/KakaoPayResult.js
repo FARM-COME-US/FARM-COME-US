@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const PayResult = (props) => {
+const KakaoPayResult = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.userSlice);
@@ -42,4 +42,4 @@ const PayResult = (props) => {
       });
   }, []);
 };
-export default PayResult;
+export default KakaoPayResult;

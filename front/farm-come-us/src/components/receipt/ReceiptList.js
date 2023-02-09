@@ -38,8 +38,15 @@ const ReceiptList = (props) => {
       cost: "429000",
     },
   ];
+  const convertedPrice = (price) =>
+    price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  reciptCards = data.map((itemcard, idx) => (
+  const costConvertedData = data.map(
+    (item) => ((item.cost = convertedPrice(item.cost)), item)
+  );
+  console.log(costConvertedData);
+
+  reciptCards = costConvertedData.map((itemcard, idx) => (
     <ReceiptCard
       key={idx}
       img={itemcard.img}
