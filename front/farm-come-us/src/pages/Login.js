@@ -49,8 +49,7 @@ function Login() {
       const decodedAccessToken = jwt_decode(accessToken);
       sessionStorage.setItem("accessToken", accessToken);
       sessionStorage.setItem("jwtAccess", JSON.stringify(decodedAccessToken));
-      console.log(accessToken);
-      console.log(decodedAccessToken);
+
       // dispatch(
       //   userSlice.actions.savetoken({
       //     accessToken: accessToken,
