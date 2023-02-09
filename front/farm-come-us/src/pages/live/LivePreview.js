@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import classes from "./style/LivePreview.module.scss";
 
@@ -9,6 +9,8 @@ import ProductList from "../../components/preview/ProductList";
 import { MdOutlineLiveTv } from "react-icons/md";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import { MdStorefront } from "react-icons/md";
+import { fetchLiveSessions } from "../../utils/api/ov-http";
+import { fetchLiveList } from "../../utils/api/live-http";
 
 // 더미 데이터
 const LIVE_LIST = [
@@ -132,6 +134,11 @@ const PRODUCT_LIST = [
 ];
 
 const LivePreview = () => {
+  useEffect(() => {
+    // fetchLiveSessions();
+    fetchLiveList();
+  }, []);
+
   return (
     <div className={classes.container}>
       {/* 라이브 목록 */}
