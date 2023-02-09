@@ -1,96 +1,96 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Button from "../../components/common/Button";
-import MyPageInput from "../../components/mypage/MyPageInput";
+import React, { useState } from "react";
+import { useOutletContext } from "react-router-dom";
+
 import classes from "./style/MyPageInfo.module.scss";
 
-const MyPageInfo = (props) => {
-  const navigate = useNavigate();
+import MyPageContentTitle from "../../components/mypage/MyPageContentTItle";
+import MyPageInfoList from "../../components/mypage/MyPageInfoList";
+import Button from "../../components/common/Button";
 
-  const header = "";
-  const param = "";
-  const fetchURL = "backend/userinfo";
-  const [userInfo, setUserInfo] = useState("");
+const MyUserInfo = () => {
+  const { info } = useOutletContext();
+  const [userInfo, setUserInfo] = useState({
+    id: info.id,
+    nickname: info.nickname,
+    name: info.name,
+    email: info.email,
+    pno: info.pno,
+    streetAddr: info.streetAddr,
+    detailAddr: info.detailAddr,
+    zipcode: info.zipcode,
+  });
+  const [isEditting, setIsEditting] = useState(false);
 
-  const [nickname, setNickname] = useState("귀여운 양파");
-  const [name, setName] = useState("sjkim");
-  const [email, setEmail] = useState("foobar@naver.com");
-  const [fullAddress, setFullAddress] = useState("멀캠 72-13");
-  const [phoneNumber, setPhoneNumber] = useState("010-1234-5678");
+  const onChangeInfoHandler = (name, value) => {
+    setUserInfo((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
 
-  // useEffect로 첫 렌더링시 데이터 가져옴.
-  const getUserInfo = useEffect(() => {
-    async function fetchData() {
-      const res = await axios.get(fetchURL, header, param);
-      // 수정필요. 토큰 넣어서 전송해야됨. 그리고, 넣어서 전송해줘야함.
-      setUserInfo(res.data);
-    }
-    const accessToken = sessionStorage.getItem("accessToken");
-    fetchData();
+  const editInfoHandler = (e) => {
+    e.preventDefault();
 
-    return;
-  }, []);
+    alert("사용자 정보가 수정되었습니다.");
+    console.log(userInfo);
+    setIsEditting((prev) => !prev);
+  };
+
+  const cancelInfoEditHandler = () => {
+    setUserInfo((prev) => {
+      return {
+        nickname: info.nickname,
+        name: info.name,
+        email: info.email,
+        pno: info.pno,
+        streetAddr: info.streetAddr,
+        detailAddr: info.detailAddr,
+        zipcode: info.zipcode,
+      };
+    });
+
+    setIsEditting((prev) => !prev);
+
+    alert("수정이 취소되었습니다.");
+  };
+
+  const toggleIsEditting = (e) => {
+    e.preventDefault();
+    setIsEditting((prev) => !prev);
+  };
 
   return (
-    <div>
-      <div className={classes.title}>가입정보</div>
-      <hr />
-      <div>
-        <div className={classes.label} htmlFor="">
-          이름
-        </div>
-
-        <MyPageInput
-          className={classes.input}
-          disabled={true}
-          placeholder={name}
+    <div className={classes.userInfo}>
+      <MyPageContentTitle text="가입 정보" />
+      <form>
+        <MyPageInfoList
+          className={classes.infoList}
+          info={userInfo}
+          isEditting={isEditting}
+          onChange={onChangeInfoHandler}
         />
-      </div>
-      <div>
-        <div className={classes.label} htmlFor="">
-          이메일
-        </div>
-
-        <MyPageInput
-          className={classes.input}
-          disabled={true}
-          placeholder={email}
-        />
-      </div>
-      <div>
-        <div className={classes.label} htmlFor="">
-          주소
-        </div>
-
-        <MyPageInput
-          className={classes.input}
-          disabled={true}
-          placeholder={fullAddress}
-        />
-      </div>
-      <div>
-        <div className={classes.label} htmlFor="">
-          연락처
-        </div>
-
-        <MyPageInput
-          className={classes.input}
-          disabled={true}
-          placeholder={phoneNumber}
-        />
-      </div>
-
-      <Button
-        className={classes.button}
-        onClick={() => {
-          navigate("/mypage/edit");
-        }}
-      >
-        가입정보 수정
-      </Button>
+        {isEditting ? (
+          <div className={classes.btnBox}>
+            <Button className={classes.btnSubmit} onClick={editInfoHandler}>
+              수정
+            </Button>
+            <Button
+              className={classes.btnCancel}
+              onClick={cancelInfoEditHandler}
+            >
+              취소
+            </Button>
+          </div>
+        ) : (
+          <Button className={classes.btnEditInfo} onClick={toggleIsEditting}>
+            사용자 정보 수정
+          </Button>
+        )}
+      </form>
     </div>
   );
 };
 
-export default MyPageInfo;
+export default MyUserInfo;
