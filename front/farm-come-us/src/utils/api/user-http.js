@@ -25,7 +25,7 @@ export async function userSignUp(userInfo) {
   };
 
   try {
-    const response = axios.post("api/member/join", data, config);
+    const response = axios.post("api/api/v1/member/join", data, config);
 
     console.log(response);
   } catch (err) {
@@ -34,8 +34,9 @@ export async function userSignUp(userInfo) {
 }
 
 export async function login(id, password) {
+  console.log("login", id, password);
   try {
-    const response = axios.post(`api/member/login`, {
+    const response = axios.post("api/api/v1/member/login", {
       id: id,
       password: password,
     });
