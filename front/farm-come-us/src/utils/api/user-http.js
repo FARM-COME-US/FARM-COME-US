@@ -1,26 +1,7 @@
 import axios from "axios";
-import { zip } from "lodash";
 
 const DUMMY_SERVER_URL = "http://localhost:9090";
 const USER_API_URL = `${DUMMY_SERVER_URL}/member`;
-
-const clientOrderObjFormatter = (obj) => {
-  return {};
-};
-
-const serverOrderObjFormatter = (obj) => {
-  return {
-    id: obj.id,
-    password: obj.password,
-    nickname: obj.nickname,
-    name: obj.name,
-    email: obj.email,
-    streetAddr: obj.streetAddr,
-    detailAddr: obj.detailAddr,
-    zipcode: obj.zipcode,
-    phoneNumber: obj.pno,
-  };
-};
 
 export async function userSignUp(userInfo) {
   const data = {
@@ -44,7 +25,7 @@ export async function userSignUp(userInfo) {
   };
 
   try {
-    const response = axios.post("api/member/join", data, config);
+    const response = axios.post("api/api/v1/member/join", data, config);
 
     console.log(response);
   } catch (err) {
@@ -53,8 +34,9 @@ export async function userSignUp(userInfo) {
 }
 
 export async function login(id, password) {
+  console.log("login", id, password);
   try {
-    const response = axios.post(`api/member/login`, {
+    const response = axios.post("api/api/v1/member/login", {
       id: id,
       password: password,
     });
@@ -67,12 +49,14 @@ export async function login(id, password) {
 export async function fetchUserInfo(id) {
   const accessToken = sessionStorage.getItem("accessToken");
   console.log(accessToken);
+  const memberId = id;
 
   try {
-    const response = axios.get(`/api/member/`, {
-      params: { memberId: id },
+    const response = axios.get(`/api/member/${memberId}`, {
       headers: {
-        token: accessToken,
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        token: `${accessToken}`,
       },
     });
     console.log(response);
