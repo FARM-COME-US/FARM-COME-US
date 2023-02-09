@@ -10,8 +10,8 @@ const SideMenu = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // const [isOpen, setIsOpen] = useState(true);
-  const user = useSelector((state) => state.user.value); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
-  const isOpen = useSelector((state) => state.menu.isOpen);
+  const user = useSelector((state) => state.userSlice.value); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
+  const isOpen = useSelector((state) => state.menuSlice.isOpen);
 
   const isLogin = user.isLogin; // 일단 간이로 nickname받아오면 로그인된걸로 설정
   const sideMenuItemList = [
@@ -21,7 +21,7 @@ const SideMenu = (props) => {
       imageName: "liveStoreIcon",
     },
     {
-      linkTo: "/store",
+      linkTo: "/products",
       itemName: "스토어",
       imageName: "storeIcon",
     },

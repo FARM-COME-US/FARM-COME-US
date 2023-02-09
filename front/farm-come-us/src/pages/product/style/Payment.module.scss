@@ -1,12 +1,15 @@
 .container {
-  width: 95%;
-  margin: auto;
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
 
   .title {
     padding: 15px 0px;
     height: 56px;
-    font-size: x-large;
+    font-size: 24px;
     font-weight: bold;
+    display: flex;
+    justify-content: space-between;
   }
 
   .paymentcard {
@@ -51,6 +54,7 @@
       .option {
         margin-top: 2px;
         display: flex;
+        justify-content: space-between;
         flex-direction: row;
 
         .options {
@@ -60,7 +64,6 @@
         }
 
         .price {
-          margin-left: auto;
           font-size: 16px;
         }
       }
@@ -72,6 +75,7 @@
       border-top: solid 1px #eeeeee;
       border-bottom: solid 1px #eeeeee;
       display: flex;
+      justify-content: space-between;
       flex-direction: row;
 
       .defaultscript {
@@ -83,7 +87,6 @@
       }
 
       .price {
-        margin-left: auto;
         font-size: 16px;
         display: flex;
         justify-content: center;
@@ -95,6 +98,7 @@
       padding: 8px 5px;
       height: 35px;
       display: flex;
+      justify-content: space-between;
       flex-direction: row;
 
       .defaultscript {
@@ -106,45 +110,41 @@
       }
 
       .price {
-        margin-left: auto;
         font-size: 16px;
         display: flex;
         justify-content: center;
         align-items: center;
       }
     }
-
-    .changeaddressbutton {
-      width: 70px;
-      height: 18px;
-      background-color: #d9d9d9;
-      color: white;
-      border: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-left: auto;
-    }
   }
 
   .foot {
+    margin-top: 9rem;
+
     .text {
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    .button {
-      width: 80%;
-      height: 40px;
-      border-radius: 20px;
-      background-color: #d9d9d9;
-      color: white;
-      border: none;
+    .buttonspace {
+      margin: 0.5rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: auto;
+
+      .button {
+        width: 80%;
+        height: 40px;
+        border-radius: 20px;
+        background-color: #f9e000;
+        color: black;
+        font-weight: bold;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
 }
