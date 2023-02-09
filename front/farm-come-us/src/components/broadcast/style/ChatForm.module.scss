@@ -6,13 +6,13 @@
 
   .chatInput {
     width: 80%;
-    height: 3.2rem;
+    height: 2.4rem;
     border-radius: 1.6rem;
     border: none;
     outline: none;
     padding: 0 16px;
-    font-size: 1.2rem;
-    margin-right: 16px;
+    font-size: 1rem;
+    margin-right: 8px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   }
 
@@ -25,13 +25,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 3.2rem;
-    height: 3.2rem;
-    border-radius: 1.6rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 1.2rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 4px;
 
     svg {
       position: relative;
-      left: 1px;
+      bottom: 1px;
+      left: 2px;
     }
   }
 }

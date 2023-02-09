@@ -5,15 +5,16 @@ import axios from "axios";
 
 import classes from "./OvContainer.module.scss";
 
-import UserVideoComponent from ".//UserVideoComponent";
-import LiveChat from "../components/broadcast/LiveChat";
-import LiveHeader from "../components/broadcast/LiveHeader";
-import LiveInfo from "../components/broadcast/LiveInfo";
-import LiveFooter from "../components/broadcast/LiveFooter";
-import LeaveButton from "../components/broadcast/LeaveButton";
-import LiveProductInfo from "../components/broadcast/LiveProductInfo";
+import UserVideoComponent from "./UserVideoComponent";
+import LiveChat from "../../components/broadcast/LiveChat";
+import LiveHeader from "../../components/broadcast/LiveHeader";
+import LiveInfo from "../../components/broadcast/LiveInfo";
+import LiveFooter from "../../components/broadcast/LiveFooter";
+import LeaveButton from "../../components/broadcast/LeaveButton";
+import LiveProductInfo from "../../components/broadcast/LiveProductInfo";
 
-const OV_SERVER_URL = "http://localhost:5000/";
+const OV_SERVER_URL = "http://localhost:5000";
+const OV_SERVER_SECRET = "MY_SECRET";
 
 const OvContainer = (props) => {
   const navigate = useNavigate();
@@ -31,18 +32,21 @@ const OvContainer = (props) => {
   const [chatMsg, setChatMsg] = useState("");
   const [chatList, setChatList] = useState([]);
 
-  const onbeforeunload = (event) => {
-    leaveSession();
-    event.returnValue = "";
-  };
+  useEffect(() => {
+    joinSession();
+  }, []);
 
   useEffect(() => {
-    window.addEventListener("beforeunload", onbeforeunload);
-    joinSession();
+    if (!session) return;
     return () => {
-      window.removeEventListener("beforeunload", onbeforeunload);
+      leaveSession();
     };
-  }, []);
+  }, [session]);
+
+  useEffect(() => {
+    console.log("====================SUB==================");
+    console.log(subscribers);
+  }, [subscribers]);
 
   const handleMainVideoStream = (stream) => {
     if (mainStreamManager !== stream) {
@@ -51,10 +55,12 @@ const OvContainer = (props) => {
   };
 
   const deleteSubscriber = (streamManager) => {
+    console.log("delete sub");
     let index = subscribers.indexOf(streamManager, 0);
     if (index > -1) {
-      const newSub = subscribers.filter((sub, idx) => idx !== index);
-      setSubscribers(newSub);
+      setSubscribers((prev) => {
+        return prev.filter((item) => item !== streamManager);
+      });
     }
   };
 
@@ -64,7 +70,7 @@ const OvContainer = (props) => {
     setOV(tempOV);
 
     // --- 2) Init a session ---
-    const mySession = await tempOV.initSession();
+    const mySession = tempOV.initSession();
     setSession(mySession);
 
     // --- 3) Specify the actions when events take place in the session ---
@@ -74,7 +80,6 @@ const OvContainer = (props) => {
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
       const subscriber = mySession.subscribe(event.stream, undefined);
-
       // Update the state with the new subscribers
       setSubscribers((prev) => [...prev, subscriber]);
     });
@@ -98,14 +103,13 @@ const OvContainer = (props) => {
     });
 
     // --- 4) Connect to the session with a valid user token ---
-
     // Get a token from the OpenVidu deployment
     getToken().then((token) => {
       // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
       // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
       mySession
         .connect(token, { clientData: props.username })
-        .then(async () => {
+        .then(async (res) => {
           // --- 5) Get your own camera stream ---
           // Obtain the current video device in use
           var devices = await tempOV.getDevices();
@@ -153,9 +157,11 @@ const OvContainer = (props) => {
   };
 
   const leaveSession = () => {
-    if (!window.confirm("방송을 종료하시겠습니까?")) return;
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+    console.log("===============================================");
+    console.log(session);
     if (session) {
+      console.log(session);
       session.disconnect();
     }
 
@@ -165,8 +171,12 @@ const OvContainer = (props) => {
     setSubscribers([]);
     setMainStreamManager(undefined);
     setPublisher(undefined);
+  };
 
-    navigate("/mystore/live");
+  const leaveSessionHandler = () => {
+    if (!window.confirm("방송을 종료하시겠습니까?")) return;
+    leaveSession();
+    navigate("/mystore/live", { replace: true });
   };
 
   const switchCamera = async () => {
@@ -212,23 +222,39 @@ const OvContainer = (props) => {
 
   const createSession = async (sessionId) => {
     const response = await axios.post(
-      OV_SERVER_URL + "api/sessions",
+      OV_SERVER_URL + "/api/sessions",
       { customSessionId: sessionId },
       {
         headers: { "Content-Type": "application/json" },
       }
     );
+    // const data = JSON.stringify({ customSessionId: sessionId });
+    // const response = await axios.post(`${OV_SERVER_URL}/api/sessions`, data, {
+    //   headers: {
+    //     Authorization: "Basic " + btoa("OPENVIDUAPP:" + OV_SERVER_SECRET),
+    //     "Content-Type": "application/json",
+    //   },
+    // });
     return response.data; // The sessionId
   };
 
   const createToken = async (sessionId) => {
     const response = await axios.post(
-      OV_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      OV_SERVER_URL + "/api/sessions/" + sessionId + "/connections",
       {},
       {
         headers: { "Content-Type": "application/json" },
       }
     );
+    // console.log(btoa("OPENVIDUAPP:" + OV_SERVER_SECRET));
+    // const data = {};
+    // const response = await axios.post(`${OV_SERVER_URL}/connections`, data, {
+    //   headers: {
+    //     Authorization: "Basic " + btoa("OPENVIDUAPP:" + OV_SERVER_SECRET),
+    //     "Content-Type": "application/json",
+    //   },
+    // });
+
     return response.data; // The token
   };
 
@@ -260,10 +286,6 @@ const OvContainer = (props) => {
     setChatList((prev) => [...prev, newChat]);
   };
 
-  const liveCloseHandler = () => {
-    leaveSession();
-  };
-
   const toggleMuteHandler = () => {
     if (isMute) {
       publisher.publishAudio(false);
@@ -285,7 +307,7 @@ const OvContainer = (props) => {
               isMute={isMute}
               title={props.liveInfo.title}
               onCameraSwitch={switchCamera}
-              onLiveClose={liveCloseHandler}
+              onLiveClose={leaveSessionHandler}
               onToggleMute={toggleMuteHandler}
             />
             <LiveInfo
@@ -306,7 +328,7 @@ const OvContainer = (props) => {
               ) : (
                 <Fragment>
                   <LiveProductInfo liveInfo={props.liveInfo} />
-                  <LeaveButton onClick={liveCloseHandler} />
+                  <LeaveButton onClick={leaveSessionHandler} />
                 </Fragment>
               )}
             </LiveFooter>
@@ -315,24 +337,6 @@ const OvContainer = (props) => {
             className={classes.streamContainer}
             streamManager={mainStreamManager}
           />
-          <div id="session-header">
-            <div id="session-title">{props.sessionId}</div>
-            <div id="session-title">{subscribers.length}</div>
-            <input
-              className="btn btn-large btn-danger"
-              type="button"
-              id="buttonLeaveSession"
-              onClick={leaveSession}
-              value="Leave session"
-            />
-            <input
-              className="btn btn- large btn-success"
-              type="button"
-              id="buttonSwitchCamera"
-              onClick={switchCamera}
-              value="Switch Camera"
-            />
-          </div>
         </Fragment>
       ) : null}
     </div>

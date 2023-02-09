@@ -1,7 +1,9 @@
 import "./App.scss";
-
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
+import menuSlice from "./reduxStore/menuSlice";
+import { history } from "./reduxStore/store";
 import classes from "./App.scss";
 
 import Header from "./components/common/Header";
@@ -14,6 +16,10 @@ import Backdrop from "./components/common/Backdrop";
 import Products from "./pages/product/Products";
 
 import MyPage from "./pages/mypage/MyPage";
+import MyPageInfo from "./pages/mypage/MyPageInfo";
+import MyPageEdit from "./pages/mypage/MyPageEdit";
+import MyReceipts from "./pages/mypage/MyReceipts";
+import LikeStores from "./pages/mypage/LikeStores";
 
 import ProductDetail from "./pages/product/ProductDetail";
 import Payment from "./pages/product/Payment";
@@ -32,9 +38,34 @@ import BroadCast from "./pages/BroadCast";
 import Store from "./pages/store/Store";
 import StoreLive from "./pages/store/StoreLive";
 import StoreProducts from "./pages/store/StoreProducts";
+import MyStoreCreate from "./pages/mystore/MyStoreCreate";
 
 const App = () => {
-  const menu = useSelector((state) => state.menu.isOpen); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
+  const dispatch = useDispatch();
+  const menu = useSelector((state) => {
+    console.log("useSelector 확인용: state.menuSlice.isOpen");
+    console.log(state);
+    return state.menuSlice.isOpen;
+  }); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
+
+  useEffect(
+    () => {
+      const listenBackEvent = () => {
+        dispatch(menuSlice.actions.close());
+      };
+
+      const unlistenHistoryEvent = history.listen(({ action }) => {
+        if (action === "POP") {
+          listenBackEvent();
+        }
+      });
+
+      return unlistenHistoryEvent;
+    },
+    [
+      // effect에서 사용하는 state를 추가
+    ]
+  );
 
   return (
     <div id="app">
@@ -56,7 +87,11 @@ const App = () => {
         </Route>
         {/* 마이페이지 */}
         <Route path="/mypage" element={<MyPage />}>
-          <Route path="edit" element={<MyPage />}></Route>
+          <Route path="info" element={<MyPageInfo />} />
+          <Route path="edit" element={<MyPageEdit />} />
+          <Route path="receipts" element={<MyReceipts />} />
+          <Route path="likestores" element={<LikeStores />} />
+          <Route path="" element={<Navigate replace to="info" />} />
         </Route>
         {/* 스토어페이지 렌더링용. */}
         <Route path="/" element={<Home />} />
@@ -77,6 +112,7 @@ const App = () => {
           <Route path="receipt" element={<MyStoreReceipt />} />
           <Route path="" element={<Navigate replace to="info" />} />
         </Route>
+        <Route path="mystorecreate" element={<MyStoreCreate />} />
         <Route path="/broadcast" element={<BroadCast />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

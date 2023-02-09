@@ -1,16 +1,28 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ImageButton from "../../components/common/ImageButton";
 
 import { HiUser } from "react-icons/hi";
 import { MdStoreMallDirectory } from "react-icons/md";
 import { MdOutlineCreditCard } from "react-icons/md";
-import { MdLocalGroceryStore } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 
 import classes from "./style/MyPageMenu.module.scss";
 
-const MyPageMenu = () => {
+const MyPageMenu = (props) => {
+  const navigate = useNavigate();
+
+  const redirectMyStoreHandler = (e) => {
+    e.preventDefault();
+    if (!window.confirm("마이스토어로 이동하시겠습니까?")) return;
+    if (props.userInfo.storeId) {
+      navigate("/mystore");
+    } else {
+      alert("생성된 마이스토어가 없습니다. 스토어 생성 페이지로 이동합니다.");
+      navigate("/mystorecreate", { state: { userInfo: props.userInfo } });
+    }
+  };
+
   return (
     <ul className={classes.menuList}>
       <li>
@@ -27,7 +39,7 @@ const MyPageMenu = () => {
       </li>
       <li>
         <NavLink
-          to="live"
+          to="receipts"
           className={({ isActive }) => (isActive ? classes.active : null)}
         >
           <ImageButton
@@ -38,10 +50,7 @@ const MyPageMenu = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink
-          to="product"
-          className={({ isActive }) => (isActive ? classes.active : null)}
-        >
+        <NavLink to="" onClick={redirectMyStoreHandler}>
           <ImageButton
             className={classes.menuItem}
             icon={<MdStoreMallDirectory />}
@@ -51,7 +60,7 @@ const MyPageMenu = () => {
       </li>
       <li>
         <NavLink
-          to="receipt"
+          to="likestores"
           className={({ isActive }) => (isActive ? classes.active : null)}
         >
           <ImageButton
