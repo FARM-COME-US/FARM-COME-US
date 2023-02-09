@@ -14,6 +14,8 @@ const SideMenu = (props) => {
   const isOpen = useSelector((state) => state.menuSlice.isOpen);
 
   const isLogin = user.isLogin; // 일단 간이로 nickname받아오면 로그인된걸로 설정
+  console.log("로그인되어있나?");
+  console.log(isLogin);
   const sideMenuItemList = [
     {
       linkTo: "/livestore",
