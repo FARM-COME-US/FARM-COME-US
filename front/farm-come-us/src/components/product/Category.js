@@ -3,8 +3,9 @@ import CategoryItem from "./CategoryItem";
 import classes from "./style/Category.module.scss";
 
 const Category = (props) => {
-  const sendId = (id) => {
-    props.getCategoryId(id);
+  const sendId = (category_id, sub_category_id) => {
+    props.getCategoryId(category_id);
+    props.getSubCategoryId(sub_category_id);
   };
 
   let list = props.list.map((item) => (

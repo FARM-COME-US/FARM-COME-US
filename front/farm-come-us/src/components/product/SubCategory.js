@@ -10,7 +10,7 @@ const SubCategory = (props) => {
   let list = props.SUB_CATEGORY_LIST.map((item) => (
     <SubCategoryItem
       sub_category_name={item.sub_category_name}
-      key={item.sub_category_key}
+      key={item.sub_category_id}
       sub_category_id={item.sub_category_id}
       getSubCategoryId={sendSubCategoryId}
     ></SubCategoryItem>

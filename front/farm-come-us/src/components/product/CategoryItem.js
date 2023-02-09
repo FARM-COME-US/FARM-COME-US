@@ -4,7 +4,7 @@ import CategoryButton from "./CategoryButton";
 
 const CategoryItem = (props) => {
   const sendId = () => {
-    props.getid(props.category_id);
+    props.getid(props.category_id, 0);
   };
 
   return (
