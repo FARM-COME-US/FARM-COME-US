@@ -20,7 +20,6 @@ public class Member {
 //    @Column(unique = true)
     private String id;
 
-    @Column(length = 255)
     private String password;
     @Column(length = 50)
     private String nickname;

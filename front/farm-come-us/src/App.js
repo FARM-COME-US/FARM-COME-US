@@ -38,6 +38,7 @@ import BroadCast from "./pages/BroadCast";
 import Store from "./pages/store/Store";
 import StoreLive from "./pages/store/StoreLive";
 import StoreProducts from "./pages/store/StoreProducts";
+import MyStoreCreate from "./pages/mystore/MyStoreCreate";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -90,6 +91,7 @@ const App = () => {
           <Route path="edit" element={<MyPageEdit />} />
           <Route path="receipts" element={<MyReceipts />} />
           <Route path="likestores" element={<LikeStores />} />
+          <Route path="" element={<Navigate replace to="info" />} />
         </Route>
         {/* 스토어페이지 렌더링용. */}
         <Route path="/" element={<Home />} />
@@ -110,6 +112,7 @@ const App = () => {
           <Route path="receipt" element={<MyStoreReceipt />} />
           <Route path="" element={<Navigate replace to="info" />} />
         </Route>
+        <Route path="mystorecreate" element={<MyStoreCreate />} />
         <Route path="/broadcast" element={<BroadCast />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
