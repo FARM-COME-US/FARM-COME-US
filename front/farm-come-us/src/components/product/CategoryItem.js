@@ -4,14 +4,14 @@ import CategoryButton from "./CategoryButton";
 
 const CategoryItem = (props) => {
   const sendId = () => {
-    props.getid(props.id);
+    props.getid(props.category_id);
   };
 
   return (
     <div className={classes.container} onClick={sendId}>
       <CategoryButton
         className={classes.categoryItem}
-        text={props.name}
+        category_name={props.category_name}
       ></CategoryButton>
     </div>
   );
