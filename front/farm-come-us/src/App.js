@@ -10,10 +10,13 @@ import Header from "./components/common/Header";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import OAuth2RedirectHandler from "./components/user/OAuth2RedirectHandler";
 import Cart from "./pages/Cart";
 import SideMenu from "./components/common/SideMenu";
 import Backdrop from "./components/common/Backdrop";
 import Products from "./pages/product/Products";
+
+import ReceiptList from "./components/receipt/ReceiptList";
 
 import MyPage from "./pages/mypage/MyPage";
 import MyPageInfo from "./pages/mypage/MyPageInfo";
@@ -80,6 +83,7 @@ const App = () => {
         />
       </div>
       <Routes>
+        <Route path="/receipt" element={<ReceiptList />}></Route>
         <Route path="/product-detail" element={<ProductDetail />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
         <Route path="/cart-payment" element={<CartPayment />}></Route>
@@ -99,6 +103,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/kakao" element={<OAuth2RedirectHandler />}></Route>
         <Route path="/cart" element={<Cart />} />
         <Route path="/livestore" element={<Live />}>
           <Route path="running" element={<RunningLive />} />

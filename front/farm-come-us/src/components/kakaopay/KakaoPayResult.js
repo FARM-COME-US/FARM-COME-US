@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const PayResult = (props) => {
+const KakaoPayResult = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.userSlice);
@@ -31,8 +31,9 @@ const PayResult = (props) => {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          alert("결제 완료!");
-          navigate("/");
+          alert("결제가 완료되었습니다.");
+          // navigate("/");
+          navigate(`receipt/${tid}`);
         }
       })
       .catch((error) => {
@@ -41,4 +42,4 @@ const PayResult = (props) => {
       });
   }, []);
 };
-export default PayResult;
+export default KakaoPayResult;
