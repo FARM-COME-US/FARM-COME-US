@@ -19,6 +19,7 @@ const Input = (props) => {
       max={props.max}
       step={props.step}
       onChange={props.onChange}
+      accept={props.accept}
     />
   );
 };

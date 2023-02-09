@@ -1,6 +1,7 @@
 package com.ssafy.farmcu.api.service.order;
 
 import com.ssafy.farmcu.api.dto.order.CartDto;
+import com.ssafy.farmcu.api.dto.order.CartOrderDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Cart;
 
@@ -17,7 +18,7 @@ public interface CartService {
     public List<Cart> findMyCart(Member member);
 
     // 장바구니 항목 주문
-//    void orderCart(OrderInfoDto orderInfoDto);
+    public Long orderCart(List<CartOrderDto> cartOrderDtoList, String memberId);
 
 //     장바구니 항목 삭제
     public void deleteCart(Long cartId);

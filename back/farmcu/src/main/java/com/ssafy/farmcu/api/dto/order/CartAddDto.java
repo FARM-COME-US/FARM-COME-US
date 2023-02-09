@@ -17,9 +17,6 @@ public class CartAddDto {
         cart.setMember(member);
         cart.setItem(item);//장바구니 속 상품 정보
         cart.setCartItemCount(cartItemCount); //장바구니에 담은 상품 개수
-        cart.setSale(item.getItemDiscount());
-        cart.setItemPrice(item.getItemPrice());
-        cart.setGetTotalPrice(item.getItemPrice()*(100-sale)/100*cartItemCount);
 
         return cart;
     }

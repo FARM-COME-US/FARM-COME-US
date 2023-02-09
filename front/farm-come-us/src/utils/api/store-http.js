@@ -4,51 +4,34 @@ const DUMMY_SERVER_URL = "https:localhost:3000";
 const STORE_API_URL = `${DUMMY_SERVER_URL}/store`;
 const STORE_LIKE_API_URL = `${DUMMY_SERVER_URL}/storelikes`;
 
-const clientStoreObjFormatter = (obj) => {
-  return {
-    productId: obj.storeId,
-    productName: obj.storeName,
-    desc: obj.storeDescription,
-    imgSrc: obj.storeImg,
-    price: obj.storeStreetAddr,
-    discount: obj.storeDetailAddr,
-    stock: obj.storeZipcode,
-    regDate: obj.storePhoneNumber,
-    category: obj.storeDeliveryCost,
-    storeId: obj.storeDeliveryFree,
-  };
-};
-
-const serverStoreObjFormatter = (obj) => {
-  return {
-    storeId: obj.storeId,
-    storeName: obj.storeName,
-    storeDescription: obj.desc,
-    storeImg: obj.imgSrc,
-    storeStreetAddr: obj.addr,
-    storeDetailAddr: obj.addrDetail,
-    storeZipcode: obj.zipCode,
-    storePhoneNumber: obj.pno,
-    storeDeliveryCost: obj.deliveryCost,
-    storeDeliveryFree: obj.deliveryFree,
-  };
-};
-
 /* 스토어 생성 */
-export async function createStore(storeInfo) {
+export async function fetchCreateStore(storeInfo) {
   const DUMMY_USER_INFO = {
+    memberId: 1,
     id: 1,
     username: "myFarm",
   };
 
   const data = {
-    ...storeInfo,
-    member: DUMMY_USER_INFO,
+    storeName: storeInfo.storeName,
+    storeDescription: storeInfo.desc,
+    // storeImg: storeInfo.imgSrc,
+    // uploadFile: storeInfo.uploadFile,
+    storeStreetAddr: storeInfo.streetAddr,
+    storeDetailAddr: storeInfo.detailAddr,
+    storeZipcode: storeInfo.zipcode,
+    storePhoneNumber: storeInfo.pno,
+    storeDeliveryCost: storeInfo.deliveryCost,
+    storeDeliveryFree: storeInfo.deliveryFree,
+    memberId: DUMMY_USER_INFO.memberId,
   };
+
   const config = {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
+      Authorization: { token: sessionStorage.getItem("accessToken") },
+      token: sessionStorage.getItem("accessToken"),
     },
     withCredentials: false,
   };
@@ -59,24 +42,22 @@ export async function createStore(storeInfo) {
       data,
       config,
     });
-    console.log(response.success);
+    console.log(response);
   } catch (err) {
     console.err(err);
   }
 }
 
 /* 스토어 상세 조회 */
-export async function storeDetail(storeId) {
+export async function fetchStoreDetail(storeId) {
   try {
-    const response = axios({
-      method: "get",
-      url: STORE_API_URL,
+    const response = axios.get("/api/store", {
       params: {
-        storeId: storeId,
+        storeId,
       },
     });
-    const data = response.json();
-    console.log(data);
+
+    console.log(response);
   } catch (err) {
     console.err(err);
   }

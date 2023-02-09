@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     Optional<OrderItem> findById(Long num);
 
-    List<OrderItem> findAll();
+    List<OrderItem> findByOrOrderInfoMember(Member member);
 
 //    List<OrderItem> findByOrderMember(Member member);
 

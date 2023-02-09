@@ -16,8 +16,6 @@ public class MemberRefreshTokenServiceImpl {
 
     private final MemberRefreshTokenRepository memberRefreshTokenRepository;
 
-
-
     public boolean refreshTokenExists(String id){
         MemberRefreshToken memberRefreshToken = memberRefreshTokenRepository.findById(id);
         if(memberRefreshToken!=null) return true;
@@ -37,5 +35,17 @@ public class MemberRefreshTokenServiceImpl {
                     .build();
         }
         return memberRefreshTokenRepository.save(memberRefreshToken);
+    }
+
+    public MemberRefreshToken getTokenFromTable(String id){
+        return memberRefreshTokenRepository.findById(id);
+    }
+
+    @Transactional
+    public boolean deleteRefreshToken(String id){
+        if(memberRefreshTokenRepository.deleteById(id)){
+            return true;
+        }else return false;
+
     }
 }

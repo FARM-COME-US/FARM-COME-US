@@ -82,7 +82,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();
 
-        RoleType roleType = hasAuthority(authorities, RoleType.ROLE_ADMIN.toString()) ? RoleType.ROLE_ADMIN : RoleType.ROLE_USER;
+        RoleType roleType = RoleType.ROLE_USER;
 
         String Id = memberInfo.getProvider()+"-"+memberInfo.getProviderId();
         Member member = memberRepository.findById(Id).orElse(null);
@@ -91,7 +91,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Date now = new Date();
         AuthToken accessToken = tokenProvider.createAuthToken(
                 Long.toString(member.getMemberId()),
-                roleType.toString(),
+                member.getRoleType(),
                 new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
         );
 
@@ -105,16 +105,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // DB 저장
         MemberRefreshToken memberRefreshToken = memberRefreshTokenRepository.findById(Id);
-//        if (memberRefreshToken != null) {
-//            // 처음 로그인하는 사용자라면, 토큰 저장
-//            memberRefreshToken.setRefreshToken(refreshToken.getToken());
-//
-//        } else {
-//            // 이미 리프레시 토큰을 가지고 있다면 만들어서 저장
-//            memberRefreshToken = new MemberRefreshToken(Long.toString(member.getMemberId()), refreshToken.getToken());
-//            memberRefreshTokenRepository.saveAndFlush(memberRefreshToken);
-//            memberRefreshTokenService.saveRefreshTokenTable(refreshToken.getToken(), member.getId());
-//        }
         memberRefreshTokenService.saveRefreshTokenTable(refreshToken.getToken(), member.getId());
 
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
