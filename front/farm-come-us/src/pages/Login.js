@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { MdPermIdentity, MdLockOutline } from "react-icons/md";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+import userSlice from "../reduxStore/userSlice";
 
 // 이 함수도 수정필요 😀 기본형으로 해둠.
 // import { asyncSomethingFetch } from "../reduxStore/userSlice";
@@ -15,6 +16,7 @@ import classes from "./style/Login.module.scss";
 
 function Login() {
   // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -40,19 +42,34 @@ function Login() {
     try {
       console.log(data);
       const response = await axios.post("/api/member/login", data, config);
+      console.log(response);
 
       const accessToken = response.data["access-token"];
       const refreshToken = response.data["refresh-token"];
 
-      const decodedAccessToken = jwt_decode(accessToken);
-      const decodedRefreshToken = jwt_decode(refreshToken);
-
       sessionStorage.setItem("accessToken", accessToken);
       sessionStorage.setItem("refreshToken", refreshToken);
 
-      console.log(accessToken, refreshToken);
-      sessionStorage.setItem("jwtAccess", JSON.stringify(decodedAccessToken));
-      sessionStorage.setItem("jwtRefresh", JSON.stringify(decodedRefreshToken));
+      console.log(`엑세스토큰:${accessToken}, 리프레쉬토큰:${refreshToken}`);
+
+      const userDataRes = await axios.get("/api/v1/member", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          token: `${accessToken}`,
+        },
+      });
+      console.log(userDataRes);
+      dispatch(userSlice.actions.login(userDataRes.data));
+
+      // try {
+
+      //   const userdata = await axios.get("/api/");
+
+      // } catch (err) {
+      //   console.log("유저정보 가져와서 dispatch 하는 도중 문제!");
+      // }
+
       // dispatch(
       //   userSlice.actions.savetoken({
       //     accessToken: accessToken,

@@ -47,7 +47,8 @@ const App = () => {
   const dispatch = useDispatch();
   const menu = useSelector((state) => {
     console.log("useSelector 확인용: state.menuSlice.isOpen");
-    console.log(state);
+    console.log(state.userSlice);
+    console.log("userSlice확인용");
     return state.menuSlice.isOpen;
   }); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
 
