@@ -38,7 +38,7 @@ export async function fetchCreateStore(storeInfo) {
 
   console.log(data);
   try {
-    const response = axios.post("/api/store", {
+    const response = axios.post("api/api/v1/store", {
       data,
       config,
     });
