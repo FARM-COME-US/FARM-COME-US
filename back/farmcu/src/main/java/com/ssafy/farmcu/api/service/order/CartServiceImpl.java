@@ -3,11 +3,6 @@ package com.ssafy.farmcu.api.service.order;
 import com.ssafy.farmcu.api.dto.order.CartAddDto;
 import com.ssafy.farmcu.api.dto.order.CartDto;
 import com.ssafy.farmcu.api.dto.order.CartOrderDto;
-<<<<<<< HEAD
-=======
-import com.ssafy.farmcu.api.dto.order.CartRequestDto;
-import com.ssafy.farmcu.api.dto.order.CartResponseDto;
->>>>>>> 9611c9a0c605f1aa899f830650098fa3282b4b3e
 import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
 import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.entity.member.Member;
@@ -81,41 +76,9 @@ public class CartServiceImpl implements CartService {
         return orderId;
     }
 
-<<<<<<< HEAD
     public List<Cart> findMyCart(Member member) {
         return cartRepository.findByMember(member);
-=======
-    //** 장바구니 조회 **//
-<<<<<<< HEAD
-
-
-//    @Override
-//    public List<CartResponseDto> findMyCart(Long memberId) {
-//        List<Cart> carts = cartRepository.findByMember(memberId);
-//
-//        List<CartResponseDto> response = new ArrayList<>();
-//
-//        for (Cart cart : carts) {
-//            Optional<Item> optionalItem = itemRepository.findById(cart.getItem().getItemId());
-//            Item item = optionalItem.get();
-////            CartResponseDto cartResponseDto = productMapper.toResponseProductDto(product);
-//            CartResponseDto cartResponse = new CartResponseDto((cart.getCartId()));
-//            response.add(cartResponse);
-//        }
-//        return response;
-//
-//    }
-=======
-//    @Override
-//    public List<Cart> findMyCart(Member member) {
-//        return cartRepository.findByMember(member);
-//    }
-    @Override
-    public List<Cart> findMyCart(Long memberId) {
-        return cartRepository.findByMember(memberId);
->>>>>>> 9611c9a0c605f1aa899f830650098fa3282b4b3e
     }
->>>>>>> 014bbd1cb2f680038671ebd07db13bc520e70eb1
 
     @Override
     public void deleteCart(Long cartId) {
