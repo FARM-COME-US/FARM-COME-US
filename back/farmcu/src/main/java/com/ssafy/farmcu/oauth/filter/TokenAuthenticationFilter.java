@@ -32,6 +32,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
 
+        log.info("filter start ! ");
+
         // 요청값의 header에서 토큰을 뽑아온다.
         AuthToken token = tokenProvider.convertAuthToken(request.getHeader("token"));
 
