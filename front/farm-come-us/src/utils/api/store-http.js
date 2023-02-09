@@ -35,14 +35,29 @@ const serverStoreObjFormatter = (obj) => {
 };
 
 /* 스토어 생성 */
-export async function createStore(store) {
+export async function createStore(storeInfo) {
+  const DUMMY_USER_INFO = {
+    id: 1,
+    username: "myFarm",
+  };
+
+  const data = {
+    ...storeInfo,
+    member: DUMMY_USER_INFO,
+  };
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    withCredentials: false,
+  };
+
+  console.log(data);
   try {
-    const response = axios({
-      method: "post",
-      url: STORE_API_URL,
-      data: {
-        request: serverStoreObjFormatter(store),
-      },
+    const response = axios.post("/api/store", {
+      data,
+      config,
     });
     console.log(response.success);
   } catch (err) {

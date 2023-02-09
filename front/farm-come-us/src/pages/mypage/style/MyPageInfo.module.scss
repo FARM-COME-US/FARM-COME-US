@@ -1,36 +1,51 @@
-.flexbox {
+.userInfo {
+  width: 100%;
   display: flex;
-  justify-content: center;
-}
+  flex-direction: column;
 
-.button {
-  background-color: #f7863b;
-  color: white;
-  font-weight: bolder;
-  font-size: 1.2rem;
-  width: 90%;
-  margin: auto;
-  margin-top: 60px;
-  margin-bottom: 60px;
-}
+  .infoList {
+    margin-top: 16px;
+  }
 
-.title {
-  font-size: 1.4rem;
-  font-weight: 1000;
-  margin-left: 5%;
-  margin-top: 10%;
-}
+  .btnBox {
+    display: flex;
+    width: 100%;
+    justify-content: center;
 
-.label {
-  font-size: 1rem;
-  font-weight: 1000;
-  margin-left: 6%;
-  margin-top: 7%;
-  margin-bottom: 2%;
-}
+    .btnSubmit {
+      width: 40%;
+      margin: 0 8px;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background-color: #f7863b;
 
-.input {
-  margin-left: 6%;
+      &:hover {
+        background-color: #e47c37;
+      }
+    }
 
-  width: 88%;
+    .btnCancel {
+      width: 40%;
+      margin: 0 8px;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background-color: #777;
+
+      &:hover {
+        background-color: #555;
+      }
+    }
+  }
+
+  .btnEditInfo {
+    width: 320px;
+    margin: 0 auto;
+    margin-bottom: 16px;
+    background-color: #f7863b;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
 }
