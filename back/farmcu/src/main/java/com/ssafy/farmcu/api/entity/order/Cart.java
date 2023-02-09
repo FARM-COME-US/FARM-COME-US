@@ -23,13 +23,6 @@ public class Cart {
 
     private int cartItemCount;
 
-//    private int itemPrice;
-//
-//    private int sale;
-//
-//    private int getTotalPrice;
-
-
     // 연결
     @ManyToOne
     @JoinColumn(name="memberId", nullable=false)
@@ -40,17 +33,15 @@ public class Cart {
     private Item item;
 
     @Builder
-    public Cart(Long cartId,Item item, int itemPrice, int sale, int getTotalPrice,int cartItemCount, Member member) {
+    public Cart(Long cartId,Item item, int cartItemCount, Member member) {
+
         this.cartId = cartId;
         this.item = item;
         this.member = member;
-//        this.getTotalPrice = getTotalPrice();
         this.cartItemCount = cartItemCount;
-//        this.sale = item.getItemDiscount();
-//        this.itemPrice = item.getItemPrice();
+
     }
 
-    // 상품 총합
     public int getTotalPrice(){
         return item.getItemPrice()*(100-item.getItemDiscount())/100*cartItemCount;
     }
@@ -63,5 +54,6 @@ public class Cart {
 
         return cart;
     }
+
 
 }

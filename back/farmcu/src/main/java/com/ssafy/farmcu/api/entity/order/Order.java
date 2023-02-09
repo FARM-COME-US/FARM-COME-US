@@ -24,7 +24,6 @@ public class Order {
 //        ORDER, CANCLE
 //     }
 
-
     //필드
     @Id
     // pk 생성자 수정 필요
@@ -71,7 +70,7 @@ public class Order {
         orderItem.setOrderInfo(this);
     }
 
-    //** 주문 상세 정보 생성 **//
+    //** 주문 생성 **//
     public static Order createOrder(Member member, List<OrderItem> orderItems){
         Order order = new Order();
         order.setMember(member); //멤버 정보 set
@@ -81,11 +80,9 @@ public class Order {
         }
 
         order.setOrderStatus(OrderStatus.ORDER); //주문상태를 ORDER로 set
-
         order.setOrderCreateAt(LocalDateTime.now()); //주문시간
         return order; //완성된 주문정보
     }
-
     //** 전체 주문 가격 조회 **//
     public int getTotalPrice(){
         int totalPrice = 0;

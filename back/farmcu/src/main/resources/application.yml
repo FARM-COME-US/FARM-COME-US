@@ -32,11 +32,6 @@ app:
     authorized-redirect-uris: http://localhost:8080/oauth/redirect
 logging.level:
   org.hibernate.SQL: debug
-
+  org:
+    springframework: info
 # org.hibernate.type: trace
-kakao:
-  oauth:
-    app-key: 22cf1fb20c3cb48944b317c32dffc544
-
-    login:
-      redirect-url: http://localhost:9090/kakao/test
