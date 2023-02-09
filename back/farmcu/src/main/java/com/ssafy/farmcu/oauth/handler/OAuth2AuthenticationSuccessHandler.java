@@ -82,7 +82,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();
 
-        RoleType roleType = hasAuthority(authorities, RoleType.ROLE_ADMIN.toString()) ? RoleType.ROLE_ADMIN : RoleType.ROLE_USER;
+        RoleType roleType = RoleType.ROLE_USER;
 
         String Id = memberInfo.getProvider()+"-"+memberInfo.getProviderId();
         Member member = memberRepository.findById(Id).orElse(null);
@@ -91,7 +91,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Date now = new Date();
         AuthToken accessToken = tokenProvider.createAuthToken(
                 Long.toString(member.getMemberId()),
-                roleType.toString(),
+                member.getRoleType(),
                 new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
         );
 

@@ -12,7 +12,6 @@ import com.ssafy.farmcu.config.properties.AppProperties;
 import com.ssafy.farmcu.oauth.repository.MemberRefreshTokenRepository;
 import com.ssafy.farmcu.oauth.token.AuthToken;
 import com.ssafy.farmcu.oauth.token.AuthTokenProvider;
-import com.ssafy.farmcu.oauth.token.JwtServiceImpl;
 import com.ssafy.farmcu.api.service.member.MemberServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
