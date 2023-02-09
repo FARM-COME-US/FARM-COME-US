@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/storelikes")
+@RequestMapping("api/v1/storelikes")
 @RestController
 @Api("스토어 컨트롤러 API v1")
 public class StoreLikeController {

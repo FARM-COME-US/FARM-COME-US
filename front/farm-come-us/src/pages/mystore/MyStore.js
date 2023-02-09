@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import classes from "./style/MyStore.module.scss";
@@ -15,11 +15,72 @@ const DUMMY_STORE_INFO = {
 };
 
 const MyStore = () => {
+  const [isEditting, setIsEditting] = useState(false);
+  const [storeInfo, setStoreInfo] = useState({
+    storeId: DUMMY_STORE_INFO.storeId,
+    storeName: DUMMY_STORE_INFO.storeName,
+    desc: DUMMY_STORE_INFO.desc,
+    addr: DUMMY_STORE_INFO.addr,
+    pno: DUMMY_STORE_INFO.pno,
+    imgSrc: DUMMY_STORE_INFO.imgSrc,
+  });
+
+  const onChangeInfoHandler = (name, value) => {
+    setStoreInfo((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const editInfoHandler = (e) => {
+    e.preventDefault();
+
+    alert("스토어 정보가 수정되었습니다.");
+    console.log(storeInfo);
+    setIsEditting((prev) => !prev);
+  };
+
+  const cancelInfoEditHandler = () => {
+    setStoreInfo((prev) => {
+      return {
+        storeId: DUMMY_STORE_INFO.storeId,
+        storeName: DUMMY_STORE_INFO.storeName,
+        desc: DUMMY_STORE_INFO.desc,
+        addr: DUMMY_STORE_INFO.addr,
+        pno: DUMMY_STORE_INFO.pno,
+      };
+    });
+
+    setIsEditting((prev) => !prev);
+
+    alert("수정이 취소되었습니다.");
+  };
+
+  const toggleIsEditting = (e) => {
+    e.preventDefault();
+    setIsEditting((prev) => !prev);
+  };
+
   return (
     <div className={classes.mystore}>
-      <MyStoreHeader info={DUMMY_STORE_INFO} />
+      <MyStoreHeader
+        info={storeInfo}
+        isEditting={isEditting}
+        onStoreInfoChange={onChangeInfoHandler}
+      />
       <div className={classes.container}>
-        <Outlet context={{ info: DUMMY_STORE_INFO }} />
+        <Outlet
+          context={{
+            storeInfo,
+            isEditting,
+            onChangeInfoHandler,
+            editInfoHandler,
+            cancelInfoEditHandler,
+            toggleIsEditting,
+          }}
+        />
       </div>
     </div>
   );

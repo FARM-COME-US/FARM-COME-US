@@ -10,6 +10,7 @@ import com.ssafy.farmcu.api.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,19 +23,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
 
-    @Autowired
-    private MemberRepository memberRepository;
 
-    private final PasswordEncoder pwEncoder;
+    private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder pwEncoder;
 
     @Transactional
     @Override
     public boolean createMember(MemberJoinReq memberJoinInfo) {
+
         log.debug("memberJoinInfo DTO : {}", memberJoinInfo);
         if(memberRepository.findById(memberJoinInfo.getId()).isPresent()){
             return false;
         }
-        String pw = pwEncoder.encode(memberJoinInfo.getPassword());
+        String pw = pwEncoder.encode(memberJoinInfo.getPassword().toString());
 
         memberJoinInfo.updatePW(pw);
         Member newMember = memberRepository.save(memberJoinInfo.ToEntity());
@@ -44,14 +45,9 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional(readOnly = true)
     public MemberResponseDto getUserInfo(Long id){
-//        return memberRepository.findById(id).map(MemberResponseDto::of).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
         return memberRepository.findByMemberId(id).map(MemberResponseDto::of).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
     }
 
-//    @Override
-//    public MemberInfoRes getMemberPhoto(String Id) {
-//        return null;
-//    }f
 
     @Transactional(readOnly = true)
     public Member findUser(String id){
@@ -59,6 +55,7 @@ public class MemberServiceImpl implements MemberService{
         return member;
     }
 
+    @Transactional
     @Override
     public boolean deleteMember(MemberLoginReq memberLoginInfo) {
         Optional<Member> member = memberRepository.findById(memberLoginInfo.getId());
@@ -69,6 +66,7 @@ public class MemberServiceImpl implements MemberService{
         return false;
     }
 
+    @Transactional
     @Override
     public boolean updateMember(MemberUpdateReq memberUpdateReq, String id) {
         Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
@@ -77,7 +75,7 @@ public class MemberServiceImpl implements MemberService{
         }
 
         member.updateInfo(memberUpdateReq);
-
+        memberRepository.save(member);
         return true;
     }
 }

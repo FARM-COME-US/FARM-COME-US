@@ -5,6 +5,7 @@ import com.ssafy.farmcu.api.service.member.MemberRefreshTokenServiceImpl;
 import com.ssafy.farmcu.config.properties.AppProperties;
 import com.ssafy.farmcu.config.properties.CorsProperties;
 import com.ssafy.farmcu.exception.RestAuthenticationEntryPoint;
+import com.ssafy.farmcu.oauth.filter.JwtAuthenticationFilter;
 import com.ssafy.farmcu.oauth.filter.TokenAuthenticationFilter;
 import com.ssafy.farmcu.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.ssafy.farmcu.oauth.handler.OAuth2AuthenticationSuccessHandler;
@@ -44,12 +45,13 @@ public class SecurityConfig {
     private final CorsProperties corsProperties;
     private final MemberRepository memberRepository;
     private final MemberRefreshTokenServiceImpl memberRefreshTokenService;
-
+//    private final TokenAuthenticationFilter tokenAuthenticationFilter;
+//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http
+        return http
                 .httpBasic().disable()
                 .cors().and()
                 .csrf().disable()
@@ -57,6 +59,11 @@ public class SecurityConfig {
                 .headers()
                 .frameOptions()
                 .sameOrigin()
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 열어두어야 CORS Preflight 막을 수 있음
+                .antMatchers("/**").permitAll()
+                .antMatchers("*/member/**").permitAll()
 
                 // 시큐리티는 기본적으로 세션을 사용
                 // 세션을 사용하지 않을거라 세션 설정을 Stateless 로 설정
@@ -66,15 +73,12 @@ public class SecurityConfig {
                 .and().exceptionHandling()
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint()) // 요청이 들어올 시, 인증 헤더를 보내지 않는 경우 401 응답 처리
 
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS).permitAll() // 열어두어야 CORS Preflight 막을 수 있음
-                .antMatchers("/**").permitAll()
-                .and()
 
 
+                .and()
                 // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter보다 앞으로 설정
-                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
                 .oauth2Login()
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorization")
@@ -88,11 +92,12 @@ public class SecurityConfig {
                 .userService(principalOauth2MemberService)
                 .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler())
-                .failureHandler(oAuth2AuthenticationFailureHandler());
-
+                .failureHandler(oAuth2AuthenticationFailureHandler())
+                .and().build();
+//                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
 
         // 로그인 요청을 가로채 usernamepasswordAuthenticationToken이라는 인증용 객체 생성
-        return http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
+//        return http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
     }
 
     /*
