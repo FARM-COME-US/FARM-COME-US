@@ -10,7 +10,7 @@ const SubCategory = (props) => {
   let list = props.SUB_CATEGORY_LIST.map((item) => (
     <SubCategoryItem
       sub_category_name={item.sub_category_name}
-      sub_category_key={item.sub_category_key}
+      key={item.sub_category_key}
       sub_category_id={item.sub_category_id}
       getSubCategoryId={sendSubCategoryId}
     ></SubCategoryItem>
@@ -18,7 +18,7 @@ const SubCategory = (props) => {
 
   return (
     <div>
-      {props.firstId > 0 ? (
+      {props.category_id > 0 ? (
         <div className={classes.container}>{list}</div>
       ) : null}
     </div>
