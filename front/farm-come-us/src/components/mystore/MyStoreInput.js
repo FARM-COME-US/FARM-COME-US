@@ -7,7 +7,17 @@ import Input from "../common/Input";
 const MyStoreInput = (props) => {
   const [isFocused, setIsFocused] = useState(false);
 
-  const toggleFocusHandler = () => {
+  const onFocusHandler = () => {
+    if (props.onFocus) {
+      props.onFocus();
+    }
+    setIsFocused((prev) => !prev);
+  };
+
+  const onBlurHandler = () => {
+    if (props.onBlur) {
+      props.onBlur();
+    }
     setIsFocused((prev) => !prev);
   };
 
@@ -29,8 +39,10 @@ const MyStoreInput = (props) => {
         onChange={props.onChange}
         id={props.id}
         isActive={!props.readOnly}
-        onFocus={toggleFocusHandler}
-        onBlur={toggleFocusHandler}
+        onFocus={onFocusHandler}
+        onBlur={onBlurHandler}
+        placeholder={props.placeholder}
+        accept={props.accept}
       />
     </div>
   );
