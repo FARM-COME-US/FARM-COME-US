@@ -1,9 +1,9 @@
 package com.ssafy.farmcu.api.controller.store;
 
 import com.ssafy.farmcu.api.dto.member.MemberJoinReq;
-import com.ssafy.farmcu.api.dto.store.StoreCreateReq;
-import com.ssafy.farmcu.api.dto.store.StoreDto;
-import com.ssafy.farmcu.api.dto.store.StoreUpdateReq;
+import com.ssafy.farmcu.api.dto.store.*;
+import com.ssafy.farmcu.api.service.image.S3Service;
+import com.ssafy.farmcu.api.service.store.StoreImageServiceImpl;
 import com.ssafy.farmcu.api.service.store.StoreServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Create, Select, Delete, Update
@@ -28,12 +29,30 @@ import org.springframework.web.bind.annotation.*;
 public class StoreController {
 
     private final StoreServiceImpl storeService;
+    private final S3Service s3Service;
+    private final StoreImageServiceImpl storeImageService;
 
 
     @PostMapping("/")
     @ApiOperation(value="스토어 생성", notes = "")
-    public ResponseEntity createStore(@Validated @RequestBody StoreCreateReq request){
-        if(storeService.saveStore(request)){
+    public ResponseEntity createStore(@RequestPart StoreCreateReq request, MultipartFile uploadFile) throws Exception {
+        Long storeId = storeService.saveStore(request);
+        log.info("store id : {}", storeId);
+
+        //이미지 첨부
+        if(storeId > 0L && uploadFile != null) {
+
+                String savedPath = s3Service.uploadFile(uploadFile);
+                log.info("here save file");
+                StoreImageDto storeImageDto = StoreImageDto.builder()
+                        .storeId(storeId)
+                        .originalName(uploadFile.getOriginalFilename())
+                        .savedPath(savedPath).build();
+
+                storeImageService.saveStoreImage(storeImageDto);
+        }
+
+        if(storeId>0L){
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         }else{
             return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
