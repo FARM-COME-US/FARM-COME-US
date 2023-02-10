@@ -14,6 +14,8 @@ const SideMenu = (props) => {
   const isOpen = useSelector((state) => state.menuSlice.isOpen);
 
   const isLogin = user.isLogin; // 일단 간이로 nickname받아오면 로그인된걸로 설정
+  // console.log("로그인되어있나?");
+  console.log(`isLogin ${isLogin}`);
   const sideMenuItemList = [
     {
       linkTo: "/livestore",
@@ -40,7 +42,7 @@ const SideMenu = (props) => {
   // closeSideMenu={setIsOpen}
   const sideMenuItems = sideMenuItemList.map((item, idx) => (
     <SideMenuItem
-      className="sideMenuItem"
+      className={classes.sideMenuItem}
       linkTo={item.linkTo}
       imageName={item.imageName}
       itemName={item.itemName}
@@ -60,7 +62,7 @@ const SideMenu = (props) => {
 
         {isLogin ? (
           <div
-            className="profileBox"
+            className={classes.profileBox}
             onClick={() => {
               dispatch(menuSlice.actions.toggle());
               navigate("/mypage");
@@ -74,8 +76,8 @@ const SideMenu = (props) => {
               />
             </div>
             <div className={classes.profileTxtBox}>
-              <div>{user.nickname}nickname</div>
-              <div>{user.email}@naver.com</div>
+              <div className={classes.nickname}>{user.nickname}</div>
+              <div className={classes.email}>{user.email}</div>
             </div>
           </div>
         ) : (
@@ -101,25 +103,36 @@ const SideMenu = (props) => {
           </div>
         )}
       </div>
+      <div className={classes.sideMenuItemsWrapper}>
+        <div className={classes.sideMenuUpperWrapper}>{sideMenuItems}</div>
 
-      <div className={classes.sideMenuItemsWrapper}>{sideMenuItems}</div>
-
-      {isLogin ? (
-        <div
-          className={classes.SideMenuItem}
-          onClick={() => {
-            dispatch(userSlice.actions.logout());
-            // 지금은 바로 로그아웃 액션객체 날리지만,
-            // 로그아웃 바로 되지 않고, 로그아웃할거냐고 물어보고, 확인 누르면 해야될거같음.
-            // 모달용 컴포넌트를 새로 생성하고 "확인" 누르면 해당 dispatch 진행하는방식.
-          }}
-        >
-          <img src="img/logoutIcon.png" alt="로그아웃아이콘" />
-          <div>로그아웃</div>
-        </div>
-      ) : (
-        ""
-      )}
+        {isLogin ? (
+          <div className={classes.sideMenuBottomWrapper}>
+            <div
+              className={classes.sideMenuItem}
+              onClick={() => {
+                dispatch(menuSlice.actions.toggle());
+                dispatch(userSlice.actions.logout());
+                navigate("/");
+              }}
+            >
+              {/* 상위 컴포넌트에서 prop으로 주는 주소로 들어가게 했음. */}
+              <div className={classes.flexWrapper}>
+                <div className={classes.imgWrapper}>
+                  <img
+                    src={process.env.PUBLIC_URL + `/img/logoutIcon.png`}
+                    alt={props.imageName}
+                    className={classes.iconImg}
+                  />
+                </div>
+                <div className={classes.itemTxt}>로그아웃</div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
       {/* 로그아웃버튼 -> isLogin true시 렌더링, 아니면 안함. */}
 
       {isOpen ? <Backdrop /> : ""}

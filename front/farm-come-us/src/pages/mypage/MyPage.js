@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import MyPageHeader from "../../components/mypage/MyPageHeader";
-import { fetchUserInfo } from "../../utils/api/user-http";
+import {
+  fetchUserInfo,
+  fetchUserInfoWithAccessToken,
+} from "../../utils/api/user-http";
+import { useDispatch } from "react-redux";
+import userSlice from "../../reduxStore/userSlice";
 
 const DUMMY_MYPAGE_INFO = {
   id: 1,
@@ -17,6 +22,7 @@ const DUMMY_MYPAGE_INFO = {
 };
 
 const MyPage = (props) => {
+  const dispatch = useDispatch();
   // 유저정보 관리 변수
   const [userInfo, setUserInfo] = useState({
     ...DUMMY_MYPAGE_INFO,
@@ -26,8 +32,10 @@ const MyPage = (props) => {
 
   useEffect(() => {
     const testMemberId = 1;
-    const fetchedInfo = fetchUserInfo(testMemberId);
-    console.log(fetchedInfo);
+    const userDataRes = fetchUserInfoWithAccessToken();
+    // const fetchedInfo = fetchUserInfo(testMemberId);
+    // console.log(fetchedInfo);
+    console.log(userDataRes);
   }, []);
 
   const toggleIsEditting = (e) => {
@@ -66,22 +74,8 @@ const MyPage = (props) => {
 
   return (
     <div>
-      <MyPageHeader
-        profileImg={""}
-        userInfo={userInfo}
-        isEditting={isEditting}
-        userInfoChangeHandler={userInfoChangeHandler}
-      />
-      <Outlet
-        context={{
-          userInfo: userInfo,
-          isEditting,
-          toggleIsEditting,
-          editInfoHandler,
-          userInfoChangeHandler,
-          cancelInfoEditHandler,
-        }}
-      />
+      <MyPageHeader profileImg={profileImg} userInfo={DUMMY_MYPAGE_INFO} />
+      <Outlet context={{ info: DUMMY_MYPAGE_INFO }} />
     </div>
   );
 };
