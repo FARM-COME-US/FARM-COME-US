@@ -70,11 +70,7 @@ export async function createProduct(productInfo) {
   };
 
   try {
-    const response = axios.post("/api/api/v1/item", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = axios.post("/api/api/v1/item", formData, config);
 
     console.log(response);
   } catch (err) {
@@ -114,7 +110,7 @@ export async function productList() {
 }
 
 /* 등록 상품 삭제 */
-export async function delteProduct(productId) {
+export async function deleteProduct(productId) {
   try {
     const response = axios({
       method: "delete",

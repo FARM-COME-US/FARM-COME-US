@@ -32,12 +32,13 @@ const MyStoreProductInfoList = (props) => {
     <ul className={`${classes.productInfoList} ${props.className}`}>
       <li className={classes.infoItem}>
         <select
-          name="category"
+          name="categoryName"
           value={props.productInfo.itemCreatedAt.categoryName}
+          onChange={onInfoChangeHandler}
         >
           <option value="">카테고리 선택</option>
           {DUMMY_CATEGORY.map((category, idx) => (
-            <option key={idx} value={category.id}>
+            <option key={idx} value={category.name}>
               {category.name}
             </option>
           ))}
