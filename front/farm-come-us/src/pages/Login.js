@@ -18,8 +18,8 @@ function Login() {
   // const dispatch = useDispatch();
   const dispatch = useDispatch();
   const location = useLocation();
-  console.log("성공");
-  console.log(location);
+  // console.log("성공");
+  // console.log(location);
   let signUpId = "";
   let signUpPassword = "";
 
@@ -55,6 +55,7 @@ function Login() {
     };
 
     try {
+      console.log("로그인시도");
       console.log(data);
 
       const response = await axios.post(
@@ -125,7 +126,7 @@ function Login() {
           <input
             className={`${classes.inputbar}`}
             placeholder="아이디"
-            value={signUpId ? signUpId : ""}
+            value={userId ? userId : ""}
             onChange={(e) => {
               setUserId(e.target.value);
             }}
@@ -155,7 +156,7 @@ function Login() {
             <input
               className={classes.inputbar}
               placeholder="비밀번호"
-              value={signUpPassword ? signUpPassword : ""}
+              value={password ? password : ""}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
