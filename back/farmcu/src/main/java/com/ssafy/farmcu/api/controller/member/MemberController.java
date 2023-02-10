@@ -1,12 +1,13 @@
 package com.ssafy.farmcu.api.controller.member;
 
 import com.ssafy.farmcu.api.dto.ErrorResponse;
-import com.ssafy.farmcu.api.dto.member.MemberJoinReq;
-import com.ssafy.farmcu.api.dto.member.MemberLoginReq;
-import com.ssafy.farmcu.api.dto.member.MemberResponseDto;
-import com.ssafy.farmcu.api.dto.member.MemberUpdateReq;
+import com.ssafy.farmcu.api.dto.member.*;
+import com.ssafy.farmcu.api.dto.store.StoreImageDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.member.MemberRefreshToken;
+import com.ssafy.farmcu.api.service.image.S3Service;
+import com.ssafy.farmcu.api.service.member.MemberImageService;
+import com.ssafy.farmcu.api.service.member.MemberImageServiceImpl;
 import com.ssafy.farmcu.api.service.member.MemberRefreshTokenServiceImpl;
 import com.ssafy.farmcu.config.properties.AppProperties;
 import com.ssafy.farmcu.oauth.repository.MemberRefreshTokenRepository;
@@ -25,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -47,6 +49,8 @@ public class MemberController {
     private final MemberRefreshTokenServiceImpl refreshService;
     private final PasswordEncoder passwordEncoder;
     private final MessageSource messageSource;
+    private final S3Service s3Service;
+    private final MemberImageServiceImpl memberImageService;
 
     @PostMapping("/join")
     @ApiOperation(value = "회원 가입", notes = "")
@@ -124,7 +128,7 @@ public class MemberController {
             log.info("token is avvailable!");
             try {
                 Long id = tokenProvider.getId(authToken);
-                MemberResponseDto memberDto = memberService.getUserInfo(id);
+                MemberDto memberDto = memberService.getUserInfo(id);
                 resultMap.put("userInfo", memberDto);
                 resultMap.put("message", "success");
                 status = HttpStatus.ACCEPTED;
@@ -192,15 +196,26 @@ public class MemberController {
 
     @ApiOperation(value = "회원 정보 수정", notes = "", response = Map.class)
     @PutMapping("/")
-    public ResponseEntity<?> updateMember(@RequestBody MemberUpdateReq memberUpdateReq, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> updateMember(@RequestPart MemberUpdateReq memberUpdateReq, HttpServletRequest request, MultipartFile uploadFile) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         String token = request.getHeader("token"); // 리프레시 토큰
         AuthToken authToken = tokenProvider.convertAuthToken(token);
         Long id = tokenProvider.getId(authToken);
-        MemberResponseDto member = memberService.getUserInfo(id);
+        MemberDto member = memberService.getUserInfo(id);
         if (authToken.validate()) {
             memberService.updateMember(memberUpdateReq, member.getId());
+            if(uploadFile!=null){
+                String savedPath = s3Service.uploadFile(uploadFile);
+                log.info("here save file");
+                MemberImageDto memberImageDto = MemberImageDto.builder()
+                        .memberId(id)
+                        .originalName(uploadFile.getOriginalFilename())
+                        .savedPath(savedPath).build();
+
+                memberImageService.saveMemberImage(memberImageDto);
+            }
+
             resultMap.put("message", "success");
 
             status = HttpStatus.ACCEPTED;
@@ -220,7 +235,7 @@ public class MemberController {
         if (accessToken.validate()) { // 토큰 검증
             log.info("token is avvailable!");
             try {
-                MemberResponseDto memberDto = memberService.getUserInfo(memberId);
+                MemberDto memberDto = memberService.getUserInfo(memberId);
                 resultMap.put("userInfo", memberDto);
                 resultMap.put("message", "success");
                 status = HttpStatus.ACCEPTED;
@@ -256,9 +271,9 @@ public class MemberController {
 
     @ApiOperation(value = "회원 조회 / 테스트용", notes = "사용자 아이디(PK)")
     @GetMapping("/me/{id}")
-    public ResponseEntity<MemberResponseDto> fetchUser(@PathVariable Long id) {
+    public ResponseEntity<MemberDto> fetchUser(@PathVariable Long id) {
         log.info("/me");
-        MemberResponseDto memberDto = memberService.getUserInfo(id);
+        MemberDto memberDto = memberService.getUserInfo(id);
         return ResponseEntity.ok(memberDto);
     }
 
