@@ -42,26 +42,33 @@ function Login() {
     try {
       console.log(data);
 
-      const response = await axios.post("/api/member/login", data, config);
+      const response = await axios.post(
+        "/api/api/v1/member/login",
+        data,
+        config
+      );
       console.log(response);
 
-      const accessToken = response.data["access-token"];
-      const refreshToken = response.data["refresh-token"];
+      const accessToken = response.data["token"];
+      // const refreshToken = response.data["refresh-token"];
 
       sessionStorage.setItem("accessToken", accessToken);
-      sessionStorage.setItem("refreshToken", refreshToken);
+      // sessionStorage.setItem("refreshToken", refreshToken);
 
-      console.log(`엑세스토큰:${accessToken}, 리프레쉬토큰:${refreshToken}`);
+      console.log(`엑세스토큰:${accessToken}`);
 
-      const userDataRes = await axios.get("/api/v1/member", {
+      const userDataRes = await axios.get("/api/api/v1/member/", {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
-          token: `${accessToken}`,
+          token: accessToken,
         },
       });
+      console.log("응답");
       console.log(userDataRes);
-      dispatch(userSlice.actions.login(userDataRes.data));
+      console.log("응답의 data의 userInfo");
+      console.log(userDataRes.data.userInfo);
+      dispatch(userSlice.actions.login(userDataRes.data.userInfo));
 
       // try {
 
