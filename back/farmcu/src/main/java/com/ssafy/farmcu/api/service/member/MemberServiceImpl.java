@@ -68,9 +68,9 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public boolean updateMember(MemberUpdateReq memberUpdateReq, String id) {
         Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
-        if(!pwEncoder.matches(memberUpdateReq.getPassword(), member.getPassword())){ // 비밀번호 검증
-            return false;
-        }
+//        if(!pwEncoder.matches(member.getPassword(), member.getPassword())){ // 비밀번호 검증
+//            return false;
+//        }
 
         member.updateInfo(memberUpdateReq);
         memberRepository.save(member);
