@@ -286,7 +286,7 @@ const OvContainer = (props) => {
 
   const toggleMuteHandler = () => {
     if (isMute) {
-      publisher.publishAudio(false);
+      publisher.publishAudio(true);
     } else {
       publisher.publishAudio(false);
     }

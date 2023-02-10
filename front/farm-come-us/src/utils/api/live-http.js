@@ -14,19 +14,11 @@ export async function addLive(data) {
 
 /* 라이브 목록 조회 */
 export async function fetchLiveList() {
-  const liveList = [];
-  const reservedLiveList = [];
-
   try {
-    const { data } = await axios.get(`${LIVE_API_URL}/list`);
-    console.log(data);
+    await axios.get(`${LIVE_API_URL}/list`);
   } catch (err) {
     console.error(err);
   }
-
-  const result = {};
-
-  return result;
 }
 
 /* 라이브 상세 조회 */
