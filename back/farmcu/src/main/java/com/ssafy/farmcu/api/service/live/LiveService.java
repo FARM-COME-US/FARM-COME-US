@@ -13,7 +13,7 @@ public interface LiveService {
     public boolean saveLive(LiveInsertReq liveInsertReq);
 
     //라이브 목록 조회 (검색)
-    public List<LiveListRes> findItemsByLiveTitleLike(String liveTitle);
+    public List<LiveListRes> findLivesByLiveTitleLike(String liveTitle);
 
     //라이브 상세 조회
     public LiveDetailRes findOne(Long liveId);

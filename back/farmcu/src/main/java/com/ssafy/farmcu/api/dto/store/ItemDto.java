@@ -1,13 +1,11 @@
 package com.ssafy.farmcu.api.dto.store;
 
 import com.ssafy.farmcu.api.entity.store.Item;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@Builder
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemDto {

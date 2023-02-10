@@ -80,6 +80,7 @@ public class KakaoController {
 
             Object kakaoLogout = kakaoService.getAccessToken(code);
             return ResponseEntity.ok().body(kakaoLogout);
+
         } catch (NullPointerException e) {
             return ResponseEntity.status(500).body("데이터를 찾을 수 없습니다.\n" + e);
         }
