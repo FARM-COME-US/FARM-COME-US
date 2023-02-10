@@ -105,6 +105,11 @@ public class OrderServiceImpl implements OrderService{
     public List<Order> findMyOrders(Member member) {
         return orderRepository.findByMember(member);
     }
+
+    //** 주문 번호 별 주문 조회
+    public List<Order> findSameOrder(Order order) {
+        return orderRepository.findByOrderId(order);
+    }
 //    public List<OrderItem> findMyDetails(Long num)
 //        return orderRepository.findById(num);
 //    }

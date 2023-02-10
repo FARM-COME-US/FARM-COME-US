@@ -43,7 +43,7 @@ public class OrderItem {
         this.oitemId = oitemId;
         this.oitemCount = oitemCount;
         this.oitemCreatedAt = oitemCreatedAt;
-        this.orderPrice = item.getItemPrice() - item.getItemDiscount();
+        this.orderPrice = orderPrice;
     }
 
     // 주문 상품 상세 정보 생성
@@ -51,10 +51,9 @@ public class OrderItem {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setOitemCount(oitemCount);
-        orderItem.setOrderPrice(builder().orderPrice); //이 주문의 당시 가격
-
+        orderItem.setOrderPrice(oitemCount * item.getItemPrice() / 100 * (100 - item.getItemDiscount()) ); //이 주문의 당시 가격
         // 주문 상품 재고 차감
-        item.removeStock(builder().oitemCount);
+        item.removeStock(oitemCount);
         return orderItem;
     }
 

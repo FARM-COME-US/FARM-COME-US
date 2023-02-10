@@ -28,6 +28,7 @@ import java.util.List;
 @RequestMapping("/order")
 @Component
 @Api(value = "주문 관련 API")
+
 public class OrderController {
 
     public final OrderServiceImpl orderService;
@@ -54,8 +55,6 @@ public class OrderController {
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 
-
-
     @GetMapping("/detail")
     @ApiOperation(value = "주문 상세 조회")
     public ResponseEntity getMyOrders(@RequestHeader Member memberId){
@@ -79,8 +78,10 @@ public class OrderController {
 
     @PutMapping("/{orderId}")
     @ApiOperation(value = "주문 취소")
-    public ResponseEntity updateOrder(@PathVariable Long orderId){
-        orderService.updateOrder(orderId);
+    public ResponseEntity updateOrder(@PathVariable Order orderId){
+        List<Order> order = orderService.findSameOrder(orderId);
+
+        //        orderService.updateOrder(orderId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
