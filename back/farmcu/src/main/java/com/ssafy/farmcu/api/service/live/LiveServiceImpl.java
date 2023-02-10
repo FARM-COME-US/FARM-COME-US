@@ -48,7 +48,7 @@ public class LiveServiceImpl implements LiveService {
     }
 
     @Override
-    public List<LiveListRes> findItemsByLiveTitleLike(String liveTitle) {
+    public List<LiveListRes> findLivesByLiveTitleLike(String liveTitle) {
         List<Live> lives = liveRepository.findByLiveTitleLike(liveTitle);
         List<LiveListRes> result = lives.stream()
                 .map(l -> new LiveListRes(l))
