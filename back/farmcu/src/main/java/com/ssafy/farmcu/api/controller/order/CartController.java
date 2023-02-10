@@ -2,6 +2,7 @@ package com.ssafy.farmcu.api.controller.order;
 
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.farmcu.api.dto.order.CartDto;
 import com.ssafy.farmcu.api.dto.order.CartOrderDto;
 import com.ssafy.farmcu.api.entity.member.Member;
@@ -12,6 +13,7 @@ import com.ssafy.farmcu.api.service.order.OrderServiceImpl;
 import com.ssafy.farmcu.oauth.PrincipalDetails;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Model;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,16 +60,17 @@ public class CartController {
     @ApiOperation(value = "내 장바구니 목록")
     public ResponseEntity findMyCart(@PathVariable Member member) {
 
+
         try {
             List<Cart> cart = cartService.findMyCart(member);
-
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        System.out.println();
+        return new ResponseEntity<> ( HttpStatus.OK);
 
-//        return new ResponseEntity(HttpStatus.OK);
-        return new ResponseEntity (HttpStatus.OK);
     }
+
 
     @PostMapping(value = "/cart")
     @ApiOperation(value = "장바구니 상품 주문")

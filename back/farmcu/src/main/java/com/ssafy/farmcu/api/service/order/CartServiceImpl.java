@@ -1,10 +1,9 @@
 package com.ssafy.farmcu.api.service.order;
 
-import com.ssafy.farmcu.api.dto.order.CartAddDto;
 import com.ssafy.farmcu.api.dto.order.CartDto;
 import com.ssafy.farmcu.api.dto.order.CartOrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
-import com.ssafy.farmcu.api.dto.store.ItemDto;
+import com.ssafy.farmcu.api.dto.order.ResponseDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.entity.store.Item;
@@ -13,10 +12,11 @@ import com.ssafy.farmcu.api.repository.ItemRepository;
 import com.ssafy.farmcu.api.repository.MemberRepository;
 import com.ssafy.farmcu.exception.ItemNotFoundException;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +41,7 @@ public class CartServiceImpl implements CartService {
 
     //** 장바구니 상품 추가 **//
     @Override
+    @Transactional
     public Long addCart(CartDto cartDto) {
 
         Member member = memberRepository.findById(cartDto.getMemberId()).get();
@@ -49,9 +50,25 @@ public class CartServiceImpl implements CartService {
         Cart cart = Cart.createCart(member, item, cartDto.getCartItemCount());
         cartRepository.save(cart);
 
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("cart", cart);
         return cart.getCartId();
 
     }
+
+//    // ** 장바구니 상세 조회
+//    public List<CartDto.Response> findCarts(Member memberId) {
+//        List<Cart> carts = cartRepository.findByMember(memberId);
+//
+//        List<CartDto.Response> response = new ArrayList<>();
+//        for (Cart cart : carts) {
+//            Optional<Item> optionalProduct = itemRepository.findById(cart.getItem().getItemId());
+//            Item item = optionalProduct.get();
+//            ResponseDto responseDto = cartRepository.findByMember();
+//
+//        }
+//        return response;
+//    }
 
     //카트의 상품 주문로직
     public Long orderCart(List<CartOrderDto> cartOrderDtoList, String memberId){
