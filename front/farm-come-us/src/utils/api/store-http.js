@@ -15,8 +15,8 @@ export async function fetchCreateStore(storeInfo) {
   const data = {
     storeName: storeInfo.storeName,
     storeDescription: storeInfo.desc,
-    // storeImg: storeInfo.imgSrc,
-    // uploadFile: storeInfo.uploadFile,
+    storeImg: storeInfo.imgSrc,
+    uploadFile: storeInfo.uploadFile,
     storeStreetAddr: storeInfo.streetAddr,
     storeDetailAddr: storeInfo.detailAddr,
     storeZipcode: storeInfo.zipcode,
@@ -38,10 +38,7 @@ export async function fetchCreateStore(storeInfo) {
 
   console.log(data);
   try {
-    const response = axios.post("/api/store", {
-      data,
-      config,
-    });
+    const response = axios.post("/api/api/v1/store", data, config);
     console.log(response);
   } catch (err) {
     console.err(err);
