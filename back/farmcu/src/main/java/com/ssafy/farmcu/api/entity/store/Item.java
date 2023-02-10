@@ -35,7 +35,7 @@ public class Item {
     @Column(nullable = false)
     private int itemPrice;
 
-    @Column(nullable = false)
+    @Column
     private int itemDiscount;
 
     @Column
