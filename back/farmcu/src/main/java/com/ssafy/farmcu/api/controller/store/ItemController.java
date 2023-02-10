@@ -12,6 +12,8 @@ import com.ssafy.farmcu.api.service.store.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,15 +91,16 @@ public class ItemController {
 
     @PostMapping("/keyword")
     @ApiOperation(value = "상품 목록 조회")
-    public ResponseEntity<HashMap<String, Object>> selectItemList(@RequestBody ItemSearchReq itemSearchReq, Pageable pageable) {
-        HashMap<String, Object> itemText = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq, pageable);
+    public ResponseEntity<HashMap<String, Object>> selectItemList(@RequestBody ItemSearchReq itemSearchReq, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        HashMap<String, Object> itemText = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq, pageRequest);
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
         Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 
         //상품 대표 이미지
         List<ItemImageDto> itemImage = new ArrayList<>();
         for(ItemDto itemDto : itemList) {
-            if(itemImageService.findItemImagesByItemId(itemDto.getItemId()) != null)
+            if(!itemImageService.findItemImagesByItemId(itemDto.getItemId()).isEmpty())
                 itemImage.add(itemImageService.findItemImagesByItemId(itemDto.getItemId()).get(0));
         }
 
@@ -111,8 +114,9 @@ public class ItemController {
 
     @GetMapping("/store")
     @ApiOperation(value = "스토어 상품 목록 조회")
-    public ResponseEntity<HashMap<String, Object>> selectStoreItemList(Long storeId, Pageable pageable) {
-        HashMap<String, Object> itemText = itemService.findItemsByStore(storeId, pageable);
+    public ResponseEntity<HashMap<String, Object>> selectStoreItemList(Long storeId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        HashMap<String, Object> itemText = itemService.findItemsByStore(storeId, pageRequest);
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
         Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 

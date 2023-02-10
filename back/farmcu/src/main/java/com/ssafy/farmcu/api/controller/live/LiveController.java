@@ -4,14 +4,18 @@ import com.ssafy.farmcu.api.dto.live.LiveDetailRes;
 import com.ssafy.farmcu.api.dto.live.LiveInsertReq;
 import com.ssafy.farmcu.api.dto.live.LiveListRes;
 import com.ssafy.farmcu.api.dto.store.ItemDto;
+import com.ssafy.farmcu.api.dto.store.ItemImageDto;
 import com.ssafy.farmcu.api.service.live.LiveService;
+import com.ssafy.farmcu.api.service.store.ItemImageService;
 import com.ssafy.farmcu.api.service.store.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,6 +26,7 @@ import java.util.List;
 public class LiveController {
 
     private final ItemService itemService;
+    private final ItemImageService itemImageService;
     private final LiveService liveService;
 
     @PostMapping
@@ -38,8 +43,25 @@ public class LiveController {
 
     @GetMapping("/list")
     @ApiOperation(value = "라이브 목록 조회")
-    public ResponseEntity<List<LiveListRes>> selectLiveList(String liveTitle) {
-        return ResponseEntity.ok(liveService.findLivesByLiveTitleLike(liveTitle));
+    public ResponseEntity<HashMap<String, Object>> selectLiveList(String liveTitle, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        HashMap<String, Object> liveText = liveService.findLivesByLiveTitleLike(liveTitle, pageRequest);
+        List<LiveListRes> liveList = (List<LiveListRes>) liveText.get("liveList");
+        Boolean hasNextPage = (Boolean) liveText.get("hasNextPage");
+
+        //라이브 대표 이미지
+        List<ItemImageDto> liveImage = new ArrayList<>();
+        for (LiveListRes liveListRes : liveList) {
+            if(itemImageService.findItemImagesByItemId(liveListRes.getItemId()) != null)
+                liveImage.add(itemImageService.findItemImagesByItemId(liveListRes.getItemId()).get(0));
+        }
+
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("liveList", liveList);
+        resultMap.put("liveImage", liveImage);
+        resultMap.put("hasNextPage", hasNextPage);
+
+        return ResponseEntity.ok(resultMap);
     }
 
     @GetMapping
