@@ -24,6 +24,7 @@ const AddProductModal = (props) => {
 
   const addProductSubmitHandler = (e) => {
     e.preventDefault();
+    console.log(productInfo);
     createProduct(productInfo);
   };
 

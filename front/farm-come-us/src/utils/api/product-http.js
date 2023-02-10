@@ -80,7 +80,7 @@ export async function productList() {
 }
 
 /* 등록 상품 삭제 */
-export async function delteProduct(productId) {
+export async function deleteProduct(productId) {
   try {
     const response = axios({
       method: "delete",
