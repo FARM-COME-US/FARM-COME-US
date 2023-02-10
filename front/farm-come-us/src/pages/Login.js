@@ -71,7 +71,7 @@ function Login() {
       sessionStorage.setItem("accessToken", accessToken);
       // sessionStorage.setItem("refreshToken", refreshToken);
 
-      console.log(`엑세스토큰:${accessToken}`);
+      // console.log(`엑세스토큰:${accessToken}`);
 
       const userDataRes = await axios.get("/api/api/v1/member/", {
         headers: {
@@ -80,10 +80,10 @@ function Login() {
           token: accessToken,
         },
       });
-      console.log("응답");
-      console.log(userDataRes);
-      console.log("응답의 data의 userInfo");
-      console.log(userDataRes.data.userInfo);
+      // console.log("응답");
+      // console.log(userDataRes);
+      // console.log("응답의 data의 userInfo");
+      // console.log(userDataRes.data.userInfo);
       dispatch(userSlice.actions.login(userDataRes.data.userInfo));
       navigate("/");
     } catch (err) {
