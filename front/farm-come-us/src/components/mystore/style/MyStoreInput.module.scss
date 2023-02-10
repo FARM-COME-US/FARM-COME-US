@@ -35,6 +35,7 @@
     color: #555;
     width: calc(100% - 16px);
     text-overflow: ellipsis;
+    padding-bottom: 4px;
 
     &:focus {
       border-bottom: 1px solid #ccc;
