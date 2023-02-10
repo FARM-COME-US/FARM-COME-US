@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,11 +42,11 @@ public class LiveController {
         return ResponseEntity.ok(resultMap);
     }
 
-    @GetMapping("/list")
-    @ApiOperation(value = "라이브 목록 조회")
-    public ResponseEntity<HashMap<String, Object>> selectLiveList(String liveTitle, int page, int size) {
+    @GetMapping("/store")
+    @ApiOperation(value = "스토어별 라이브 목록 조회")
+    public ResponseEntity<HashMap<String, Object>> selectLiveListByStore(Long storeId, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        HashMap<String, Object> liveText = liveService.findLivesByLiveTitleLike(liveTitle, pageRequest);
+        HashMap<String, Object> liveText = liveService.findLivesByStore(storeId, pageRequest);
         List<LiveListRes> liveList = (List<LiveListRes>) liveText.get("liveList");
         Boolean hasNextPage = (Boolean) liveText.get("hasNextPage");
 
@@ -57,8 +58,54 @@ public class LiveController {
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("liveList", liveList);
-        resultMap.put("liveImage", liveImage);
+        resultMap.put("storeLiveList", liveList);
+        resultMap.put("storeLiveImage", liveImage);
+        resultMap.put("hasNextPage", hasNextPage);
+
+        return ResponseEntity.ok(resultMap);
+    }
+
+    @GetMapping("/list/on")
+    @ApiOperation(value = "라이브 중인 목록 조회")
+    public ResponseEntity<HashMap<String, Object>> selectLiveOnList(String liveTitle, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        HashMap<String, Object> liveText = liveService.findLivesByLiveTitleLikeAndLiveStartGreaterThanEqualAndLiveEndLessThanEqual(liveTitle, LocalDateTime.now(), LocalDateTime.now(), pageRequest);
+        List<LiveListRes> liveList = (List<LiveListRes>) liveText.get("liveList");
+        Boolean hasNextPage = (Boolean) liveText.get("hasNextPage");
+
+        //라이브 대표 이미지
+        List<ItemImageDto> liveImage = new ArrayList<>();
+        for (LiveListRes liveListRes : liveList) {
+            if(itemImageService.findItemImagesByItemId(liveListRes.getItemId()) != null)
+                liveImage.add(itemImageService.findItemImagesByItemId(liveListRes.getItemId()).get(0));
+        }
+
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("liveOnList", liveList);
+        resultMap.put("liveOnImage", liveImage);
+        resultMap.put("hasNextPage", hasNextPage);
+
+        return ResponseEntity.ok(resultMap);
+    }
+
+    @GetMapping("/list/off")
+    @ApiOperation(value = "라이브 예정 목록 조회")
+    public ResponseEntity<HashMap<String, Object>> selectLiveOffList(String liveTitle, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        HashMap<String, Object> liveText = liveService.findLivesByLiveTitleLikeAndLiveStartLessThan(liveTitle, LocalDateTime.now(), pageRequest);
+        List<LiveListRes> liveList = (List<LiveListRes>) liveText.get("liveList");
+        Boolean hasNextPage = (Boolean) liveText.get("hasNextPage");
+
+        //라이브 대표 이미지
+        List<ItemImageDto> liveImage = new ArrayList<>();
+        for (LiveListRes liveListRes : liveList) {
+            if(itemImageService.findItemImagesByItemId(liveListRes.getItemId()) != null)
+                liveImage.add(itemImageService.findItemImagesByItemId(liveListRes.getItemId()).get(0));
+        }
+
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("liveOffList", liveList);
+        resultMap.put("liveOffImage", liveImage);
         resultMap.put("hasNextPage", hasNextPage);
 
         return ResponseEntity.ok(resultMap);
