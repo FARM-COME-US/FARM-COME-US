@@ -8,8 +8,7 @@ import classes from "./OAuth2RedirectHandler.module.scss";
 
 // import Spinner from "../spinner";
 
-// const myServerURL = "http://localhost:9090/kakao";
-const getTokenURL = "api/oauth/";
+const getTokenURL = "api/api/v1/login/oauth";
 const getUserInfoURL = "api/api/v1/member";
 
 function OAuth2RedirectHandler(props) {
@@ -59,8 +58,19 @@ function OAuth2RedirectHandler(props) {
   const KakaoLoginMatch = async (value) => {
     if (value?.status === 200) {
       console.log("로그인 성공!");
+      console.log("아래에 res들어감.");
       console.log(value);
-      const userInfoRes = await axios.get(getUserInfoURL);
+      const accessToken = sessionStorage.getItem("accessToken");
+      console.log(accessToken);
+      const userDataRes = await axios.get("/api/api/v1/member/", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          token: accessToken,
+        },
+      });
+
+      // const userInfoRes = await axios.get(getUserInfoURL);
       dispatch(userSlice.actions.login(value?.data));
       // 백엔드에서 넘겨주는 데이터를 dispatch로 내 리덕스에 넘김.
 
