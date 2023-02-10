@@ -52,7 +52,8 @@ export async function fetchUserInfo(id) {
   const memberId = id;
 
   try {
-    const response = axios.get(`/api/member/${memberId}`, {
+    const response = axios.get(`/api/member`, {
+      params: { memberId: memberId },
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",

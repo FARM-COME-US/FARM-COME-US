@@ -1,8 +1,6 @@
 package com.ssafy.farmcu.api.service.store;
 
 import com.ssafy.farmcu.api.dto.store.ItemImageDto;
-import com.ssafy.farmcu.api.entity.store.Item;
-import com.ssafy.farmcu.api.entity.store.ItemImage;
 
 import java.util.List;
 

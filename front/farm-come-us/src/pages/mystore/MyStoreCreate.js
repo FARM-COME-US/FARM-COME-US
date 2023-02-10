@@ -63,6 +63,7 @@ const MyStoreCreate = () => {
       <MyStoreHeader
         info={storeInfo}
         onStoreInfoChange={storeInfoChangeHandler}
+        isEditting={true}
       />
       <MyStoreContentTitle text="스토어 정보 입력" />
       <form>

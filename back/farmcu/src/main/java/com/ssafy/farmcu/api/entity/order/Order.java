@@ -24,7 +24,6 @@ public class Order {
 //        ORDER, CANCLE
 //     }
 
-
     //필드
     @Id
     // pk 생성자 수정 필요
