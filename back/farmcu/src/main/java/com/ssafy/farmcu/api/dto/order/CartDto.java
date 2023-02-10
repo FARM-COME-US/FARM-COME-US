@@ -11,10 +11,13 @@ import lombok.*;
 @AllArgsConstructor
 public class CartDto {
 
+    @NotNull
     private int cartItemCount;
 
+    @NotNull
     private Long memberId;
 
+    @NotNull
     private Long itemId;
 
 //    private Long storeId;   // => 같은 상점끼리 묶어서 보여주기
@@ -43,6 +46,7 @@ public class CartDto {
 //        this.storeName = cart.getItem().getStore().getStoreName();
 //        this.itemSalePercent = cart.getItem().getItemDiscount();
 //        this.getTotalPrice = cartItemCount*cart.getItem().getItemPrice();
+
     }
 
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import classes from "./style/LiveList.module.scss";
 
@@ -8,9 +8,24 @@ import ReservedLiveItem from "./ReservedLiveItem";
 const LivePreviewList = (props) => {
   let list = <span>등록된 라이브가 없습니다.</span>;
 
+  if (props.isLive) {
+    console.log("======== Live ======= ");
+    console.log(props.sessionList);
+    console.log(props.liveList);
+  } else {
+    console.log("======== Reserved Live ======= ");
+    console.log(props.liveList);
+  }
+
   if (props.liveList && props.liveList.length > 0) {
     list = props.isLive
-      ? props.liveList.map((item) => <LiveItem key={item.liveId} live={item} />)
+      ? props.liveList.map((item) => (
+          <LiveItem
+            key={item.liveId}
+            live={item}
+            onClick={props.checkIsLiveRunning}
+          />
+        ))
       : props.liveList.map((item) => (
           <ReservedLiveItem key={item.liveId} live={item} />
         ));
