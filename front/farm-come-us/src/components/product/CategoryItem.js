@@ -3,6 +3,8 @@ import classes from "./style/CategoryItem.module.scss";
 import CategoryButton from "./CategoryButton";
 
 const CategoryItem = (props) => {
+  console.log(props);
+
   const sendId = () => {
     props.getid(props.category_id, 0);
   };
