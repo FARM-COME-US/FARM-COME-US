@@ -48,11 +48,11 @@ import MyStoreCreate from "./pages/mystore/MyStoreCreate";
 const App = () => {
   const dispatch = useDispatch();
   const menu = useSelector((state) => {
-    console.log("useSelector 확인용: userSlice 출력해!");
-    console.log(state.userSlice);
-    console.log("실험해보자");
-    console.log(state.userSlice);
-    console.log("userSlice확인용");
+    // console.log("useSelector 확인용: userSlice 출력해!");
+    // console.log(state.userSlice);
+    // console.log("실험해보자");
+    // console.log(state.userSlice);
+    // console.log("userSlice확인용");
     return state.menuSlice.isOpen;
   }); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
 
