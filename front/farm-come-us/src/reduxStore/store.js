@@ -16,8 +16,8 @@ export const history = createBrowserHistory();
 
 const persistConfig = {
   key: "root",
-  storage: storage,
-  whitelist: ["userSlice, menuSlice"],
+  storage: storageSession,
+  // whitelist: ["userSlice, menuSlice"],
   //User 이거 뭔지 수정필요
 };
 
