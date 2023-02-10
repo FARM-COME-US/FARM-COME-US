@@ -74,8 +74,22 @@ const MyPage = (props) => {
 
   return (
     <div>
-      <MyPageHeader profileImg={profileImg} userInfo={DUMMY_MYPAGE_INFO} />
-      <Outlet context={{ info: DUMMY_MYPAGE_INFO }} />
+      <MyPageHeader
+        profileImg={userInfo.imgSrc}
+        userInfo={userInfo}
+        isEditting={isEditting}
+        userInfoChangeHandler={userInfoChangeHandler}
+      />
+      <Outlet
+        context={{
+          userInfo: userInfo,
+          isEditting,
+          toggleIsEditting,
+          editInfoHandler,
+          userInfoChangeHandler,
+          cancelInfoEditHandler,
+        }}
+      />
     </div>
   );
 };
