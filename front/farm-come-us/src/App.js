@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import OAuth2RedirectHandler from "./components/user/OAuth2RedirectHandler";
+import AdditionalInfo from "./pages/AdditionalInfo";
 import Cart from "./pages/Cart";
 import SideMenu from "./components/common/SideMenu";
 import Backdrop from "./components/common/Backdrop";
@@ -47,8 +48,11 @@ import MyStoreCreate from "./pages/mystore/MyStoreCreate";
 const App = () => {
   const dispatch = useDispatch();
   const menu = useSelector((state) => {
-    console.log("useSelector 확인용: state.menuSlice.isOpen");
-    console.log(state);
+    // console.log("useSelector 확인용: userSlice 출력해!");
+    // console.log(state.userSlice);
+    // console.log("실험해보자");
+    // console.log(state.userSlice);
+    // console.log("userSlice확인용");
     return state.menuSlice.isOpen;
   }); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
 
@@ -104,6 +108,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/kakao" element={<OAuth2RedirectHandler />}></Route>
+        <Route path="/additional-info" element={<AdditionalInfo />}></Route>
         <Route path="/cart" element={<Cart />} />
         <Route path="/livestore" element={<Live />}>
           <Route path="running" element={<RunningLive />} />
