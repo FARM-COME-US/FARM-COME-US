@@ -16,6 +16,7 @@ public class LiveListRes {
     private int liveDiscount;
     private String liveStart;
     private int liveViewers;
+    private Long itemId;
     private String storeName;
 
     public LiveListRes(Live live) {
@@ -25,6 +26,7 @@ public class LiveListRes {
         this.liveDiscount = live.getLiveDiscount();
         this.liveStart = String.valueOf(live.getLiveStart());
         this.liveViewers = live.getLiveViewers();
+        this.itemId = live.getItem().getItemId();
         this.storeName = live.getStore().getStoreName();
     }
 

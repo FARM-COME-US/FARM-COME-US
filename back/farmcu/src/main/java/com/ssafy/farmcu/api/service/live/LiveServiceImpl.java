@@ -10,9 +10,12 @@ import com.ssafy.farmcu.api.repository.ItemRepository;
 import com.ssafy.farmcu.api.repository.LiveRepository;
 import com.ssafy.farmcu.api.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -48,11 +51,15 @@ public class LiveServiceImpl implements LiveService {
     }
 
     @Override
-    public List<LiveListRes> findLivesByLiveTitleLike(String liveTitle) {
-        List<Live> lives = liveRepository.findByLiveTitleLike(liveTitle);
-        List<LiveListRes> result = lives.stream()
+    public HashMap<String, Object> findLivesByLiveTitleLike(String liveTitle, Pageable pageable) {
+        Slice<Live> lives = liveRepository.findByLiveTitleLike(liveTitle, pageable);
+        List<LiveListRes> liveList = lives.getContent().stream()
                 .map(l -> new LiveListRes(l))
                 .collect(toList());
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("liveList", liveList);
+        result.put("hasNextPage", lives.hasNext());
 
         return result;
     }

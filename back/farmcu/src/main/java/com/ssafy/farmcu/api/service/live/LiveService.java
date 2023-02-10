@@ -3,7 +3,9 @@ package com.ssafy.farmcu.api.service.live;
 import com.ssafy.farmcu.api.dto.live.LiveDetailRes;
 import com.ssafy.farmcu.api.dto.live.LiveInsertReq;
 import com.ssafy.farmcu.api.dto.live.LiveListRes;
+import org.springframework.data.domain.Pageable;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +15,7 @@ public interface LiveService {
     public boolean saveLive(LiveInsertReq liveInsertReq);
 
     //라이브 목록 조회 (검색)
-    public List<LiveListRes> findLivesByLiveTitleLike(String liveTitle);
+    public HashMap<String, Object> findLivesByLiveTitleLike(String liveTitle, Pageable pageable);
 
     //라이브 상세 조회
     public LiveDetailRes findOne(Long liveId);
