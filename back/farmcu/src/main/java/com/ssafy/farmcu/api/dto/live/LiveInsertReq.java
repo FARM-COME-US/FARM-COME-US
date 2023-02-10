@@ -1,12 +1,10 @@
 package com.ssafy.farmcu.api.dto.live;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class LiveInsertReq {
@@ -17,6 +15,6 @@ public class LiveInsertReq {
     private int liveStock;
     private String liveStart;
     private Long itemId;
-    private Long StoreId;
+    private Long storeId;
 
 }
