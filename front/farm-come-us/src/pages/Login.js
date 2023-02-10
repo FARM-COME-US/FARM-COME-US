@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { MdPermIdentity, MdLockOutline } from "react-icons/md";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import jwt_decode from "jwt-decode";
@@ -17,6 +17,11 @@ import classes from "./style/Login.module.scss";
 function Login() {
   // const dispatch = useDispatch();
   const dispatch = useDispatch();
+  const location = useLocation();
+  console.log("성공");
+  console.log(location);
+  let signUpId = "";
+  let signUpPassword = "";
 
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +30,16 @@ function Login() {
   const [isError, setIsError] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const navigate = useNavigate();
+
+  if (location.state !== null) {
+    signUpId = location.state.id;
+    signUpPassword = location.state.password;
+    if (!userId && !password) {
+      setUserId(signUpId);
+      setPassword(signUpPassword);
+    }
+  } else {
+  }
 
   const loginHandler = async () => {
     const data = {
@@ -69,35 +84,6 @@ function Login() {
       console.log("응답의 data의 userInfo");
       console.log(userDataRes.data.userInfo);
       dispatch(userSlice.actions.login(userDataRes.data.userInfo));
-
-      // try {
-
-      //   const userdata = await axios.get("/api/");
-
-      // } catch (err) {
-      //   console.log("유저정보 가져와서 dispatch 하는 도중 문제!");
-      // }
-
-      // const response = await axios.post(
-      //   "/api/api/v1/member/login",
-      //   data,
-      //   config
-      // );
-
-      // const accessToken = response.data["token"];
-      // const decodedAccessToken = jwt_decode(accessToken);
-      // sessionStorage.setItem("accessToken", accessToken);
-      // sessionStorage.setItem("jwtAccess", JSON.stringify(decodedAccessToken));
-
-      // dispatch(
-      //   userSlice.actions.savetoken({
-      //     accessToken: accessToken,
-      //     refreshToken: refreshToken,
-      //   })
-      //   //수정필요. 작동하는지 확인이 필요함. 세션에 저장하는거라서 이 부분이 필요 없다. 이 로직으로 끝낼거면..
-      // );
-      // 토큰만료 1분전에 연장요청보내기.
-      // setTimeout(onSilentRefresh, JWT_EXPIRE_TIME - 60000)
       navigate("/");
     } catch (err) {
       setIsError(true);
@@ -139,6 +125,7 @@ function Login() {
           <input
             className={`${classes.inputbar}`}
             placeholder="아이디"
+            value={signUpId ? signUpId : ""}
             onChange={(e) => {
               setUserId(e.target.value);
             }}
@@ -168,6 +155,7 @@ function Login() {
             <input
               className={classes.inputbar}
               placeholder="비밀번호"
+              value={signUpPassword ? signUpPassword : ""}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}

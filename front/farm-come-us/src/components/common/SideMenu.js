@@ -76,8 +76,8 @@ const SideMenu = (props) => {
               />
             </div>
             <div className={classes.profileTxtBox}>
-              <div className={classes.nickname}>{user.nickname}nickname</div>
-              <div className={classes.email}>{user.email}@naver.com</div>
+              <div className={classes.nickname}>{user.nickname}</div>
+              <div className={classes.email}>{user.email}</div>
             </div>
           </div>
         ) : (

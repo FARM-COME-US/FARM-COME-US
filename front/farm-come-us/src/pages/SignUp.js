@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from "react";
-
+import { useDispatch } from "react-redux";
 import classes from "./style/SignUp.module.scss";
 import DaumPostcodeEmbed from "react-daum-postcode";
+import userSlice from "../reduxStore/userSlice";
 import {
   MdPermIdentity,
   MdEmail,
@@ -12,9 +13,14 @@ import {
 } from "react-icons/md";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
-import { userSignUp } from "../utils/api/user-http";
+import {
+  userSignUp,
+  login,
+  fetchUserInfoWithAccessToken,
+} from "../utils/api/user-http";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   //이름, 닉네임, 전화번호, 비밀번호, 비밀번호 확인, 주소, 상세주소(얘는 유효성검사 안함. 주택이면 없으니까.), 우편번호(주소 들어오면 있는거니까 얘도 유효성X)
@@ -99,7 +105,8 @@ const SignUp = () => {
     };
 
     userSignUp(userInfo);
-    navigate("/");
+    alert("회원가입이 완료되었습니다.");
+    navigate("/login", { state: { id: id, password: password } });
   };
 
   // 아이디
