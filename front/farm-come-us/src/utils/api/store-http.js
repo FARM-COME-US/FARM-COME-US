@@ -5,7 +5,7 @@ const STORE_API_URL = `${DUMMY_SERVER_URL}/store`;
 const STORE_LIKE_API_URL = `${DUMMY_SERVER_URL}/storelikes`;
 
 /* 스토어 생성 */
-export async function fetchCreateStore(storeInfo) {
+export async function fetchCreateStore(storeInfo, userInfo) {
   const DUMMY_USER_INFO = {
     memberId: 1,
     id: 1,
@@ -13,17 +13,18 @@ export async function fetchCreateStore(storeInfo) {
   };
 
   const data = {
-    storeName: storeInfo.storeName,
-    storeDescription: storeInfo.desc,
-    storeImg: storeInfo.imgSrc,
-    uploadFile: storeInfo.uploadFile,
-    storeStreetAddr: storeInfo.streetAddr,
-    storeDetailAddr: storeInfo.detailAddr,
-    storeZipcode: storeInfo.zipcode,
-    storePhoneNumber: storeInfo.pno,
+    memberId: userInfo.memberId,
     storeDeliveryCost: storeInfo.deliveryCost,
     storeDeliveryFree: storeInfo.deliveryFree,
-    memberId: DUMMY_USER_INFO.memberId,
+    storeDescription: storeInfo.desc,
+    storeDetailAddr: storeInfo.detailAddr,
+    storeImg: storeInfo.imgSrc,
+    storeName: storeInfo.storeName,
+    storePhoneNumber: storeInfo.phoneNumber,
+    storeStreetAddr: storeInfo.streetAddr,
+    storeZipcode: storeInfo.zipcode,
+    uploadFile: storeInfo.uploadFile,
+    // 😀 수정필요. 테스트 중.
   };
 
   const config = {
@@ -35,14 +36,18 @@ export async function fetchCreateStore(storeInfo) {
     },
     withCredentials: false,
   };
-
+  console.log("유저정보");
+  console.log(userInfo.memberId);
   console.log(data);
   try {
     const response = axios.post("/api/api/v1/store", data, config);
-
+    // console.log(`토큰 이렇게 잘 온다고: ${config.headers.token}`);
+    console.log("1");
     console.log(response);
+    console.log("2");
   } catch (err) {
     console.err(err);
+    console.log("3");
   }
 }
 
