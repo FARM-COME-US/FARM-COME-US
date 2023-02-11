@@ -2,33 +2,19 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 // createAsyncThunk
 // import axios from "axios";
-
-// const myServerURL = 'myserverURL'
-// const asyncCodePost = createAsyncThunk(
-//     'userSlice/asyncCodePost',
-//     async () => {
-//         const res = await axios.post(myServerURL, {
-//             code:
-//         })
-//     }
-// )
-// const initialStateValue = {
-//   accessToken: "",
-//   refreshToken: "",
-//   accessCode: "",
-//   email: "",
-//   id: "",
-//   nickname: "",
-//   roadAddress: "",
-//   specificAddress: "",
-//   zonecode: "",
-//   isLogin: false,
-// }; //정확히 어떤 변수명으로 가지고 있어야할지 정하지 못함. BE와 문의
 const initialStateValue = {
-  username: "",
-  password: "",
+  memberId: "",
+  id: "",
+  nickname: "",
+  name: "",
+  email: "",
+  streetAddr: "",
+  detailAddr: "",
+  zipcode: "",
+  phoneNumber: "",
+  profileImg: "",
   isLogin: false,
-}; //정확히 어떤 변수명으로 가지고 있어야할지 정하지 못함. BE와 문의
+};
 
 const asynclogin = createAsyncThunk(
   "userSlice/asynclogin",
@@ -57,12 +43,10 @@ const userSlice = createSlice({
   name: "userSlice",
   initialState: {
     value: initialStateValue,
-    accessToken: "",
-    refreshToken: "",
   },
   reducers: {
     login: (state, action) => {
-      state.value = action.payload;
+      state.value = { isLogin: true, ...action.payload };
     },
     logout: (state, action) => {
       state.value = initialStateValue;
