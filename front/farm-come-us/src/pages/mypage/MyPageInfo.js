@@ -8,58 +8,14 @@ import MyPageInfoList from "../../components/mypage/MyPageInfoList";
 import Button from "../../components/common/Button";
 
 const MyUserInfo = () => {
-  const { info } = useOutletContext();
-  const [userInfo, setUserInfo] = useState({
-    id: info.id,
-    nickname: info.nickname,
-    name: info.name,
-    email: info.email,
-    pno: info.pno,
-    streetAddr: info.streetAddr,
-    detailAddr: info.detailAddr,
-    zipcode: info.zipcode,
-  });
-  const [isEditting, setIsEditting] = useState(false);
-
-  const onChangeInfoHandler = (name, value) => {
-    setUserInfo((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-
-  const editInfoHandler = (e) => {
-    e.preventDefault();
-
-    alert("사용자 정보가 수정되었습니다.");
-    console.log(userInfo);
-    setIsEditting((prev) => !prev);
-  };
-
-  const cancelInfoEditHandler = () => {
-    setUserInfo((prev) => {
-      return {
-        nickname: info.nickname,
-        name: info.name,
-        email: info.email,
-        pno: info.pno,
-        streetAddr: info.streetAddr,
-        detailAddr: info.detailAddr,
-        zipcode: info.zipcode,
-      };
-    });
-
-    setIsEditting((prev) => !prev);
-
-    alert("수정이 취소되었습니다.");
-  };
-
-  const toggleIsEditting = (e) => {
-    e.preventDefault();
-    setIsEditting((prev) => !prev);
-  };
+  const {
+    userInfo,
+    isEditting,
+    toggleIsEditting,
+    editInfoHandler,
+    userInfoChangeHandler,
+    cancelInfoEditHandler,
+  } = useOutletContext();
 
   return (
     <div className={classes.userInfo}>
@@ -69,7 +25,7 @@ const MyUserInfo = () => {
           className={classes.infoList}
           info={userInfo}
           isEditting={isEditting}
-          onChange={onChangeInfoHandler}
+          onChange={userInfoChangeHandler}
         />
         {isEditting ? (
           <div className={classes.btnBox}>

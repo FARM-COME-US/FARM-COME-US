@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import classes from "./style/MyPageHeader.module.scss";
 import { MdAddCircle } from "react-icons/md";
-import axios from "axios";
 import MyPageMenu from "../../pages/mypage/MyPageMenu";
 
 const MyPageHeader = (props) => {
@@ -13,13 +12,8 @@ const MyPageHeader = (props) => {
     const file = inputProfileRef.current.files[0]; //선택된 파일 가져오기
     //이미지 source 가져오기
     profileImgRef.current.src = URL.createObjectURL(file);
-    console.log(file);
-    console.log(profileImgRef.current);
-  };
-
-  const addBgImageHandler = () => {
-    alert("이미지 추가 이벤트");
-    return;
+    props.userInfoChangeHandler("imgSrc", profileImgRef.current.src);
+    props.userInfoChangeHandler("file", file);
   };
 
   return (
@@ -27,12 +21,14 @@ const MyPageHeader = (props) => {
       <div className={classes.flexbox}>
         <div className={classes.innerflexbox}>
           <div className={classes.nicknameTxt}>{props.userInfo.nickname}</div>
-          <div className={classes.normalTxt}>{"님 안녕하세요."}</div>
+          {!props.isEditting ? (
+            <div className={classes.normalTxt}>{"님 안녕하세요."}</div>
+          ) : null}
         </div>
         <div className={classes.imgWrapper}>
           <img
             className={classes.profileImg}
-            src={process.env.PUBLIC_URL + "/img/defaultProfile.png"}
+            src={props.userInfo.imgSrc}
             alt="이미지"
             ref={profileImgRef}
           />
@@ -47,9 +43,11 @@ const MyPageHeader = (props) => {
 
           {/* props로 경로 받아오거나, 이미지 던짐. */}
         </div>
-        <label htmlFor="select-profile">
-          <MdAddCircle className={classes.btnAddBg} />
-        </label>
+        {props.isEditting ? (
+          <label htmlFor="select-profile">
+            <MdAddCircle className={classes.btnAddBg} />
+          </label>
+        ) : null}
       </div>
 
       <MyPageMenu userInfo={props.userInfo} />

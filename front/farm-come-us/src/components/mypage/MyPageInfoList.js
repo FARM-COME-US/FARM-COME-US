@@ -21,10 +21,6 @@ const MyStoreInfoList = (props) => {
     setOpenModal(!openModal);
   };
 
-  const onInputChangeHandler = (e) => {
-    props.onChange(e.target.name, e.target.value);
-  };
-
   const onEditAddr = () => {
     if (props.isEditting) {
       return setOpenModal(!openModal);
@@ -38,7 +34,7 @@ const MyStoreInfoList = (props) => {
           label="닉네임"
           value={props.info.nickname}
           readOnly={!props.isEditting}
-          onChange={onInputChangeHandler}
+          onChange={props.onChange}
           name="nickname"
           id="myInput"
         />
@@ -48,7 +44,7 @@ const MyStoreInfoList = (props) => {
           label="성명"
           value={props.info.name}
           readOnly={!props.isEditting}
-          onChange={onInputChangeHandler}
+          onChange={props.onChange}
           name="name"
         />
       </li>
@@ -66,7 +62,7 @@ const MyStoreInfoList = (props) => {
           label="전화번호"
           value={props.info.pno}
           readOnly={!props.isEditting}
-          onChange={onInputChangeHandler}
+          onChange={props.onChange}
           name="pno"
         />
       </li>
@@ -75,7 +71,7 @@ const MyStoreInfoList = (props) => {
           label="주소"
           value={props.info.streetAddr}
           readOnly={!props.isEditting}
-          onChange={onInputChangeHandler}
+          onChange={props.onChange}
           name="streetAddr"
           onFocus={onEditAddr}
         />
@@ -85,7 +81,7 @@ const MyStoreInfoList = (props) => {
           label="우편번호"
           value={props.info.zipcode}
           readOnly={true}
-          onChange={onInputChangeHandler}
+          onChange={props.onChange}
           name="zipcode"
         />
       </li>
@@ -94,7 +90,7 @@ const MyStoreInfoList = (props) => {
           label="상세주소"
           value={props.info.detailAddr}
           readOnly={!props.isEditting}
-          onChange={onInputChangeHandler}
+          onChange={props.onChange}
           name="detailAddr"
         />
       </li>

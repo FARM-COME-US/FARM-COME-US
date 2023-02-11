@@ -20,7 +20,7 @@ const ProductList = (props) => {
       ));
       return <ul className={`${classes.productList}`}>{mapFilterContent}</ul>;
     } else if (props.sub_category_id > 0) {
-      const firstFilterContent = props.list.filter(
+      const firstFilterContent = props.ITEM_LIST.filter(
         (item) => item.category_id === props.category_id
       );
       const secondFilterContent = firstFilterContent.filter(
