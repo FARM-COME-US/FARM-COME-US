@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { fetchCreateStore, fetchStoreDetail } from "../../utils/api/store-http";
-
 import classes from "./style/MyStoreCreate.module.scss";
 
 import MyStoreHeader from "../../components/mystore/MyStoreHeader";
@@ -41,8 +40,14 @@ const MyStoreCreate = () => {
   const createStoreHandler = (e) => {
     e.preventDefault();
     // alert("스토어 생성로직 - 멤버 id 더미 데이터 ");
-    fetchCreateStore(storeInfo, user);
-    console.log("여기까지는 오나?");
+    try {
+      fetchCreateStore(storeInfo, user);
+      alert("스토어가 생성되었습니다.");
+      // 스토어 생성하고, 내 스토어로 넘김.
+      navigate("/mystore", { replace: true });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const storeInfoChangeHandler = (name, value) => {
