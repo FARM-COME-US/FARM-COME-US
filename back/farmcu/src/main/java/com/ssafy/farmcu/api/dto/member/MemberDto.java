@@ -14,7 +14,7 @@ public class MemberDto {
     private String detailAddr;
     private String zipcode;
     private String phoneNumber;
-    private String profileImg;
+    private String storeExist;
 
     public MemberDto(Member member){
         this.memberId = member.getMemberId();
@@ -26,11 +26,12 @@ public class MemberDto {
         this.detailAddr = member.getDetailAddr();
         this.zipcode = member.getZipcode();
         this.phoneNumber = member.getPhoneNumber();
-        this.profileImg = member.getProfileImg();
     }
     public static MemberDto of(Member member) {
         return new MemberDto(member);
     }
 
-
+    public void aboutStore(String exist){
+        this.storeExist = exist;
+    }
 }

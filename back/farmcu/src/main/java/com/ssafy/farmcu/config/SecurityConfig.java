@@ -5,7 +5,6 @@ import com.ssafy.farmcu.api.service.member.MemberRefreshTokenServiceImpl;
 import com.ssafy.farmcu.config.properties.AppProperties;
 import com.ssafy.farmcu.config.properties.CorsProperties;
 import com.ssafy.farmcu.exception.RestAuthenticationEntryPoint;
-import com.ssafy.farmcu.oauth.filter.JwtAuthenticationFilter;
 import com.ssafy.farmcu.oauth.filter.TokenAuthenticationFilter;
 import com.ssafy.farmcu.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.ssafy.farmcu.oauth.handler.OAuth2AuthenticationSuccessHandler;
@@ -46,7 +45,7 @@ public class SecurityConfig {
     private final MemberRepository memberRepository;
     private final MemberRefreshTokenServiceImpl memberRefreshTokenService;
 //    private final TokenAuthenticationFilter tokenAuthenticationFilter;
-//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
