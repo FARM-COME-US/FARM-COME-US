@@ -21,26 +21,10 @@ const ProductDetail = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
-  /*
-  productInfo = {
-    liveId: int,
-    productId: int,
-    storeId: int,
-    productName: str,
-    productScript: str,
-    productOption: int,
-    productAmount: int,
-    productPrice: int,
-    discountRate: int,
-  },
-  storeInfo = {
-    storeName: str,
-  }
-  */
 
   const discountPrice =
-    location.state.productInfo.price *
-    (1 - location.state.productInfo.discount / 100);
+    location.state.item.item_price *
+    (1 - location.state.item.item_discount / 100);
 
   let resultPrice = discountPrice * amount;
 
@@ -54,30 +38,25 @@ const ProductDetail = () => {
           onClick={() => navigate(-1)}
         ></MdOutlineArrowBackIos>
         <div className={classes.storename}>
-          <Link
-            to="/store"
-            state={{ storeId: location.state.productInfo.storeId }}
-          >
-            {location.state.productInfo.storeName}
+          <Link to="/store" state={{ storeId: location.state.item.store_id }}>
+            {location.state.item.store_name}
           </Link>
         </div>
       </div>
       <Card className={classes.imagecard}>
         <img src="https://via.placeholder.com/300" alt="공백"></img>
       </Card>
-      <div className={classes.productname}>
-        {location.state.productInfo.productName}
-      </div>
+      <div className={classes.productname}>{location.state.item.item_name}</div>
       <div className={classes.productscript}>
-        {location.state.productInfo.productScript}
+        {location.state.item.item_description}
       </div>
       <div className={classes.option}>
         <div className={classes.discountspace}>
           <div className={classes.salepercent}>
-            {location.state.productInfo.discount}%
+            {location.state.item.item_discount}%
           </div>
           <div className={classes.originalprice}>
-            {convertedPrice(location.state.productInfo.price)}원
+            {convertedPrice(location.state.item.item_price)}원
           </div>
         </div>
         <div className={classes.saleprice}>{convertedPrice(discountPrice)}</div>
@@ -105,9 +84,9 @@ const ProductDetail = () => {
           <Link
             to="/payment"
             state={{
-              storename: location.state.productInfo.storeName,
-              productname: location.state.productInfo.productName,
-              price: resultPrice,
+              store_name: location.state.item.store_name,
+              item_name: location.state.item.item_name,
+              item_price: resultPrice,
               amount: amount,
             }}
             className={classes.buybuttonlink}

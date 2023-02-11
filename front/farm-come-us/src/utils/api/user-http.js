@@ -1,4 +1,5 @@
 import axios from "axios";
+import session from "redux-persist/lib/storage/session";
 
 const DUMMY_SERVER_URL = "http://localhost:9090";
 const USER_API_URL = `${DUMMY_SERVER_URL}/member`;
@@ -26,8 +27,10 @@ export async function userSignUp(userInfo) {
 
   try {
     const response = axios.post("api/api/v1/member/join", data, config);
-
+    sessionStorage.setItem("accessToken", response.data);
+    // asdasd
     console.log(response);
+    console.log(response.data);
   } catch (err) {
     console.err(err);
   }
@@ -41,6 +44,28 @@ export async function login(id, password) {
       password: password,
     });
     console.log(response);
+    const accessToken = response.data["token"];
+    sessionStorage.setItem("accessToken", accessToken);
+  } catch (err) {
+    console.err(err);
+  }
+}
+
+export async function fetchUserInfoWithAccessToken() {
+  const accessToken = sessionStorage.getItem("accessToken");
+  console.log(accessToken);
+  try {
+    const userDataRes = axios.get("/api/api/v1/member/", {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        token: accessToken,
+      },
+    });
+    console.log(userDataRes);
+    return userDataRes;
+
+    // dispatch(userSlice.actions.login(userDataRes.data.userInfo));
   } catch (err) {
     console.err(err);
   }
@@ -52,7 +77,8 @@ export async function fetchUserInfo(id) {
   const memberId = id;
 
   try {
-    const response = axios.get(`/api/member/${memberId}`, {
+    const response = axios.get(`/api/member`, {
+      params: { memberId: memberId },
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
