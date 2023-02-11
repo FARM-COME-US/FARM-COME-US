@@ -75,7 +75,7 @@ const MyStoreProduct = () => {
 
       {isModalOpen ? (
         <AddProductModal
-          title="Live 정보 입력"
+          title="상품 정보 입력"
           className={isModalOpen ? null : "close"}
           onToggleModal={modalToggleHandler}
           onSubmit={addProductHandler}

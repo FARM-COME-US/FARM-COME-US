@@ -45,7 +45,7 @@ public class StoreServiceImpl implements StoreService{
                     .storeDeliveryFree(storeDto.getStoreDeliveryFree())
                     .storeDescription(storeDto.getStoreDescription())
                     .storeDetailAddr(storeDto.getStoreDetailAddr())
-                    .storeImg(storeDto.getStoreImg())
+//                    .storeImg(storeDto.getStoreImg())
                     .storePhoneNumber(storeDto.getStorePhoneNumber())
                     .storeStreetAddr(storeDto.getStoreStreetAddr())
                     .storeZipcode(storeDto.getStoreZipcode())
@@ -72,10 +72,10 @@ public class StoreServiceImpl implements StoreService{
                     .storeDeliveryFree(store.getStoreDeliveryFree())
                     .storeDescription(store.getStoreDescription())
                     .storeDetailAddr(store.getStoreDetailAddr())
-                    .storeImg(store.getStoreImg())
+//                    .storeImg(store.getStoreImg())
                     .storePhoneNumber(store.getStorePhoneNumber())
                     .storeStreetAddr(store.getStoreStreetAddr())
-                    .member(store.getMember())
+                    .memberId(store.getMember().getMemberId())
                     .build();
             return finded;
         }catch (Exception e){
@@ -94,7 +94,7 @@ public class StoreServiceImpl implements StoreService{
                     .storeDeliveryFree(storeDto.getStoreDeliveryFree())
                     .storeDescription(storeDto.getStoreDescription())
                     .storeDetailAddr(storeDto.getStoreDetailAddr())
-                    .storeImg(storeDto.getStoreImg())
+//                    .storeImg(storeDto.getStoreImg())
                     .storePhoneNumber(storeDto.getStorePhoneNumber())
                     .storeStreetAddr(storeDto.getStoreStreetAddr())
                     .storeZipcode(storeDto.getStoreZipcode())

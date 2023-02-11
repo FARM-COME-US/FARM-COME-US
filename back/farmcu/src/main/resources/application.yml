@@ -27,10 +27,10 @@ cors:
 app:
   auth:
     token-secret: 926D96C90030DD58429D2751AC1BDBBC
-    token-expiry: 4000000
+    token-expiry: 9000000
     refresh-token-expiry: 604800000
   oauth2:
-    authorized-redirect-uris: http://localhost:8080/oauth/redirect
+    authorized-redirect-uris: http://localhost:3000/oauth/redirect
 logging.level:
   org.hibernate.SQL: debug
   org:
