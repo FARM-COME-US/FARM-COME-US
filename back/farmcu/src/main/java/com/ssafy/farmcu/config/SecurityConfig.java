@@ -73,11 +73,8 @@ public class SecurityConfig {
                 .and().exceptionHandling()
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint()) // 요청이 들어올 시, 인증 헤더를 보내지 않는 경우 401 응답 처리
 
-
-
                 .and()
-                // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter보다 앞으로 설정
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 
                 .oauth2Login()
                 .authorizationEndpoint()
