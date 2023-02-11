@@ -35,7 +35,7 @@ public class Item {
     @Column(nullable = false)
     private int itemPrice;
 
-    @Column(nullable = false)
+    @Column
     private int itemDiscount;
 
     @Column
@@ -55,7 +55,7 @@ public class Item {
 
     //빌더
     @Builder
-    public Item(Long itemId, String itemName, String itemDescription, int itemDiscount, int itemPrice, int itemStock, Timestamp itemCreatedAt, CategoryDetail categoryDetail, Store store ) {
+    public Item(Long itemId, String itemName, String itemDescription, int itemDiscount, int itemPrice, int itemStock, Timestamp itemCreatedAt, CategoryDetail categoryDetail, Store store) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDescription = itemDescription;

@@ -21,6 +21,10 @@ const MyStoreInput = (props) => {
     setIsFocused((prev) => !prev);
   };
 
+  const onChangeHandler = (e) => {
+    props.onChange(e.target.name, e.target.value);
+  };
+
   return (
     <div
       className={`${classes.itemContainer}
@@ -36,7 +40,7 @@ const MyStoreInput = (props) => {
         min={props.min}
         max={props.max}
         step={props.step}
-        onChange={props.onChange}
+        onChange={onChangeHandler}
         id={props.id}
         isActive={!props.readOnly}
         onFocus={onFocusHandler}

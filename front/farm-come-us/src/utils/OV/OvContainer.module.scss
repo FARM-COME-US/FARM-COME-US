@@ -14,6 +14,30 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  .btnBox {
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:after {
+      content: "구매하기";
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .btnPurchase {
+      font-size: 3rem;
+      color: #fff;
+    }
+  }
 }
 
 .streamContainer {

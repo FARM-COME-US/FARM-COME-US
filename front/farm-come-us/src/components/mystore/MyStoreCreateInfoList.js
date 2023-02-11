@@ -15,11 +15,6 @@ const MyStoreCreateInfoList = (props) => {
 
   const validityHandler = () => {};
 
-  const onInputChangeHandler = (e) => {
-    const { name, value } = e.target;
-    props.onStoreInfoChange(name, value);
-  };
-
   const onEditAddr = () => {
     setOpenModal(!openModal);
   };
@@ -36,7 +31,7 @@ const MyStoreCreateInfoList = (props) => {
           value={props.info.storeName}
           readOnly={false}
           name="storeName"
-          onChange={onInputChangeHandler}
+          onChange={props.onStoreInfoChange}
           onBlur={storeValidation}
         />
         {props.storeNameIsValid !== undefined ? (
@@ -55,7 +50,7 @@ const MyStoreCreateInfoList = (props) => {
           value={props.info.desc}
           readOnly={false}
           name="desc"
-          onChange={onInputChangeHandler}
+          onChange={props.onStoreInfoChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -64,7 +59,7 @@ const MyStoreCreateInfoList = (props) => {
           value={props.info.pno}
           readOnly={false}
           name="pno"
-          onChange={onInputChangeHandler}
+          onChange={props.onStoreInfoChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -73,7 +68,7 @@ const MyStoreCreateInfoList = (props) => {
           value={props.info.deliveryCost}
           readOnly={false}
           name="deliveryCost"
-          onChange={onInputChangeHandler}
+          onChange={props.onStoreInfoChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -82,7 +77,7 @@ const MyStoreCreateInfoList = (props) => {
           value={props.info.deliveryFree}
           readOnly={false}
           name="deliveryFree"
-          onChange={onInputChangeHandler}
+          onChange={props.onStoreInfoChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -90,7 +85,7 @@ const MyStoreCreateInfoList = (props) => {
           label="농장 주소"
           value={props.info.streetAddr}
           readOnly={true}
-          onChange={onInputChangeHandler}
+          onChange={props.onStoreInfoChange}
           name="streetAddr"
           onFocus={onEditAddr}
         />
@@ -100,7 +95,7 @@ const MyStoreCreateInfoList = (props) => {
           label="우편번호"
           value={props.info.zipcode}
           readOnly={true}
-          onChange={onInputChangeHandler}
+          onChange={props.onStoreInfoChange}
           name="zipcode"
         />
       </li>
@@ -109,7 +104,7 @@ const MyStoreCreateInfoList = (props) => {
           label="상세주소"
           value={props.info.detailAddr}
           readOnly={false}
-          onChange={onInputChangeHandler}
+          onChange={props.onStoreInfoChange}
           name="detailAddr"
         />
       </li>
