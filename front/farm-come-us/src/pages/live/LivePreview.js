@@ -6,7 +6,7 @@ import classes from "./style/LivePreview.module.scss";
 import PreviewHeader from "../../components/preview/PreviewHeader";
 import LiveList from "../../components/live/LiveList";
 import ProductList from "../../components/preview/ProductList";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
+import Loading from "../../components/common/Loading";
 
 import { MdOutlineLiveTv } from "react-icons/md";
 import { MdOutlineCalendarToday } from "react-icons/md";
@@ -155,8 +155,8 @@ const LivePreview = () => {
   } = useHttp(fetchLiveList, true);
 
   useEffect(() => {
+    setTimeout(() => {}, 10000);
     getLiveSessions();
-    console.log(sessionList);
   }, [getLiveSessions]);
 
   useEffect(() => {
@@ -185,7 +185,7 @@ const LivePreview = () => {
         logo={<MdOutlineLiveTv className={`${classes.logo} ${classes.red}`} />}
       />
       {ovStatus === "pending" || dbStatus === "pending" ? (
-        <LoadingSpinner className={classes.loading} />
+        <Loading className={classes.loading} />
       ) : (
         <LiveList
           liveList={LIVE_LIST}
@@ -203,7 +203,7 @@ const LivePreview = () => {
         logo={<MdOutlineCalendarToday className={`${classes.logo}`} />}
       />
       {dbStatus === "pending" ? (
-        <LoadingSpinner className={classes.loading} />
+        <Loading className={classes.loading} />
       ) : (
         <LiveList
           liveList={RESERVED_LIVE_LIST}
