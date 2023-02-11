@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * ### Service method
  * - find
@@ -28,10 +30,10 @@ public class StoreServiceImpl implements StoreService{
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
 
-    public boolean checkStoreExist(Long memberId){
+    public Long checkStoreExist(Long memberId){
         Store store = storeRepository.findByMemberId(memberId).orElse(null);
-        if(store==null) return false;
-        else return true;
+        if(store==null) return null;
+        else return store.getStoreId();
     }
 
     @Transactional// 스토어 생성 save service
