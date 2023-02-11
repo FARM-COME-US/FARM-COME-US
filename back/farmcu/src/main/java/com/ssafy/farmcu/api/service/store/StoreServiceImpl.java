@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * ### Service method
  * - find
@@ -28,14 +30,14 @@ public class StoreServiceImpl implements StoreService{
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
 
-    public boolean checkStoreExist(Long memberId){
+    public Long checkStoreExist(Long memberId){
         Store store = storeRepository.findByMemberId(memberId).orElse(null);
-        if(store==null) return false;
-        else return true;
+        if(store==null) return null;
+        else return store.getStoreId();
     }
 
     @Transactional// 스토어 생성 save service
-    public boolean saveStore(StoreCreateReq storeDto){
+    public Long saveStore(StoreCreateReq storeDto){
         try {
 //            Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
             Store store = Store.builder()
@@ -43,7 +45,7 @@ public class StoreServiceImpl implements StoreService{
                     .storeDeliveryFree(storeDto.getStoreDeliveryFree())
                     .storeDescription(storeDto.getStoreDescription())
                     .storeDetailAddr(storeDto.getStoreDetailAddr())
-                    .storeImg(storeDto.getStoreImg())
+                    .storeImg(".")
                     .storePhoneNumber(storeDto.getStorePhoneNumber())
                     .storeStreetAddr(storeDto.getStoreStreetAddr())
                     .storeZipcode(storeDto.getStoreZipcode())
@@ -51,10 +53,10 @@ public class StoreServiceImpl implements StoreService{
                     .member(memberRepository.findById(storeDto.getMemberId()).orElseThrow())
                     .build();
             storeRepository.save(store);
-            return true;
+            return store.getStoreId();
         }catch (Exception e){
             e.printStackTrace();
-            return false;
+            return 0L;
         }
     }
 
@@ -70,10 +72,10 @@ public class StoreServiceImpl implements StoreService{
                     .storeDeliveryFree(store.getStoreDeliveryFree())
                     .storeDescription(store.getStoreDescription())
                     .storeDetailAddr(store.getStoreDetailAddr())
-                    .storeImg(store.getStoreImg())
+//                    .storeImg(store.getStoreImg())
                     .storePhoneNumber(store.getStorePhoneNumber())
                     .storeStreetAddr(store.getStoreStreetAddr())
-                    .member(store.getMember())
+                    .memberId(store.getMember().getMemberId())
                     .build();
             return finded;
         }catch (Exception e){
@@ -92,7 +94,7 @@ public class StoreServiceImpl implements StoreService{
                     .storeDeliveryFree(storeDto.getStoreDeliveryFree())
                     .storeDescription(storeDto.getStoreDescription())
                     .storeDetailAddr(storeDto.getStoreDetailAddr())
-                    .storeImg(storeDto.getStoreImg())
+                    .storeImg(".")
                     .storePhoneNumber(storeDto.getStorePhoneNumber())
                     .storeStreetAddr(storeDto.getStoreStreetAddr())
                     .storeZipcode(storeDto.getStoreZipcode())

@@ -68,9 +68,17 @@ const LIVE_LIST = [
 ];
 
 const RunningLive = () => {
+  const checkInLiveHandler = (liveInfo) => {
+    console.log(liveInfo);
+  };
+
   return (
     <div className={classes.liveContainer}>
-      <LiveList liveList={LIVE_LIST} isLive={true} />
+      <LiveList
+        liveList={LIVE_LIST}
+        isLive={true}
+        checkInLiveHandler={checkInLiveHandler}
+      />
     </div>
   );
 };

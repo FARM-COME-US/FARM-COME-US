@@ -3,36 +3,6 @@ import axios from "axios";
 const DUMMY_SERVER_URL = "https:localhost:3000";
 const PRODUCT_API_URL = `${DUMMY_SERVER_URL}/item`;
 
-const clientProductObjFormatter = (obj) => {
-  return {
-    productId: obj.itemId,
-    productName: obj.itemName,
-    desc: obj.itemDescription,
-    imgSrc: obj.itemImg,
-    price: obj.itemPrice,
-    discount: obj.itemDiscount,
-    stock: obj.itemStock,
-    regDate: obj.itemCreatedAt,
-    category: obj.categoryCode,
-    storeId: obj.storeId,
-  };
-};
-
-const serverProductObjFormatter = (obj) => {
-  return {
-    itemId: obj.productId,
-    itemName: obj.productName,
-    itemDescription: obj.desc,
-    itemImg: obj.imgSrc,
-    itemPrice: obj.price,
-    itemDiscount: obj.discount,
-    itemStock: obj.stock,
-    itemCreatedAt: obj.regDate,
-    categoryCode: obj.category,
-    storeId: obj.storeId,
-  };
-};
-
 /* 상품 등록 */
 export async function createProduct(productInfo) {
   const DUMMY_STORE_ID = 1;
@@ -70,11 +40,7 @@ export async function createProduct(productInfo) {
   };
 
   try {
-    const response = axios.post("/api/api/v1/item", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = axios.post("/api/api/v1/item", formData, config);
 
     console.log(response);
   } catch (err) {
@@ -114,7 +80,7 @@ export async function productList() {
 }
 
 /* 등록 상품 삭제 */
-export async function delteProduct(productId) {
+export async function deleteProduct(productId) {
   try {
     const response = axios({
       method: "delete",
@@ -134,10 +100,6 @@ export async function updateProduct(product) {
   try {
     const response = axios({
       method: "put",
-      url: PRODUCT_API_URL,
-      data: {
-        itemDto: serverProductObjFormatter(product),
-      },
     });
     console.log(response.success);
   } catch (err) {

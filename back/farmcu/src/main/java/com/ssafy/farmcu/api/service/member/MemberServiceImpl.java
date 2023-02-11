@@ -2,16 +2,14 @@ package com.ssafy.farmcu.api.service.member;
 
 import com.ssafy.farmcu.api.dto.member.MemberJoinReq;
 import com.ssafy.farmcu.api.dto.member.MemberLoginReq;
-import com.ssafy.farmcu.api.dto.member.MemberResponseDto;
+import com.ssafy.farmcu.api.dto.member.MemberDto;
 import com.ssafy.farmcu.api.dto.member.MemberUpdateReq;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.exception.NotFoundUserException;
 import com.ssafy.farmcu.api.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,8 +42,8 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Transactional(readOnly = true)
-    public MemberResponseDto getUserInfo(Long id){
-        return memberRepository.findByMemberId(id).map(MemberResponseDto::of).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
+    public MemberDto getUserInfo(Long id){
+        return memberRepository.findByMemberId(id).map(MemberDto::of).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
     }
 
 
@@ -70,9 +68,9 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public boolean updateMember(MemberUpdateReq memberUpdateReq, String id) {
         Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
-        if(!pwEncoder.matches(memberUpdateReq.getPassword(), member.getPassword())){ // 비밀번호 검증
-            return false;
-        }
+//        if(!pwEncoder.matches(member.getPassword(), member.getPassword())){ // 비밀번호 검증
+//            return false;
+//        }
 
         member.updateInfo(memberUpdateReq);
         memberRepository.save(member);
