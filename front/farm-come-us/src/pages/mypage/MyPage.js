@@ -29,25 +29,29 @@ const MyPage = (props) => {
 
   const [isEditting, setIsEditting] = useState(false);
   const user = useSelector((state) => {
+    // console.log(state.userSlice.value);
     return state.userSlice.value;
   });
   console.log(user);
   // setUserInfo(user);
   const [userInfo, setUserInfo] = useState({
-    storeId: null,
     ...user,
   });
+
   useEffect(() => {
     const storeUserData = async () => {
       try {
         const accessToken = sessionStorage.getItem("accessToken");
-        const userDataRes = await axios.get("/api/api/v1/member/", {
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            token: accessToken,
-          },
-        });
+        const userDataRes = await axios.get(
+          process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              token: accessToken,
+            },
+          }
+        );
         const userInfo = userDataRes;
         console.log(userDataRes);
         console.log(userInfo);
@@ -89,7 +93,7 @@ const MyPage = (props) => {
   const cancelInfoEditHandler = () => {
     setUserInfo((prev) => {
       return {
-        ...DUMMY_MYPAGE_INFO,
+        ...userInfo,
       };
     });
 

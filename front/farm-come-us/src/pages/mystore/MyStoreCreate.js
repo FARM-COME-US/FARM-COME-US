@@ -8,6 +8,7 @@ import MyStoreHeader from "../../components/mystore/MyStoreHeader";
 import MyStoreContentTitle from "../../components/mystore/MyStoreContentTItle";
 import MyStoreCreateInfoList from "../../components/mystore/MyStoreCreateInfoList";
 import Button from "../../components/common/Button";
+import { useSelector } from "react-redux";
 
 const MyStoreCreate = () => {
   const location = useLocation();
@@ -19,7 +20,7 @@ const MyStoreCreate = () => {
     streetAddr: "",
     detailAddr: "",
     zipcode: "",
-    pno: "",
+    phoneNumber: "",
     imgSrc: "",
     uploadFile: "",
     deliveryCost: "",
@@ -34,10 +35,14 @@ const MyStoreCreate = () => {
     }
   }, []);
 
+  const user = useSelector((state) => state.userSlice.value);
+  // console.log(user);
+
   const createStoreHandler = (e) => {
     e.preventDefault();
-    alert("스토어 생성로직 - 멤버 id 더미 데이터 ");
-    fetchCreateStore(storeInfo);
+    // alert("스토어 생성로직 - 멤버 id 더미 데이터 ");
+    fetchCreateStore(storeInfo, user);
+    console.log("여기까지는 오나?");
   };
 
   const storeInfoChangeHandler = (name, value) => {
