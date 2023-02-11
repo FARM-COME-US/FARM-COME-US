@@ -17,6 +17,7 @@ import LiveProductInfo from "../../components/broadcast/LiveProductInfo";
 const OV_SERVER_URL = "http://localhost:5000";
 
 const OvContainer = (props) => {
+  let tempOV = null;
   const navigate = useNavigate();
 
   const [OV, setOV] = useState(null);
@@ -43,10 +44,7 @@ const OvContainer = (props) => {
     };
   }, [session]);
 
-  useEffect(() => {
-    console.log("====================SUB==================");
-    console.log(subscribers);
-  }, [subscribers]);
+  useEffect(() => {}, [subscribers]);
 
   const handleMainVideoStream = (stream) => {
     if (mainStreamManager !== stream) {
@@ -55,10 +53,7 @@ const OvContainer = (props) => {
   };
 
   const deleteSubscriber = (streamManager) => {
-    console.log("===================delete Sub ====================");
     let index = subscribers.indexOf(streamManager, 0);
-    console.log(subscribers);
-    console.log(streamManager);
     if (index > -1) {
       setSubscribers((prev) => {
         return prev.filter((item) => item !== streamManager);
@@ -68,7 +63,7 @@ const OvContainer = (props) => {
 
   const joinSession = async () => {
     // --- 1) Get an OpenVidu object ---
-    const tempOV = new OpenVidu();
+    tempOV = new OpenVidu();
     setOV(tempOV);
 
     // --- 2) Init a session ---
@@ -82,6 +77,7 @@ const OvContainer = (props) => {
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
       const subscriber = mySession.subscribe(event.stream, undefined);
+      console.log(mySession);
       // Update the state with the new subscribers
       setSubscribers((prev) => [...prev, subscriber]);
     });
@@ -107,8 +103,10 @@ const OvContainer = (props) => {
     // --- 4) Connect to the session with a valid user token ---
     // Get a token from the OpenVidu deployment
     getToken().then((token) => {
+      console.log("=================token: ", token);
       // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
       // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+      console.log(mySession);
       mySession
         .connect(token, { clientData: props.username })
         .then(async (res) => {
@@ -121,10 +119,15 @@ const OvContainer = (props) => {
             (device) => device.kind === "videoinput"
           );
 
+          var audioDevices = devices.filter(
+            (device) => device.kind === "audioinput"
+          );
+          console.log(audioDevices);
+
           // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
           // element: we will manage it on our own) and with the desired properties
           const tempPublisher = await tempOV.initPublisherAsync(undefined, {
-            audioSource: undefined, // The source of audio. If undefined default microphone
+            audioSource: audioDevices[0].deviceId, // The source of audio. If undefined default microphone
             videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
             publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
             publishVideo: true, // Whether you want to start publishing with your video enabled or not
@@ -182,6 +185,26 @@ const OvContainer = (props) => {
   };
 
   const switchCamera = async () => {
+    axios
+      .get(
+        process.env.REACT_APP_OPENVIDU_SERVER +
+          "/openvidu/api/sessions/" +
+          props.sessionId +
+          "/connection",
+        {
+          headers: {
+            Authorization:
+              "Basic " +
+              btoa("OPENVIDUAPP:" + process.env.REACT_APP_OPENVIDU_SECRET),
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      });
+
     try {
       const devices = await OV.getDevices();
       var videoDevices = devices.filter(
@@ -223,41 +246,74 @@ const OvContainer = (props) => {
   };
 
   const createSession = async (sessionId) => {
-    const response = await axios.post(
-      OV_SERVER_URL + "/api/sessions",
-      { customSessionId: sessionId },
-      {
-        headers: { "Content-Type": "application/json" },
+    const data = JSON.stringify({ customSessionId: sessionId });
+    let response;
+    try {
+      response = await axios.post(
+        process.env.REACT_APP_OPENVIDU_SERVER + "/openvidu/api/sessions",
+        data,
+        {
+          headers: {
+            Authorization:
+              "Basic " +
+              btoa("OPENVIDUAPP:" + process.env.REACT_APP_OPENVIDU_SECRET),
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+    } catch (err) {
+      if (err.response.status === 409) {
+        return Promise.resolve(sessionId);
+      } else {
+        alert(err);
       }
-    );
-    // const data = JSON.stringify({ customSessionId: sessionId });
-    // const response = await axios.post(`${OV_SERVER_URL}/api/sessions`, data, {
-    //   headers: {
-    //     Authorization: "Basic " + btoa("OPENVIDUAPP:" + OV_SERVER_SECRET),
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    return response.data; // The sessionId
+    }
+    return response.data.sessionId; // The sessionId
   };
 
+  // function createToken(sessionId) {
+  //   return new Promise((resolve, reject) => {
+  //     let data = {};
+  //     axios
+  //       .post(
+  //         `${process.env.REACT_APP_OPENVIDU_SERVER}/openvidu/api/sessions/${sessionId}/connection`,
+  //         data,
+  //         {
+  //           headers: {
+  //             Authorization: `Basic ${btoa(
+  //               `OPENVIDUAPP:${process.env.REACT_APP_OPENVIDU_SECRET}`
+  //             )}`,
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       )
+  //       .then((response) => {
+  //         resolve(response.data.token);
+  //       })
+  //       .catch((error) => reject(error));
+  //   });
+  // }
+
   const createToken = async (sessionId) => {
+    const data = {};
+    console.log(sessionId);
     const response = await axios.post(
-      OV_SERVER_URL + "/api/sessions/" + sessionId + "/connections",
-      {},
+      process.env.REACT_APP_OPENVIDU_SERVER +
+        `/openvidu/api/sessions/${sessionId}/connection`,
+      data,
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Basic ${btoa(
+            `OPENVIDUAPP:${process.env.REACT_APP_OPENVIDU_SECRET}`
+          )}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
       }
     );
-    // console.log(btoa("OPENVIDUAPP:" + OV_SERVER_SECRET));
-    // const data = {};
-    // const response = await axios.post(`${OV_SERVER_URL}/connections`, data, {
-    //   headers: {
-    //     Authorization: "Basic " + btoa("OPENVIDUAPP:" + OV_SERVER_SECRET),
-    //     "Content-Type": "application/json",
-    //   },
-    // });
 
-    return response.data; // The token
+    return response.data.token; // The token
   };
 
   // 실시간 채팅
