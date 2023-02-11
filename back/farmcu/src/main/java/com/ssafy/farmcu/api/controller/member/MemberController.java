@@ -132,11 +132,7 @@ public class MemberController {
                 Long id = tokenProvider.getId(authToken);
                 MemberDto memberDto = memberService.getUserInfo(id);
 
-                if(storeService.checkStoreExist(id)){
-                    memberDto.aboutStore("true");
-                }else{
-                    memberDto.aboutStore("false");
-                }
+                memberDto.aboutStore(storeService.checkStoreExist(id));
 
                 resultMap.put("userInfo", memberDto);
                 resultMap.put("message", "success");

@@ -12,5 +12,5 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByStoreId(Long sotreId);
 
     @Query(value = "SELECT s FROM Store s WHERE s.member.memberId = :memberId")
-    List<Store> findByMemberId(Long memberId);
+    Optional<Store> findByMemberId(Long memberId);
 }
