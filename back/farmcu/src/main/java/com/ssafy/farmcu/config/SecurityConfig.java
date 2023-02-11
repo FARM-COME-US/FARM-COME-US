@@ -5,7 +5,6 @@ import com.ssafy.farmcu.api.service.member.MemberRefreshTokenServiceImpl;
 import com.ssafy.farmcu.config.properties.AppProperties;
 import com.ssafy.farmcu.config.properties.CorsProperties;
 import com.ssafy.farmcu.exception.RestAuthenticationEntryPoint;
-import com.ssafy.farmcu.oauth.filter.JwtAuthenticationFilter;
 import com.ssafy.farmcu.oauth.filter.TokenAuthenticationFilter;
 import com.ssafy.farmcu.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.ssafy.farmcu.oauth.handler.OAuth2AuthenticationSuccessHandler;
@@ -46,7 +45,7 @@ public class SecurityConfig {
     private final MemberRepository memberRepository;
     private final MemberRefreshTokenServiceImpl memberRefreshTokenService;
 //    private final TokenAuthenticationFilter tokenAuthenticationFilter;
-//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -73,11 +72,8 @@ public class SecurityConfig {
                 .and().exceptionHandling()
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint()) // 요청이 들어올 시, 인증 헤더를 보내지 않는 경우 401 응답 처리
 
-
-
                 .and()
-                // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter보다 앞으로 설정
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 
                 .oauth2Login()
                 .authorizationEndpoint()

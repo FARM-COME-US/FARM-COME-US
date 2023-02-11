@@ -24,9 +24,9 @@ public interface ItemService {
     public ItemDto findOne(Long itemId);
 
     //상품 이름, 카테고리 검색
-    public HashMap<String, Object> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq);
+    public HashMap<String, Object> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq, Pageable pageable);
 
     //스토어 상품 목록
-    public HashMap<String, Object> findItemsByStore(Long storeId);
+    public HashMap<String, Object> findItemsByStore(Long storeId, Pageable pageable);
 
 }
