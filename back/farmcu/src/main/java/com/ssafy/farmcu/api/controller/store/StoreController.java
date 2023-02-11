@@ -35,10 +35,10 @@ public class StoreController {
     private final StoreImageServiceImpl storeImageService;
 
 
-    @PostMapping("/")
+    @PostMapping
     @ApiOperation(value="스토어 생성", notes = "")
-    public ResponseEntity createStore(@RequestPart StoreCreateReq request, MultipartFile uploadFile) throws Exception {
-
+    public ResponseEntity createStore(@RequestPart("store") StoreCreateReq request, MultipartFile uploadFile) throws Exception {
+        log.info("member id: {}", request.getMemberId());
         if(storeService.checkStoreExist(request.getMemberId())!=null){
             return new ResponseEntity<String>("already exist", HttpStatus.ACCEPTED);
         }
