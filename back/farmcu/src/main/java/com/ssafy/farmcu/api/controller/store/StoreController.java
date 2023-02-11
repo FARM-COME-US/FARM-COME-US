@@ -16,6 +16,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+
 /**
  * Create, Select, Delete, Update
  */
@@ -67,11 +69,18 @@ public class StoreController {
     @ApiOperation(value="스토어 상세조회", notes = "")
     public ResponseEntity<?> selectOneStore(@PathVariable("storeId") Long id){
         StoreDto result = storeService.findStoreInfo(id);
+        StoreImageDto storeImageDto = storeImageService.findStoreImageByStoreId(id);
+
+        HashMap<String, Object> resultMap = new HashMap<>();
+
+        resultMap.put("store", result);
+        resultMap.put("storeImage", storeImageDto);
+
         if(result!=null){
-            return new ResponseEntity<StoreDto>(result, HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
         }
         else
-            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("store not exist", HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/{storeId}")
