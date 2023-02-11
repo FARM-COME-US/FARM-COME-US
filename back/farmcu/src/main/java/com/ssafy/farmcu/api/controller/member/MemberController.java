@@ -9,6 +9,7 @@ import com.ssafy.farmcu.api.service.image.S3Service;
 import com.ssafy.farmcu.api.service.member.MemberImageService;
 import com.ssafy.farmcu.api.service.member.MemberImageServiceImpl;
 import com.ssafy.farmcu.api.service.member.MemberRefreshTokenServiceImpl;
+import com.ssafy.farmcu.api.service.store.StoreServiceImpl;
 import com.ssafy.farmcu.config.properties.AppProperties;
 import com.ssafy.farmcu.oauth.repository.MemberRefreshTokenRepository;
 import com.ssafy.farmcu.oauth.token.AuthToken;
@@ -51,6 +52,7 @@ public class MemberController {
     private final MessageSource messageSource;
     private final S3Service s3Service;
     private final MemberImageServiceImpl memberImageService;
+    private final StoreServiceImpl storeService;
 
     @PostMapping("/join")
     @ApiOperation(value = "회원 가입", notes = "")
@@ -129,6 +131,13 @@ public class MemberController {
             try {
                 Long id = tokenProvider.getId(authToken);
                 MemberDto memberDto = memberService.getUserInfo(id);
+
+                if(storeService.checkStoreExist(id)){
+                    memberDto.aboutStore("true");
+                }else{
+                    memberDto.aboutStore("false");
+                }
+
                 resultMap.put("userInfo", memberDto);
                 resultMap.put("message", "success");
                 status = HttpStatus.ACCEPTED;
