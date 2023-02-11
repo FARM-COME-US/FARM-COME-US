@@ -9,7 +9,9 @@ const DUMMY_STORE_INFO = {
   storeId: 1,
   storeName: "고랭강원농장",
   desc: "저희 농장은 강원도 고산지대에서 재배한 신선한 작물들을 제공합니다.",
-  addr: "강원도 평창군 봉평면 무야리 23-12",
+  streetAddr: "강원도 평창군 봉평면 무야리 23-12",
+  zipcode: 18310,
+  detailAddr: "초가집",
   pno: "010-1234-1234",
   imgSrc: "https://via.placeholder.com/300",
 };
@@ -20,7 +22,9 @@ const MyStore = () => {
     storeId: DUMMY_STORE_INFO.storeId,
     storeName: DUMMY_STORE_INFO.storeName,
     desc: DUMMY_STORE_INFO.desc,
-    addr: DUMMY_STORE_INFO.addr,
+    streetAddr: DUMMY_STORE_INFO.streetAddr,
+    zipcode: DUMMY_STORE_INFO.zipcode,
+    detailAddr: DUMMY_STORE_INFO.detailAddr,
     pno: DUMMY_STORE_INFO.pno,
     imgSrc: DUMMY_STORE_INFO.imgSrc,
   });
@@ -48,8 +52,10 @@ const MyStore = () => {
         storeId: DUMMY_STORE_INFO.storeId,
         storeName: DUMMY_STORE_INFO.storeName,
         desc: DUMMY_STORE_INFO.desc,
-        addr: DUMMY_STORE_INFO.addr,
         pno: DUMMY_STORE_INFO.pno,
+        streetAddr: DUMMY_STORE_INFO.streetAddr,
+        zipcode: DUMMY_STORE_INFO.zipcode,
+        detailAddr: DUMMY_STORE_INFO.detailAddr,
       };
     });
 
