@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import classes from "./OvContainer.module.scss";
+import { TbTruckDelivery } from "react-icons/tb";
 
 import UserVideoComponent from "./UserVideoComponent";
 import LiveChat from "../../components/broadcast/LiveChat";
@@ -14,7 +15,6 @@ import LeaveButton from "../../components/broadcast/LeaveButton";
 import LiveProductInfo from "../../components/broadcast/LiveProductInfo";
 
 const OV_SERVER_URL = "http://localhost:5000";
-const OV_SERVER_SECRET = "MY_SECRET";
 
 const OvContainer = (props) => {
   const navigate = useNavigate();
@@ -55,8 +55,10 @@ const OvContainer = (props) => {
   };
 
   const deleteSubscriber = (streamManager) => {
-    console.log("delete sub");
+    console.log("===================delete Sub ====================");
     let index = subscribers.indexOf(streamManager, 0);
+    console.log(subscribers);
+    console.log(streamManager);
     if (index > -1) {
       setSubscribers((prev) => {
         return prev.filter((item) => item !== streamManager);
@@ -113,6 +115,8 @@ const OvContainer = (props) => {
           // --- 5) Get your own camera stream ---
           // Obtain the current video device in use
           var devices = await tempOV.getDevices();
+
+          console.log(devices);
           var videoDevices = devices.filter(
             (device) => device.kind === "videoinput"
           );
@@ -158,8 +162,6 @@ const OvContainer = (props) => {
 
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-    console.log("===============================================");
-    console.log(session);
     if (session) {
       console.log(session);
       session.disconnect();
@@ -288,7 +290,7 @@ const OvContainer = (props) => {
 
   const toggleMuteHandler = () => {
     if (isMute) {
-      publisher.publishAudio(false);
+      publisher.publishAudio(true);
     } else {
       publisher.publishAudio(false);
     }
@@ -321,13 +323,19 @@ const OvContainer = (props) => {
               onTextMsgChangeHandler={onTextMsgChangeHandler}
               onSubmit={sendChatMsgHandler}
               msg={chatMsg}
+              isPublisher={props.isPublisher}
             />
+
             <LiveFooter>
-              {props.isSubscriber ? (
-                <div></div>
-              ) : (
+              {!props.isPublisher ? (
                 <Fragment>
                   <LiveProductInfo liveInfo={props.liveInfo} />
+                  <div className={classes.btnBox}>
+                    <TbTruckDelivery className={classes.btnPurchase} />
+                  </div>
+                </Fragment>
+              ) : (
+                <Fragment>
                   <LeaveButton onClick={leaveSessionHandler} />
                 </Fragment>
               )}

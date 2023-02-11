@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 
 import classes from "./style/MyStoreInfo.module.scss";
@@ -17,10 +17,6 @@ const MyStoreInfo = () => {
     toggleIsEditting,
   } = useOutletContext();
 
-  const inputChangeHandler = (e) => {
-    onChangeInfoHandler(e.target.name, e.target.value);
-  };
-
   return (
     <div className={classes.storeInfo}>
       <MyStoreContentTitle text="스토어 정보" />
@@ -29,7 +25,7 @@ const MyStoreInfo = () => {
           className={classes.infoList}
           info={storeInfo}
           isEditting={isEditting}
-          onChange={inputChangeHandler}
+          onChange={onChangeInfoHandler}
         />
         {isEditting ? (
           <div className={classes.btnBox}>
