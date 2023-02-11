@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 import classes from "./style/MyStoreLive.module.scss";
 
@@ -40,10 +40,19 @@ const DUMMY_LIVE_LIST = [
 ];
 
 const MyStoreLive = () => {
+  const { storeInfo } = useOutletContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sessionInfo, setSessionInfo] = useState({
     id: "sessionA",
     username: "Participant" + Math.floor(Math.random() * 100),
+  });
+  const [newLiveInfo, setNewLiveInfo] = useState({
+    itemId: "",
+    liveDiscount: 0,
+    liveStart: "",
+    liveStock: "",
+    liveTitle: "",
+    storeId: storeInfo.storeId,
   });
 
   const navigate = useNavigate();
@@ -61,10 +70,18 @@ const MyStoreLive = () => {
 
   const addLiveHandler = (e) => {
     e.preventDefault();
-    alert("라이브 추가 이벤트 발생");
-
+    console.log(newLiveInfo);
     modalToggleHandler();
     return;
+  };
+
+  const newLiveInputChangeHandler = (name, value) => {
+    setNewLiveInfo((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
   };
 
   const startLiveHandler = (liveInfo) => {
@@ -110,7 +127,9 @@ const MyStoreLive = () => {
         <AddLiveModal
           title="Live 정보 입력"
           className={isModalOpen ? null : "close"}
+          newLiveInfo={newLiveInfo}
           onToggleModal={modalToggleHandler}
+          onInputChange={newLiveInputChangeHandler}
           onSubmit={addLiveHandler}
           onClick={addLiveHandler}
         />

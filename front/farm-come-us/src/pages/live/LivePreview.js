@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useHttp from "../../hooks/use-http";
 
 import classes from "./style/LivePreview.module.scss";
@@ -12,7 +13,11 @@ import { MdOutlineLiveTv } from "react-icons/md";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import { MdStorefront } from "react-icons/md";
 import { fetchLiveSession, fetchLiveSessions } from "../../utils/api/ov-http";
-import { fetchLiveList } from "../../utils/api/live-http";
+import {
+  fetchRunningLiveList,
+  fetchScheduledLiveList,
+} from "../../utils/api/live-http";
+import { productList } from "../../utils/api/product-http";
 
 // 더미 데이터
 const LIVE_LIST = [
@@ -140,6 +145,7 @@ const PRODUCT_LIST = [
 ];
 
 const LivePreview = () => {
+  const navigate = useNavigate();
   const {
     sendRequest: getLiveSessions,
     status: ovStatus,
@@ -148,20 +154,41 @@ const LivePreview = () => {
   } = useHttp(fetchLiveSessions, true);
 
   const {
-    sendRequest: getLiveInfo,
-    status: dbStatus,
-    data: liveList,
-    errorDB,
-  } = useHttp(fetchLiveList, true);
+    sendRequest: getRunningLiveInfo,
+    status: rllStatus,
+    data: runningLiveList,
+    errorRll,
+  } = useHttp(fetchRunningLiveList, true);
+
+  const {
+    sendRequest: getScheduledLiveInfo,
+    status: sllStatus,
+    data: scheduledLiveList,
+    errorSll,
+  } = useHttp(fetchScheduledLiveList, true);
+
+  const {
+    sendRequest: getItemList,
+    status: itemStatus,
+    data: itemList,
+    errorItem,
+  } = useHttp(productList, true);
 
   useEffect(() => {
-    setTimeout(() => {}, 10000);
     getLiveSessions();
   }, [getLiveSessions]);
 
   useEffect(() => {
-    getLiveInfo();
-  }, [getLiveInfo]);
+    getRunningLiveInfo();
+  }, [getRunningLiveInfo]);
+
+  useEffect(() => {
+    getScheduledLiveInfo();
+  }, [getScheduledLiveInfo]);
+
+  useEffect(() => {
+    getItemList();
+  }, [getItemList]);
 
   const checkIsLiveRunning = async (liveInfo) => {
     const data = await fetchLiveSession(liveInfo.sessionId);
@@ -176,15 +203,21 @@ const LivePreview = () => {
     alert(`session id : ${sessionId} 방에 입장.`);
   };
 
+  const moveMorePageHandler = (uri) => {
+    console.log(uri);
+    navigate(uri);
+  };
+
   return (
     <div className={classes.container}>
       {/* 라이브 목록 */}
       <PreviewHeader
         className={`${classes.header} title`}
+        moveMorePage={() => moveMorePageHandler("/livestore/running")}
         text="진행 중인 라이브"
         logo={<MdOutlineLiveTv className={`${classes.logo} ${classes.red}`} />}
       />
-      {ovStatus === "pending" || dbStatus === "pending" ? (
+      {ovStatus === "pending" || rllStatus === "pending" ? (
         <Loading className={classes.loading} />
       ) : (
         <LiveList
@@ -199,10 +232,11 @@ const LivePreview = () => {
       {/* 예정된 라이브 */}
       <PreviewHeader
         className={`${classes.header} title`}
+        moveMorePage={() => moveMorePageHandler("/livestore/scheduled")}
         text="라이브 예정"
         logo={<MdOutlineCalendarToday className={`${classes.logo}`} />}
       />
-      {dbStatus === "pending" ? (
+      {sllStatus === "pending" ? (
         <Loading className={classes.loading} />
       ) : (
         <LiveList
@@ -215,10 +249,15 @@ const LivePreview = () => {
       {/* 상품 최신순 */}
       <PreviewHeader
         className={`${classes.header} title`}
+        moveMorePage={() => moveMorePageHandler("/products")}
         text="상품 최신순"
         logo={<MdStorefront className={`${classes.logo}`} />}
       />
-      <ProductList productList={PRODUCT_LIST} />
+      {itemStatus === "pending" ? (
+        <Loading className={classes.loading} />
+      ) : (
+        <ProductList productList={PRODUCT_LIST} />
+      )}
     </div>
   );
 };
