@@ -1,20 +1,21 @@
 package com.ssafy.farmcu.api.controller.store;
 
 import com.ssafy.farmcu.api.dto.member.MemberListRes;
-import com.ssafy.farmcu.api.dto.store.StoreDto;
-import com.ssafy.farmcu.api.dto.store.StoreLikeCreateDto;
-import com.ssafy.farmcu.api.dto.store.StoreLikeDto;
-import com.ssafy.farmcu.api.dto.store.StoreListRes;
+import com.ssafy.farmcu.api.dto.store.*;
+import com.ssafy.farmcu.api.service.store.StoreImageService;
 import com.ssafy.farmcu.api.service.store.StoreLikeServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -24,7 +25,7 @@ import java.util.List;
 @Api("스토어 컨트롤러 API v1")
 public class StoreLikeController {
     private final StoreLikeServiceImpl storeLikeService;
-
+    private final StoreImageService storeImageService;
     @PostMapping
     @ApiOperation(value="스토어 찜하기", notes = "")
     public ResponseEntity<?> createStore(@Validated @RequestBody StoreLikeCreateDto request){
@@ -49,20 +50,31 @@ public class StoreLikeController {
     }
 
     @GetMapping("/{memberId}")
-    public ResponseEntity<?> findStoreList(@PathVariable("memberId")Long id){
+    public ResponseEntity<?> findStoreList(@PathVariable("memberId")Long id, int page, int size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        HashMap<String, Object> storeLikes = storeLikeService.findLikesList(id, pageRequest);
+        List<StoreListRes> list = (List<StoreListRes>) storeLikes.get("storeLikes");
+        Boolean hasNextPage = (Boolean) storeLikes.get("hasNextPage");
+
+        List<StoreImageDto> storeImage = new ArrayList<>();
+        for(StoreListRes res : list){
+            StoreImageDto storeImageDto = storeImageService.findStoreImageByStoreId(res.getStoreId());
+            if(storeImageDto!=null)
+                storeImage.add(storeImageDto);
+        }
+
+        HashMap<String, Object> resultMap = new HashMap<>();
         try{
-            List<StoreListRes> list = storeLikeService.findLikesList(id);
-            if(!list.isEmpty()) {
-                return new ResponseEntity<>(list, HttpStatus.ACCEPTED);
-            }else{
-                return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
-            }
+            resultMap.put("storeLikes", list);
+            resultMap.put("storeImage", storeImage);
+            resultMap.put("hasNextPage", hasNextPage);
 
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
 
         }
+        return ResponseEntity.ok(resultMap);
     }
 
     @GetMapping("/count/{storeId}")
