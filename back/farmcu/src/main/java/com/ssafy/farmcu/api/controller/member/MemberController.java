@@ -131,11 +131,17 @@ public class MemberController {
             try {
                 Long id = tokenProvider.getId(authToken);
                 MemberDto memberDto = memberService.getUserInfo(id);
-
                 memberDto.aboutStore(storeService.checkStoreExist(id));
-
                 resultMap.put("userInfo", memberDto);
+                MemberImageDto memberImageDto = memberImageService.findMemberImageByMemberId(id);
+                if(memberImageDto!=null){
+                    resultMap.put("userImage", memberImageDto);
+                }else{
+                    resultMap.put("userImage", null);
+
+                }
                 resultMap.put("message", "success");
+
                 status = HttpStatus.ACCEPTED;
             } catch (Exception e) {
                 log.info("정보 조회 실패 : ", e);
@@ -231,7 +237,7 @@ public class MemberController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-    @ApiOperation(value = "(PK로 회원 정보 조회)", notes = "PK memberId, 헤더에 토큰 필요.", response = Map.class)
+    @ApiOperation(value = "(PK로 회원 정보 조회)", notes = "PK memberId, 헤더에 토큰 필요. / 이 메소드 다른 기능으로 수정 예정", response = Map.class)
     @GetMapping("/{memberId}")
     public ResponseEntity<?> selectMemberInfo(@PathVariable("memberId") Long memberId, HttpServletRequest request) {
         Map<String, Object> resultMap = new HashMap<>();
