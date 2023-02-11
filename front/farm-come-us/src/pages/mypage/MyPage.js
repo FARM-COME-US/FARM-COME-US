@@ -32,7 +32,7 @@ const MyPage = (props) => {
     // console.log(state.userSlice.value);
     return state.userSlice.value;
   });
-  console.log(user);
+  // console.log(user);
   // setUserInfo(user);
   const [userInfo, setUserInfo] = useState({
     ...user,
@@ -53,8 +53,8 @@ const MyPage = (props) => {
           }
         );
         const userInfo = userDataRes;
-        console.log(userDataRes);
-        console.log(userInfo);
+        // console.log(userDataRes);
+        // console.log(userInfo);
         // setUserInfo(userInfo);
       } catch (err) {
         console.log(err);

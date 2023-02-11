@@ -23,6 +23,7 @@ const MyPageMenu = (props) => {
       // 😀 수정필요. 여기는 마이스토어 조회페이지.
     } else {
       alert("생성된 마이스토어가 없습니다. 스토어 생성 페이지로 이동합니다.");
+      console.log(props.userInfo);
       navigate("/mystorecreate", { state: { userInfo: props.userInfo } });
     }
   };
