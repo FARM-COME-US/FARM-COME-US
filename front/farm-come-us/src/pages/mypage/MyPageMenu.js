@@ -19,7 +19,7 @@ const MyPageMenu = (props) => {
       `내스토어아이디 있으면 숫자로. 없으면 null :${props.userInfo.storeId}`
     );
     if (props.userInfo.storeId) {
-      navigate("/mystore");
+      navigate("/mystore", { state: { userInfo: props.userInfo } });
       // 😀 수정필요. 여기는 마이스토어 조회페이지.
     } else {
       alert("생성된 마이스토어가 없습니다. 스토어 생성 페이지로 이동합니다.");
