@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export async function fetchLiveSessions() {
-  console.log("라이브 세션 목록 가져오기");
   try {
     const { data } = await axios.get(
       `${process.env.REACT_APP_OPENVIDU_SERVER}/openvidu/api/sessions`,
