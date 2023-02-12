@@ -16,7 +16,7 @@ const AdditionalInfo = () => {
   const [isStreetAddr, setIsStreetAddr] = useState(false);
   const [isPhoneNumber, setIsPhoneNumber] = useState(false);
 
-  const onBlurpno = (e) => {
+  const onBlurPhoneNumber = (e) => {
     if (e.target.value !== "") {
       setPhoneNumber(e.target.value);
       setIsPhoneNumber(true);
@@ -52,14 +52,14 @@ const AdditionalInfo = () => {
           <MdPhoneIphone className={classes.icon} />
           <input
             className={classes.outerInput}
-            type="pno"
+            type="phoneNumber"
             // class="form-control m-input"
             text="전화번호"
             placeholder="전화번호"
-            typename="pno"
+            typename="phoneNumber"
             pattern="[0-9]{11}"
             maxLength="13"
-            onBlur={onBlurpno}
+            onBlur={onBlurPhoneNumber}
           />
         </div>
         <div className={classes.formbox}>

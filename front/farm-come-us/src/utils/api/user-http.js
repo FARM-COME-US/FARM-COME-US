@@ -63,9 +63,8 @@ export async function fetchUserInfoWithAccessToken() {
       },
     });
     console.log(userDataRes);
-    return userDataRes;
-
     // dispatch(userSlice.actions.login(userDataRes.data.userInfo));
+    return userDataRes;
   } catch (err) {
     console.err(err);
   }
