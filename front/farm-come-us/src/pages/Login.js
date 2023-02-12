@@ -68,13 +68,16 @@ function Login() {
       const accessToken = response.data["token"];
       sessionStorage.setItem("accessToken", accessToken);
 
-      const userDataRes = await axios.get("/api/api/v1/member/", {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          token: accessToken,
-        },
-      });
+      const userDataRes = await axios.get(
+        process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            token: accessToken,
+          },
+        }
+      );
       // console.log("응답");
       // console.log(userDataRes);
       // console.log("응답의 data의 userInfo");

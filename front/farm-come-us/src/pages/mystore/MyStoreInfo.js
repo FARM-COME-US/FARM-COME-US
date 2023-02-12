@@ -7,7 +7,7 @@ import MyStoreContentTitle from "../../components/mystore/MyStoreContentTItle";
 import MyStoreInfoList from "../../components/mystore/MyStoreInfoList";
 import Button from "../../components/common/Button";
 
-const MyStoreInfo = () => {
+const MyStoreInfo = (props) => {
   const {
     storeInfo,
     isEditting,

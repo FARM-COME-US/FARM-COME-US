@@ -52,6 +52,8 @@ const MyPage = (props) => {
             },
           }
         );
+        // dispatch(userSlice.actions.login());
+        userSlice.actions.login(userDataRes.data.userInfo);
         const userInfo = userDataRes;
         // console.log(userDataRes);
         // console.log(userInfo);
