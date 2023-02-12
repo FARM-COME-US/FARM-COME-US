@@ -26,7 +26,11 @@ export async function userSignUp(userInfo) {
   };
 
   try {
-    const response = axios.post("api/api/v1/member/join", data, config);
+    const response = axios.post(
+      process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/join",
+      data,
+      config
+    );
     sessionStorage.setItem("accessToken", response.data);
     // asdasd
     console.log(response);
@@ -39,10 +43,13 @@ export async function userSignUp(userInfo) {
 export async function login(id, password) {
   console.log("login", id, password);
   try {
-    const response = axios.post("api/api/v1/member/login", {
-      id: id,
-      password: password,
-    });
+    const response = axios.post(
+      process.env.REACT_APP_API_SERVER_URL + "api/v1/member/login",
+      {
+        id: id,
+        password: password,
+      }
+    );
     console.log(response);
     const accessToken = response.data["token"];
     sessionStorage.setItem("accessToken", accessToken);
