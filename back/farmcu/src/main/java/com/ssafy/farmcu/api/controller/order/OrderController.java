@@ -1,8 +1,10 @@
 
 package com.ssafy.farmcu.api.controller.order;
 
+import com.ssafy.farmcu.api.dto.member.MemberDto;
 import com.ssafy.farmcu.api.dto.order.CartOrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderDto;
+import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
@@ -28,6 +30,7 @@ import java.util.List;
 @RequestMapping("/order")
 @Component
 @Api(value = "주문 관련 API")
+
 public class OrderController {
 
     public final OrderServiceImpl orderService;
@@ -40,27 +43,31 @@ public class OrderController {
 
     @PostMapping(value = "")
     @ApiOperation(value = "상품 주문")
-    public ResponseEntity order(@RequestBody OrderDto orderDto){
+    public ResponseEntity order(@RequestBody OrderInfoDto orderInfoDto){
 
         Long orderId; //주문번호 생성
 
         try {
-            orderId = orderService.order(orderDto); //주문 시도 및 주문번호 가져오기
+            orderId = orderService.order(orderInfoDto); //주문 시도 및 주문번호 가져오기
 
         } catch (Exception e) {
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 
-
-
     @GetMapping("/detail")
     @ApiOperation(value = "주문 상세 조회")
     public ResponseEntity getMyOrders(@RequestHeader Member memberId){
 
-        List<OrderItem> orders = orderService.findOrderDetail(memberId);
+
+        try {
+            List<OrderItem> orders = orderService.findOrderDetail(memberId);
+
+        } catch (Exception e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
 
@@ -70,7 +77,12 @@ public class OrderController {
     @ApiOperation(value = "주문 목록 조회")
     public ResponseEntity getOrders(@RequestHeader Member memberId){
 
-        List<Order> orders = orderService.findMyOrders(memberId);
+        try {
+            List<Order> orders = orderService.findMyOrders(memberId);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
 
@@ -79,8 +91,15 @@ public class OrderController {
 
     @PutMapping("/{orderId}")
     @ApiOperation(value = "주문 취소")
-    public ResponseEntity updateOrder(@PathVariable Long orderId){
-        orderService.updateOrder(orderId);
+    public ResponseEntity updateOrder(@PathVariable Order orderId){
+
+        try {
+            List<Order> order = orderService.findSameOrder(orderId);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        //        orderService.updateOrder(orderId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

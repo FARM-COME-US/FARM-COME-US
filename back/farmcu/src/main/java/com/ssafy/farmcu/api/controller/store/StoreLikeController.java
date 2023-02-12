@@ -45,12 +45,13 @@ public class StoreLikeController {
         if(storeLikeService.deleteLike(request)){
             return new ResponseEntity<String>("uninterest success!!", HttpStatus.ACCEPTED);
         }else{
-            return new ResponseEntity<String>("uninterest fail", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("uninterest fail", HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/{memberId}")
     public ResponseEntity<?> findStoreList(@PathVariable("memberId")Long id, int page, int size){
+
         PageRequest pageRequest = PageRequest.of(page, size);
         HashMap<String, Object> storeLikes = storeLikeService.findLikesList(id, pageRequest);
         List<StoreListRes> list = (List<StoreListRes>) storeLikes.get("storeLikes");
@@ -71,7 +72,7 @@ public class StoreLikeController {
 
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("error", HttpStatus.NOT_FOUND);
 
         }
         return ResponseEntity.ok(resultMap);
@@ -83,7 +84,7 @@ public class StoreLikeController {
             return new ResponseEntity<>(storeLikeService.getCount(id), HttpStatus.ACCEPTED);
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<>(0, HttpStatus.OK);
+            return new ResponseEntity<>(0, HttpStatus.NOT_FOUND);
         }
     }
 }
