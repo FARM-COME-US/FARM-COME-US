@@ -9,7 +9,7 @@ const SideMenuItem = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.userSlice.value.isLogin);
-  console.log(user);
+  // console.log(user);
 
   return (
     <div
