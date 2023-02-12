@@ -4,14 +4,18 @@ import com.ssafy.farmcu.api.dto.order.CartDto;
 import com.ssafy.farmcu.api.dto.order.CartOrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
 import com.ssafy.farmcu.api.dto.order.ResponseDto;
+import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.entity.store.Item;
+import com.ssafy.farmcu.api.entity.store.Store;
 import com.ssafy.farmcu.api.repository.CartRepository;
 import com.ssafy.farmcu.api.repository.ItemRepository;
 import com.ssafy.farmcu.api.repository.MemberRepository;
 import com.ssafy.farmcu.exception.ItemNotFoundException;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -56,19 +62,13 @@ public class CartServiceImpl implements CartService {
 
     }
 
-//    // ** 장바구니 상세 조회
-//    public List<CartDto.Response> findCarts(Member memberId) {
-//        List<Cart> carts = cartRepository.findByMember(memberId);
-//
-//        List<CartDto.Response> response = new ArrayList<>();
-//        for (Cart cart : carts) {
-//            Optional<Item> optionalProduct = itemRepository.findById(cart.getItem().getItemId());
-//            Item item = optionalProduct.get();
-//            ResponseDto responseDto = cartRepository.findByMember();
-//
-//        }
-//        return response;
-//    }
+    public List<Cart> findMyCart(Long member) {
+        return cartRepository.findByMember(member);
+    }
+
+    public List<Cart> findAllCart() {
+        return cartRepository.findAll();
+    }
 
     //카트의 상품 주문로직
     @Transactional
@@ -95,9 +95,7 @@ public class CartServiceImpl implements CartService {
         return orderId;
     }
 
-    public List<Cart> findMyCart(Member member) {
-        return cartRepository.findByMember(member);
-    }
+
 
     @Override
     public void deleteCart(Long cartId) {
