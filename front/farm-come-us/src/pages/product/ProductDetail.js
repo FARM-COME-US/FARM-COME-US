@@ -8,6 +8,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { productDetail } from "../../utils/api/product-http";
 
 const ProductDetail = () => {
+  // store 정보 받아와야 함
+  // 우선 스토어네임 설정해두고 진행
+  const storeName = "강원 랜드";
+
   const [itemDetail, setItemDetail] = useState({});
   const [amount, setAmount] = useState(1);
 
@@ -26,8 +30,6 @@ const ProductDetail = () => {
 
     getItemDetail();
   }, []);
-
-  console.log(itemDetail);
 
   const navigate = useNavigate();
 
@@ -59,7 +61,7 @@ const ProductDetail = () => {
           ></MdOutlineArrowBackIos>
           <div className={classes.storename}>
             <Link to="/store" state={{ storeId: itemDetail.item.storeId }}>
-              {itemDetail.item.store_name}
+              {storeName}
             </Link>
           </div>
         </div>
@@ -76,10 +78,12 @@ const ProductDetail = () => {
               {itemDetail.item.itemDiscount}%
             </div>
             <div className={classes.originalprice}>
-              {itemDetail.item.itemPrice}원
+              {convertedPrice(itemDetail.item.itemPrice)}원
             </div>
           </div>
-          <div className={classes.saleprice}>{discountPrice}</div>
+          <div className={classes.saleprice}>
+            {convertedPrice(discountPrice)}
+          </div>
           <div className={classes.won}>원</div>
           <div className={classes.selectamount}>
             <div className={classes.firstblock} onClick={minusAmount}>
@@ -93,7 +97,9 @@ const ProductDetail = () => {
         </div>
         <div className={classes.finalprice}>
           <div className={classes.firstblock}>총 상품 금액:</div>
-          <div className={classes.secondblock}>{resultPrice}</div>
+          <div className={classes.secondblock}>
+            {convertedPrice(resultPrice)}
+          </div>
           <div className={classes.thirdblock}>원</div>
         </div>
         <div className={classes.buttonspace}>
@@ -104,9 +110,9 @@ const ProductDetail = () => {
             <Link
               to="/payment"
               state={{
-                store_name: itemDetail.item.storeId,
-                item_name: itemDetail.item.itemName,
-                item_price: resultPrice,
+                storename: storeName,
+                productname: itemDetail.item.itemName,
+                price: resultPrice,
                 amount: amount,
               }}
               className={classes.buybuttonlink}

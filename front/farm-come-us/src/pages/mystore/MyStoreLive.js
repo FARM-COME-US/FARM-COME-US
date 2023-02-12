@@ -20,7 +20,7 @@ const DUMMY_LIVE_LIST = [
     price: 14000,
     count: 1,
     unit: "개",
-    startDate: new Date(2023, 2, 10, 23, 0, 0),
+    startDate: new Date(2023, 3, 21, 23, 0, 0),
     imgSrc: "https://via.placeholder.com/300",
   },
   {
