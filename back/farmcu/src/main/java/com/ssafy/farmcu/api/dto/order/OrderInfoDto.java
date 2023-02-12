@@ -20,7 +20,9 @@ public class OrderInfoDto {
     @NotNull
     private Long memberId;
 
+    @NotNull
     private int oitemCount;
+
 
     private List<OrderInfoDto> OrderInfoDtoList;
 }
