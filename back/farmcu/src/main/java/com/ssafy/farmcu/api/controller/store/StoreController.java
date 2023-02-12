@@ -47,7 +47,6 @@ public class StoreController {
 
         //이미지 첨부
         if(storeId > 0L && uploadFile != null) {
-
                 String savedPath = s3Service.uploadFile(uploadFile);
                 log.info("here save file");
                 StoreImageDto storeImageDto = StoreImageDto.builder()
@@ -58,10 +57,15 @@ public class StoreController {
                 storeImageService.saveStoreImage(storeImageDto);
         }
 
+        HashMap<String, Object> result = new HashMap<>();
+
         if(storeId>0L){
-            return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
+            result.put("storeId", storeId);
+            result.put("message", "success");
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
         }else{
-            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+            result.put("message", "error");
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
         }
     }
 
