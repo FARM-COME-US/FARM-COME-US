@@ -41,9 +41,9 @@ const SignUp = () => {
   const [phoneNumber, setPhoneNumber] = useState("01012341234");
   const [password, setPassword] = useState("asd12345!");
   const [passwordConfirm, setPasswordConfirm] = useState("asd12345!");
-  const [streetAddr, setStreetAddr] = useState("대전 유성구 동서대로 98-39");
+  const [streetAddr, setStreetAddr] = useState("");
   const [detailAddr, setDetailAddr] = useState("삼성화재 유성캠퍼스");
-  const [zipcode, setZipcode] = useState("34153");
+  const [zipcode, setZipcode] = useState("");
 
   //오류메시지 상태저장
   const [idMessage, setUseridMessage] = useState("");

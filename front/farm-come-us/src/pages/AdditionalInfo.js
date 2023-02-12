@@ -41,7 +41,7 @@ const AdditionalInfo = () => {
     e.preventDefault();
     // 보내는 로직 수정 필요함.
     const data = { phoneNumber, streetAddr, zipcode, detailAddr };
-    axios.put("/api/api/v1/member");
+    axios.put(process.env.REACT_APP_API_SERVER_URL + "/api/v1/member");
   };
 
   return (
