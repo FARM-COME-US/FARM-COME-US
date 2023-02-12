@@ -66,12 +66,7 @@ function Login() {
       console.log(response);
 
       const accessToken = response.data["token"];
-      // const refreshToken = response.data["refresh-token"];
-
       sessionStorage.setItem("accessToken", accessToken);
-      // sessionStorage.setItem("refreshToken", refreshToken);
-
-      // console.log(`엑세스토큰:${accessToken}`);
 
       const userDataRes = await axios.get("/api/api/v1/member/", {
         headers: {

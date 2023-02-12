@@ -3,6 +3,7 @@ import Category from "../../components/product/Category.js";
 import SubCategory from "../../components/product/SubCategory.js";
 import ProductList from "../../components/product/ProductList.js";
 
+/*
 const ITEM_LIST = [
   {
     category_id: 1,
@@ -44,33 +45,32 @@ const ITEM_LIST = [
     store_name: "퍼시먼 인 더 청송",
   },
 ];
+*/
 
 const Products = () => {
-  const [categoryIdState, setCategoryId] = useState(0);
-  const [subCategoryIdState, setSubCategoryId] = useState(0);
+  const [categoryNameState, setCategoryName] = useState("전체");
+  const [subCategoryNameState, setSubCategoryName] = useState("전체");
 
-  const getCategoryId = (id) => {
-    setCategoryId(id);
+  const getCategoryName = (name) => {
+    setCategoryName(name);
+    console.log(`대분류 ${name}`);
   };
 
-  const getSubCategoryId = (id) => {
-    setSubCategoryId(id);
+  const getSubCategoryName = (name) => {
+    setSubCategoryName(name);
+    console.log(`소분류 ${name}`);
   };
 
   return (
     <div>
-      <Category
-        getCategoryId={getCategoryId}
-        getSubCategoryId={getSubCategoryId}
-      />
+      <Category getCategoryName={getCategoryName} />
       <SubCategory
-        category_id={categoryIdState}
-        getSubCategoryId={getSubCategoryId}
+        categoryName={categoryNameState}
+        getSubCategoryName={getSubCategoryName}
       ></SubCategory>
       <ProductList
-        ITEM_LIST={ITEM_LIST}
-        category_id={categoryIdState}
-        sub_category_id={subCategoryIdState}
+        category_name={categoryNameState}
+        sub_category_name={subCategoryNameState}
       />
     </div>
   );

@@ -38,7 +38,7 @@ const SignUp = () => {
   const [id, setId] = useState("myFarm");
   const [email, setEmail] = useState("myfarm@gmail.com");
   const [name, setName] = useState("팜컴어스");
-  const [pno, setPno] = useState("01012341234");
+  const [phoneNumber, setPhoneNumber] = useState("01012341234");
   const [password, setPassword] = useState("asd12345!");
   const [passwordConfirm, setPasswordConfirm] = useState("asd12345!");
   const [streetAddr, setStreetAddr] = useState("대전 유성구 동서대로 98-39");
@@ -49,7 +49,7 @@ const SignUp = () => {
   const [idMessage, setUseridMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [nameMessage, setNameMessage] = useState("");
-  const [pnoMessage, setPnoMessage] = useState("");
+  const [phoneNumberMessage, setPhoneNumberMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
   const [streetAddrMessage, setStreetAddrMessage] = useState("");
@@ -58,7 +58,7 @@ const SignUp = () => {
   const [isid, setIsid] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isName, setIsName] = useState(false);
-  const [ispno, setIspno] = useState(false);
+  const [isPhoneNumber, setIsPhoneNumber] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [isstreetAddr, setIsStreetAddr] = useState(false);
@@ -97,7 +97,7 @@ const SignUp = () => {
       email,
       nickname,
       name,
-      pno,
+      phoneNumber,
       password,
       streetAddr,
       detailAddr,
@@ -162,14 +162,14 @@ const SignUp = () => {
   }, []);
 
   //전화번호
-  const onBlurpno = useCallback((e) => {
-    setPno(e.target.value);
+  const onBlurPhoneNumber = useCallback((e) => {
+    setPhoneNumber(e.target.value);
     if (e.target.value.length === 11) {
-      setPnoMessage("올바른 전화번호 형식입니다. :)");
-      setIspno(true);
+      setPhoneNumberMessage("올바른 전화번호 형식입니다. :)");
+      setIsPhoneNumber(true);
     } else {
-      setPnoMessage("- 를 빼고 숫자만 입력해주세요.");
-      setIspno(false);
+      setPhoneNumberMessage("- 를 빼고 숫자만 입력해주세요.");
+      setIsPhoneNumber(false);
     }
   }, []);
 
@@ -354,16 +354,16 @@ const SignUp = () => {
               typename="pno"
               pattern="[0-9]{11}"
               maxLength="13"
-              onBlur={onBlurpno}
+              onBlur={onBlurPhoneNumber}
             />
           </div>
-          {pno.length > 0 && (
+          {phoneNumber.length > 0 && (
             <span
               className={`${classes.message} ${
-                ispno ? classes.success : classes.error
+                isPhoneNumber ? classes.success : classes.error
               }`}
             >
-              {pnoMessage}
+              {phoneNumberMessage}
             </span>
           )}
         </div>
@@ -476,7 +476,7 @@ const SignUp = () => {
             !(
               isid &&
               isEmail &&
-              ispno &&
+              isPhoneNumber &&
               isPassword &&
               isPasswordConfirm &&
               isstreetAddr
@@ -489,7 +489,7 @@ const SignUp = () => {
             !(
               isid &&
               isEmail &&
-              ispno &&
+              isPhoneNumber &&
               isPassword &&
               isPasswordConfirm &&
               isstreetAddr
