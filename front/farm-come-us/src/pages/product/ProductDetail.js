@@ -27,8 +27,6 @@ const ProductDetail = () => {
     getItemDetail();
   }, []);
 
-  console.log(itemDetail);
-
   const navigate = useNavigate();
 
   const plusAmount = () => {
