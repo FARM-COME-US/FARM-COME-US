@@ -20,7 +20,7 @@ const MyStoreCreateInfoList = (props) => {
   };
 
   const storeValidation = () => {
-    props.onValidationCheck();
+    // props.onValidationCheck();
   };
 
   return (
@@ -56,9 +56,9 @@ const MyStoreCreateInfoList = (props) => {
       <li className={classes.infoItem}>
         <MyStoreInput
           label="대표 번호"
-          value={props.info.pno}
+          value={props.info.phoneNumber}
           readOnly={false}
-          name="pno"
+          name="phoneNumber"
           onChange={props.onStoreInfoChange}
         />
       </li>

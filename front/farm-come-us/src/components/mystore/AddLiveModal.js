@@ -14,7 +14,11 @@ const AddLiveModal = (props) => {
       onToggleModal={props.onToggleModal}
     >
       <form className={classes.form}>
-        <MyStoreLiveInfoList className={classes.infoList} />
+        <MyStoreLiveInfoList
+          className={classes.infoList}
+          newLiveInfo={props.newLiveInfo}
+          onChange={props.onInputChange}
+        />
         <Button
           className={classes.btnRegist}
           onSubmit={props.onSubmit}

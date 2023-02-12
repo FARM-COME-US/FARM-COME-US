@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import classes from "./style/MyStore.module.scss";
-
+import { fetchUserInfoWithAccessToken } from "../../utils/api/user-http";
+// import { fetchStoreDetail } from "../../utils/api/store-http";
+import axios from "axios";
+import userSlice from "../../reduxStore/userSlice";
 import MyStoreHeader from "../../components/mystore/MyStoreHeader";
 
 const DUMMY_STORE_INFO = {
@@ -12,11 +16,21 @@ const DUMMY_STORE_INFO = {
   streetAddr: "강원도 평창군 봉평면 무야리 23-12",
   zipcode: 18310,
   detailAddr: "초가집",
-  pno: "010-1234-1234",
+  phoneNumber: "010-1234-1234",
   imgSrc: "https://via.placeholder.com/300",
 };
 
 const MyStore = () => {
+  const location = useLocation();
+  // console.log(location);
+  const dispatch = useDispatch();
+  console.log(location.state);
+  const user = useSelector((state) => state.userSlice.value);
+  console.log(user);
+  let store = useSelector((state) => state.userSlice.store.data);
+  console.log(store);
+
+  const [memberId, setMenberId] = useState("");
   const [isEditting, setIsEditting] = useState(false);
   const [storeInfo, setStoreInfo] = useState({
     storeId: DUMMY_STORE_INFO.storeId,
@@ -25,9 +39,80 @@ const MyStore = () => {
     streetAddr: DUMMY_STORE_INFO.streetAddr,
     zipcode: DUMMY_STORE_INFO.zipcode,
     detailAddr: DUMMY_STORE_INFO.detailAddr,
-    pno: DUMMY_STORE_INFO.pno,
+    phoneNumber: DUMMY_STORE_INFO.phoneNumber,
     imgSrc: DUMMY_STORE_INFO.imgSrc,
   });
+
+  const fetchStoreData = () => {
+    const accessToken = sessionStorage.getItem("accessToken");
+    console.log(accessToken);
+    console.log(user.storeId);
+    axios
+      .get(
+        `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${user.storeId}`,
+        {
+          headers: {
+            token: accessToken,
+          },
+        }
+      )
+      .then((response) => {
+        return response.data;
+        // setStoreInfo(response.data);
+      });
+  };
+
+  useEffect(() => {
+    if (user.storeId) {
+      console.log(fetchStoreData());
+      console.log("useEffect실행");
+      // setStoreInfo(fetchStoreData());
+    }
+  }, []);
+  // if (user.value.storeId && !storeInfo.storeId) {
+  //   // async () => {
+  //   async function fetchStoreDetail(storeId) {
+  //     try {
+  //       const response = axios.get(
+  //         `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${storeId}`
+  //       );
+
+  //       console.log(response);
+  //       return response;
+  //     } catch (err) {
+  //       console.err(err);
+  //     }
+  //   }
+
+  // const storedata = fetchStoreDetail(user.value.storeId);
+  // console.log(storedata);
+  // dispatch(userSlice.actions.saveStoreInfo(storedata));
+  // setStoreInfo(storedata);
+  // };
+  // }
+
+  const reLoadUserData = async () => {
+    const accessToken = sessionStorage.getItem("accessToken");
+    const userDataRes = await axios.get("/api/api/v1/member/", {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        token: accessToken,
+      },
+    });
+    dispatch(userSlice.actions.login(userDataRes.data.userInfo));
+    return userDataRes.data.userInfo.memberId;
+  };
+
+  // let memberId = 0;
+  // if (memberId) {
+  //   memberId = reLoadUserData();
+  //   console.log(memberId);
+  // }
+
+  // useEffect(() => {
+  //   setMenberId(reLoadUserData());
+  // }, [memberId]);
 
   const onChangeInfoHandler = (name, value) => {
     setStoreInfo((prev) => {
@@ -52,7 +137,7 @@ const MyStore = () => {
         storeId: DUMMY_STORE_INFO.storeId,
         storeName: DUMMY_STORE_INFO.storeName,
         desc: DUMMY_STORE_INFO.desc,
-        pno: DUMMY_STORE_INFO.pno,
+        phoneNumber: DUMMY_STORE_INFO.phoneNumber,
         streetAddr: DUMMY_STORE_INFO.streetAddr,
         zipcode: DUMMY_STORE_INFO.zipcode,
         detailAddr: DUMMY_STORE_INFO.detailAddr,
