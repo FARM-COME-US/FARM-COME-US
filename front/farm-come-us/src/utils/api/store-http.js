@@ -5,44 +5,61 @@ const STORE_API_URL = `${DUMMY_SERVER_URL}/store`;
 const STORE_LIKE_API_URL = `${DUMMY_SERVER_URL}/storelikes`;
 
 /* 스토어 생성 */
-export async function fetchCreateStore(storeInfo) {
-  const DUMMY_USER_INFO = {
-    memberId: 1,
-    id: 1,
-    username: "myFarm",
-  };
+export async function fetchCreateStore(storeInfo, userInfo) {
+  // const DUMMY_USER_INFO = {
+  //   memberId: 1,
+  //   id: 1,
+  //   username: "myFarm",
+  // };
+  const formData = new FormData();
+  formData.append("uploadFile", storeInfo.uploadFile);
 
   const data = {
-    storeName: storeInfo.storeName,
-    storeDescription: storeInfo.desc,
-    storeImg: storeInfo.imgSrc,
-    uploadFile: storeInfo.uploadFile,
-    storeStreetAddr: storeInfo.streetAddr,
-    storeDetailAddr: storeInfo.detailAddr,
-    storeZipcode: storeInfo.zipcode,
-    storePhoneNumber: storeInfo.pno,
+    memberId: userInfo.memberId,
     storeDeliveryCost: storeInfo.deliveryCost,
     storeDeliveryFree: storeInfo.deliveryFree,
-    memberId: DUMMY_USER_INFO.memberId,
+    storeDescription: storeInfo.desc,
+    storeDetailAddr: storeInfo.detailAddr,
+    storeImg: storeInfo.imgSrc,
+    // storeImg: null,
+    storeName: storeInfo.storeName,
+    storePhoneNumber: storeInfo.phoneNumber,
+    storeStreetAddr: storeInfo.streetAddr,
+    storeZipcode: storeInfo.zipcode,
+    // uploadFile: storeInfo.uploadFile,
+    // 😀 수정필요. 테스트 중.
   };
+
+  formData.append(
+    "store",
+    new Blob([JSON.stringify(data)], {
+      type: "application/json",
+    })
+  );
 
   const config = {
     headers: {
-      "Content-Type": "application/json",
+      // "Content-Type": "application/json",
+      "Content-Type": "multipart/form-data",
       "Access-Control-Allow-Origin": "*",
       Authorization: { token: sessionStorage.getItem("accessToken") },
       token: sessionStorage.getItem("accessToken"),
     },
     withCredentials: false,
   };
-
+  console.log("유저정보");
+  console.log(userInfo.memberId);
   console.log(data);
   try {
-    const response = axios.post("/api/api/v1/store", data, config);
-
+    const response = axios.post("/api/api/v1/store", formData, config);
+    // console.log(`토큰 이렇게 잘 온다고: ${config.headers.token}`);
+    console.log(formData);
+    console.log("1");
     console.log(response);
+    console.log("2");
   } catch (err) {
     console.err(err);
+    console.log("3");
   }
 }
 
@@ -97,6 +114,19 @@ export async function delteStore(storeId) {
   }
 }
 
+/* 유저의 스토어 찜 정보 받아오기 */
+export async function fetchFavStores(memberId) {
+  try {
+    const res = axios.get(
+      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/storelikes/${memberId}`
+    );
+
+    console.log(res);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 /* 스토어 찜 */
 export async function addFavStore(userId, storeId) {
   try {
@@ -116,7 +146,7 @@ export async function addFavStore(userId, storeId) {
 }
 
 /* 스토어 찜 취소 */
-export async function deleteFavStore(userId, storeId) {
+export async function deleteFavStore(id, userId, storeId) {
   try {
     const response = axios({
       method: "delete",
@@ -125,7 +155,7 @@ export async function deleteFavStore(userId, storeId) {
         storeId: storeId,
       },
       data: {
-        id: null,
+        id: id,
         memberId: userId,
         storeId: storeId,
       },

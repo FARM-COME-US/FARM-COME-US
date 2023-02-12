@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { fetchCreateStore, fetchStoreDetail } from "../../utils/api/store-http";
-
 import classes from "./style/MyStoreCreate.module.scss";
 
 import MyStoreHeader from "../../components/mystore/MyStoreHeader";
 import MyStoreContentTitle from "../../components/mystore/MyStoreContentTItle";
 import MyStoreCreateInfoList from "../../components/mystore/MyStoreCreateInfoList";
 import Button from "../../components/common/Button";
+import { useSelector } from "react-redux";
 
 const MyStoreCreate = () => {
   const location = useLocation();
@@ -19,7 +19,7 @@ const MyStoreCreate = () => {
     streetAddr: "",
     detailAddr: "",
     zipcode: "",
-    pno: "",
+    phoneNumber: "",
     imgSrc: "",
     uploadFile: "",
     deliveryCost: "",
@@ -34,10 +34,20 @@ const MyStoreCreate = () => {
     }
   }, []);
 
+  const user = useSelector((state) => state.userSlice.value);
+  // console.log(user);
+
   const createStoreHandler = (e) => {
     e.preventDefault();
-    alert("스토어 생성로직 - 멤버 id 더미 데이터 ");
-    fetchCreateStore(storeInfo);
+    // alert("스토어 생성로직 - 멤버 id 더미 데이터 ");
+    try {
+      fetchCreateStore(storeInfo, user);
+      alert("스토어가 생성되었습니다.");
+      // 스토어 생성하고, 내 스토어로 넘김.
+      navigate("/mystore", { replace: true });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const storeInfoChangeHandler = (name, value) => {
