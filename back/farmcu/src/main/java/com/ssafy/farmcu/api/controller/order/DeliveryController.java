@@ -1,6 +1,6 @@
 package com.ssafy.farmcu.api.controller.order;
 
-import com.ssafy.farmcu.api.dto.member.MemberResponseDto;
+import com.ssafy.farmcu.api.dto.member.MemberDto;
 import com.ssafy.farmcu.api.dto.order.DeliveryInfoDto;
 import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.entity.member.Member;
@@ -38,9 +38,9 @@ public class DeliveryController {
 
     @ApiOperation("배송 정보 조회")
     @GetMapping("/{memberId}")
-    public ResponseEntity<MemberResponseDto> findMemberAddr(@PathVariable Long memberId) {
+    public ResponseEntity<MemberDto> findMemberAddr(@PathVariable Long memberId) {
 
-        MemberResponseDto memberDto = memberService.getUserInfo(memberId);
+        MemberDto memberDto = memberService.getUserInfo(memberId);
 
         return ResponseEntity.ok(memberDto);
     }

@@ -72,7 +72,7 @@ public class CartController {
     }
 
 
-    @PostMapping(value = "/cart")
+    @PostMapping(value = "/orders")
     @ApiOperation(value = "장바구니 상품 주문")
     public ResponseEntity cartOrder(@RequestBody CartOrderDto cartOrderDto, String memberId) {
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList(); //전달된 장바구니의 항목 리스트

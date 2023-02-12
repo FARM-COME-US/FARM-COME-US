@@ -71,7 +71,7 @@ public class Order {
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrderInfo(this);
-        orderItem.setOrderPrice(getTotalOrderPrice());
+//        orderItem.setOitemPrice(getTotalOrderPrice());
 
     }
 
@@ -83,7 +83,7 @@ public class Order {
         for(OrderItem orderItem : orderItems){ //주문 상세 리스트 주입
             order.addOrderItem(orderItem);
         }
-
+        order.setTotalOrderPrice(order.getTotalPrice());
         order.setOrderStatus(OrderStatus.ORDER); //주문상태를 ORDER로 set
         order.setOrderCreateAt(LocalDateTime.now()); //주문시간
 
@@ -96,8 +96,6 @@ public class Order {
 
         for(OrderItem orderItem : orderItems){
             totalPrice += orderItem.getTotalPrice();
-            System.out.println(orderItem + "!!!!!!!!!!!!!!!!!!!!!!!");
-
         }
         return totalPrice;
     }
