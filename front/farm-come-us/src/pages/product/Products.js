@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Category from "../../components/product/Category.js";
 import SubCategory from "../../components/product/SubCategory.js";
 import ProductList from "../../components/product/ProductList.js";
+import { productList } from "../../utils/api/product-http";
 
 const ITEM_LIST = [
   {
@@ -46,31 +47,35 @@ const ITEM_LIST = [
 ];
 
 const Products = () => {
-  const [categoryIdState, setCategoryId] = useState(0);
-  const [subCategoryIdState, setSubCategoryId] = useState(0);
+  const [products, setProducts] = useState([]);
+  const [categoryNameState, setCategoryName] = useState("전체");
+  const [subCategoryNameState, setSubCategoryName] = useState("전체");
 
-  const getCategoryId = (id) => {
-    setCategoryId(id);
+  useEffect(() => {
+    setProducts(productList());
+  }, [setProducts]);
+
+  const getCategoryName = (name) => {
+    setCategoryName(name);
+    console.log(name);
   };
 
-  const getSubCategoryId = (id) => {
-    setSubCategoryId(id);
+  const getSubCategoryName = (name) => {
+    setSubCategoryName(name);
+    console.log(name);
   };
 
   return (
     <div>
-      <Category
-        getCategoryId={getCategoryId}
-        getSubCategoryId={getSubCategoryId}
-      />
+      <Category getCategoryName={getCategoryName} />
       <SubCategory
-        category_id={categoryIdState}
-        getSubCategoryId={getSubCategoryId}
+        categoryName={categoryNameState}
+        getSubCategoryName={getSubCategoryName}
       ></SubCategory>
       <ProductList
         ITEM_LIST={ITEM_LIST}
-        category_id={categoryIdState}
-        sub_category_id={subCategoryIdState}
+        category_id={categoryNameState}
+        sub_category_id={subCategoryNameState}
       />
     </div>
   );
