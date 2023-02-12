@@ -43,6 +43,7 @@ const userSlice = createSlice({
   name: "userSlice",
   initialState: {
     value: initialStateValue,
+    store: {},
   },
   reducers: {
     login: (state, action) => {
@@ -54,6 +55,9 @@ const userSlice = createSlice({
     savetoken: (state, action) => {
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
+    },
+    saveStoreInfo: (state, action) => {
+      state.store = action.payload;
     },
     // up: (state, action) => {
     //   state.value = state.value + action.payload;

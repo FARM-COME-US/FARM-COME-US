@@ -21,7 +21,6 @@ export async function fetchCreateStore(storeInfo, userInfo) {
     storeDescription: storeInfo.desc,
     storeDetailAddr: storeInfo.detailAddr,
     storeImg: storeInfo.imgSrc,
-    // storeImg: null,
     storeName: storeInfo.storeName,
     storePhoneNumber: storeInfo.phoneNumber,
     storeStreetAddr: storeInfo.streetAddr,
@@ -39,7 +38,6 @@ export async function fetchCreateStore(storeInfo, userInfo) {
 
   const config = {
     headers: {
-      // "Content-Type": "application/json",
       "Content-Type": "multipart/form-data",
       "Access-Control-Allow-Origin": "*",
       Authorization: { token: sessionStorage.getItem("accessToken") },
@@ -52,27 +50,28 @@ export async function fetchCreateStore(storeInfo, userInfo) {
   console.log(data);
   try {
     const response = axios.post("/api/api/v1/store", formData, config);
-    // console.log(`토큰 이렇게 잘 온다고: ${config.headers.token}`);
     console.log(formData);
-    console.log("1");
     console.log(response);
-    console.log("2");
+    return response;
   } catch (err) {
     console.err(err);
-    console.log("3");
   }
 }
 
 /* 스토어 상세 조회 */
 export async function fetchStoreDetail(storeId) {
   try {
-    const response = axios.get("/api/store", {
-      params: {
-        storeId,
-      },
-    });
+    const response = axios.get(
+      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${storeId}`,
+      {
+        // params: {
+        //   storeId,
+        // },
+      }
+    );
 
     console.log(response);
+    return response;
   } catch (err) {
     console.err(err);
   }

@@ -3,15 +3,18 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { fetchCreateStore, fetchStoreDetail } from "../../utils/api/store-http";
 import classes from "./style/MyStoreCreate.module.scss";
 
+import { useDispatch } from "react-redux";
 import MyStoreHeader from "../../components/mystore/MyStoreHeader";
 import MyStoreContentTitle from "../../components/mystore/MyStoreContentTItle";
 import MyStoreCreateInfoList from "../../components/mystore/MyStoreCreateInfoList";
 import Button from "../../components/common/Button";
 import { useSelector } from "react-redux";
+import userSlice from "../../reduxStore/userSlice";
 
 const MyStoreCreate = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { userInfo } = location.state;
   const [storeInfo, setStoreInfo] = useState({
     storeName: "",
@@ -26,7 +29,7 @@ const MyStoreCreate = () => {
     deliveryFree: "",
   });
   const [storeNameIsValid, setStoreNameIsValid] = useState();
-
+  const [storeId, setStoreId] = useState("");
   // 마이스토어가 있는데 들어왔으면 마이스토어로 redirect
   useEffect(() => {
     if (userInfo.storeId) {
@@ -41,13 +44,15 @@ const MyStoreCreate = () => {
     e.preventDefault();
     // alert("스토어 생성로직 - 멤버 id 더미 데이터 ");
     try {
-      fetchCreateStore(storeInfo, user);
+      const res = fetchCreateStore(storeInfo, user);
+      dispatch(userSlice.actions.saveStoreInfo(res));
+      console.log(res);
       alert("스토어가 생성되었습니다.");
       // 스토어 생성하고, 내 스토어로 넘김.
-      navigate("/mystore", { replace: true });
     } catch (err) {
       console.log(err);
     }
+    navigate("/mystore", { replace: true });
   };
 
   const storeInfoChangeHandler = (name, value) => {
