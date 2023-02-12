@@ -51,29 +51,41 @@ export async function createProduct(productInfo) {
 /* 상품 상세 조회 */
 export async function productDetail(productId) {
   try {
-    const response = axios({
+    const response = await axios({
       method: "get",
-      url: PRODUCT_API_URL,
+      url: "api/api/v1/item",
       params: {
         itemId: productId,
       },
     });
-    const data = response.json();
+    const data = response.data;
     console.log(data);
+    return data;
   } catch (err) {
     console.err(err);
   }
 }
 
 /* 상품 목록 조회 */
-export async function productList() {
+export async function productList(category, subCategory) {
   try {
-    const response = axios({
-      method: "get",
-      url: PRODUCT_API_URL,
+    console.log(category, subCategory);
+    const response = await axios({
+      method: "post",
+      url: "api/api/v1/item/keyword",
+      data: {
+        itemSearchReq: {
+          detailCategoryName: subCategory,
+          itemName: "딸기",
+          titleCategoryName: category,
+        },
+        page: 0,
+        size: 6,
+      },
     });
-    const data = response.json();
+    const data = response.data;
     console.log(data);
+    return data;
   } catch (err) {
     console.err(err);
   }

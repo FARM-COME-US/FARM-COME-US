@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import classes from "./style/StoreLikeItem.module.scss";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { deleteFavStore } from "../../utils/api/store-http";
 import axios from "axios";
 
 const StoreLikeItem = (props) => {
@@ -17,12 +18,7 @@ const StoreLikeItem = (props) => {
   useEffect(() => {
     return () => {
       if (isLike !== props.isLike) {
-        axios.post(
-          `"지워졌다는걸 알려주는 delete함수. 유저정보, 스토어정보. 지워졌다!"
-          "userid"
-          "token"
-          "storeid"}`
-        );
+        deleteFavStore(props.id, props.memberId, props.storeId);
       }
     };
   }, []);
@@ -60,7 +56,7 @@ const StoreLikeItem = (props) => {
         <div
           className={classes.description}
         >{`대표자 : ${props.representative}`}</div>
-        <div className={classes.description}>{`등록일 : ${props.created}`}</div>
+        {/* <div className={classes.description}>{`등록일 : ${props.created}`}</div> */}
       </div>
     </div>
   );

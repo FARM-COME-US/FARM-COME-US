@@ -10,7 +10,7 @@ const ProductItem = (props) => {
 
   return (
     <li className={`${classes.productItem}`}>
-      <Link to={`/product-detail`} state={{ item: props.item }}>
+      <Link to={`/product-detail`} state={{ item_id: props.item.item_id }}>
         <Card className={`${classes.productCard}`}>
           <img src="https://via.placeholder.com/300" alt="productImg" />
           <div className={`${classes.productInfo}`}>
