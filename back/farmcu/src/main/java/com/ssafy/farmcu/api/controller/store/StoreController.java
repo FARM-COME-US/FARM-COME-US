@@ -84,7 +84,7 @@ public class StoreController {
             return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
         }
         else
-            return new ResponseEntity<String>("store not exist", HttpStatus.ACCEPTED);
+            return new ResponseEntity<String>("store not exist", HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{storeId}")
@@ -93,7 +93,7 @@ public class StoreController {
         if(storeService.updateStore(id, request)){
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         }else{
-            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("error", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -104,7 +104,7 @@ public class StoreController {
         if(storeService.deleteStore(id)){
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         }else{
-            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("error", HttpStatus.NOT_FOUND);
         }
     }
 
