@@ -24,7 +24,7 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/delivery")
+@RequestMapping("api/v1/delivery")
 @RestController
 @Api("배송 관련")
 

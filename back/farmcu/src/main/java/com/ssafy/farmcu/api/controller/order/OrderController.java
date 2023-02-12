@@ -6,6 +6,7 @@ import com.ssafy.farmcu.api.dto.order.CartOrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
 import com.ssafy.farmcu.api.entity.member.Member;
+import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
 import com.ssafy.farmcu.api.service.order.CartService;
@@ -23,11 +24,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 
 //@RequiredArgsConstructor
 @RestController
-@RequestMapping("/order")
+@RequestMapping("api/v1/order")
 @Component
 @Api(value = "주문 관련 API")
 
@@ -73,33 +75,61 @@ public class OrderController {
 
     }
 
-    @GetMapping("/")
-    @ApiOperation(value = "주문 목록 조회")
-    public ResponseEntity getOrders(@RequestHeader Member memberId){
+
+    @GetMapping("/member")
+    @ApiOperation(value = "내 구매 내역 조회")
+    public ResponseEntity<HashMap<String, Object>> findMyCarts(@PathVariable Member member) {
+
+        HashMap<String, Object> resultMap = new HashMap<>();
 
         try {
-            List<Order> orders = orderService.findMyOrders(memberId);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+            List<Order> orders = orderService.findMyOrder(member);
+            resultMap.put("orderList", orders);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(resultMap);
 
     }
 
 
-    @PutMapping("/{orderId}")
+    @PutMapping("/orderId")
     @ApiOperation(value = "주문 취소")
-    public ResponseEntity updateOrder(@PathVariable Order orderId){
+    public ResponseEntity updateOrder(@PathVariable Long orderId){
 
         try {
-            List<Order> order = orderService.findSameOrder(orderId);
+            orderService.updateOrder(orderId);
         }
         catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-        //        orderService.updateOrder(orderId);
+
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/allItem")
+    @ApiOperation(value = "전체 주문 상품 조회")
+    public ResponseEntity<HashMap<String, Object>> findOrderItems() {
+
+        List<OrderItem> orderItems = orderService.findAllOrderItem();
+
+        HashMap<String, Object> resultMap2 = new HashMap<>();
+        System.out.println(orderItems + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        resultMap2.put("orderList", orderItems);
+
+        return ResponseEntity.ok(resultMap2);
+    }
+
+    @GetMapping("/all")
+    @ApiOperation(value = "전체 주문 조회")
+    public ResponseEntity<HashMap<String, Object>> findOrders() {
+
+        List<Order> orders = orderService.findAllOrder();
+
+        HashMap<String, Object> resultMap2 = new HashMap<>();
+        resultMap2.put("orderList", orders);
+
+        return ResponseEntity.ok(resultMap2);
     }
 }
