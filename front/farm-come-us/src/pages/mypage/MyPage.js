@@ -6,14 +6,16 @@ import {
   fetchUserInfoWithAccessToken,
 } from "../../utils/api/user-http";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import userSlice from "../../reduxStore/userSlice";
+import axios from "axios";
 
 const DUMMY_MYPAGE_INFO = {
   id: 1,
   nickname: "홍당홍당",
   name: "홍당무",
   email: "ssafy123@ssafy.com",
-  pno: "010-1234-1234",
+  phoneNumber: "010-1234-1234",
   storeId: null,
   streetAddr: "강원도 평창군 봉평면 무야리 23-12",
   detailAddr: "강원 아파트",
@@ -24,18 +26,46 @@ const DUMMY_MYPAGE_INFO = {
 const MyPage = (props) => {
   const dispatch = useDispatch();
   // 유저정보 관리 변수
-  const [userInfo, setUserInfo] = useState({
-    ...DUMMY_MYPAGE_INFO,
-  });
 
   const [isEditting, setIsEditting] = useState(false);
+  const user = useSelector((state) => {
+    // console.log(state.userSlice.value);
+    return state.userSlice.value;
+  });
+  // console.log(user);
+  // setUserInfo(user);
+  const [userInfo, setUserInfo] = useState({
+    ...user,
+  });
 
   useEffect(() => {
-    const testMemberId = 1;
-    const userDataRes = fetchUserInfoWithAccessToken();
+    const storeUserData = async () => {
+      try {
+        const accessToken = sessionStorage.getItem("accessToken");
+        const userDataRes = await axios.get(
+          process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              token: accessToken,
+            },
+          }
+        );
+        const userInfo = userDataRes;
+        // console.log(userDataRes);
+        // console.log(userInfo);
+        // setUserInfo(userInfo);
+      } catch (err) {
+        console.log(err);
+      }
+
+      // setUserInfo(userDataRes.data);
+    };
+    // const testMemberId = 1;
+    storeUserData();
     // const fetchedInfo = fetchUserInfo(testMemberId);
     // console.log(fetchedInfo);
-    console.log(userDataRes);
   }, []);
 
   const toggleIsEditting = (e) => {
@@ -63,7 +93,7 @@ const MyPage = (props) => {
   const cancelInfoEditHandler = () => {
     setUserInfo((prev) => {
       return {
-        ...DUMMY_MYPAGE_INFO,
+        ...userInfo,
       };
     });
 
