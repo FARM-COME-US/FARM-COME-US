@@ -12,8 +12,10 @@ import MyStoreHeader from "../../components/mystore/MyStoreHeader";
 const DUMMY_STORE_INFO = {
   storeId: 1,
   storeName: "고랭강원농장",
-  desc: "저희 농장은 강원도 고산지대에서 재배한 신선한 작물들을 제공합니다.",
-  streetAddr: "강원도 평창군 봉평면 무야리 23-12",
+  storeDescription:
+    "저희 농장은 강원도 고산지대에서 재배한 신선한 작물들을 제공합니다.",
+  storeStreetAddr: "강원도 평창군 봉평면 무야리 23-12",
+  storeDetailAddr: "",
   zipcode: 18310,
   detailAddr: "초가집",
   phoneNumber: "010-1234-1234",
@@ -24,51 +26,70 @@ const MyStore = () => {
   const location = useLocation();
   // console.log(location);
   const dispatch = useDispatch();
-  console.log(location.state);
+  // console.log(location.state);
   const user = useSelector((state) => state.userSlice.value);
   console.log(user);
-  let store = useSelector((state) => state.userSlice.store.data);
-  console.log(store);
+  let storeId = useSelector((state) => state.userSlice.store);
+  console.log(storeId);
+  console.log(storeId.data.storeId);
 
   const [memberId, setMenberId] = useState("");
   const [isEditting, setIsEditting] = useState(false);
   const [storeInfo, setStoreInfo] = useState({
     storeId: DUMMY_STORE_INFO.storeId,
     storeName: DUMMY_STORE_INFO.storeName,
-    desc: DUMMY_STORE_INFO.desc,
-    streetAddr: DUMMY_STORE_INFO.streetAddr,
-    zipcode: DUMMY_STORE_INFO.zipcode,
-    detailAddr: DUMMY_STORE_INFO.detailAddr,
+    storeDescription: DUMMY_STORE_INFO.storeDescription,
+    storeStreetAddr: DUMMY_STORE_INFO.storeStreetAddr,
+    storeZipcode: DUMMY_STORE_INFO.storeZipcode,
+    storeDetailAddr: DUMMY_STORE_INFO.storeDetailAddr,
     phoneNumber: DUMMY_STORE_INFO.phoneNumber,
     imgSrc: DUMMY_STORE_INFO.imgSrc,
   });
 
-  const fetchStoreData = () => {
+  const fetchStoreData = async () => {
     const accessToken = sessionStorage.getItem("accessToken");
     console.log(accessToken);
     console.log(user.storeId);
-    axios
-      .get(
-        `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${user.storeId}`,
-        {
-          headers: {
-            token: accessToken,
-          },
-        }
-      )
-      .then((response) => {
-        return response.data;
-        // setStoreInfo(response.data);
-      });
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${storeId.data.storeId}`,
+      {
+        headers: {
+          token: accessToken,
+        },
+      }
+    );
+    setStoreInfo({ imgSrc: res.data.storeImage.savedPath, ...res.data.store });
+    console.log({ imgSrc: res.data.storeImage.savedPath, ...res.data.store });
+    console.log(res.data);
+    // console.log(res.storeImage.savedPath, ...res.data.store);
+
+    return res.data.store;
+
+    // await axios
+    //   .get(
+    //     `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${user.storeId}`,
+    //     {
+    //       headers: {
+    //         token: accessToken,
+    //       },
+    //     }
+    //   )
+    //   .then((response) => {
+    //     // setStoreInfo(response.data);
+    //     console.log(response.data.store);
+    //     return response.data.store;
+    //   });
   };
 
   useEffect(() => {
-    if (user.storeId) {
-      console.log(fetchStoreData());
-      console.log("useEffect실행");
-      // setStoreInfo(fetchStoreData());
-    }
-  }, []);
+    // if (user.storeId) {
+    console.log("useEffect실행");
+    const result = fetchStoreData();
+    console.log(result);
+    setStoreInfo((prev) => prev);
+    // setStoreInfo(fetchStoreData());
+    // }
+  }, [storeId]);
   // if (user.value.storeId && !storeInfo.storeId) {
   //   // async () => {
   //   async function fetchStoreDetail(storeId) {
@@ -136,11 +157,19 @@ const MyStore = () => {
       return {
         storeId: DUMMY_STORE_INFO.storeId,
         storeName: DUMMY_STORE_INFO.storeName,
-        desc: DUMMY_STORE_INFO.desc,
+        storeDescription: DUMMY_STORE_INFO.storeDescription,
+        storeStreetAddr: DUMMY_STORE_INFO.storeStreetAddr,
+        storeZipcode: DUMMY_STORE_INFO.storeZipcode,
+        storeDetailAddr: DUMMY_STORE_INFO.storeDetailAddr,
         phoneNumber: DUMMY_STORE_INFO.phoneNumber,
-        streetAddr: DUMMY_STORE_INFO.streetAddr,
-        zipcode: DUMMY_STORE_INFO.zipcode,
-        detailAddr: DUMMY_STORE_INFO.detailAddr,
+        imgSrc: DUMMY_STORE_INFO.imgSrc,
+        // storeId: DUMMY_STORE_INFO.storeId,
+        // storeName: DUMMY_STORE_INFO.storeName,
+        // desc: DUMMY_STORE_INFO.desc,
+        // phoneNumber: DUMMY_STORE_INFO.phoneNumber,
+        // streetAddr: DUMMY_STORE_INFO.streetAddr,
+        // zipcode: DUMMY_STORE_INFO.zipcode,
+        // detailAddr: DUMMY_STORE_INFO.detailAddr,
       };
     });
 

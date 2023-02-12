@@ -6,11 +6,6 @@ const STORE_LIKE_API_URL = `${DUMMY_SERVER_URL}/storelikes`;
 
 /* 스토어 생성 */
 export async function fetchCreateStore(storeInfo, userInfo) {
-  // const DUMMY_USER_INFO = {
-  //   memberId: 1,
-  //   id: 1,
-  //   username: "myFarm",
-  // };
   const formData = new FormData();
   formData.append("uploadFile", storeInfo.uploadFile);
 
@@ -25,8 +20,6 @@ export async function fetchCreateStore(storeInfo, userInfo) {
     storePhoneNumber: storeInfo.phoneNumber,
     storeStreetAddr: storeInfo.streetAddr,
     storeZipcode: storeInfo.zipcode,
-    // uploadFile: storeInfo.uploadFile,
-    // 😀 수정필요. 테스트 중.
   };
 
   formData.append(
