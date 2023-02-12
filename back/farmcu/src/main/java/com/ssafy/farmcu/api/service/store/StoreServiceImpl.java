@@ -61,9 +61,10 @@ public class StoreServiceImpl implements StoreService{
     }
 
     public StoreDto findStoreInfo(Long storeId){ // 스토어 정보 찾아오기
-        Store store = storeRepository.findByStoreId(storeId).orElseThrow(()-> new NotFoundStoreException("스토어가 존재하지 않음"));
 
         try {
+            Store store = storeRepository.findByStoreId(storeId).orElseThrow(()-> new NotFoundStoreException("스토어가 존재하지 않음"));
+
             StoreDto finded = StoreDto.builder()
                     .storeId(store.getStoreId())
                     .storeDeliveryCost(store.getStoreDeliveryCost())
@@ -79,7 +80,7 @@ public class StoreServiceImpl implements StoreService{
                     .build();
             return finded;
         }catch (Exception e){
-            e.printStackTrace();
+//            e.printStackTrace();  
             return null;
         }
     }
