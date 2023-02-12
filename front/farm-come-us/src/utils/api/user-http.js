@@ -27,7 +27,7 @@ export async function userSignUp(userInfo) {
 
   try {
     const response = axios.post(
-      process.env.REACT_APP_API_SERVER_URL + "api/v1/member/join",
+      process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/join",
       data,
       config
     );
