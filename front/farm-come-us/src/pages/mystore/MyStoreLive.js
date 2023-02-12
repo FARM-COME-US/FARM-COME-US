@@ -10,7 +10,7 @@ import AddLiveModal from "../../components/mystore/AddLiveModal";
 
 const DUMMY_LIVE_LIST = [
   {
-    liveId: "123",
+    liveId: "1",
     title: "신선한 유기농 강원 고랭 배추",
     productId: 1,
     productName: "강원도 고랭지 배추",

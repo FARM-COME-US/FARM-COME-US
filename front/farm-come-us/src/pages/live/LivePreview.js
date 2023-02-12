@@ -29,6 +29,7 @@ const LIVE_LIST = [
     productName: "강원도 고랭지 배추",
     discount: 14,
     price: 10800,
+    stock: 120,
     unit: 1,
     sessionId: 1,
   },
@@ -40,7 +41,8 @@ const LIVE_LIST = [
     productName: "[서귀포] 신선 당근",
     discount: 12,
     price: 6200,
-    unit: 1,
+    stock: 120,
+    unit: "개",
     sessionId: 2,
   },
   {
@@ -50,8 +52,9 @@ const LIVE_LIST = [
     productId: 3,
     productName: "강원도 고랭지 배추",
     discount: 14,
+    stock: 120,
     price: 10800,
-    unit: 3,
+    unit: "개",
     sessionId: 3,
   },
   {
@@ -61,8 +64,9 @@ const LIVE_LIST = [
     productId: 4,
     productName: "[서귀포] 신선 당근",
     discount: 16,
+    stock: 120,
     price: 13200,
-    unit: 1,
+    unit: "개",
     sessionId: 4,
   },
 ];
@@ -156,7 +160,6 @@ const LivePreview = () => {
   const {
     sendRequest: getRunningLiveInfo,
     status: rllStatus,
-    data: runningLiveList,
     errorRll,
   } = useHttp(fetchRunningLiveList, true);
 
@@ -190,17 +193,23 @@ const LivePreview = () => {
     getItemList();
   }, [getItemList]);
 
-  const checkIsLiveRunning = async (liveInfo) => {
+  const liveRoomEnterHandler = async (liveInfo) => {
     const data = await fetchLiveSession(liveInfo.sessionId);
+
     if (!data) {
       alert("진행 중인 라이브가 아닙니다.");
+      getLiveSessions();
       return;
     }
-    checkInLiveSession(data.sessionId);
-  };
-
-  const checkInLiveSession = (sessionId) => {
-    alert(`session id : ${sessionId} 방에 입장.`);
+    const sessionId = data.sessionId;
+    alert(`${sessionId}`);
+    navigate("/broadcast", {
+      state: {
+        id: sessionId,
+        username: "Participant" + Math.floor(Math.random() * 100),
+        liveInfo: liveInfo,
+      },
+    });
   };
 
   const moveMorePageHandler = (uri) => {
@@ -225,7 +234,7 @@ const LivePreview = () => {
           sessionList={sessionList}
           isLive={true}
           isPreview={true}
-          checkIsLiveRunning={checkIsLiveRunning}
+          onEnter={liveRoomEnterHandler}
         />
       )}
       <div className={classes.horzLine} />
