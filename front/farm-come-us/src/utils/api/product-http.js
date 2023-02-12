@@ -57,7 +57,7 @@ export async function productDetail(productId) {
   try {
     const response = await axios({
       method: "get",
-      url: "api/api/v1/item",
+      url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item`,
       params: {
         itemId: productId,
       },
@@ -71,16 +71,16 @@ export async function productDetail(productId) {
 }
 
 /* 상품 목록 조회 */
-export async function productList(category, subCategory) {
+export async function productList(category, itemName, subCategory) {
   try {
     console.log(category, subCategory);
     const response = await axios({
       method: "post",
-      url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/item/keyword",
+      url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item/keyword`,
       data: {
         itemSearchReq: {
           detailCategoryName: subCategory,
-          itemName: "딸기",
+          itemName: itemName,
           titleCategoryName: category,
         },
         page: 0,

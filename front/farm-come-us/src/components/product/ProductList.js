@@ -7,9 +7,9 @@ const ProductList = (props) => {
   const [itemList, setItemList] = useState([]);
 
   useEffect(() => {
-    async function getItemList(category, subCategory) {
+    async function getItemList(category, itemName, subCategory) {
       try {
-        const categoryList = await productList(category, subCategory);
+        const categoryList = await productList(category, itemName, subCategory);
         console.log(categoryList);
         setItemList(categoryList);
       } catch (err) {
@@ -17,7 +17,7 @@ const ProductList = (props) => {
       }
     }
 
-    getItemList(props.category_name, props.sub_category_name);
+    getItemList(props.category_name, null, props.sub_category_name);
   }, [props.category_name, props.sub_category_name]);
 
   if (itemList.length === 0) {
