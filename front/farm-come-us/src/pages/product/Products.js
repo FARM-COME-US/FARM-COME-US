@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Category from "../../components/product/Category.js";
 import SubCategory from "../../components/product/SubCategory.js";
 import ProductList from "../../components/product/ProductList.js";
-import { productList } from "../../utils/api/product-http";
 
+/*
 const ITEM_LIST = [
   {
     category_id: 1,
@@ -45,24 +45,20 @@ const ITEM_LIST = [
     store_name: "퍼시먼 인 더 청송",
   },
 ];
+*/
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
   const [categoryNameState, setCategoryName] = useState("전체");
   const [subCategoryNameState, setSubCategoryName] = useState("전체");
 
-  useEffect(() => {
-    setProducts(productList());
-  }, [setProducts]);
-
   const getCategoryName = (name) => {
     setCategoryName(name);
-    console.log(name);
+    console.log(`대분류 ${name}`);
   };
 
   const getSubCategoryName = (name) => {
     setSubCategoryName(name);
-    console.log(name);
+    console.log(`소분류 ${name}`);
   };
 
   return (
@@ -73,9 +69,8 @@ const Products = () => {
         getSubCategoryName={getSubCategoryName}
       ></SubCategory>
       <ProductList
-        ITEM_LIST={ITEM_LIST}
-        category_id={categoryNameState}
-        sub_category_id={subCategoryNameState}
+        category_name={categoryNameState}
+        sub_category_name={subCategoryNameState}
       />
     </div>
   );

@@ -67,11 +67,15 @@ export async function productDetail(productId) {
 }
 
 /* 상품 목록 조회 */
-export async function productList() {
+export async function productList(category, subCategory) {
   try {
     const response = await axios({
       method: "post",
       url: "api/api/v1/item/keyword",
+      params: {
+        categoryName: category,
+        itemName: subCategory,
+      },
     });
     const data = response.data;
     console.log(data);
