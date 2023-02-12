@@ -9,8 +9,8 @@ import lombok.*;
 @ToString
 public class MemberUpdateReq {
 //    private Long memberId;
-    private String password; // 기존 비밀번호
-    private String newPassword; // 새로운 비밀번호
+//    private String password; // 기존 비밀번호
+//    private String newPassword; // 새로운 비밀번호
     private String email;
     private String nickname;
     private String name;

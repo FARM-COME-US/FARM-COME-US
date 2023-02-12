@@ -9,11 +9,13 @@ const LiveChat = (props) => {
   return (
     <div className={classes.chatContainer}>
       <ChatList chatList={props.chatList} />
-      <ChatForm
-        onTextChange={props.onTextMsgChangeHandler}
-        onSubmit={props.onSubmit}
-        msg={props.msg}
-      />
+      {!props.isPublisher ? (
+        <ChatForm
+          onTextChange={props.onTextMsgChangeHandler}
+          onSubmit={props.onSubmit}
+          msg={props.msg}
+        />
+      ) : null}
     </div>
   );
 };

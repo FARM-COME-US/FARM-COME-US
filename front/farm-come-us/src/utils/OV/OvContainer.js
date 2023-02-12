@@ -1,9 +1,11 @@
 import { React, useState, useEffect, Fragment } from "react";
 import { OpenVidu } from "openvidu-browser";
 import { useNavigate } from "react-router-dom";
+import { fetchCloseSession } from "../api/ov-http";
 import axios from "axios";
 
 import classes from "./OvContainer.module.scss";
+import { TbTruckDelivery } from "react-icons/tb";
 
 import UserVideoComponent from "./UserVideoComponent";
 import LiveChat from "../../components/broadcast/LiveChat";
@@ -14,9 +16,9 @@ import LeaveButton from "../../components/broadcast/LeaveButton";
 import LiveProductInfo from "../../components/broadcast/LiveProductInfo";
 
 const OV_SERVER_URL = "http://localhost:5000";
-const OV_SERVER_SECRET = "MY_SECRET";
 
 const OvContainer = (props) => {
+  let tempOV = null;
   const navigate = useNavigate();
 
   const [OV, setOV] = useState(null);
@@ -43,10 +45,7 @@ const OvContainer = (props) => {
     };
   }, [session]);
 
-  useEffect(() => {
-    console.log("====================SUB==================");
-    console.log(subscribers);
-  }, [subscribers]);
+  useEffect(() => {}, [subscribers]);
 
   const handleMainVideoStream = (stream) => {
     if (mainStreamManager !== stream) {
@@ -55,7 +54,6 @@ const OvContainer = (props) => {
   };
 
   const deleteSubscriber = (streamManager) => {
-    console.log("delete sub");
     let index = subscribers.indexOf(streamManager, 0);
     if (index > -1) {
       setSubscribers((prev) => {
@@ -66,7 +64,7 @@ const OvContainer = (props) => {
 
   const joinSession = async () => {
     // --- 1) Get an OpenVidu object ---
-    const tempOV = new OpenVidu();
+    tempOV = new OpenVidu();
     setOV(tempOV);
 
     // --- 2) Init a session ---
@@ -80,6 +78,7 @@ const OvContainer = (props) => {
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
       const subscriber = mySession.subscribe(event.stream, undefined);
+      console.log(mySession);
       // Update the state with the new subscribers
       setSubscribers((prev) => [...prev, subscriber]);
     });
@@ -102,6 +101,13 @@ const OvContainer = (props) => {
       drawTextList(sender, msg);
     });
 
+    mySession.on("signal:live-close", async (e) => {
+      if (!props.isPublisher) {
+        alert("진행자에 의해 방송이 종료되었습니다.");
+        navigate("/", { replace: true });
+      }
+    });
+
     // --- 4) Connect to the session with a valid user token ---
     // Get a token from the OpenVidu deployment
     getToken().then((token) => {
@@ -113,16 +119,21 @@ const OvContainer = (props) => {
           // --- 5) Get your own camera stream ---
           // Obtain the current video device in use
           var devices = await tempOV.getDevices();
+
           var videoDevices = devices.filter(
             (device) => device.kind === "videoinput"
+          );
+
+          var audioDevices = devices.filter(
+            (device) => device.kind === "audioinput"
           );
 
           // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
           // element: we will manage it on our own) and with the desired properties
           const tempPublisher = await tempOV.initPublisherAsync(undefined, {
-            audioSource: undefined, // The source of audio. If undefined default microphone
+            audioSource: props.isPublisher ? audioDevices[0].deviceId : null, // The source of audio. If undefined default microphone
             videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
-            publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+            publishAudio: props.isPublisher ? true : false, // Whether you want to start publishing with your audio unmuted or not
             publishVideo: true, // Whether you want to start publishing with your video enabled or not
             resolution: `${props.width}x${props.height}`, // The resolution of your video
             frameRate: 30, // The frame rate of your video
@@ -156,28 +167,65 @@ const OvContainer = (props) => {
     });
   };
 
-  const leaveSession = () => {
+  const leaveSession = async () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     if (session) {
-      console.log(session);
       session.disconnect();
     }
 
-    // Empty all properties...
-    setOV(null);
-    setSession(undefined);
-    setSubscribers([]);
-    setMainStreamManager(undefined);
-    setPublisher(undefined);
+    await setTimeout(() => {
+      // Empty all properties...
+      setOV(null);
+      setSession(undefined);
+      setSubscribers([]);
+      setMainStreamManager(undefined);
+      setPublisher(undefined);
+    }, 500);
   };
 
-  const leaveSessionHandler = () => {
+  const leaveSessionHandler = async () => {
+    navigate(-1);
+  };
+
+  const closeSessionHandler = async () => {
     if (!window.confirm("방송을 종료하시겠습니까?")) return;
-    leaveSession();
+
+    session
+      .signal({
+        to: [],
+        type: "live-close",
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    await setTimeout(() => {}, 2000);
+
+    await fetchCloseSession(props.sessionId);
+    await leaveSession();
     navigate("/mystore/live", { replace: true });
   };
 
   const switchCamera = async () => {
+    axios
+      .get(
+        process.env.REACT_APP_OPENVIDU_SERVER +
+          "/openvidu/api/sessions/" +
+          props.sessionId +
+          "/connection",
+        {
+          headers: {
+            Authorization:
+              "Basic " +
+              btoa("OPENVIDUAPP:" + process.env.REACT_APP_OPENVIDU_SECRET),
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      });
+
     try {
       const devices = await OV.getDevices();
       var videoDevices = devices.filter(
@@ -219,41 +267,50 @@ const OvContainer = (props) => {
   };
 
   const createSession = async (sessionId) => {
-    const response = await axios.post(
-      OV_SERVER_URL + "/api/sessions",
-      { customSessionId: sessionId },
-      {
-        headers: { "Content-Type": "application/json" },
+    const data = JSON.stringify({ customSessionId: sessionId });
+    let response;
+    try {
+      response = await axios.post(
+        process.env.REACT_APP_OPENVIDU_SERVER + "/openvidu/api/sessions",
+        data,
+        {
+          headers: {
+            Authorization:
+              "Basic " +
+              btoa("OPENVIDUAPP:" + process.env.REACT_APP_OPENVIDU_SECRET),
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+    } catch (err) {
+      if (err.response.status === 409) {
+        return Promise.resolve(sessionId);
+      } else {
+        alert(err);
       }
-    );
-    // const data = JSON.stringify({ customSessionId: sessionId });
-    // const response = await axios.post(`${OV_SERVER_URL}/api/sessions`, data, {
-    //   headers: {
-    //     Authorization: "Basic " + btoa("OPENVIDUAPP:" + OV_SERVER_SECRET),
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    return response.data; // The sessionId
+    }
+    return response.data.sessionId; // The sessionId
   };
 
   const createToken = async (sessionId) => {
+    const data = {};
     const response = await axios.post(
-      OV_SERVER_URL + "/api/sessions/" + sessionId + "/connections",
-      {},
+      process.env.REACT_APP_OPENVIDU_SERVER +
+        `/openvidu/api/sessions/${sessionId}/connection`,
+      data,
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Basic ${btoa(
+            `OPENVIDUAPP:${process.env.REACT_APP_OPENVIDU_SECRET}`
+          )}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
       }
     );
-    // console.log(btoa("OPENVIDUAPP:" + OV_SERVER_SECRET));
-    // const data = {};
-    // const response = await axios.post(`${OV_SERVER_URL}/connections`, data, {
-    //   headers: {
-    //     Authorization: "Basic " + btoa("OPENVIDUAPP:" + OV_SERVER_SECRET),
-    //     "Content-Type": "application/json",
-    //   },
-    // });
 
-    return response.data; // The token
+    return response.data.token; // The token
   };
 
   // 실시간 채팅
@@ -301,11 +358,11 @@ const OvContainer = (props) => {
           <div className={classes.ovInfoContainer}>
             <LiveHeader
               className={classes.liveHeader}
-              isSubscriber={props.isSubscriber}
+              isPublisher={props.isPublisher}
               isMute={isMute}
               title={props.liveInfo.title}
               onCameraSwitch={switchCamera}
-              onLiveClose={leaveSessionHandler}
+              onLiveLeave={leaveSessionHandler}
               onToggleMute={toggleMuteHandler}
             />
             <LiveInfo
@@ -319,14 +376,20 @@ const OvContainer = (props) => {
               onTextMsgChangeHandler={onTextMsgChangeHandler}
               onSubmit={sendChatMsgHandler}
               msg={chatMsg}
+              isPublisher={props.isPublisher}
             />
+
             <LiveFooter>
-              {props.isSubscriber ? (
-                <div></div>
-              ) : (
+              {!props.isPublisher ? (
                 <Fragment>
                   <LiveProductInfo liveInfo={props.liveInfo} />
-                  <LeaveButton onClick={leaveSessionHandler} />
+                  <div className={classes.btnBox}>
+                    <TbTruckDelivery className={classes.btnPurchase} />
+                  </div>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <LeaveButton onClick={closeSessionHandler} />
                 </Fragment>
               )}
             </LiveFooter>
@@ -335,6 +398,15 @@ const OvContainer = (props) => {
             className={classes.streamContainer}
             streamManager={mainStreamManager}
           />
+          {subscribers.map((sub, i) => (
+            <div
+              key={i}
+              className={`stream-container ${classes.hiddenVideo}`}
+              onClick={() => this.handleMainVideoStream(sub)}
+            >
+              <UserVideoComponent streamManager={sub} />
+            </div>
+          ))}
         </Fragment>
       ) : null}
     </div>

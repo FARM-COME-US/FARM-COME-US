@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useHttp from "../../hooks/use-http";
 
 import classes from "./style/LivePreview.module.scss";
@@ -6,13 +7,17 @@ import classes from "./style/LivePreview.module.scss";
 import PreviewHeader from "../../components/preview/PreviewHeader";
 import LiveList from "../../components/live/LiveList";
 import ProductList from "../../components/preview/ProductList";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
+import Loading from "../../components/common/Loading";
 
 import { MdOutlineLiveTv } from "react-icons/md";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import { MdStorefront } from "react-icons/md";
 import { fetchLiveSession, fetchLiveSessions } from "../../utils/api/ov-http";
-import { fetchLiveList } from "../../utils/api/live-http";
+import {
+  fetchRunningLiveList,
+  fetchScheduledLiveList,
+} from "../../utils/api/live-http";
+import { productList } from "../../utils/api/product-http";
 
 // 더미 데이터
 const LIVE_LIST = [
@@ -24,6 +29,7 @@ const LIVE_LIST = [
     productName: "강원도 고랭지 배추",
     discount: 14,
     price: 10800,
+    stock: 120,
     unit: 1,
     sessionId: 1,
   },
@@ -35,7 +41,8 @@ const LIVE_LIST = [
     productName: "[서귀포] 신선 당근",
     discount: 12,
     price: 6200,
-    unit: 1,
+    stock: 120,
+    unit: "개",
     sessionId: 2,
   },
   {
@@ -45,8 +52,9 @@ const LIVE_LIST = [
     productId: 3,
     productName: "강원도 고랭지 배추",
     discount: 14,
+    stock: 120,
     price: 10800,
-    unit: 3,
+    unit: "개",
     sessionId: 3,
   },
   {
@@ -56,8 +64,9 @@ const LIVE_LIST = [
     productId: 4,
     productName: "[서귀포] 신선 당근",
     discount: 16,
+    stock: 120,
     price: 13200,
-    unit: 1,
+    unit: "개",
     sessionId: 4,
   },
 ];
@@ -140,6 +149,7 @@ const PRODUCT_LIST = [
 ];
 
 const LivePreview = () => {
+  const navigate = useNavigate();
   const {
     sendRequest: getLiveSessions,
     status: ovStatus,
@@ -148,32 +158,63 @@ const LivePreview = () => {
   } = useHttp(fetchLiveSessions, true);
 
   const {
-    sendRequest: getLiveInfo,
-    status: dbStatus,
-    data: liveList,
-    errorDB,
-  } = useHttp(fetchLiveList, true);
+    sendRequest: getRunningLiveInfo,
+    status: rllStatus,
+    errorRll,
+  } = useHttp(fetchRunningLiveList, true);
+
+  const {
+    sendRequest: getScheduledLiveInfo,
+    status: sllStatus,
+    data: scheduledLiveList,
+    errorSll,
+  } = useHttp(fetchScheduledLiveList, true);
+
+  const {
+    sendRequest: getItemList,
+    status: itemStatus,
+    data: itemList,
+    errorItem,
+  } = useHttp(productList, true);
 
   useEffect(() => {
     getLiveSessions();
-    console.log(sessionList);
   }, [getLiveSessions]);
 
   useEffect(() => {
-    getLiveInfo();
-  }, [getLiveInfo]);
+    getRunningLiveInfo();
+  }, [getRunningLiveInfo]);
 
-  const checkIsLiveRunning = async (liveInfo) => {
+  useEffect(() => {
+    getScheduledLiveInfo();
+  }, [getScheduledLiveInfo]);
+
+  useEffect(() => {
+    getItemList();
+  }, [getItemList]);
+
+  const liveRoomEnterHandler = async (liveInfo) => {
     const data = await fetchLiveSession(liveInfo.sessionId);
+
     if (!data) {
       alert("진행 중인 라이브가 아닙니다.");
+      getLiveSessions();
       return;
     }
-    checkInLiveSession(data.sessionId);
+    const sessionId = data.sessionId;
+    alert(`${sessionId}`);
+    navigate("/broadcast", {
+      state: {
+        id: sessionId,
+        username: "Participant" + Math.floor(Math.random() * 100),
+        liveInfo: liveInfo,
+      },
+    });
   };
 
-  const checkInLiveSession = (sessionId) => {
-    alert(`session id : ${sessionId} 방에 입장.`);
+  const moveMorePageHandler = (uri) => {
+    console.log(uri);
+    navigate(uri);
   };
 
   return (
@@ -181,29 +222,31 @@ const LivePreview = () => {
       {/* 라이브 목록 */}
       <PreviewHeader
         className={`${classes.header} title`}
+        moveMorePage={() => moveMorePageHandler("/livestore/running")}
         text="진행 중인 라이브"
         logo={<MdOutlineLiveTv className={`${classes.logo} ${classes.red}`} />}
       />
-      {ovStatus === "pending" || dbStatus === "pending" ? (
-        <LoadingSpinner className={classes.loading} />
+      {ovStatus === "pending" || rllStatus === "pending" ? (
+        <Loading className={classes.loading} />
       ) : (
         <LiveList
           liveList={LIVE_LIST}
           sessionList={sessionList}
           isLive={true}
           isPreview={true}
-          checkIsLiveRunning={checkIsLiveRunning}
+          onEnter={liveRoomEnterHandler}
         />
       )}
       <div className={classes.horzLine} />
       {/* 예정된 라이브 */}
       <PreviewHeader
         className={`${classes.header} title`}
+        moveMorePage={() => moveMorePageHandler("/livestore/scheduled")}
         text="라이브 예정"
         logo={<MdOutlineCalendarToday className={`${classes.logo}`} />}
       />
-      {dbStatus === "pending" ? (
-        <LoadingSpinner className={classes.loading} />
+      {sllStatus === "pending" ? (
+        <Loading className={classes.loading} />
       ) : (
         <LiveList
           liveList={RESERVED_LIVE_LIST}
@@ -215,10 +258,15 @@ const LivePreview = () => {
       {/* 상품 최신순 */}
       <PreviewHeader
         className={`${classes.header} title`}
+        moveMorePage={() => moveMorePageHandler("/products")}
         text="상품 최신순"
         logo={<MdStorefront className={`${classes.logo}`} />}
       />
-      <ProductList productList={PRODUCT_LIST} />
+      {itemStatus === "pending" ? (
+        <Loading className={classes.loading} />
+      ) : (
+        <ProductList productList={PRODUCT_LIST} />
+      )}
     </div>
   );
 };

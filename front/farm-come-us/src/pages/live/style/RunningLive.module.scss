@@ -1,3 +1,8 @@
 .liveContainer {
   width: 100%;
+  position: relative;
+
+  .loading {
+    margin-top: 50%;
+  }
 }

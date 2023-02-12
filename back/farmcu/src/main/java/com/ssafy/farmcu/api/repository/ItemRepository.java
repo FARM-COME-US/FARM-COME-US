@@ -14,9 +14,9 @@ import java.util.Optional;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Optional<Item> findByItemId(Long itemId);
-    Slice<Item> findByStore(Store store);
-    Slice<Item> findByItemNameLike(String itemName);
-    Slice<Item> findByCategoryDetailAndItemNameLike(CategoryDetail categoryDetail, String itemName);
+    Slice<Item> findByStore(Store store, Pageable pageable);
+    Slice<Item> findByItemNameLike(String itemName, Pageable pageable);
+    Slice<Item> findByCategoryDetailAndItemNameLike(CategoryDetail categoryDetail, String itemName, Pageable pageable);
     void deleteByItemId(Long itemId);
 
 }
