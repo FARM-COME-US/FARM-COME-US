@@ -67,7 +67,7 @@ export async function productDetail(productId) {
 }
 
 /* 상품 목록 조회 */
-export async function productList(category, subCategory) {
+export async function productList(category, itemName, subCategory) {
   try {
     console.log(category, subCategory);
     const response = await axios({
@@ -76,7 +76,7 @@ export async function productList(category, subCategory) {
       data: {
         itemSearchReq: {
           detailCategoryName: subCategory,
-          itemName: "딸기",
+          itemName: itemName,
           titleCategoryName: category,
         },
         page: 0,
