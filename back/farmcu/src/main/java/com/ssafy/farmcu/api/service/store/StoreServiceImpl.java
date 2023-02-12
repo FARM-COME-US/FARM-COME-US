@@ -30,10 +30,10 @@ public class StoreServiceImpl implements StoreService{
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
 
-    public boolean checkStoreExist(Long memberId){
-        List<Store> store = storeRepository.findByMemberId(memberId);
-        if(store==null) return false;
-        else return true;
+    public Long checkStoreExist(Long memberId){
+        Store store = storeRepository.findByMemberId(memberId).orElse(null);
+        if(store==null) return null;
+        else return store.getStoreId();
     }
 
     @Transactional// 스토어 생성 save service
@@ -45,7 +45,7 @@ public class StoreServiceImpl implements StoreService{
                     .storeDeliveryFree(storeDto.getStoreDeliveryFree())
                     .storeDescription(storeDto.getStoreDescription())
                     .storeDetailAddr(storeDto.getStoreDetailAddr())
-                    .storeImg(storeDto.getStoreImg())
+                    .storeImg(".")
                     .storePhoneNumber(storeDto.getStorePhoneNumber())
                     .storeStreetAddr(storeDto.getStoreStreetAddr())
                     .storeZipcode(storeDto.getStoreZipcode())
@@ -61,9 +61,10 @@ public class StoreServiceImpl implements StoreService{
     }
 
     public StoreDto findStoreInfo(Long storeId){ // 스토어 정보 찾아오기
-        Store store = storeRepository.findByStoreId(storeId).orElseThrow(()-> new NotFoundStoreException("스토어가 존재하지 않음"));
 
         try {
+            Store store = storeRepository.findByStoreId(storeId).orElseThrow(()-> new NotFoundStoreException("스토어가 존재하지 않음"));
+
             StoreDto finded = StoreDto.builder()
                     .storeId(store.getStoreId())
                     .storeDeliveryCost(store.getStoreDeliveryCost())
@@ -72,15 +73,15 @@ public class StoreServiceImpl implements StoreService{
                     .storeDeliveryFree(store.getStoreDeliveryFree())
                     .storeDescription(store.getStoreDescription())
                     .storeDetailAddr(store.getStoreDetailAddr())
-                    .storeImg(store.getStoreImg())
+//                    .storeImg(store.getStoreImg())
                     .storePhoneNumber(store.getStorePhoneNumber())
                     .storeStreetAddr(store.getStoreStreetAddr())
-                    .member(store.getMember())
+                    .memberId(store.getMember().getMemberId())
                     .build();
             return finded;
         }catch (Exception e){
-            e.printStackTrace();
-            return null;
+//            e.printStackTrace();
+            return null;    
         }
     }
     @Transactional
@@ -94,7 +95,7 @@ public class StoreServiceImpl implements StoreService{
                     .storeDeliveryFree(storeDto.getStoreDeliveryFree())
                     .storeDescription(storeDto.getStoreDescription())
                     .storeDetailAddr(storeDto.getStoreDetailAddr())
-                    .storeImg(storeDto.getStoreImg())
+                    .storeImg(".")
                     .storePhoneNumber(storeDto.getStorePhoneNumber())
                     .storeStreetAddr(storeDto.getStoreStreetAddr())
                     .storeZipcode(storeDto.getStoreZipcode())

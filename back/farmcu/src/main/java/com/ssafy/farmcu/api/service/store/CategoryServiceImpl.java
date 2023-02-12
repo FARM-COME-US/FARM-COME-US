@@ -46,4 +46,5 @@ public class CategoryServiceImpl implements CategoryService {
         CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(detailName);
         return new CategoryDto(null, categoryDetail);
     }
+
 }

@@ -15,4 +15,7 @@ public class StoreListRes {
     private String storeDescription;
     private String storeImg;
     private String memberName;
+    private String storeDetailAddr;
+    private String storeStreetAddr;
+    private Long likeId;
 }

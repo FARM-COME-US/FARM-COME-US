@@ -24,7 +24,7 @@ public class StoreDto {
     private Long storeId;
     private String storeName;
     private String storeDescription;
-    private String storeImg;
+//    private String storeImg;
     private String storeStreetAddr;
     private String storeDetailAddr;
     private String storeZipcode;
@@ -34,19 +34,19 @@ public class StoreDto {
     private Timestamp createdAt;
     private Live live;
     private Member member;
+    private Long memberId;
 //    private List<StoreLike> storeLike = new ArrayList<>();
 
     public StoreDto(Store store){
         this.storeId = store.getStoreId();
         this.storeName = store.getStoreName();
         this.storeDescription = store.getStoreDescription();
-        this.storeImg = store.getStoreImg();
+//        this.storeImg = store.getStoreImg();
         this.storeStreetAddr = store.getStoreStreetAddr();
         this.storeDetailAddr = store.getStoreDetailAddr();
         this.storeZipcode = store.getStoreZipcode();
         this.storePhoneNumber = store.getStorePhoneNumber();
         this.storeDeliveryCost = store.getStoreDeliveryCost();
         this.storeDeliveryFree = store.getStoreDeliveryFree();
-
     }
 }
