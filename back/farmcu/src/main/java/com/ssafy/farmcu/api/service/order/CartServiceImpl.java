@@ -71,12 +71,14 @@ public class CartServiceImpl implements CartService {
 //    }
 
     //카트의 상품 주문로직
+    @Transactional
     public Long orderCart(List<CartOrderDto> cartOrderDtoList, String memberId){
         List<OrderInfoDto> orderInfoDtoList = new ArrayList<>(); //장바구니 리스트
 
         for(CartOrderDto CartOrderDto : cartOrderDtoList){ //장바구니 항목들 정리
             Cart cart = cartRepository.findById(CartOrderDto.getCartId()).orElseThrow();//고객이 담은 장바구니 항목 불러오기
             OrderInfoDto orderInfoDto = new OrderInfoDto();
+            orderInfoDto.setMemberId(cart.getMember().getMemberId());//주문 자
             orderInfoDto.setItemId(cart.getItem().getItemId()); //상품번호
             orderInfoDto.setOitemCount(cart.getCartItemCount()); //수량
             orderInfoDtoList.add(orderInfoDto);

@@ -3,6 +3,7 @@ package com.ssafy.farmcu.api.controller.order;
 
 import com.ssafy.farmcu.api.dto.order.CartOrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderDto;
+import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
@@ -41,12 +42,12 @@ public class OrderController {
 
     @PostMapping(value = "")
     @ApiOperation(value = "상품 주문")
-    public ResponseEntity order(@RequestBody OrderDto orderDto){
+    public ResponseEntity order(@RequestBody OrderInfoDto orderInfoDto){
 
         Long orderId; //주문번호 생성
 
         try {
-            orderId = orderService.order(orderDto); //주문 시도 및 주문번호 가져오기
+            orderId = orderService.order(orderInfoDto); //주문 시도 및 주문번호 가져오기
 
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
