@@ -16,7 +16,7 @@ const ProductDetail = () => {
   useEffect(() => {
     async function getItemDetail() {
       try {
-        const itemData = await productDetail(location.state.item_id);
+        const itemData = await productDetail(1);
         console.log(itemData);
         setItemDetail(itemData);
       } catch (err) {
