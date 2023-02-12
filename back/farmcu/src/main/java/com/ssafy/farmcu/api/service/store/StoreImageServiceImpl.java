@@ -66,10 +66,15 @@ public class StoreImageServiceImpl implements StoreImageService {
 
     @Override
     public StoreImageDto findStoreImageByStoreId(Long storeId) {
-        Store store = storeRepository.findByStoreId(storeId).orElseThrow(NullPointerException::new);
-        StoreImage storeImage = storeImageRepository.findByStoreId(store.getStoreId()).orElseThrow(NullPointerException::new);
+        try{
+            Store store = storeRepository.findByStoreId(storeId).orElseThrow(NullPointerException::new);
+            StoreImage storeImage = storeImageRepository.findByStoreId(store.getStoreId()).orElseThrow(NullPointerException::new);
+            return new StoreImageDto(storeImage);
 
-        return new StoreImageDto(storeImage);
+        }catch (Exception e){
+            return null;
+        }
+
     }
 
 
