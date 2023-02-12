@@ -40,9 +40,15 @@ public class DeliveryController {
     @GetMapping("/{memberId}")
     public ResponseEntity<MemberDto> findMemberAddr(@PathVariable Long memberId) {
 
-        MemberDto memberDto = memberService.getUserInfo(memberId);
+        try {
+            MemberDto memberDto = memberService.getUserInfo(memberId);
 
-        return ResponseEntity.ok(memberDto);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
 //    @ApiOperation("배송 정보 수정")
