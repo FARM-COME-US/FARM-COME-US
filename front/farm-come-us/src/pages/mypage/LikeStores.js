@@ -29,6 +29,8 @@ const LikeStores = (props) => {
       created: "2020. 05. 11",
     },
   ];
+
+  const [likeStoresData, setLikeStoresData] = useState([]);
   const memberId = useSelector((state) => {
     console.log("asd");
     console.log(state.userSlice.value.memberId);
@@ -39,6 +41,7 @@ const LikeStores = (props) => {
     console.log(memberId);
     try {
       const res = fetchFavStores(memberId);
+      setLikeStoresData(res.data);
     } catch (err) {
       // console.log(err);
     }
@@ -56,20 +59,22 @@ const LikeStores = (props) => {
   // }
 
   // list = <MyReceiptItem />;
-  list = data.map((item) => (
-    <StoreLikeItem
-      key={item.id}
-      img_address={item.storeImg}
-      isLike={item.isLike}
-      title={item.storeName}
-      address={item.address}
-      representative={item.memberName}
-      id={item.id}
-      memberId={memberId}
-      storeId={item.storeId}
-      // created={item.created}
-    />
-  ));
+  if (likeStoresData) {
+    list = likeStoresData.map((item) => (
+      <StoreLikeItem
+        key={item.id}
+        img_address={item.storeImg}
+        isLike={item.isLike}
+        title={item.storeName}
+        address={item.address}
+        representative={item.memberName}
+        id={item.id}
+        memberId={memberId}
+        storeId={item.storeId}
+        // created={item.created}
+      />
+    ));
+  }
 
   return (
     <div>
