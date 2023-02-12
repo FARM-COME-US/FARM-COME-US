@@ -14,7 +14,7 @@ public class MemberDto {
     private String detailAddr;
     private String zipcode;
     private String phoneNumber;
-    private String storeExist;
+    private Long storeId;
 
     public MemberDto(Member member){
         this.memberId = member.getMemberId();
@@ -31,7 +31,7 @@ public class MemberDto {
         return new MemberDto(member);
     }
 
-    public void aboutStore(String exist){
-        this.storeExist = exist;
+    public void aboutStore(Long storeId){
+        this.storeId = storeId;
     }
 }
