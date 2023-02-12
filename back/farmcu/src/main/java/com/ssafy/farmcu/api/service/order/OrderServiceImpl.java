@@ -3,6 +3,7 @@ package com.ssafy.farmcu.api.service.order;
 import com.ssafy.farmcu.api.dto.order.OrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
 import com.ssafy.farmcu.api.entity.member.Member;
+import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
 import com.ssafy.farmcu.api.entity.store.Item;
@@ -84,38 +85,36 @@ public class OrderServiceImpl implements OrderService{
 
     //** 주문 취소 **//
     // controller 에서 작성
-    public void updateOrder(Long orderId){
-        Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+    public void updateOrder(Long orderId) {
+        Order order = orderRepository.findByOrderId(orderId).orElseThrow(EntityNotFoundException::new);
         order.updateOrder();
     }
 
     //** 전체 목록 상세 조회 **//
     public List<OrderItem> findOrderDetail(Member member) {
-        return orderItemRepository.findByOrOrderInfoMember(member);
+        return orderItemRepository.findByOrOrderMember(member);
     }
 
-    //** 전체 주문 상세 조회 **//
-    public List<OrderItem> findAllItems() {
-        return orderItemRepository.findAll();
-    }
-
-    //** 나의 주문 조회 **//
-    public List<Order> findMyOrders(Member member) {
+    //** 사용자 주문 목록 조회 **//
+    @Transactional
+    public List<Order> findMyOrder(Member member) {
         return orderRepository.findByMember(member);
     }
 
-    //** 주문 번호 별 주문 조회
-    public List<Order> findSameOrder(Order order) {
-        return orderRepository.findByOrderId(order);
+//    //** 주문 번호 별 주문 상세 조회
+//    public List<Order> findSameOrder(Order order) {
+//        return orderRepository.findByOrderId(order);
+//    }
+
+
+    // 전체 주문 상품 조회
+    public List<OrderItem> findAllOrderItem() {
+        return orderItemRepository.findAll();
     }
-//    public List<OrderItem> findMyDetails(Long num)
-//        return orderRepository.findById(num);
-//    }
 
-    //** 주문 번호 조회 **//
-//    public Optional<Order> findById(Long order_num) {
-//        return orderRepository.findById(order_num);
-//    }
-
+    // 전체 주문 조회
+    public List<Order> findAllOrder() {
+        return orderRepository.findAll();
+    }
 
 }

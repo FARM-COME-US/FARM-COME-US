@@ -62,7 +62,9 @@ public class CartServiceImpl implements CartService {
 
     }
 
-    public List<Cart> findMyCart(Long member) {
+    // 사용자 장바구니 조회
+    @Transactional
+    public List<Cart> findMyCart(Member member) {
         return cartRepository.findByMember(member);
     }
 
@@ -99,7 +101,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void deleteCart(Long cartId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ItemNotFoundException("장바구니에 상품이 존재하지 않습니다."));;
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ItemNotFoundException("장바구니에 상품이 존재하지 않습니다."));
 
         cartRepository.delete(cart);
     }

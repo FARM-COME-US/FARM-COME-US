@@ -30,11 +30,10 @@ import java.util.List;
 
 //@RequiredArgsConstructor
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("api/v1/cart")
 @Component
 @Api(value = "장바구니 관련 API")
 public class CartController {
-
 
     public final  CartService cartService;
     public final CartServiceImpl cartServiceImpl;
@@ -46,7 +45,6 @@ public class CartController {
         this.cartServiceImpl = cartServiceImpl;
     }
 
-
     @PostMapping
     @ApiOperation(value = "장바구니 생성")
     public ResponseEntity saveCart(@RequestBody CartDto cartDto) {
@@ -57,38 +55,24 @@ public class CartController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(cartId, HttpStatus.CREATED);
-    }
 
-//    @GetMapping("/{member}")
-//    @ApiOperation(value = "내 장바구니 목록")
-//    public ResponseEntity findMyCart(@PathVariable Member member) {
-//
-//
-//        try {
-//            List<Cart> cart = cartService.findMyCart(member);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//        System.out.println();
-//        return new ResponseEntity<> ( HttpStatus.OK);
-//
-//    }
+        return new ResponseEntity<>(cartId, HttpStatus.CREATED);
+
+    }
 
     @GetMapping("/member")
     @ApiOperation(value = "멤버 장바구니 조회")
-    public ResponseEntity<HashMap<String, Object>> findMyCarts(@PathVariable Long member) {
+    public ResponseEntity<HashMap<String, Object>> findMyCarts(@PathVariable Member member) {
 
         HashMap<String, Object> resultMap = new HashMap<>();
+
         try {
             List<Cart> carts = cartService.findMyCart(member);
-
+            System.out.println("!!!!!!!!!!!!!!!!!!!" + carts);
             resultMap.put("cartList", carts);
-
-
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+       }
 
         return ResponseEntity.ok(resultMap);
 
@@ -103,7 +87,7 @@ public class CartController {
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("cartList", carts);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(resultMap);
     }
 
     @PostMapping(value = "/orders")
