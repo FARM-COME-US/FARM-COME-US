@@ -59,7 +59,7 @@ function Login() {
       console.log(data);
 
       const response = await axios.post(
-        "/api/api/v1/member/login",
+        process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/login",
         data,
         config
       );
