@@ -24,7 +24,7 @@ public class OrderItem {
 
     private LocalDateTime oitemCreatedAt;
 
-    private int orderPrice;
+    private int oitemPrice;
 
     // 연결
     @ManyToOne
@@ -37,24 +37,25 @@ public class OrderItem {
 
     //빌더
     @Builder
-    public OrderItem(Order orderInfo, Item item, Long oitemId, int oitemCount, LocalDateTime oitemCreatedAt, int orderPrice ) {
+    public OrderItem(Order orderInfo, Item item, Long oitemId, int oitemCount, LocalDateTime oitemCreatedAt, int oitemPrice ) {
         this.orderInfo = orderInfo;
         this.item = item;
         this.oitemId = oitemId;
         this.oitemCount = oitemCount;
         this.oitemCreatedAt = oitemCreatedAt;
-        this.orderPrice = item.getItemPrice() - item.getItemDiscount();
+        this.oitemPrice = oitemPrice;
     }
 
     // 주문 상품 상세 정보 생성
-    public static OrderItem createOrderItem(Item item, Integer oitemCount) {
+    public static OrderItem createOrderItem(Item item, int oitemCount) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setOitemCount(oitemCount);
-        orderItem.setOrderPrice(builder().orderPrice); //이 주문의 당시 가격
+        orderItem.setOitemPrice( oitemCount * item.getItemPrice() * (100 - item.getItemDiscount()) / 100);
+        orderItem.setOitemCreatedAt(LocalDateTime.now()); //주문시간
 
         // 주문 상품 재고 차감
-        item.removeStock(builder().oitemCount);
+        item.removeStock(oitemCount);
         return orderItem;
     }
 
@@ -65,7 +66,7 @@ public class OrderItem {
 
     //총액
     public int getTotalPrice(){
-        return orderPrice * oitemCount;
+        return oitemPrice;
     }
 
     // 주문 취소 시 재고 원상 복구
