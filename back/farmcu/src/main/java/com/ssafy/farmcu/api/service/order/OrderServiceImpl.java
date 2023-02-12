@@ -45,15 +45,13 @@ public class OrderServiceImpl implements OrderService{
     //**  단일 상품 주문 **//
     // (한 종류의 상품만 주문 가능, 상품 바로 구매 or live 주문)
     @Transactional
-    public Long order(OrderDto orderDto) {
+    public Long order(OrderInfoDto orderinfoDto) {
 
-        Item item = itemRepository.findByItemId(orderDto.getItem_id()).orElseThrow(() -> new ItemNotFoundException("상품에 대한 정보가 없습니다."));
-
-        // item 객체에서 OrderItem 객체 생성
-        Member member = memberRepository.findById(orderDto.getMember_id()).orElseThrow(() -> new NotFoundUserException("사용자애 대한 정보가 없습니다."));
+        Item item = itemRepository.findByItemId(orderinfoDto.getItemId()).orElseThrow(() -> new ItemNotFoundException("상품에 대한 정보가 없습니다."));
+        Member member = memberRepository.findById(orderinfoDto.getMemberId()).orElseThrow(() -> new NotFoundUserException("사용자애 대한 정보가 없습니다."));
         List<OrderItem> orderItems = new ArrayList<>();
 
-        OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getOrderCount());
+        OrderItem orderItem = OrderItem.createOrderItem(item, orderinfoDto.getOitemCount());
         orderItems.add(orderItem);
         Order order = Order.createOrder(member, orderItems);
         orderRepository.save(order);
@@ -104,6 +102,11 @@ public class OrderServiceImpl implements OrderService{
     //** 나의 주문 조회 **//
     public List<Order> findMyOrders(Member member) {
         return orderRepository.findByMember(member);
+    }
+
+    //** 주문 번호 별 주문 조회
+    public List<Order> findSameOrder(Order order) {
+        return orderRepository.findByOrderId(order);
     }
 //    public List<OrderItem> findMyDetails(Long num)
 //        return orderRepository.findById(num);

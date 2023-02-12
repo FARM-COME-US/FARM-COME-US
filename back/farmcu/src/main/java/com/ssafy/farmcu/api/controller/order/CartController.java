@@ -2,8 +2,11 @@ package com.ssafy.farmcu.api.controller.order;
 
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.farmcu.api.dto.order.CartDto;
 import com.ssafy.farmcu.api.dto.order.CartOrderDto;
+import com.ssafy.farmcu.api.dto.store.ItemDto;
+import com.ssafy.farmcu.api.dto.store.ItemImageDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.service.order.CartService;
@@ -12,13 +15,16 @@ import com.ssafy.farmcu.api.service.order.OrderServiceImpl;
 import com.ssafy.farmcu.oauth.PrincipalDetails;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Model;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,27 +55,58 @@ public class CartController {
             cartId = cartService.addCart(cartDto);
 
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(cartId, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{member}")
-    @ApiOperation(value = "내 장바구니 목록")
-    public ResponseEntity findMyCart(@PathVariable Member member) {
+//    @GetMapping("/{member}")
+//    @ApiOperation(value = "내 장바구니 목록")
+//    public ResponseEntity findMyCart(@PathVariable Member member) {
+//
+//
+//        try {
+//            List<Cart> cart = cartService.findMyCart(member);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//        System.out.println();
+//        return new ResponseEntity<> ( HttpStatus.OK);
+//
+//    }
 
+    @GetMapping("/member")
+    @ApiOperation(value = "멤버 장바구니 조회")
+    public ResponseEntity<HashMap<String, Object>> findMyCarts(@PathVariable Long member) {
+
+        HashMap<String, Object> resultMap = new HashMap<>();
         try {
-            List<Cart> cart = cartService.findMyCart(member);
+            List<Cart> carts = cartService.findMyCart(member);
+
+            resultMap.put("cartList", carts);
+
 
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-//        return new ResponseEntity(HttpStatus.OK);
-        return new ResponseEntity (HttpStatus.OK);
+        return ResponseEntity.ok(resultMap);
+
     }
 
-    @PostMapping(value = "/cart")
+    @GetMapping("/all")
+    @ApiOperation(value = "전체 장바구니 조회")
+    public ResponseEntity<HashMap<String, Object>> findCarts() {
+
+        List<Cart> carts = cartService.findAllCart();
+
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("cartList", carts);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/orders")
     @ApiOperation(value = "장바구니 상품 주문")
     public ResponseEntity cartOrder(@RequestBody CartOrderDto cartOrderDto, String memberId) {
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList(); //전달된 장바구니의 항목 리스트
@@ -91,7 +128,7 @@ public class CartController {
             cartService.deleteCart(cartId);
 
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
