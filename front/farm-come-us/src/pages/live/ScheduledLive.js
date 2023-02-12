@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
+import useHttp from "../../hooks/use-http";
+import { fetchScheduledLiveList } from "../../utils/api/live-http";
 
 import classes from "./style/ScheduledLive.module.scss";
 
 import LiveList from "../../components/live/LiveList";
+import Loading from "../../components/common/Loading";
 
 const RESERVED_LIVE_LIST = [
   {
@@ -52,9 +55,24 @@ const RESERVED_LIVE_LIST = [
 ];
 
 const ScheduledLive = () => {
+  const {
+    sendRequest: getScheduledLiveInfo,
+    status: sllStatus,
+    data: scheduledLiveList,
+    errorSll,
+  } = useHttp(fetchScheduledLiveList, true);
+
+  useEffect(() => {
+    getScheduledLiveInfo();
+  }, [getScheduledLiveInfo]);
+
   return (
     <div className={classes.liveContainer}>
-      <LiveList liveList={RESERVED_LIVE_LIST} isLive={false} />
+      {sllStatus === "pending" ? (
+        <Loading className={classes.loading} />
+      ) : (
+        <LiveList liveList={RESERVED_LIVE_LIST} isLive={false} />
+      )}
     </div>
   );
 };

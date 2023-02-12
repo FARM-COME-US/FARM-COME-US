@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 
 import classes from "./style/MyStoreProductInfoList.module.scss";
 
@@ -12,29 +12,13 @@ const DUMMY_CATEGORY = [
 ];
 
 const MyStoreProductInfoList = (props) => {
-  const imgRef = useRef();
-
-  const onInfoChangeHandler = (e) => {
-    props.onChange(e.target.name, e.target.value);
-  };
-
-  const onImgChangeHandler = (e) => {
-    onInfoChangeHandler(e);
-    loadImgFile(e);
-  };
-
-  const loadImgFile = (e) => {
-    const file = e.target.files[0]; //선택된 파일 가져오기
-    props.onChange("file", file);
-  };
-
   return (
     <ul className={`${classes.productInfoList} ${props.className}`}>
       <li className={classes.infoItem}>
         <select
           name="categoryName"
           value={props.productInfo.itemCreatedAt.categoryName}
-          onChange={onInfoChangeHandler}
+          onChange={props.onChange}
         >
           <option value="">카테고리 선택</option>
           {DUMMY_CATEGORY.map((category, idx) => (
@@ -50,7 +34,7 @@ const MyStoreProductInfoList = (props) => {
           type="text"
           name="itemName"
           value={props.productInfo.itemName}
-          onChange={onInfoChangeHandler}
+          onChange={props.onChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -59,7 +43,7 @@ const MyStoreProductInfoList = (props) => {
           type="number"
           value={props.productInfo.itemPrice}
           name="itemPrice"
-          onChange={onInfoChangeHandler}
+          onChange={props.onChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -68,7 +52,7 @@ const MyStoreProductInfoList = (props) => {
           type="number"
           value={props.productInfo.itemStock}
           name="itemStock"
-          onChange={onInfoChangeHandler}
+          onChange={props.onChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -77,7 +61,7 @@ const MyStoreProductInfoList = (props) => {
           type="text"
           value={props.productInfo.itemDescription}
           name="itemDescription"
-          onChange={onInfoChangeHandler}
+          onChange={props.onChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -86,12 +70,7 @@ const MyStoreProductInfoList = (props) => {
           type="file"
           value={props.productInfo.imgSrc}
           name="imgSrc"
-          onChange={onImgChangeHandler}
-        />
-        <img
-          className={classes.file}
-          src={props.productInfo.file}
-          alt="상품 이미지"
+          onChange={props.onChange}
         />
       </li>
     </ul>
