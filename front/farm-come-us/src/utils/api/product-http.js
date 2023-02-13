@@ -5,17 +5,17 @@ const PRODUCT_API_URL = `${DUMMY_SERVER_URL}/item`;
 
 /* 상품 등록 */
 export async function createProduct(productInfo) {
-  const DUMMY_STORE_ID = 1;
   const formData = new FormData();
 
   const data = {
-    storeId: DUMMY_STORE_ID,
-    categoryTitle: productInfo.categoryTitle,
-    categoryDetail: productInfo.categoryDetail,
+    storeId: productInfo.storeId,
+    titleCategoryName: productInfo.categoryTitle,
+    detailCategoryName: productInfo.categoryDetail,
     itemName: productInfo.itemName,
     itemDescription: productInfo.itemDescription,
     itemPrice: productInfo.itemPrice,
     itemStock: productInfo.itemStock,
+    imgSrc: productInfo.imgSrc,
   };
   formData.append("uploadFile", productInfo.uploadFile);
 
@@ -25,6 +25,8 @@ export async function createProduct(productInfo) {
       type: "application/json",
     })
   );
+
+  console.log(data);
 
   const config = {
     headers: {

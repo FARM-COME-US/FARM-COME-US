@@ -21,11 +21,11 @@ const AddProductModal = (props) => {
     storeId: 0,
     imgSrc: "",
     uploadFile: "",
+    storeId: props.storeInfo.storeId,
   });
 
   const addProductSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(productInfo);
     createProduct(productInfo);
   };
 
