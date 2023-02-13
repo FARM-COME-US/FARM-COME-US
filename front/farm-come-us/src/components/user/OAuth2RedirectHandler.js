@@ -71,6 +71,7 @@ function OAuth2RedirectHandler(props) {
       .catch((err) => console.log(err));
   };
 
+  // 😀 여기서 시작
   const getState = async () => {
     console.log("0");
     await axios
