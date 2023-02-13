@@ -24,7 +24,7 @@ public class ItemImage {
     @Column
     private String savedPath;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class)
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Item.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", updatable = false)
     private Item item;
 
