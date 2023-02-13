@@ -47,9 +47,10 @@ const MyStore = () => {
     const accessToken = sessionStorage.getItem("accessToken");
     console.log(accessToken);
     console.log(user.storeId);
+    const storeId = user.storeId;
     axios
       .get(
-        `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${user.storeId}`,
+        `${process.env.REACT_APP_API_SERVER_URL}/api/api/v1/store/${storeId}`,
         {
           headers: {
             token: accessToken,
