@@ -28,17 +28,6 @@ const MyStoreCreate = () => {
     storePhoneNumber: "",
     storeStreetAddr: "",
     storeZipcode: "",
-
-    // storeName: "",
-    // desc: "",
-    // streetAddr: "",
-    // detailAddr: "",
-    // zipcode: "",
-    // phoneNumber: "",
-    // imgSrc: "",
-    // uploadFile: "",
-    // deliveryCost: "",
-    // deliveryFree: "",
   });
   const [storeNameIsValid, setStoreNameIsValid] = useState();
   const [storeId, setStoreId] = useState("");
