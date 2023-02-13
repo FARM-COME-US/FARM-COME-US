@@ -1,7 +1,6 @@
 package com.ssafy.farmcu.api.service.store;
 
 import com.ssafy.farmcu.api.dto.store.ItemDto;
-import com.ssafy.farmcu.api.dto.store.ItemListRes;
 import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
 import com.ssafy.farmcu.api.entity.store.CategoryDetail;
 import com.ssafy.farmcu.api.entity.store.CategoryTitle;
@@ -15,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.event.ItemListener;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +23,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private final CategoryTitleRepository categoryTitleRepository;
@@ -32,6 +32,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
 
     @Override
+    @Transactional
     public Long saveItem(ItemDto itemDto) {
         try {
             CategoryTitle categoryTitle = categoryTitleRepository.findByTitleName(itemDto.getTitleCategoryName());
@@ -56,6 +57,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public boolean updateItem(ItemDto itemDto) {
         try {
             CategoryTitle categoryTitle = categoryTitleRepository.findByTitleName(itemDto.getTitleCategoryName());
@@ -79,6 +81,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public boolean deleteItem(Long itemId) {
         try {
             itemRepository.deleteByItemId(itemId);
@@ -91,55 +94,74 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto findOne(Long itemId) {
-        Item item = itemRepository.findByItemId(itemId).orElseThrow(NullPointerException::new);
-        ItemDto result = new ItemDto(item);
-        return result;
+        try {
+            Item item = itemRepository.findByItemId(itemId).orElseThrow(NullPointerException::new);
+            ItemDto result = new ItemDto(item);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public HashMap<String, Object> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq, Pageable pageable) {
-        Slice<Item> items;
+        try {
+            Slice<Item> items;
 
-        if (itemSearchReq.getTitleCategoryName().equals("전체")) { //전체 부류
-            if(itemSearchReq.getItemName().equals("")) items = itemRepository.findByItemNameLike("%", pageable);
-            else items = itemRepository.findByItemNameLike(itemSearchReq.getItemName(), pageable);
-        } else {
-            if(itemSearchReq.getDetailCategoryName().equals("전체")) { //지정 부류의 전체 품목
-                CategoryTitle categoryTitle = categoryTitleRepository.findByTitleName(itemSearchReq.getTitleCategoryName());
-                if(itemSearchReq.getItemName().equals("")) items = itemRepository.findByCategoryTitleAndItemNameLike(categoryTitle, "%", pageable);
-                else items = itemRepository.findByCategoryTitleAndItemNameLike(categoryTitle, itemSearchReq.getItemName(), pageable);
-            } else { //지정 부류의 지정 품목
-                CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getDetailCategoryName());
-                if(itemSearchReq.getItemName().equals("")) items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, "%", pageable);
-                else items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, itemSearchReq.getItemName(), pageable);
+            if (itemSearchReq.getTitleCategoryName().equals("전체")) { //전체 부류
+                if (itemSearchReq.getItemName().equals("")) items = itemRepository.findByItemNameLike("%", pageable);
+                else items = itemRepository.findByItemNameLike(itemSearchReq.getItemName(), pageable);
+            } else {
+                if (itemSearchReq.getDetailCategoryName().equals("전체")) { //지정 부류의 전체 품목
+                    CategoryTitle categoryTitle = categoryTitleRepository.findByTitleName(itemSearchReq.getTitleCategoryName());
+                    if (itemSearchReq.getItemName().equals(""))
+                        items = itemRepository.findByCategoryTitleAndItemNameLike(categoryTitle, "%", pageable);
+                    else
+                        items = itemRepository.findByCategoryTitleAndItemNameLike(categoryTitle, itemSearchReq.getItemName(), pageable);
+                } else { //지정 부류의 지정 품목
+                    CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getDetailCategoryName());
+                    if (itemSearchReq.getItemName().equals(""))
+                        items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, "%", pageable);
+                    else
+                        items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, itemSearchReq.getItemName(), pageable);
+                }
             }
+
+            List<ItemDto> itemList = items.getContent().stream()
+                    .map(i -> new ItemDto(i))
+                    .collect(toList());
+
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("itemList", itemList);
+            result.put("hasNextPage", items.hasNext());
+
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-
-        List<ItemDto> itemList = items.getContent().stream()
-                .map(i -> new ItemDto(i))
-                .collect(toList());
-
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("itemList", itemList);
-        result.put("hasNextPage", items.hasNext());
-
-        return result;
     }
 
     @Override
     public HashMap<String, Object> findItemsByStore(Long storeId, Pageable pageable) {
-        Store store = storeRepository.findByStoreId(storeId).orElseThrow(NullPointerException::new);
-        Slice<Item> items = itemRepository.findByStore(store, pageable);
+        try {
+            Store store = storeRepository.findByStoreId(storeId).orElseThrow(NullPointerException::new);
+            Slice<Item> items = itemRepository.findByStore(store, pageable);
 
-        List<ItemDto> itemList = items.getContent().stream()
-                .map(i -> new ItemDto(i))
-                .collect(toList());
+            List<ItemDto> itemList = items.getContent().stream()
+                    .map(i -> new ItemDto(i))
+                    .collect(toList());
 
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("itemList", itemList);
-        result.put("hasNextPage", items.hasNext());
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("itemList", itemList);
+            result.put("hasNextPage", items.hasNext());
 
-        return result;
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }
