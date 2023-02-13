@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import classes from "./style/MyStore.module.scss";
-import { fetchUserInfoWithAccessToken } from "../../utils/api/user-http";
+import { fetchUpdateStore } from "../../utils/api/store-http";
 // import { fetchStoreDetail } from "../../utils/api/store-http";
 import axios from "axios";
 import userSlice from "../../reduxStore/userSlice";
@@ -24,33 +24,27 @@ const DUMMY_STORE_INFO = {
 
 const MyStore = () => {
   const location = useLocation();
-  // console.log(location);
   const dispatch = useDispatch();
-  // console.log(location.state);
   const user = useSelector((state) => state.userSlice.value);
-  console.log(user);
   let storeId = useSelector((state) => state.userSlice.store);
-  // console.log(storeId);
-  // console.log(storeId.data.storeId);
 
   const [memberId, setMemberId] = useState("");
   const [isEditting, setIsEditting] = useState(false);
   const [storeInfo, setStoreInfo] = useState({
-    storeId: DUMMY_STORE_INFO.storeId,
-    storeName: DUMMY_STORE_INFO.storeName,
-    storeDescription: DUMMY_STORE_INFO.storeDescription,
-    storeStreetAddr: DUMMY_STORE_INFO.storeStreetAddr,
-    storeZipcode: DUMMY_STORE_INFO.storeZipcode,
-    storeDetailAddr: DUMMY_STORE_INFO.storeDetailAddr,
-    storePhoneNumber: DUMMY_STORE_INFO.storePhoneNumber,
-    imgSrc: DUMMY_STORE_INFO.imgSrc,
+    storeId: "",
+    storeName: "",
+    storeDescription: "",
+    storeStreetAddr: "",
+    storeZipcode: "",
+    storeDetailAddr: "",
+    storePhoneNumber: "",
+    imgSrc: "",
+    savePath: "",
+    uploadFile: "",
   });
 
   const fetchStoreData = async () => {
     const accessToken = sessionStorage.getItem("accessToken");
-    console.log(user);
-    console.log(accessToken);
-    console.log(user.storeId);
 
     const res = await axios.get(
       `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/mystore/${user.memberId}`,
@@ -60,10 +54,13 @@ const MyStore = () => {
         },
       }
     );
-    console.log("마이스토어데이터 가져오는 작업을 합니다.");
-    setStoreInfo({ imgSrc: res.data.storeImage.savedPath, ...res.data.store });
-    console.log({ imgSrc: res.data.storeImage.savedPath, ...res.data.store });
-    console.log(`storeID찍히나?${res.data.store.storeId}`);
+    setStoreInfo((prev) => {
+      return {
+        ...prev,
+        ...res.data.store,
+        imgSrc: res.data.storeImage.savedPath,
+      };
+    });
     // dispatch(userSlice.actions.saveStoreInfo(res.data.store.storeId));
     console.log(res.data);
     // console.log(res.storeImage.savedPath, ...res.data.store);
@@ -72,9 +69,15 @@ const MyStore = () => {
   };
 
   useEffect(() => {
-    console.log("useEffect실행 데이터 가져옴.");
-
-    setStoreInfo(fetchStoreData());
+    fetchStoreData()
+      .then((res) => {
+        setStoreInfo((prev) => {
+          return { ...prev, res };
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     // dispatch(userSlice.actions.saveStoreInfo()); // 😀
   }, [storeId]);
 
@@ -102,10 +105,8 @@ const MyStore = () => {
 
   const editInfoHandler = (e) => {
     e.preventDefault();
-    console.log("수정된이벤트");
-    console.log(storeInfo);
 
-    const request = {
+    const store = {
       memberId: storeInfo.memberId,
       storeDeliveryCost: storeInfo.storeDeliveryCost,
       storeDeliveryFree: storeInfo.storeDeliveryFree,
@@ -117,10 +118,47 @@ const MyStore = () => {
       storePhoneNumber: storeInfo.storePhoneNumber,
       storeStreetAddr: storeInfo.storeStreetAddr,
       storeZipcode: storeInfo.storeZipcode,
+      uploadFile: storeInfo.uploadFile,
     };
+    // axios.put(process.env.REACT_APP_API_SERVER_URL + "/api/v1/store/");
 
+    async function updateStore(store, storeId) {
+      try {
+        console.log(storeId);
+        const accessToken = sessionStorage.getItem("accessToken");
+        const response = axios({
+          method: "put",
+          url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${storeId}`,
+          // params: {
+          //   storeId: storeId,
+          // },
+          data: {
+            request: store,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: "Bearer " + accessToken,
+            // Authorization: "Bearer " + accessToken,
+            token: accessToken,
+          },
+        });
+        // console.log(store.storeId);
+        // console.log(store);
+
+        console.log(response.success);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    console.log("asdasd");
+    console.log(store);
+    console.log("스토어정보 수정 쿼리날리기");
+    updateStore(store, store.storeId);
+
+    fetchUpdateStore(request);
     alert("스토어 정보가 수정되었습니다.");
-    console.log(storeInfo);
+    fetchStoreData(request);
     setIsEditting((prev) => !prev);
   };
 

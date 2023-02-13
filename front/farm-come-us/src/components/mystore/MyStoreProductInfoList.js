@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { categoryTitle, categoryDetail } from "../../utils/api/category-http";
 
 import classes from "./style/MyStoreProductInfoList.module.scss";
 
@@ -12,18 +13,66 @@ const DUMMY_CATEGORY = [
 ];
 
 const MyStoreProductInfoList = (props) => {
+  const [categoryTitleList, setCategoryTitleList] = useState([]);
+  const [categoryDetailList, setCategoryDetailList] = useState([]);
+
+  useEffect(() => {
+    categoryTitle().then((res) => {
+      setCategoryTitleList((prev) => {
+        return [...res];
+      });
+    });
+  }, []);
+
+  const categoryTitleChangeHandler = (e) => {
+    const { name, value } = e.target;
+    props.onChange(name, value);
+
+    if ((e.target.value = "")) {
+      setCategoryDetailList((prev) => {
+        return [];
+      });
+      return;
+    }
+
+    categoryDetail(value).then((res) => {
+      setCategoryDetailList((prev) => {
+        return [...res];
+      });
+    });
+  };
+
+  const categoryDetailCahangeHandler = (e) => {
+    const { name, value } = e.target;
+    props.onChange(name, value);
+  };
+
   return (
     <ul className={`${classes.productInfoList} ${props.className}`}>
       <li className={classes.infoItem}>
         <select
-          name="categoryName"
-          value={props.productInfo.itemCreatedAt.categoryName}
-          onChange={props.onChange}
+          name="categoryTitle"
+          value={props.productInfo.categoryTitle}
+          onChange={categoryTitleChangeHandler}
         >
-          <option value="">카테고리 선택</option>
-          {DUMMY_CATEGORY.map((category, idx) => (
-            <option key={idx} value={category.name}>
-              {category.name}
+          <option value="">대분류</option>
+          {categoryTitleList.map((item, idx) => (
+            <option key={idx} value={item.categoryName}>
+              {item.categoryName}
+            </option>
+          ))}
+        </select>
+      </li>
+      <li className={classes.infoItem}>
+        <select
+          name="categoryDetail"
+          value={props.productInfo.categoryDetail}
+          onChange={categoryDetailCahangeHandler}
+        >
+          <option value="">상세분류</option>
+          {categoryDetailList.map((item, idx) => (
+            <option key={idx} value={item.categoryName}>
+              {item.categoryName}
             </option>
           ))}
         </select>
