@@ -20,7 +20,7 @@ const MyStoreInfo = (props) => {
   return (
     <div className={classes.storeInfo}>
       <MyStoreContentTitle text="스토어 정보" />
-      <form>
+      <form encType="multipart/form-data" onSubmit={editInfoHandler}>
         <MyStoreInfoList
           className={classes.infoList}
           info={storeInfo}
@@ -29,9 +29,7 @@ const MyStoreInfo = (props) => {
         />
         {isEditting ? (
           <div className={classes.btnBox}>
-            <Button className={classes.btnSubmit} onClick={editInfoHandler}>
-              수정
-            </Button>
+            <Button className={classes.btnSubmit}>수정</Button>
             <Button
               className={classes.btnCancel}
               onClick={cancelInfoEditHandler}

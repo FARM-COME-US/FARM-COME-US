@@ -45,7 +45,7 @@ const MyStoreInfoList = (props) => {
           value={props.info.storeDescription}
           readOnly={!props.isEditting}
           onChange={props.onChange}
-          name="desc"
+          name="storeDescription"
         />
       </li>
       <li className={classes.infoItem}>
@@ -54,7 +54,7 @@ const MyStoreInfoList = (props) => {
           value={props.info.storePhoneNumber}
           readOnly={!props.isEditting}
           onChange={props.onChange}
-          name="phoneNumber"
+          name="storePhoneNumber"
         />
       </li>
       <li className={classes.infoItem}>
@@ -63,7 +63,7 @@ const MyStoreInfoList = (props) => {
           value={props.info.storeStreetAddr}
           readOnly={!props.isEditting}
           onChange={props.onChange}
-          name="streetAddr"
+          name="storeStreetAddr"
           onFocus={onEditAddr}
         />
       </li>
@@ -73,7 +73,7 @@ const MyStoreInfoList = (props) => {
           value={props.info.storeZipcode}
           readOnly={true}
           onChange={props.onChange}
-          name="zipcode"
+          name="storeZipcode"
         />
       </li>
       <li className={classes.infoItem}>
@@ -82,7 +82,7 @@ const MyStoreInfoList = (props) => {
           value={props.info.storeDetailAddr}
           readOnly={!props.isEditting}
           onChange={props.onChange}
-          name="detailAddr"
+          name="storeDetailAddr"
         />
       </li>
 

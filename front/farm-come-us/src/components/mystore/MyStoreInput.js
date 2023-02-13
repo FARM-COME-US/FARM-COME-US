@@ -23,6 +23,9 @@ const MyStoreInput = (props) => {
 
   const onChangeHandler = (e) => {
     props.onChange(e.target.name, e.target.value);
+    if (e.target.name === "imgSrc") {
+      props.onChange("uploadFile", e.target.files[0]);
+    }
   };
 
   return (
