@@ -8,13 +8,21 @@ import menuSlice from "../../reduxStore/menuSlice";
 const SideMenuItem = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.userSlice.value.memberId);
+  console.log(user);
 
   return (
     <div
       className={classes.sideMenuItem}
       onClick={() => {
         dispatch(menuSlice.actions.toggle());
-        setTimeout(navigate(props.linkTo), 300);
+
+        if ((props.linkTo === "/mypage" || props.linkTo === "/cart") && !user) {
+          alert("로그인해주세요.");
+          setTimeout(navigate("/login"), 300);
+        } else {
+          setTimeout(navigate(props.linkTo), 300);
+        }
       }}
     >
       {/* 상위 컴포넌트에서 prop으로 주는 주소로 들어가게 했음. */}

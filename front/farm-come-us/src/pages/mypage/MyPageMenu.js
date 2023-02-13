@@ -50,7 +50,7 @@ const MyPageMenu = (props) => {
           <ImageButton
             className={classes.menuItem}
             icon={<MdOutlineCreditCard />}
-            text="구매내역"
+            text="주문내역"
           />
         </NavLink>
       </li>
