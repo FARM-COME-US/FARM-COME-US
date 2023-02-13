@@ -18,18 +18,27 @@ const MyStoreCreate = () => {
   const dispatch = useDispatch();
   const { userInfo } = location.state;
   const [storeInfo, setStoreInfo] = useState({
-    storeName: "",
+    memberId: "",
+    storeDeliveryCost: "",
+    storeDeliveryFree: "",
     storeDescription: "",
-    desc: "",
-    streetAddr: "",
-    detailAddr: "",
-    zipcode: "",
-    phoneNumber: "",
-    imgSrc: "",
-    filename: "",
-    uploadFile: "",
-    deliveryCost: "",
-    deliveryFree: "",
+    storeDetailAddr: "",
+    storeImg: "",
+    storeName: "",
+    storePhoneNumber: "",
+    storeStreetAddr: "",
+    storeZipcode: "",
+
+    // storeName: "",
+    // desc: "",
+    // streetAddr: "",
+    // detailAddr: "",
+    // zipcode: "",
+    // phoneNumber: "",
+    // imgSrc: "",
+    // uploadFile: "",
+    // deliveryCost: "",
+    // deliveryFree: "",
   });
   const [storeNameIsValid, setStoreNameIsValid] = useState();
   const [storeId, setStoreId] = useState("");

@@ -106,7 +106,7 @@ const MyStore = () => {
   const editInfoHandler = (e) => {
     e.preventDefault();
 
-    const request = {
+    const store = {
       memberId: storeInfo.memberId,
       storeDeliveryCost: storeInfo.storeDeliveryCost,
       storeDeliveryFree: storeInfo.storeDeliveryFree,
@@ -120,6 +120,41 @@ const MyStore = () => {
       storeZipcode: storeInfo.storeZipcode,
       uploadFile: storeInfo.uploadFile,
     };
+    // axios.put(process.env.REACT_APP_API_SERVER_URL + "/api/v1/store/");
+
+    async function updateStore(store, storeId) {
+      try {
+        console.log(storeId);
+        const accessToken = sessionStorage.getItem("accessToken");
+        const response = axios({
+          method: "put",
+          url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${storeId}`,
+          // params: {
+          //   storeId: storeId,
+          // },
+          data: {
+            request: store,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: "Bearer " + accessToken,
+            // Authorization: "Bearer " + accessToken,
+            token: accessToken,
+          },
+        });
+        // console.log(store.storeId);
+        // console.log(store);
+
+        console.log(response.success);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    console.log("asdasd");
+    console.log(store);
+    console.log("스토어정보 수정 쿼리날리기");
+    updateStore(store, store.storeId);
 
     fetchUpdateStore(request);
     alert("스토어 정보가 수정되었습니다.");
