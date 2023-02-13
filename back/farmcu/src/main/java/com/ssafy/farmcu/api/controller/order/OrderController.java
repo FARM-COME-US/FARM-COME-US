@@ -5,6 +5,8 @@ import com.ssafy.farmcu.api.dto.member.MemberDto;
 import com.ssafy.farmcu.api.dto.order.CartOrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
+import com.ssafy.farmcu.api.dto.store.ItemDto;
+import com.ssafy.farmcu.api.dto.store.ItemImageDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.entity.order.Order;
@@ -59,25 +61,36 @@ public class OrderController {
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 
-    @GetMapping("/detail")
-    @ApiOperation(value = "주문 상세 조회")
-    public ResponseEntity getMyOrders(@RequestHeader Member memberId){
+//    @GetMapping("/detail")
+//    @ApiOperation(value = "주문 상세 조회")
+//    public ResponseEntity getMyOrders(@RequestHeader Member memberId){
+//
+//        try {
+//            List<OrderItem> orders = orderService.findOrderDetail(memberId);
+//
+//        } catch (Exception e) {
+//            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+//        }
+//
+//        return new ResponseEntity<>(HttpStatus.OK);
+//
+//    }
 
+//    @GetMapping("/{orderId}")
+//    @ApiOperation(value = "주문 상세 조회")
+//    public ResponseEntity<HashMap<String, Object>> selectOrderDetail(@PathVariable Order order) {
+//
+//        HashMap<String, Object> resultMap = new HashMap<>();
+//
+////        OrderDto orderDto = orderService.findOne(orderId);
+//        List<Order> orderDetail = orderService.findOne(order);
+//        resultMap.put("order", orderDetail);
+//
+//        return ResponseEntity.ok(resultMap);
+//    }
 
-        try {
-            List<OrderItem> orders = orderService.findOrderDetail(memberId);
-
-        } catch (Exception e) {
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
-
-
-    @GetMapping("/member")
-    @ApiOperation(value = "내 구매 내역 조회")
+    @GetMapping("/{member}")
+    @ApiOperation(value = "사용자 주문 목록 조회")
     public ResponseEntity<HashMap<String, Object>> findMyCarts(@PathVariable Member member) {
 
         HashMap<String, Object> resultMap = new HashMap<>();
@@ -92,7 +105,6 @@ public class OrderController {
         return ResponseEntity.ok(resultMap);
 
     }
-
 
     @PutMapping("/orderId")
     @ApiOperation(value = "주문 취소")

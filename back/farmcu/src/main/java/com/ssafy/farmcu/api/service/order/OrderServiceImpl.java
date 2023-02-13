@@ -2,6 +2,7 @@ package com.ssafy.farmcu.api.service.order;
 
 import com.ssafy.farmcu.api.dto.order.OrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
+import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.entity.order.Order;
@@ -65,8 +66,7 @@ public class OrderServiceImpl implements OrderService{
 
     }
 
-    //** 다양한 상품 주문 **//
-    // (장바구니 주문)
+    // 다양한 종류의 상품 주문 (장바구니)
     public Long orders(List<OrderInfoDto> orderInfoDtoList, String memberId) {
 
         Member member = memberRepository.findById(memberId).get();
@@ -83,29 +83,38 @@ public class OrderServiceImpl implements OrderService{
         return order.getOrderId();
     }
 
-    //** 주문 취소 **//
-    // controller 에서 작성
+    // 주문 취소
     public void updateOrder(Long orderId) {
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(EntityNotFoundException::new);
         order.updateOrder();
     }
 
-    //** 전체 목록 상세 조회 **//
+    // 전체 목록 상세 조회
     public List<OrderItem> findOrderDetail(Member member) {
         return orderItemRepository.findByOrOrderMember(member);
     }
 
-    //** 사용자 주문 목록 조회 **//
+
+    // 주문 상세 조회
+//    public List<Order> findOne(Order order) {
+////        Order order = orderRepository.findByOrderId(orderId).orElseThrow(NullPointerException::new);
+//        return orderRepository.findByOrderId(order);
+//    }
+
+    // 내 주문 목록 조회
     @Transactional
     public List<Order> findMyOrder(Member member) {
-        return orderRepository.findByMember(member);
+        try {
+            return orderRepository.findByMember(member);
+        } catch (Exception e ){
+         return null;
+        }
     }
 
 //    //** 주문 번호 별 주문 상세 조회
 //    public List<Order> findSameOrder(Order order) {
 //        return orderRepository.findByOrderId(order);
 //    }
-
 
     // 전체 주문 상품 조회
     public List<OrderItem> findAllOrderItem() {

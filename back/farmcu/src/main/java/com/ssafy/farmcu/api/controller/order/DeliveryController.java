@@ -36,20 +36,17 @@ public class DeliveryController {
 
     // 배송 정보 넣는 건 결제 한 뒤
 
-    @ApiOperation("배송 정보 조회")
+    @ApiOperation("기본 배송 정보 조회")
     @GetMapping("/{memberId}")
-    public ResponseEntity<MemberDto> findMemberAddr(@PathVariable Long memberId) {
+    public ResponseEntity findMemberAddr(@PathVariable Long memberId) {
 
-        try {
-            MemberDto memberDto = memberService.getUserInfo(memberId);
+        HashMap<String, Object> resultMap = new HashMap<>();
+        MemberDto memberDto = memberService.getUserInfo(memberId);
+        resultMap.put("userInfo", memberDto);
 
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-
+        return ResponseEntity.ok(resultMap);
     }
+
 
 //    @ApiOperation("배송 정보 수정")
 //    @PutMapping("/{memberId}")

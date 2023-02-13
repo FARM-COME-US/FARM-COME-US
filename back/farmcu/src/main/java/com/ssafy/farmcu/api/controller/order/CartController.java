@@ -60,7 +60,7 @@ public class CartController {
 
     }
 
-    @GetMapping("/member")
+    @GetMapping("/{member}")
     @ApiOperation(value = "멤버 장바구니 조회")
     public ResponseEntity<HashMap<String, Object>> findMyCarts(@PathVariable Member member) {
 
@@ -68,7 +68,6 @@ public class CartController {
 
         try {
             List<Cart> carts = cartService.findMyCart(member);
-            System.out.println("!!!!!!!!!!!!!!!!!!!" + carts);
             resultMap.put("cartList", carts);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -82,11 +81,16 @@ public class CartController {
     @ApiOperation(value = "전체 장바구니 조회")
     public ResponseEntity<HashMap<String, Object>> findCarts() {
 
-        List<Cart> carts = cartService.findAllCart();
-
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("cartList", carts);
 
+        try {
+            List<Cart> carts = cartService.findAllCart();
+            resultMap.put("cartList", carts);
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
         return ResponseEntity.ok(resultMap);
     }
 
