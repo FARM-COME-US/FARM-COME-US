@@ -1,5 +1,6 @@
 package com.ssafy.farmcu.api.entity.order;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.farmcu.api.entity.store.Item;
 import lombok.*;
 
@@ -27,9 +28,10 @@ public class OrderItem {
     private int oitemPrice;
 
     // 연결
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order orderInfo;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
@@ -37,8 +39,8 @@ public class OrderItem {
 
     //빌더
     @Builder
-    public OrderItem(Order orderInfo, Item item, Long oitemId, int oitemCount, LocalDateTime oitemCreatedAt, int oitemPrice ) {
-        this.orderInfo = orderInfo;
+    public OrderItem(Order order, Item item, Long oitemId, int oitemCount, LocalDateTime oitemCreatedAt, int oitemPrice ) {
+        this.order = order;
         this.item = item;
         this.oitemId = oitemId;
         this.oitemCount = oitemCount;
@@ -61,7 +63,7 @@ public class OrderItem {
 
     // 주문 번호 주입
     public  void addOrderNum(Order order){
-        this.orderInfo = order;
+        this.order = order;
     }
 
     //총액

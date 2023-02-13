@@ -19,7 +19,7 @@ public interface CartService {
 //    public HashMap<String, Object> findCartsByMember(Long memberId, Pageable pageable);
 
     // 로그인 사용자 장바구니 목록 조회
-    public List<Cart> findMyCart(Long member);
+    public List<Cart> findMyCart(Member member);
 
     // 장바구니 항목 주문
     public Long orderCart(List<CartOrderDto> cartOrderDtoList, String memberId);
