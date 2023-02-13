@@ -90,9 +90,9 @@ public class OrderServiceImpl implements OrderService{
     }
 
     // 전체 목록 상세 조회
-    public List<OrderItem> findOrderDetail(Member member) {
-        return orderItemRepository.findByOrOrderMember(member);
-    }
+//    public List<OrderItem> findOrderDetail(Member member) {
+//        return orderItemRepository.findByOrOrderMember(member);
+//    }
 
 
     // 주문 상세 조회
