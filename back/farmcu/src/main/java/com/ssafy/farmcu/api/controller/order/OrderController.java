@@ -46,7 +46,7 @@ public class OrderController {
     }
 
     @PostMapping(value = "")
-    @ApiOperation(value = "상품 주문")
+    @ApiOperation(value = "상품  주문")
     public ResponseEntity order(@RequestBody OrderInfoDto orderInfoDto){
 
         Long orderId; //주문번호 생성
