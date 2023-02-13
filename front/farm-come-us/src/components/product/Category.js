@@ -7,43 +7,40 @@ const Category = (props) => {
   const [categoryTitleState, setCategoryTitleState] = useState([]);
 
   useEffect(() => {
-    const category = categoryTitle();
-    console.log(category);
+    async function getCategoryTitle() {
+      try {
+        const categoryList = await categoryTitle();
+        setCategoryTitleState(categoryList);
+        return categoryList;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    getCategoryTitle();
   }, []);
 
-  const sendId = (category_id, sub_category_id) => {
-    props.getCategoryId(category_id);
-    props.getSubCategoryId(sub_category_id);
+  const sendName = (category_name) => {
+    props.getCategoryName(category_name);
   };
 
-  let list = [];
-
-  const getData = () => {
-    return categoryTitleState.then((resolvedData) =>
-      setCategoryTitleState(resolvedData)
-    );
-  };
-
-  /*
-  if (category !== undefined && category.length > 0) {
-    console.log(category);
-    list = category.map((item) => (
+  if (categoryTitleState.length > 0) {
+    let list = [];
+    list = categoryTitleState.map((item) => (
       <CategoryItem
         category_name={item.categoryName}
         category_id={item.categoryCode}
         key={item.categoryCode}
-        getid={sendId}
+        getName={sendName}
       ></CategoryItem>
     ));
-  } else {
-    console.log(`fail ${category}`);
+
+    return (
+      <div>
+        <div className={classes.container}>{list}</div>
+      </div>
+    );
   }
-*/
-  return (
-    <div>
-      <div className={classes.container}>{list}</div>
-    </div>
-  );
 };
 
 export default Category;

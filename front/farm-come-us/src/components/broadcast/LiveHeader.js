@@ -19,8 +19,8 @@ const LiveHeader = (props) => {
           <span> 중</span>
         </p>
       </div>
-      {props.isSubscriber ? (
-        <MdOutlineClose className={classes.btn} onClick={props.onLiveClose} />
+      {!props.isPublisher ? (
+        <MdOutlineClose className={classes.btn} onClick={props.onLiveLeave} />
       ) : props.isMute ? (
         <div className={classes.btnList}>
           <MdFlipCameraIos
