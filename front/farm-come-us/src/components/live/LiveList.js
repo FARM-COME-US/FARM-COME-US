@@ -20,11 +20,7 @@ const LivePreviewList = (props) => {
   if (props.liveList && props.liveList.length > 0) {
     list = props.isLive
       ? props.liveList.map((item) => (
-          <LiveItem
-            key={item.liveId}
-            live={item}
-            onClick={props.checkIsLiveRunning}
-          />
+          <LiveItem key={item.liveId} live={item} onClick={props.onEnter} />
         ))
       : props.liveList.map((item) => (
           <ReservedLiveItem key={item.liveId} live={item} />

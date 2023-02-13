@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./style/SideMenuItem.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import menuSlice from "../../reduxStore/menuSlice";
 
 const SideMenuItem = (props) => {

@@ -40,7 +40,11 @@ export async function createProduct(productInfo) {
   };
 
   try {
-    const response = axios.post("/api/api/v1/item", formData, config);
+    const response = axios.post(
+      process.env.REACT_APP_API_SERVER_URL + "/api/v1/item",
+      formData,
+      config
+    );
 
     console.log(response);
   } catch (err) {
@@ -51,29 +55,41 @@ export async function createProduct(productInfo) {
 /* 상품 상세 조회 */
 export async function productDetail(productId) {
   try {
-    const response = axios({
+    const response = await axios({
       method: "get",
-      url: PRODUCT_API_URL,
+      url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item`,
       params: {
         itemId: productId,
       },
     });
-    const data = response.json();
+    const data = response.data;
     console.log(data);
+    return data;
   } catch (err) {
     console.err(err);
   }
 }
 
 /* 상품 목록 조회 */
-export async function productList() {
+export async function productList(category, itemName, subCategory) {
   try {
-    const response = axios({
-      method: "get",
-      url: PRODUCT_API_URL,
+    console.log(category, subCategory);
+    const response = await axios({
+      method: "post",
+      url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item/keyword`,
+      data: {
+        itemSearchReq: {
+          detailCategoryName: subCategory,
+          itemName: itemName,
+          titleCategoryName: category,
+        },
+        page: 0,
+        size: 6,
+      },
     });
-    const data = response.json();
+    const data = response.data;
     console.log(data);
+    return data;
   } catch (err) {
     console.err(err);
   }
