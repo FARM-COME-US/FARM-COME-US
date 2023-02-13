@@ -1,15 +1,8 @@
 import { useState, useEffect } from "react";
 import MyReceiptItem from "../../components/mypage/MyReceiptItem";
 import classes from "./style/MyReceipts.module.scss";
-<<<<<<< HEAD
-import { orderList } from "../../utils/api/order-http";
-
-const res = orderList()
-console.log(res)
-=======
 import axios from "axios";
 import { useSelector } from "react-redux";
->>>>>>> origin/FE
 
 const MyReceipts = (props) => {
   const [myReceiptsInfoArr, setReceiptsInfoArr] = useState("");
@@ -26,19 +19,30 @@ const MyReceipts = (props) => {
   };
 
   useEffect(() => {
-    const res = axios.get(
-      process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/" + memberId
-    );
-    console.log(res);
+    axios
+      .get(process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/" + memberId)
+      .then((res) => {
+        setReceiptsInfoArr(res.data);
+      });
+    // console.log(res);
   }, []);
+  const response = axios({
+    method: "delete",
+    url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/",
+    params: {
+      //
+      cartId: 1,
+    },
+  });
+  console.log(response.success);
 
   let list = <div className={classes.noItem}>주문 내역이 없습니다.</div>;
 
-  // if (myReceiptsInfoArr.length > 0) {
-  //   list = props.myReceipts.map((item) => (
-  //     <MyReceiptItem key={item.id} info={item} />
-  //   ));
-  // }
+  if (myReceiptsInfoArr.length > 0) {
+    list = myReceiptsInfoArr.map((item) => (
+      <MyReceiptItem key={item.id} info={item} />
+    ));
+  }
 
   // list = <MyReceiptItem />;
 
