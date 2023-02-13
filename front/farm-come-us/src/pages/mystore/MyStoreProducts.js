@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { fetchStoreProducts } from "../../utils/api/product-http";
 
 import classes from "./style/MyStoreProducts.module.scss";
 
@@ -37,7 +38,20 @@ const DUMMY_PRODUCT_LIST = [
 
 const MyStoreProduct = () => {
   const { storeInfo } = useOutletContext();
+  console.log(storeInfo);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [productList, setProductList] = useState([]);
+
+  useEffect(() => {
+    if (storeInfo.storeId) {
+      fetchStoreProducts(storeInfo.storeId, 0, 8).then((res) => {
+        const data = res.data;
+        console.log(data.itemImage);
+        console.log(data.itemList);
+        // setProductList(data.itemList);
+      });
+    }
+  }, [storeInfo]);
 
   /* 기타 메서드 */
   const modalToggleHandler = () => {
