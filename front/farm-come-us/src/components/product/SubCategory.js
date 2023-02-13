@@ -1,28 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./style/SubCategory.module.scss";
 import SubCategoryItem from "./SubCategoryItem";
+import { categoryDetail } from "../../utils/api/category-http";
 
 const SubCategory = (props) => {
-  const sendSubCategoryId = (id) => {
-    props.getSubCategoryId(id);
+  const [categoryDetailState, setCategoryDetailState] = useState([]);
+
+  useEffect(() => {
+    async function getcategoryDetail(categoryName) {
+      try {
+        const List = await categoryDetail(categoryName);
+        setCategoryDetailState(List);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    getcategoryDetail(props.categoryName);
+  }, [props.categoryName]);
+
+  const sendSubCategoryName = (name) => {
+    props.getSubCategoryName(name);
   };
 
-  let list = props.SUB_CATEGORY_LIST.map((item) => (
-    <SubCategoryItem
-      sub_category_name={item.sub_category_name}
-      sub_category_key={item.sub_category_key}
-      sub_category_id={item.sub_category_id}
-      getSubCategoryId={sendSubCategoryId}
-    ></SubCategoryItem>
-  ));
+  if (categoryDetailState.length > 0) {
+    let list = [];
+    list = categoryDetailState.map((item) => (
+      <SubCategoryItem
+        sub_category_name={item.categoryName}
+        key={item.categoryCode}
+        sub_category_id={item.categoryCode}
+        getSubCategoryName={sendSubCategoryName}
+      ></SubCategoryItem>
+    ));
 
-  return (
-    <div>
-      {props.firstId > 0 ? (
+    return (
+      <div>
         <div className={classes.container}>{list}</div>
-      ) : null}
-    </div>
-  );
+      </div>
+    );
+  }
 };
 
 export default SubCategory;

@@ -33,6 +33,8 @@ public class Order {
 
     private LocalDateTime orderCreateAt;
 
+    private int totalOrderPrice;
+
     // 주문 - (결제 대기 - 결제 완료) - 주문 완료 - 주문취소 / B = before, A = after
     public enum OrderStatus{
         BORDER, ORDER, CANCEL
@@ -57,17 +59,20 @@ public class Order {
 
 
     @Builder
-    public Order(Member member, LocalDateTime orderCreateAt, OrderStatus orderStatus, List<OrderItem> orderItems) {
+    public Order(Member member, LocalDateTime orderCreateAt, int totalOrderPrice, OrderStatus orderStatus, List<OrderItem> orderItems) {
         this.member = member;
         this.orderCreateAt = orderCreateAt;
         this.orderStatus = orderStatus;
         this.orderItems = orderItems;
+        this.totalOrderPrice = totalOrderPrice;
     }
 
     // 주문에 주문 상품 주입 -> OrderItem.java 의 setOrder
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrderInfo(this);
+//        orderItem.setOitemPrice(getTotalOrderPrice());
+
     }
 
     //** 주문 생성 **//
@@ -78,11 +83,13 @@ public class Order {
         for(OrderItem orderItem : orderItems){ //주문 상세 리스트 주입
             order.addOrderItem(orderItem);
         }
-
+        order.setTotalOrderPrice(order.getTotalPrice());
         order.setOrderStatus(OrderStatus.ORDER); //주문상태를 ORDER로 set
         order.setOrderCreateAt(LocalDateTime.now()); //주문시간
+
         return order; //완성된 주문정보
     }
+
     //** 전체 주문 가격 조회 **//
     public int getTotalPrice(){
         int totalPrice = 0;

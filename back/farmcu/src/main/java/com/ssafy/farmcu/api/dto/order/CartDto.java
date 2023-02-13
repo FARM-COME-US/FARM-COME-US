@@ -7,6 +7,7 @@ import lombok.*;
 
 @Getter @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartDto {
@@ -20,34 +21,27 @@ public class CartDto {
     @NotNull
     private Long itemId;
 
-//    private Long storeId;   // => 같은 상점끼리 묶어서 보여주기
-//    private Long cartId;
-//    private int getTotalPrice;
-//    private int itemSalePercent;
-//    private String cartItemImg;
-//    private String storeName;
+    private String itemName;
 
-    @Getter @AllArgsConstructor
-    @ToString
-    public static class CartInfo {
+    private int itemPrice;
 
-        private Long cartId;
-        private ItemDto item;
-        private int cartItemCount;
-        private int getTotalPrice;
+    private int itemSalePercent;
 
-//        this.cartId = cart.getCartId();
-//        this.memberId = cart.getMember().getMemberId();
-//        this.storeId = cart.getItem().getStore().getStoreId();
-//        this.itemId = cart.getItem().getItemId();
-//        this.getTotalPrice = cart.getTotalPrice();
-//        this.cartItemCount = cart.getCartItemCount();
-//        this.cartItemImg = cart.getItem().getItemImg();
-//        this.storeName = cart.getItem().getStore().getStoreName();
-//        this.itemSalePercent = cart.getItem().getItemDiscount();
-//        this.getTotalPrice = cartItemCount*cart.getItem().getItemPrice();
+    private String storeName;
+
+
+    public CartDto(Cart cart) {
+
+        this.cartItemCount = cart.getCartItemCount();
+        this.memberId = cart.getMember().getMemberId();
+
+        this.itemId = cart.getItem().getItemId();
+        this.itemName = cart.getItem().getItemName();
+        this.itemPrice = cart.getItem().getItemPrice();
+        this.itemSalePercent = cart.getItem().getItemDiscount();
+
+        this.storeName = cart.getItem().getStore().getStoreName();
 
     }
-
 
 }

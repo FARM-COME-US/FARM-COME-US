@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const DUMMY_SERVER_URL = "https:localhost:3000";
-const ORDER_API_URL = `${DUMMY_SERVER_URL}/order`;
+// const ORDER_API_URL = `${DUMMY_SERVER_URL}/api/v1/order`;
+const ORDER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}/api/v1/order`;
 
 const clientOrderObjFormatter = (obj) => {
   return {
@@ -11,22 +12,29 @@ const clientOrderObjFormatter = (obj) => {
   };
 };
 
-const serverOrderObjFormatter = (obj) => {
+const serverOrderObjFormatter = () => {
   return {
-    id: obj.orderId,
-    item_id: obj.productId,
-    orderCount: obj.count,
+    memberId: 3,
+    itemId: 1,
+    oitemCount: 10,
   };
 };
 
 /* 단건 주문 */
-export async function orderProduct(order) {
+export async function orderProduct() {
   try {
     const response = axios({
       method: "post",
-      url: ORDER_API_URL,
+      url: "api/api/v1/order",
       data: {
-        orderDto: serverOrderObjFormatter(order),
+        orderInfoDto: {
+          "itemId": 1,
+          "memberId": 3,
+          "oitemCount": 12,
+          "orderInfoDtoList": [
+            null
+          ]
+        },
       },
     });
     console.log(response);

@@ -21,6 +21,13 @@ const MyStoreInput = (props) => {
     setIsFocused((prev) => !prev);
   };
 
+  const onChangeHandler = (e) => {
+    props.onChange(e.target.name, e.target.value);
+    if (e.target.name === "imgSrc") {
+      props.onChange("uploadFile", e.target.files[0]);
+    }
+  };
+
   return (
     <div
       className={`${classes.itemContainer}
@@ -28,7 +35,9 @@ const MyStoreInput = (props) => {
     >
       <span className={`${classes.label} title`}>{props.label}</span>
       <Input
-        className={`${classes.itemInput}`}
+        className={`${classes.itemInput} ${
+          props.readOnly ? classes.readOnly : null
+        }`}
         value={props.value}
         name={props.name}
         readOnly={props.readOnly}
@@ -36,13 +45,14 @@ const MyStoreInput = (props) => {
         min={props.min}
         max={props.max}
         step={props.step}
-        onChange={props.onChange}
+        onChange={onChangeHandler}
         id={props.id}
         isActive={!props.readOnly}
         onFocus={onFocusHandler}
         onBlur={onBlurHandler}
         placeholder={props.placeholder}
         accept={props.accept}
+        required={props.required}
       />
     </div>
   );

@@ -28,7 +28,12 @@ const MyPageHeader = (props) => {
         <div className={classes.imgWrapper}>
           <img
             className={classes.profileImg}
-            src={props.userInfo.imgSrc}
+            src={
+              props.userInfo.imgSrc
+                ? props.userInfo.imgSrc
+                : process.env.PUBLIC_URL + "/img/defaultProfile.png"
+            }
+            // 😀 수정필요 (이미지 업로드 해서 받아오는거 상의안했음.)
             alt="이미지"
             ref={profileImgRef}
           />

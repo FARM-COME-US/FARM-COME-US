@@ -3,8 +3,14 @@ import axios from "axios";
 const LIVE_API_URL = `${process.env.REACT_APP_API_SERVER_URL}/api/v1/live`;
 
 /* 라이브 등록 */
-export async function addLive(data) {
+export async function fetchAddLive(liveInfo) {
+  const data = { ...liveInfo };
+  console.log(data);
+  // return;
   try {
+    const response = axios.post(`${LIVE_API_URL}`, data);
+    console.log(response);
+    return response;
   } catch (err) {
     console.error(err);
   }
@@ -12,10 +18,31 @@ export async function addLive(data) {
   return null;
 }
 
-/* 라이브 목록 조회 */
-export async function fetchLiveList() {
+/* 진행 중인 라이브 목록 조회 */
+export async function fetchRunningLiveList() {
+  const params = {
+    liveTitle: "",
+    page: 0,
+    size: 10,
+  };
   try {
-    await axios.get(`${LIVE_API_URL}/list`);
+    const response = await axios.get(`${LIVE_API_URL}/list/on`, params);
+    console.log(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/* 예약된 라이브 목록 조회 */
+export async function fetchScheduledLiveList() {
+  const params = {
+    liveTitle: "",
+    page: 0,
+    size: 10,
+  };
+  try {
+    const response = await axios.get(`${LIVE_API_URL}/list/off`, params);
+    console.log(response.data);
   } catch (err) {
     console.error(err);
   }

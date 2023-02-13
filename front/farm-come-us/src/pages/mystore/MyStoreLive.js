@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 import classes from "./style/MyStoreLive.module.scss";
 
@@ -10,7 +10,7 @@ import AddLiveModal from "../../components/mystore/AddLiveModal";
 
 const DUMMY_LIVE_LIST = [
   {
-    liveId: 1,
+    liveId: "1",
     title: "신선한 유기농 강원 고랭 배추",
     productId: 1,
     productName: "강원도 고랭지 배추",
@@ -20,11 +20,11 @@ const DUMMY_LIVE_LIST = [
     price: 14000,
     count: 1,
     unit: "개",
-    startDate: new Date(2023, 1, 10, 23, 0, 0),
+    startDate: new Date(2023, 3, 21, 23, 0, 0),
     imgSrc: "https://via.placeholder.com/300",
   },
   {
-    liveId: 2,
+    liveId: "sessionB",
     title: "신선한 유기농 강원 고랭 배추",
     productId: 2,
     productName: "강원도 고랭지 배추",
@@ -40,6 +40,7 @@ const DUMMY_LIVE_LIST = [
 ];
 
 const MyStoreLive = () => {
+  const { storeInfo } = useOutletContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sessionInfo, setSessionInfo] = useState({
     id: "sessionA",
@@ -57,14 +58,6 @@ const MyStoreLive = () => {
     }
 
     setIsModalOpen((prev) => !prev);
-  };
-
-  const addLiveHandler = (e) => {
-    e.preventDefault();
-    alert("라이브 추가 이벤트 발생");
-
-    modalToggleHandler();
-    return;
   };
 
   const startLiveHandler = (liveInfo) => {
@@ -88,6 +81,7 @@ const MyStoreLive = () => {
           id: liveInfo.liveId + "",
           username: sessionInfo.username,
           liveInfo: liveInfo,
+          isPublisher: true,
         },
       });
     }
@@ -109,9 +103,8 @@ const MyStoreLive = () => {
         <AddLiveModal
           title="Live 정보 입력"
           className={isModalOpen ? null : "close"}
+          storeInfo={storeInfo}
           onToggleModal={modalToggleHandler}
-          onSubmit={addLiveHandler}
-          onClick={addLiveHandler}
         />
       ) : null}
     </div>
