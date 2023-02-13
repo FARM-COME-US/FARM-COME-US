@@ -28,7 +28,6 @@ const MyStore = () => {
   const user = useSelector((state) => state.userSlice.value);
   console.log(user);
   let store = useSelector((state) => state.userSlice.store.data);
-  console.log(store);
 
   const [memberId, setMenberId] = useState("");
   const [isEditting, setIsEditting] = useState(false);
@@ -47,9 +46,10 @@ const MyStore = () => {
     const accessToken = sessionStorage.getItem("accessToken");
     console.log(accessToken);
     console.log(user.storeId);
+    const storeId = user.storeId;
     axios
       .get(
-        `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${user.storeId}`,
+        `${process.env.REACT_APP_API_SERVER_URL}/api/api/v1/store/${storeId}`,
         {
           headers: {
             token: accessToken,

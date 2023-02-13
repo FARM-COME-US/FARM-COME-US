@@ -48,14 +48,6 @@ const MyStoreProduct = () => {
     setIsModalOpen((prev) => !prev);
   };
 
-  const addProductHandler = (e) => {
-    e.preventDefault();
-    alert("상품 등록 이벤트 발생");
-
-    modalToggleHandler();
-    return;
-  };
-
   const showProductDetailHandler = (product, event) => {
     console.log(product, event);
     alert("상품 디테일로 넘어가는 이벤트");
@@ -78,8 +70,6 @@ const MyStoreProduct = () => {
           title="상품 정보 입력"
           className={isModalOpen ? null : "close"}
           onToggleModal={modalToggleHandler}
-          onSubmit={addProductHandler}
-          onClick={addProductHandler}
         />
       ) : null}
     </div>
