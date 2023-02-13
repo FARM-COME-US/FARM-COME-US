@@ -1,5 +1,7 @@
 package com.ssafy.farmcu.api.dto.order;
 
+import com.ssafy.farmcu.api.entity.order.Order;
+import com.ssafy.farmcu.api.entity.store.Item;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -20,8 +22,12 @@ public class OrderDto {
     @NotNull
     private int orderCount;
 
-
+    private Long orderId;
 
     private List<OrderDto> OrderDtoList;
 //    private Timestamp orderCreateAt;
+
+    public OrderDto(Order order) {
+        this.orderId = order.getOrderId();
+    }
 }
