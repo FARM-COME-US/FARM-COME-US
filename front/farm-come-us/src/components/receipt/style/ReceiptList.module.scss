@@ -56,3 +56,16 @@ $upperCardHeight: 20%;
 .orderLength {
   margin-bottom: 2.5%;
 }
+
+.flexbox {
+  display: flex;
+  flex-direction: column;
+
+  .noItem {
+    justify-content: center;
+    align-items: center;
+    color: #ccc;
+    font-size: 1rem;
+    font-weight: 300;
+  }
+}
