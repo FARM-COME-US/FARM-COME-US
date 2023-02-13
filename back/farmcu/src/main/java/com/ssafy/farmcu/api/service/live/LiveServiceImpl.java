@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class LiveServiceImpl implements LiveService {
 
     private final ItemRepository itemRepository;
@@ -29,6 +31,7 @@ public class LiveServiceImpl implements LiveService {
     private final LiveRepository liveRepository;
 
     @Override
+    @Transactional
     public boolean saveLive(LiveInsertReq liveInsertReq) {
         try {
             System.out.println(liveInsertReq);
@@ -54,56 +57,76 @@ public class LiveServiceImpl implements LiveService {
 
     @Override
     public HashMap<String, Object> findLivesByStore(Long storeId, Pageable pageable) {
-        Store store = storeRepository.findByStoreId(storeId).orElseThrow(NullPointerException::new);
-        Slice<Live> lives = liveRepository.findByStore(store, pageable);
-        List<LiveListRes> liveList = lives.getContent().stream()
-                .map(l -> new LiveListRes(l))
-                .collect(toList());
+        try {
+            Store store = storeRepository.findByStoreId(storeId).orElseThrow(NullPointerException::new);
+            Slice<Live> lives = liveRepository.findByStore(store, pageable);
+            List<LiveListRes> liveList = lives.getContent().stream()
+                    .map(l -> new LiveListRes(l))
+                    .collect(toList());
 
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("liveList", liveList);
-        result.put("hasNextPage", lives.hasNext());
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("liveList", liveList);
+            result.put("hasNextPage", lives.hasNext());
 
-        return result;
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public HashMap<String, Object> findLivesByLiveTitleLikeAndLiveStartLessThan(String liveTitle, LocalDateTime localDateTime, Pageable pageable) {
-        Slice<Live> lives = liveRepository.findByLiveTitleLikeAndLiveStartLessThan(liveTitle, localDateTime, pageable);
-        List<LiveListRes> liveList = lives.getContent().stream()
-                .map(l -> new LiveListRes(l))
-                .collect(toList());
+        try {
+            Slice<Live> lives = liveRepository.findByLiveTitleLikeAndLiveStartLessThan(liveTitle, localDateTime, pageable);
+            List<LiveListRes> liveList = lives.getContent().stream()
+                    .map(l -> new LiveListRes(l))
+                    .collect(toList());
 
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("liveList", liveList);
-        result.put("hasNextPage", lives.hasNext());
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("liveList", liveList);
+            result.put("hasNextPage", lives.hasNext());
 
-        return result;
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public HashMap<String, Object> findLivesByLiveTitleLikeAndLiveStartGreaterThanEqualAndLiveEndLessThanEqual(String liveTitle, LocalDateTime localDateTime1, LocalDateTime localDateTime2, Pageable pageable) {
-        Slice<Live> lives = liveRepository.findByLiveTitleLikeAndLiveStartGreaterThanEqualAndLiveEndLessThanEqual(liveTitle, localDateTime1, localDateTime2, pageable);
-        List<LiveListRes> liveList = lives.getContent().stream()
-                .map(l -> new LiveListRes(l))
-                .collect(toList());
+        try {
+            Slice<Live> lives = liveRepository.findByLiveTitleLikeAndLiveStartGreaterThanEqualAndLiveEndLessThanEqual(liveTitle, localDateTime1, localDateTime2, pageable);
+            List<LiveListRes> liveList = lives.getContent().stream()
+                    .map(l -> new LiveListRes(l))
+                    .collect(toList());
 
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("liveList", liveList);
-        result.put("hasNextPage", lives.hasNext());
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("liveList", liveList);
+            result.put("hasNextPage", lives.hasNext());
 
-        return result;
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public LiveDetailRes findOne(Long liveId) {
-        Live live = liveRepository.findByLiveId(liveId).orElseThrow(NullPointerException::new);
-
-        LiveDetailRes result = new LiveDetailRes(live);
-        return result;
+        try {
+            Live live = liveRepository.findByLiveId(liveId).orElseThrow(NullPointerException::new);
+            LiveDetailRes result = new LiveDetailRes(live);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
+    @Transactional
     public boolean updateLive(LiveInsertReq liveInsertReq) {
         try {
             Live live = liveRepository.findByLiveId(liveInsertReq.getLiveId()).get();
@@ -122,6 +145,7 @@ public class LiveServiceImpl implements LiveService {
     }
 
     @Override
+    @Transactional
     public boolean deleteLive(Long liveId) {
         try {
             liveRepository.deleteByLiveId(liveId);

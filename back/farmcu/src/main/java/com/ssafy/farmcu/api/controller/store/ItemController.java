@@ -91,7 +91,7 @@ public class ItemController {
 
     @PostMapping("/keyword")
     @ApiOperation(value = "상품 목록 조회")
-    public ResponseEntity<HashMap<String, Object>> selectItemList(@RequestBody ItemSearchReq itemSearchReq, int page, int size) {
+    public ResponseEntity<HashMap<String, Object>> selectItemList(@RequestBody ItemSearchReq itemSearchReq, Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         HashMap<String, Object> itemText = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq, pageRequest);
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
@@ -114,7 +114,7 @@ public class ItemController {
 
     @GetMapping("/store")
     @ApiOperation(value = "스토어 상품 목록 조회")
-    public ResponseEntity<HashMap<String, Object>> selectStoreItemList(Long storeId, int page, int size) {
+    public ResponseEntity<HashMap<String, Object>> selectStoreItemList(Long storeId, Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         HashMap<String, Object> itemText = itemService.findItemsByStore(storeId, pageRequest);
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
