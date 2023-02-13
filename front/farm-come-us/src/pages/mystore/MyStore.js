@@ -124,7 +124,6 @@ const MyStore = () => {
 
     async function updateStore(store, storeId) {
       try {
-        console.log(storeId);
         const accessToken = sessionStorage.getItem("accessToken");
         const response = axios({
           method: "put",
@@ -151,9 +150,6 @@ const MyStore = () => {
       }
     }
 
-    console.log("asdasd");
-    console.log(store);
-    console.log("스토어정보 수정 쿼리날리기");
     updateStore(store, store.storeId);
 
     fetchUpdateStore(store);
