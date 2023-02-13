@@ -1,13 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./style/ProductDetail.module.scss";
 import Card from "../../components/common/Card";
 import { MdShoppingCart } from "react-icons/md";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
+import { productDetail } from "../../utils/api/product-http";
 
 const ProductDetail = () => {
+  // store 정보 받아와야 함
+  // 우선 스토어네임 설정해두고 진행
+  const storeName = "강원 랜드";
+
+  const [itemDetail, setItemDetail] = useState({});
   const [amount, setAmount] = useState(1);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    async function getItemDetail() {
+      try {
+        const itemData = await productDetail(1);
+        console.log(itemData);
+        setItemDetail(itemData);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    getItemDetail();
+  }, []);
+
+  const navigate = useNavigate();
 
   const plusAmount = () => {
     setAmount(amount + 1);
@@ -18,85 +42,90 @@ const ProductDetail = () => {
     }
   };
 
-  const navigate = useNavigate();
+  if (itemDetail.item) {
+    console.log("렌더링 성공");
 
-  const location = useLocation();
+    const discountPrice =
+      itemDetail.item.itemPrice * (1 - itemDetail.item.itemDiscount / 100);
 
-  const discountPrice =
-    location.state.item.item_price *
-    (1 - location.state.item.item_discount / 100);
+    let resultPrice = discountPrice * amount;
 
-  let resultPrice = discountPrice * amount;
+    const convertedPrice = (price) =>
+      price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  const convertedPrice = (price) =>
-    price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  return (
-    <div className={classes.container}>
-      <div className={classes.header}>
-        <MdOutlineArrowBackIos
-          onClick={() => navigate(-1)}
-        ></MdOutlineArrowBackIos>
-        <div className={classes.storename}>
-          <Link to="/store" state={{ storeId: location.state.item.store_id }}>
-            {location.state.item.store_name}
-          </Link>
-        </div>
-      </div>
-      <Card className={classes.imagecard}>
-        <img src="https://via.placeholder.com/300" alt="공백"></img>
-      </Card>
-      <div className={classes.productname}>{location.state.item.item_name}</div>
-      <div className={classes.productscript}>
-        {location.state.item.item_description}
-      </div>
-      <div className={classes.option}>
-        <div className={classes.discountspace}>
-          <div className={classes.salepercent}>
-            {location.state.item.item_discount}%
-          </div>
-          <div className={classes.originalprice}>
-            {convertedPrice(location.state.item.item_price)}원
+    return (
+      <div className={classes.container}>
+        <div className={classes.header}>
+          <MdOutlineArrowBackIos
+            onClick={() => navigate(-1)}
+          ></MdOutlineArrowBackIos>
+          <div className={classes.storename}>
+            <Link to="/store" state={{ storeId: itemDetail.item.storeId }}>
+              {storeName}
+            </Link>
           </div>
         </div>
-        <div className={classes.saleprice}>{convertedPrice(discountPrice)}</div>
-        <div className={classes.won}>원</div>
-        <div className={classes.selectamount}>
-          <div className={classes.firstblock} onClick={minusAmount}>
-            -
+        <Card className={classes.imagecard}>
+          <img src="https://via.placeholder.com/300" alt="공백"></img>
+        </Card>
+        <div className={classes.productname}>{itemDetail.item.itemName}</div>
+        <div className={classes.productscript}>
+          {itemDetail.item.itemDescription}
+        </div>
+        <div className={classes.option}>
+          <div className={classes.discountspace}>
+            <div className={classes.salepercent}>
+              {itemDetail.item.itemDiscount}%
+            </div>
+            <div className={classes.originalprice}>
+              {convertedPrice(itemDetail.item.itemPrice)}원
+            </div>
           </div>
-          <div className={classes.secondblock}>{amount}</div>
-          <div className={classes.thirdblock} onClick={plusAmount}>
-            +
+          <div className={classes.saleprice}>
+            {convertedPrice(discountPrice)}
+          </div>
+          <div className={classes.won}>원</div>
+          <div className={classes.selectamount}>
+            <div className={classes.firstblock} onClick={minusAmount}>
+              -
+            </div>
+            <div className={classes.secondblock}>{amount}</div>
+            <div className={classes.thirdblock} onClick={plusAmount}>
+              +
+            </div>
+          </div>
+        </div>
+        <div className={classes.finalprice}>
+          <div className={classes.firstblock}>총 상품 금액:</div>
+          <div className={classes.secondblock}>
+            {convertedPrice(resultPrice)}
+          </div>
+          <div className={classes.thirdblock}>원</div>
+        </div>
+        <div className={classes.buttonspace}>
+          <div className={classes.cartbutton}>
+            <MdShoppingCart className={classes.carticon} />
+          </div>
+          <div className={classes.buybutton}>
+            <Link
+              to="/payment"
+              state={{
+                storename: storeName,
+                productname: itemDetail.item.itemName,
+                price: resultPrice,
+                amount: amount,
+              }}
+              className={classes.buybuttonlink}
+            >
+              구매하기
+            </Link>
           </div>
         </div>
       </div>
-      <div className={classes.finalprice}>
-        <div className={classes.firstblock}>총 상품 금액:</div>
-        <div className={classes.secondblock}>{convertedPrice(resultPrice)}</div>
-        <div className={classes.thirdblock}>원</div>
-      </div>
-      <div className={classes.buttonspace}>
-        <div className={classes.cartbutton}>
-          <MdShoppingCart className={classes.carticon} />
-        </div>
-        <div className={classes.buybutton}>
-          <Link
-            to="/payment"
-            state={{
-              store_name: location.state.item.store_name,
-              item_name: location.state.item.item_name,
-              item_price: resultPrice,
-              amount: amount,
-            }}
-            className={classes.buybuttonlink}
-          >
-            구매하기
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+    );
+  } else {
+    console.log(`렌더링 실패 ${itemDetail.item}`);
+  }
 };
 
 export default ProductDetail;

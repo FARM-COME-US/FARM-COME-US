@@ -1,10 +1,10 @@
 import axios from "axios";
 
-async function fetchCategoryTitle() {
+export async function categoryTitle() {
   try {
     const response = await axios({
       method: "get",
-      url: "api/api/v1/item/title",
+      url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item/title`,
     });
     return response.data;
   } catch (err) {
@@ -12,25 +12,16 @@ async function fetchCategoryTitle() {
   }
 }
 
-export function categoryTitle() {
-  let result;
-  fetchCategoryTitle()
-    .then((res) => {
-      console.log(res);
-      result = res;
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  return result;
-}
-
-export async function categoryDetail() {
+export async function categoryDetail(titleName) {
   try {
-    await axios({
+    const response = await axios({
       method: "get",
-      url: "api/api/v1/item/detail",
+      url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item/detail`,
+      params: {
+        titleName: titleName,
+      },
     });
+    return response.data;
   } catch (err) {
     console.log(err);
   }
