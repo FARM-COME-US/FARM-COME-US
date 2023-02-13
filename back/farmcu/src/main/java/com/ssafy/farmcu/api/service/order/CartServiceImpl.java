@@ -72,6 +72,7 @@ public class CartServiceImpl implements CartService {
             return cartRepository.findByMember(member);
 
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
