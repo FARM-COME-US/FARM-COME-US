@@ -53,12 +53,14 @@ const Products = () => {
 
   const getCategoryName = (name) => {
     setCategoryName(name);
-    console.log(`대분류 ${name}`);
+
+    if (name) {
+      setSubCategoryName("전체");
+    }
   };
 
   const getSubCategoryName = (name) => {
     setSubCategoryName(name);
-    console.log(`소분류 ${name}`);
   };
 
   return (
