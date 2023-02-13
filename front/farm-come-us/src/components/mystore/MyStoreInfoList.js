@@ -51,7 +51,7 @@ const MyStoreInfoList = (props) => {
       <li className={classes.infoItem}>
         <MyStoreInput
           label="대표 번호"
-          value={props.info.phoneNumber}
+          value={props.info.storePhoneNumber}
           readOnly={!props.isEditting}
           onChange={props.onChange}
           name="phoneNumber"
