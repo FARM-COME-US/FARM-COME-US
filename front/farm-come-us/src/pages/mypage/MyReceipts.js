@@ -10,14 +10,6 @@ const MyReceipts = (props) => {
   // item1 = { id:orderId, items:[강원도배추, 제즈스윗당근], cost:429,000, orderdate:2023.01.10 21:12:58, }
   const memberId = useSelector((state) => state.userSlice.value.memberId);
 
-  const fetchReceipts = () => {
-    const asyncSomethingFetch = async () => {
-      // const res = await axios 요청을 통해 받아오는 자리
-      // cosnt abc = res.data.abc
-      // setReceiptsInfoArr(abc)
-    };
-  };
-
   useEffect(() => {
     axios
       .get(process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/" + memberId)
