@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { categoryTitle, categoryDetail } from "../../utils/api/category-http";
 
 import classes from "./style/MyStoreProductInfoList.module.scss";
 
@@ -12,33 +13,66 @@ const DUMMY_CATEGORY = [
 ];
 
 const MyStoreProductInfoList = (props) => {
-  const imgRef = useRef();
+  const [categoryTitleList, setCategoryTitleList] = useState([]);
+  const [categoryDetailList, setCategoryDetailList] = useState([]);
 
-  const onInfoChangeHandler = (e) => {
-    props.onChange(e.target.name, e.target.value);
+  useEffect(() => {
+    categoryTitle().then((res) => {
+      setCategoryTitleList((prev) => {
+        return [...res];
+      });
+    });
+  }, []);
+
+  const categoryTitleChangeHandler = (e) => {
+    const { name, value } = e.target;
+    props.onChange(name, value);
+
+    if ((e.target.value = "")) {
+      setCategoryDetailList((prev) => {
+        return [];
+      });
+      return;
+    }
+
+    categoryDetail(value).then((res) => {
+      setCategoryDetailList((prev) => {
+        return [...res];
+      });
+    });
   };
 
-  const onImgChangeHandler = (e) => {
-    onInfoChangeHandler(e);
-    loadImgFile(e);
-  };
-
-  const loadImgFile = (e) => {
-    const file = e.target.files[0]; //선택된 파일 가져오기
-    props.onChange("file", file);
+  const categoryDetailCahangeHandler = (e) => {
+    const { name, value } = e.target;
+    props.onChange(name, value);
   };
 
   return (
     <ul className={`${classes.productInfoList} ${props.className}`}>
       <li className={classes.infoItem}>
         <select
-          name="category"
-          value={props.productInfo.itemCreatedAt.categoryName}
+          name="categoryTitle"
+          value={props.productInfo.categoryTitle}
+          onChange={categoryTitleChangeHandler}
         >
-          <option value="">카테고리 선택</option>
-          {DUMMY_CATEGORY.map((category, idx) => (
-            <option key={idx} value={category.id}>
-              {category.name}
+          <option value="">대분류</option>
+          {categoryTitleList.map((item, idx) => (
+            <option key={idx} value={item.categoryName}>
+              {item.categoryName}
+            </option>
+          ))}
+        </select>
+      </li>
+      <li className={classes.infoItem}>
+        <select
+          name="categoryDetail"
+          value={props.productInfo.categoryDetail}
+          onChange={categoryDetailCahangeHandler}
+        >
+          <option value="">상세분류</option>
+          {categoryDetailList.map((item, idx) => (
+            <option key={idx} value={item.categoryName}>
+              {item.categoryName}
             </option>
           ))}
         </select>
@@ -49,7 +83,7 @@ const MyStoreProductInfoList = (props) => {
           type="text"
           name="itemName"
           value={props.productInfo.itemName}
-          onChange={onInfoChangeHandler}
+          onChange={props.onChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -58,7 +92,7 @@ const MyStoreProductInfoList = (props) => {
           type="number"
           value={props.productInfo.itemPrice}
           name="itemPrice"
-          onChange={onInfoChangeHandler}
+          onChange={props.onChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -67,7 +101,7 @@ const MyStoreProductInfoList = (props) => {
           type="number"
           value={props.productInfo.itemStock}
           name="itemStock"
-          onChange={onInfoChangeHandler}
+          onChange={props.onChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -76,7 +110,7 @@ const MyStoreProductInfoList = (props) => {
           type="text"
           value={props.productInfo.itemDescription}
           name="itemDescription"
-          onChange={onInfoChangeHandler}
+          onChange={props.onChange}
         />
       </li>
       <li className={classes.infoItem}>
@@ -85,12 +119,7 @@ const MyStoreProductInfoList = (props) => {
           type="file"
           value={props.productInfo.imgSrc}
           name="imgSrc"
-          onChange={onImgChangeHandler}
-        />
-        <img
-          className={classes.file}
-          src={props.productInfo.file}
-          alt="상품 이미지"
+          onChange={props.onChange}
         />
       </li>
     </ul>

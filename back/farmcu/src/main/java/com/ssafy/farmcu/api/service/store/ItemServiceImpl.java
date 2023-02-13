@@ -4,9 +4,11 @@ import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.dto.store.ItemListRes;
 import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
 import com.ssafy.farmcu.api.entity.store.CategoryDetail;
+import com.ssafy.farmcu.api.entity.store.CategoryTitle;
 import com.ssafy.farmcu.api.entity.store.Item;
 import com.ssafy.farmcu.api.entity.store.Store;
 import com.ssafy.farmcu.api.repository.CategoryDetailRepository;
+import com.ssafy.farmcu.api.repository.CategoryTitleRepository;
 import com.ssafy.farmcu.api.repository.ItemRepository;
 import com.ssafy.farmcu.api.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
+    private final CategoryTitleRepository categoryTitleRepository;
     private final CategoryDetailRepository categoryDetailRepository;
     private final StoreRepository storeRepository;
     private final ItemRepository itemRepository;
@@ -31,15 +34,15 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Long saveItem(ItemDto itemDto) {
         try {
-            System.out.println("itemDto : " + itemDto.toString());
-            CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemDto.getCategoryName());
+            CategoryTitle categoryTitle = categoryTitleRepository.findByTitleName(itemDto.getTitleCategoryName());
+            CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemDto.getDetailCategoryName());
             Store store = storeRepository.findByStoreId(itemDto.getStoreId()).orElseThrow(NullPointerException::new);
             Item item = Item.builder()
                     .itemName(itemDto.getItemName())
                     .itemDescription(itemDto.getItemDescription())
                     .itemPrice(itemDto.getItemPrice())
-                    .itemDiscount(itemDto.getItemDiscount())
                     .itemStock(itemDto.getItemStock())
+                    .categoryTitle(categoryTitle)
                     .categoryDetail(categoryDetail)
                     .store(store)
                     .build();
@@ -55,15 +58,16 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public boolean updateItem(ItemDto itemDto) {
         try {
-            CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemDto.getCategoryName());
+            CategoryTitle categoryTitle = categoryTitleRepository.findByTitleName(itemDto.getTitleCategoryName());
+            CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemDto.getDetailCategoryName());
             Store store = storeRepository.findByStoreId(itemDto.getStoreId()).orElseThrow(NullPointerException::new);
             Item item = itemRepository.findByItemId(itemDto.getItemId()).orElseThrow(NullPointerException::new);
 
             item.setItemName(itemDto.getItemName());
             item.setItemDescription(itemDto.getItemDescription());
             item.setItemPrice(itemDto.getItemPrice());
-            item.setItemDiscount(itemDto.getItemDiscount());
             item.setItemStock(itemDto.getItemStock());
+            item.setCategoryTitle(categoryTitle);
             item.setCategoryDetail(categoryDetail);
 
             itemRepository.save(item);
@@ -93,19 +97,21 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public HashMap<String, Object> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq) {
+    public HashMap<String, Object> findItemsByCategoryAndItemNameLike(ItemSearchReq itemSearchReq, Pageable pageable) {
         Slice<Item> items;
 
-        if (itemSearchReq.getCategoryName().equals("전체")) {
-            if(itemSearchReq.getItemName().equals("")) items = itemRepository.findByItemNameLike("%");
-            else items = itemRepository.findByItemNameLike(itemSearchReq.getItemName());
+        if (itemSearchReq.getTitleCategoryName().equals("전체")) { //전체 부류
+            if(itemSearchReq.getItemName().equals("")) items = itemRepository.findByItemNameLike("%", pageable);
+            else items = itemRepository.findByItemNameLike(itemSearchReq.getItemName(), pageable);
         } else {
-            if(itemSearchReq.getItemName().equals("")) {
-                CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getCategoryName());
-                items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, "%");
-            } else {
-                CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getCategoryName());
-                items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, itemSearchReq.getItemName());
+            if(itemSearchReq.getDetailCategoryName().equals("전체")) { //지정 부류의 전체 품목
+                CategoryTitle categoryTitle = categoryTitleRepository.findByTitleName(itemSearchReq.getTitleCategoryName());
+                if(itemSearchReq.getItemName().equals("")) items = itemRepository.findByCategoryTitleAndItemNameLike(categoryTitle, "%", pageable);
+                else items = itemRepository.findByCategoryTitleAndItemNameLike(categoryTitle, itemSearchReq.getItemName(), pageable);
+            } else { //지정 부류의 지정 품목
+                CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemSearchReq.getDetailCategoryName());
+                if(itemSearchReq.getItemName().equals("")) items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, "%", pageable);
+                else items = itemRepository.findByCategoryDetailAndItemNameLike(categoryDetail, itemSearchReq.getItemName(), pageable);
             }
         }
 
@@ -121,9 +127,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public HashMap<String, Object> findItemsByStore(Long storeId) {
+    public HashMap<String, Object> findItemsByStore(Long storeId, Pageable pageable) {
         Store store = storeRepository.findByStoreId(storeId).orElseThrow(NullPointerException::new);
-        Slice<Item> items = itemRepository.findByStore(store);
+        Slice<Item> items = itemRepository.findByStore(store, pageable);
 
         List<ItemDto> itemList = items.getContent().stream()
                 .map(i -> new ItemDto(i))

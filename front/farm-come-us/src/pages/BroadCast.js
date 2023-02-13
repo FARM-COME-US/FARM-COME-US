@@ -1,40 +1,37 @@
-import { React, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Fragment, React, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import classes from "./BroadCast.module.scss";
+import classes from "./style/BroadCast.module.scss";
 import OvContainer from "../utils/OV/OvContainer";
 
 const BroadCast = () => {
-  // const width = window.innerWidth;
-  // const height = (width * 9) / 16;
-  // const height = window.innerHeight;
   const width = 1280;
   const height = 720;
 
+  const navigate = useNavigate();
   const { state } = useLocation();
 
-  const onbeforeunload = (event) => {
-    console.log("onbeforeunload============");
-    event.returnValue = "";
-  };
-
   useEffect(() => {
-    window.addEventListener("beforeunload", onbeforeunload);
-
-    return () => {
-      // window.removeEventListener("beforeunload", onbeforeunload);
-    };
+    if (!state) {
+      alert("존재하지 않는 방송입니다.");
+      navigate(-1);
+    }
   }, []);
 
   return (
-    <OvContainer
-      width={width}
-      height={height}
-      sessionId={state.id}
-      username={state.username}
-      liveInfo={state.liveInfo}
-      className={classes.ovContainer}
-    />
+    <Fragment>
+      {state ? (
+        <OvContainer
+          width={width}
+          height={height}
+          sessionId={state.id}
+          username={state.username}
+          liveInfo={state.liveInfo}
+          isPublisher={state.isPublisher}
+          className={classes.ovContainer}
+        />
+      ) : null}
+    </Fragment>
   );
 };
 

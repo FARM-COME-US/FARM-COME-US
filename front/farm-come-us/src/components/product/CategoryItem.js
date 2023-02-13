@@ -3,12 +3,12 @@ import classes from "./style/CategoryItem.module.scss";
 import CategoryButton from "./CategoryButton";
 
 const CategoryItem = (props) => {
-  const sendId = () => {
-    props.getid(props.category_id);
+  const sendName = () => {
+    props.getName(props.category_name);
   };
 
   return (
-    <div className={classes.container} onClick={sendId}>
+    <div className={classes.container} onClick={sendName}>
       <CategoryButton
         className={classes.categoryItem}
         category_name={props.category_name}

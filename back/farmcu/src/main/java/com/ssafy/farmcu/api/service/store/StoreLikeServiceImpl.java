@@ -12,11 +12,16 @@ import com.ssafy.farmcu.api.repository.MemberRepository;
 import com.ssafy.farmcu.api.repository.StoreLikeRepository;
 import com.ssafy.farmcu.api.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,12 +77,15 @@ public class StoreLikeServiceImpl implements StoreLikeService{
     }
 
     @Override
-    public List<StoreListRes> findLikesList(Long memberId) {
-        List<StoreListRes> storeLikes = storeLikeRepository.findStoreByMember(memberId);
+    public HashMap<String, Object> findLikesList(Long memberId, Pageable pageable) {
+        Slice<StoreListRes> storeLikesSlice = storeLikeRepository.findStoreByMember(memberId, pageable);
 
-
-
-        return storeLikes;
+        List<StoreListRes> storeLikes = storeLikesSlice.getContent().stream()
+                .collect(Collectors.toList());
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("storeLikes", storeLikes);
+        result.put("hasNextPage", storeLikesSlice.hasNext());
+        return result;
     }
 
     @Override
