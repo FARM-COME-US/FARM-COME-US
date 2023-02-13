@@ -42,7 +42,7 @@ const MyStoreInfoList = (props) => {
       <li className={classes.infoItem}>
         <MyStoreInput
           label="스토어 설명"
-          value={props.info.desc}
+          value={props.info.storeDescription}
           readOnly={!props.isEditting}
           onChange={props.onChange}
           name="desc"
@@ -51,7 +51,7 @@ const MyStoreInfoList = (props) => {
       <li className={classes.infoItem}>
         <MyStoreInput
           label="대표 번호"
-          value={props.info.phoneNumber}
+          value={props.info.storePhoneNumber}
           readOnly={!props.isEditting}
           onChange={props.onChange}
           name="phoneNumber"
@@ -60,7 +60,7 @@ const MyStoreInfoList = (props) => {
       <li className={classes.infoItem}>
         <MyStoreInput
           label="농장 주소"
-          value={props.info.streetAddr}
+          value={props.info.storeStreetAddr}
           readOnly={!props.isEditting}
           onChange={props.onChange}
           name="streetAddr"
@@ -70,7 +70,7 @@ const MyStoreInfoList = (props) => {
       <li className={classes.infoItem}>
         <MyStoreInput
           label="우편번호"
-          value={props.info.zipcode}
+          value={props.info.storeZipcode}
           readOnly={true}
           onChange={props.onChange}
           name="zipcode"
@@ -79,7 +79,7 @@ const MyStoreInfoList = (props) => {
       <li className={classes.infoItem}>
         <MyStoreInput
           label="상세주소"
-          value={props.info.detailAddr}
+          value={props.info.storeDetailAddr}
           readOnly={!props.isEditting}
           onChange={props.onChange}
           name="detailAddr"
