@@ -79,14 +79,17 @@ const MyStoreCreate = () => {
       console.log("유저정보");
       console.log(userInfo.memberId);
       console.log(data);
-
+      console.log("이 아래에 생성후 응답");
       axios
         .post(
           process.env.REACT_APP_API_SERVER_URL + "/api/v1/store",
           formData,
           config
         )
-        .then((res) => dispatch(userSlice.actions.saveStoreInfo(res)))
+        .then((res) => {
+          console.log(res);
+          dispatch(userSlice.actions.saveStoreInfo(res));
+        })
         .catch((err) => console.log(err));
     }
 
@@ -105,8 +108,9 @@ const MyStoreCreate = () => {
     // alert("스토어 생성로직 - 멤버 id 더미 데이터 ");
     try {
       const res = fetchCreateStore(storeInfo, user);
-      console.log(res);
+      console.log("스토어 생성 res.data");
       console.log(res.data);
+      console.log("스토어 생성 res");
       console.log(res);
       dispatch(userSlice.actions.saveStoreInfo(res));
       alert("스토어가 생성되었습니다.");
