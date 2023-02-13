@@ -207,7 +207,7 @@ public class MemberController {
 
 
     @ApiOperation(value = "회원 정보 수정", notes = "", response = Map.class)
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<?> updateMember(@RequestPart MemberUpdateReq memberUpdateReq, HttpServletRequest request, MultipartFile uploadFile) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
@@ -290,7 +290,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "회원 추가정보 입력", notes = "", response = Map.class)
-    @PutMapping("/")
+    @PutMapping("/additional")
     public ResponseEntity<?> addtionalMemberInfo(@RequestPart MemberAdditionalReq memberAdditionalReq, HttpServletRequest request, MultipartFile uploadFile) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
