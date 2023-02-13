@@ -28,7 +28,6 @@ const MyStore = () => {
   const user = useSelector((state) => state.userSlice.value);
   console.log(user);
   let store = useSelector((state) => state.userSlice.store.data);
-  console.log(store);
 
   const [memberId, setMenberId] = useState("");
   const [isEditting, setIsEditting] = useState(false);
