@@ -16,6 +16,8 @@ import com.ssafy.farmcu.exception.ItemNotFoundException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -62,10 +64,16 @@ public class CartServiceImpl implements CartService {
 
     }
 
-    // 사용자 장바구니 조회
+    // 멤버 장바구니 조회
     @Transactional
     public List<Cart> findMyCart(Member member) {
-        return cartRepository.findByMember(member);
+
+        try {
+            return cartRepository.findByMember(member);
+
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public List<Cart> findAllCart() {
@@ -97,14 +105,15 @@ public class CartServiceImpl implements CartService {
         return orderId;
     }
 
-
-
+    // 장바구니 삭제
     @Override
     public void deleteCart(Long cartId) {
+
         Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ItemNotFoundException("장바구니에 상품이 존재하지 않습니다."));
 
         cartRepository.delete(cart);
     }
+
 
 }
 
