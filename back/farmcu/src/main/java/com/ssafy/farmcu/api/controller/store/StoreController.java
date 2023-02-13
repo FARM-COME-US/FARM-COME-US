@@ -133,6 +133,7 @@ public class StoreController {
     public ResponseEntity<?> deleteStore(@PathVariable("storeId")Long id){
         //회원 유효성 검사 추후 추가
         if(storeService.deleteStore(id)){
+            storeImageService.deleteStoreImage(id);
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         }else{
             return new ResponseEntity<String>("error", HttpStatus.NOT_FOUND);
