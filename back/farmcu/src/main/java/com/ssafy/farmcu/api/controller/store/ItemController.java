@@ -82,9 +82,16 @@ public class ItemController {
         ItemDto itemDto = itemService.findOne(itemId);
         List<ItemImageDto> itemImageDtos = itemImageService.findItemImagesByItemId(itemId);
 
+        List<String> itemImages = new ArrayList<>();
+        for(ItemImageDto itemImageDto : itemImageDtos) {
+            if(itemImageDto != null) {
+                itemImages.add(itemImageDto.getSavedPath());
+            }
+        }
+
+        itemDto.setSavedPath(itemImages);
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("item", itemDto);
-        resultMap.put("itemImage", itemImageDtos);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -98,15 +105,17 @@ public class ItemController {
         Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 
         //상품 대표 이미지
-        List<ItemImageDto> itemImage = new ArrayList<>();
+        List<String> itemImages = new ArrayList<>();
         for(ItemDto itemDto : itemList) {
-            if(!itemImageService.findItemImagesByItemId(itemDto.getItemId()).isEmpty())
-                itemImage.add(itemImageService.findItemImagesByItemId(itemDto.getItemId()).get(0));
+            ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(itemDto.getItemId());
+            if(itemImageDto != null) {
+                itemImages.add(itemImageDto.getSavedPath());
+                itemDto.setSavedPath(itemImages);
+            }
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("itemList", itemList);
-        resultMap.put("itemImage", itemImage);
         resultMap.put("hasNextPage", hasNextPage);
 
         return ResponseEntity.ok(resultMap);
@@ -121,15 +130,17 @@ public class ItemController {
         Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 
         //상품 대표 이미지
-        List<ItemImageDto> itemImage = new ArrayList<>();
+        List<String> itemImages = new ArrayList<>();
         for(ItemDto itemDto : itemList) {
-            if(itemImageService.findItemImagesByItemId(itemDto.getItemId()) != null)
-                itemImage.add(itemImageService.findItemImagesByItemId(itemDto.getItemId()).get(0));
+            ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(itemDto.getItemId());
+            if(itemImageDto != null) {
+                itemImages.add(itemImageDto.getSavedPath());
+                itemDto.setSavedPath(itemImages);
+            }
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("itemList", itemList);
-        resultMap.put("itemImage", itemImage);
         resultMap.put("hasNextPage", hasNextPage);
 
         return ResponseEntity.ok(resultMap);
