@@ -57,7 +57,7 @@ const userSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
     },
     saveStoreInfo: (state, action) => {
-      state.store = action.payload;
+      state.store = { ...action.payload };
     },
     // up: (state, action) => {
     //   state.value = state.value + action.payload;

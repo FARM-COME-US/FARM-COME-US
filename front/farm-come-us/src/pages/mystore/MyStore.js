@@ -33,7 +33,7 @@ const MyStore = () => {
   console.log(storeId);
   console.log(storeId.data.storeId);
 
-  const [memberId, setMenberId] = useState("");
+  const [memberId, setMemberId] = useState("");
   const [isEditting, setIsEditting] = useState(false);
   const [storeInfo, setStoreInfo] = useState({
     storeId: DUMMY_STORE_INFO.storeId,
@@ -58,6 +58,7 @@ const MyStore = () => {
         },
       }
     );
+    console.log("마이스토어데이터 가져오는 작업을 합니다.");
     setStoreInfo({ imgSrc: res.data.storeImage.savedPath, ...res.data.store });
     console.log({ imgSrc: res.data.storeImage.savedPath, ...res.data.store });
     console.log(res.data);
@@ -83,11 +84,11 @@ const MyStore = () => {
 
   useEffect(() => {
     // if (user.storeId) {
-    console.log("useEffect실행");
-    const result = fetchStoreData();
-    console.log(result);
-    setStoreInfo((prev) => prev);
-    // setStoreInfo(fetchStoreData());
+    console.log("useEffect실행 데이터 가져옴.");
+    // const result = fetchStoreData();
+    // console.log(result);
+    // setStoreInfo((prev) => prev);
+    setStoreInfo(fetchStoreData());
     // }
   }, [storeId]);
   // if (user.value.storeId && !storeInfo.storeId) {
@@ -163,13 +164,6 @@ const MyStore = () => {
         storeDetailAddr: DUMMY_STORE_INFO.storeDetailAddr,
         phoneNumber: DUMMY_STORE_INFO.phoneNumber,
         imgSrc: DUMMY_STORE_INFO.imgSrc,
-        // storeId: DUMMY_STORE_INFO.storeId,
-        // storeName: DUMMY_STORE_INFO.storeName,
-        // desc: DUMMY_STORE_INFO.desc,
-        // phoneNumber: DUMMY_STORE_INFO.phoneNumber,
-        // streetAddr: DUMMY_STORE_INFO.streetAddr,
-        // zipcode: DUMMY_STORE_INFO.zipcode,
-        // detailAddr: DUMMY_STORE_INFO.detailAddr,
       };
     });
 
