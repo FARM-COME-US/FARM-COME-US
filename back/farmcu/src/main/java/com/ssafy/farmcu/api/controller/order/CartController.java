@@ -24,6 +24,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,9 +61,9 @@ public class CartController {
 
     }
 
-    @GetMapping("/{member}")
+    @GetMapping()
     @ApiOperation(value = "멤버 장바구니 조회")
-    public ResponseEntity<HashMap<String, Object>> findMyCarts(@PathVariable Member member) {
+    public ResponseEntity<HashMap<String, Object>> findMyCarts(@RequestParam Member member) {
 
         HashMap<String, Object> resultMap = new HashMap<>();
 
@@ -110,7 +111,7 @@ public class CartController {
 
     @DeleteMapping("/{cartId}")
     @ApiOperation(value = "장바구니 상품 삭제")
-    public ResponseEntity deleteCart(@PathVariable Long cartId) {
+    public ResponseEntity deleteCart(@RequestParam Long cartId) {
 
         try {
             cartService.deleteCart(cartId);

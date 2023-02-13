@@ -3,11 +3,15 @@ import classes from "./style/Payment.module.scss";
 import Card from "../../components/common/Card";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdOutlineArrowBackIos } from "react-icons/md";
+import { orderProduct } from "../../utils/api/order-http";
 
 const CartPayment = () => {
   const location = useLocation();
 
   const navigate = useNavigate();
+
+  const res = orderProduct()
+  console.log(res)
 
   const convertedPrice = (price) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
