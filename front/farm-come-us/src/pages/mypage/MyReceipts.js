@@ -15,7 +15,7 @@ const MyReceipts = (props) => {
     };
   };
 
-  let list = <span className={classes.noItem}>구매 내역이 없습니다.</span>;
+  let list = <span className={classes.noItem}>주문 내역이 없습니다.</span>;
 
   // if (myReceiptsInfoArr.length > 0) {
   //   list = props.myReceipts.map((item) => (
@@ -27,16 +27,17 @@ const MyReceipts = (props) => {
 
   return (
     <div className={classes.screen}>
-      <div className={classes.header}>구매내역</div>
+      <div className={classes.header}>주문내역</div>
 
       <div
         className={`${classes.flexbox} ${classes.mt} ${
           myReceiptsInfoArr ? "" : classes.centerAlignWrapper
         }`}
       >
-        <MyReceiptItem />
-        <MyReceiptItem />
-        <MyReceiptItem />;{/* {list} 원상복구 필요. 수정필요*/}
+        {/* <MyReceiptItem /> */}
+        {/* <MyReceiptItem /> */}
+        {/* <MyReceiptItem />; */}
+        {list}
       </div>
     </div>
   );
