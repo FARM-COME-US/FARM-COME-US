@@ -89,9 +89,9 @@ public class OrderController {
 //        return ResponseEntity.ok(resultMap);
 //    }
 
-    @GetMapping("/{member}")
+    @GetMapping()
     @ApiOperation(value = "사용자 주문 목록 조회")
-    public ResponseEntity<HashMap<String, Object>> findMyCarts(@PathVariable Member member) {
+    public ResponseEntity<HashMap<String, Object>> findMyCarts(@RequestParam Member member) {
 
         HashMap<String, Object> resultMap = new HashMap<>();
 
