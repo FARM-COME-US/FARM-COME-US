@@ -14,6 +14,7 @@ const MyStoreHeader = (props) => {
     const file = inputBgRef.current.files[0];
     bgImgRef.current.src = URL.createObjectURL(file);
     props.onStoreInfoChange("imgSrc", URL.createObjectURL(file));
+    props.onStoreInfoChange("filename", file.name);
     props.onStoreInfoChange("uploadFile", file);
   };
 
@@ -55,6 +56,8 @@ const MyStoreHeader = (props) => {
           className={classes.imgInput}
           type="file"
           accept=".gif, .jpg, .png"
+          name="imgSrc"
+          // value={props.info.imgSrc}
           onChange={loadBgFile}
         />
       </form>
