@@ -25,34 +25,9 @@ const MyStoreCreate = () => {
     storeDetailAddr: "",
     storeImg: "",
     storeName: "",
-<<<<<<< HEAD
     storePhoneNumber: "",
     storeStreetAddr: "",
     storeZipcode: "",
-
-    // storeName: "",
-    // desc: "",
-    // streetAddr: "",
-    // detailAddr: "",
-    // zipcode: "",
-    // phoneNumber: "",
-    // imgSrc: "",
-    // uploadFile: "",
-    // deliveryCost: "",
-    // deliveryFree: "",
-=======
-    storeDescription: "",
-    desc: "",
-    streetAddr: "",
-    detailAddr: "",
-    zipcode: "",
-    phoneNumber: "",
-    imgSrc: "",
-    filename: "",
-    uploadFile: "",
-    deliveryCost: "",
-    deliveryFree: "",
->>>>>>> d96e067b3653ee6db30cc5cf1d75586d4bf6c2dd
   });
   const [storeNameIsValid, setStoreNameIsValid] = useState();
   const [storeId, setStoreId] = useState("");
