@@ -156,9 +156,9 @@ const MyStore = () => {
     console.log("스토어정보 수정 쿼리날리기");
     updateStore(store, store.storeId);
 
-    fetchUpdateStore(request);
+    fetchUpdateStore(store);
     alert("스토어 정보가 수정되었습니다.");
-    fetchStoreData(request);
+    fetchStoreData(store);
     setIsEditting((prev) => !prev);
   };
 
