@@ -18,16 +18,41 @@ const MyStoreCreate = () => {
   const dispatch = useDispatch();
   const { userInfo } = location.state;
   const [storeInfo, setStoreInfo] = useState({
+    memberId: "",
+    storeDeliveryCost: "",
+    storeDeliveryFree: "",
+    storeDescription: "",
+    storeDetailAddr: "",
+    storeImg: "",
     storeName: "",
+<<<<<<< HEAD
+    storePhoneNumber: "",
+    storeStreetAddr: "",
+    storeZipcode: "",
+
+    // storeName: "",
+    // desc: "",
+    // streetAddr: "",
+    // detailAddr: "",
+    // zipcode: "",
+    // phoneNumber: "",
+    // imgSrc: "",
+    // uploadFile: "",
+    // deliveryCost: "",
+    // deliveryFree: "",
+=======
+    storeDescription: "",
     desc: "",
     streetAddr: "",
     detailAddr: "",
     zipcode: "",
     phoneNumber: "",
     imgSrc: "",
+    filename: "",
     uploadFile: "",
     deliveryCost: "",
     deliveryFree: "",
+>>>>>>> d96e067b3653ee6db30cc5cf1d75586d4bf6c2dd
   });
   const [storeNameIsValid, setStoreNameIsValid] = useState();
   const [storeId, setStoreId] = useState("");
@@ -40,7 +65,6 @@ const MyStoreCreate = () => {
   }, []);
 
   const user = useSelector((state) => state.userSlice.value);
-  // console.log(user);
 
   const createStoreHandler = (e) => {
     async function fetchCreateStore(storeInfo, userInfo) {
@@ -51,9 +75,9 @@ const MyStoreCreate = () => {
         memberId: userInfo.memberId,
         storeDeliveryCost: storeInfo.deliveryCost,
         storeDeliveryFree: storeInfo.deliveryFree,
-        storeDescription: storeInfo.desc,
+        storeDescription: storeInfo.storeDescription,
         storeDetailAddr: storeInfo.detailAddr,
-        storeImg: storeInfo.imgSrc,
+        storeImg: storeInfo.filename,
         storeName: storeInfo.storeName,
         storePhoneNumber: storeInfo.phoneNumber,
         storeStreetAddr: storeInfo.streetAddr,

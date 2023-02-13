@@ -8,22 +8,16 @@ export async function createProduct(productInfo) {
   const DUMMY_STORE_ID = 1;
   const formData = new FormData();
 
-  // formData.append("itemName", productInfo.itemName);
-  // formData.append("itemDescription", productInfo.itemDescription);
-  // formData.append("itemPrice", productInfo.itemPrice);
-  // formData.append("itemStock", productInfo.itemStock);
-  // formData.append("storeId", productInfo.storeId);
-  // formData.append("categoryName", productInfo.categoryName);
   const data = {
     storeId: DUMMY_STORE_ID,
+    categoryTitle: productInfo.categoryTitle,
+    categoryDetail: productInfo.categoryDetail,
     itemName: productInfo.itemName,
     itemDescription: productInfo.itemDescription,
     itemPrice: productInfo.itemPrice,
     itemStock: productInfo.itemStock,
-    categoryName: productInfo.categoryName,
   };
-  formData.append("uploadFile", productInfo.file);
-  console.log(data);
+  formData.append("uploadFile", productInfo.uploadFile);
 
   formData.append(
     "item",
@@ -41,7 +35,7 @@ export async function createProduct(productInfo) {
 
   try {
     const response = axios.post(
-      process.env.REACT_APP_API_SERVER_URL + "/api/v1/item",
+      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item`,
       formData,
       config
     );

@@ -1,8 +1,7 @@
 import axios from "axios";
 
-const DUMMY_SERVER_URL = "https:localhost:3000";
-const STORE_API_URL = `${DUMMY_SERVER_URL}/store`;
-const STORE_LIKE_API_URL = `${DUMMY_SERVER_URL}/storelikes`;
+const STORE_API_URL = `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store`;
+const STORE_LIKE_API_URL = `${process.env.REACT_APP_API_SERVER_URL}/storelikes`;
 
 /* 스토어 생성 */
 export async function fetchCreateStore(storeInfo, userInfo) {
@@ -71,18 +70,49 @@ export async function fetchStoreDetail(storeId) {
 }
 
 /* 스토어 정보 수정 */
-export async function updateStore(store) {
+export async function fetchUpdateStore(storeInfo) {
+  console.log(storeInfo);
+  const formData = new FormData();
+  formData.append("uploadFile", storeInfo.uploadFile);
+
+  const data = {
+    storeDeliveryCost: storeInfo.deliveryCost,
+    storeDeliveryFree: storeInfo.deliveryFree,
+    storeDescription: storeInfo.storeDescription,
+    storeDetailAddr: storeInfo.storeDetailAddr,
+    storeImg: storeInfo.storeImg,
+    storeName: storeInfo.storeName,
+    storePhoneNumber: storeInfo.storePhoneNumber,
+    storeStreetAddr: storeInfo.storeStreetAddr,
+    storeZipcode: storeInfo.storeZipcode,
+  };
+
+  console.log(data);
+  console.log(storeInfo.uploadFile);
+
+  formData.append(
+    "store",
+    new Blob([JSON.stringify(data)], {
+      type: "application/json",
+    })
+  );
+
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: { token: sessionStorage.getItem("accessToken") },
+      token: sessionStorage.getItem("accessToken"),
+    },
+    withCredentials: false,
+  };
+
   try {
-    const response = axios({
-      method: "put",
-      url: STORE_API_URL,
-      params: {
-        sotreId: store.storeId,
-      },
-      data: {
-        request: store,
-      },
-    });
+    const response = axios(
+      `${STORE_API_URL}/${storeInfo.storeId}`,
+      data,
+      config
+    );
     console.log(response.success);
   } catch (err) {
     console.err(err);
