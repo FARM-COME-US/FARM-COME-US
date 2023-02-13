@@ -46,7 +46,7 @@ const MyStoreHeader = (props) => {
         </label>
         <MyStoreHeaderInfo
           storeName={props.info.storeName}
-          desc={props.info.desc}
+          storeDescription={props.info.storeDescription}
         />
         {props.info.storeId ? <MyStoreMenu /> : null}
         <input

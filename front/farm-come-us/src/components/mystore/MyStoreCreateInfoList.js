@@ -47,16 +47,16 @@ const MyStoreCreateInfoList = (props) => {
       <li className={classes.infoItem}>
         <MyStoreInput
           label="스토어 설명"
-          value={props.info.desc}
+          value={props.info.storeDescription}
           readOnly={false}
-          name="desc"
+          name="storeDescription"
           onChange={props.onStoreInfoChange}
         />
       </li>
       <li className={classes.infoItem}>
         <MyStoreInput
           label="대표 번호"
-          value={props.info.phoneNumber}
+          value={props.info.storePhoneNumber}
           readOnly={false}
           name="phoneNumber"
           onChange={props.onStoreInfoChange}
