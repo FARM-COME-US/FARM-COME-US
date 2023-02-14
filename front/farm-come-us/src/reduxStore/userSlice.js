@@ -52,6 +52,7 @@ const userSlice = createSlice({
     },
     logout: (state, action) => {
       state.value = initialStateValue;
+      sessionStorage.clear();
     },
     savetoken: (state, action) => {
       state.accessToken = action.payload.accessToken;

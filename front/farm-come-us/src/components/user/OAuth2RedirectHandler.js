@@ -101,44 +101,37 @@ function OAuth2RedirectHandler(props) {
         // KakaoLoginMatch(res);
         // console.log("3");
       })
-      // .then((res) => {
-      //   let state = new URL(res.data).searchParams.get("state");
-      //   console.log(state);
-      //   const params = {
-      //     state: state,
-      //     code: code,
-      //   };
 
-      //   axios
-      //     .get(getCallbackURL, params)
-      //     .then((res) => console.log(`res:${res}`));
-
-      //   console.log("1");
-      //   // console.log(res.data);
-      //   // const token = res.data;
-      //   // sessionStorage.setItem("accessToken", token); //😀
-      //   console.log("2");
-      //   KakaoLoginMatch(res);
-      //   console.log("3");
-      // })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  useEffect(() => {
-    getState();
-  }, []);
-  // 로딩중인 화면을 띄우면서, 뒤의 로직이 발동되는것임.
-  //
+  const getUserData = async () => {
+    const accessToken = sessionStorage.getItem("accessToken", accessToken);
 
-  // const data = JSON.stringify({
-  //   grant_type: "authorization_code",
-  //   // client_id: REST_API_KEY,
-  //   // redirect_uri: REDIRECT_URI,
-  //   code: code,
-  //   // client_secret: KAKAO_CLIENT_ID,
-  // });
+    const userDataRes = await axios.get(
+      process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          token: accessToken,
+        },
+      }
+    );
+    // console.log("응답");
+    // console.log(userDataRes);
+    // console.log("응답의 data의 userInfo");
+    // console.log(userDataRes.data.userInfo);
+    dispatch(userSlice.actions.login(userDataRes.data.userInfo));
+    navigate("/");
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   const config = {
     headers: {
       "Content-Type": "application/json",
