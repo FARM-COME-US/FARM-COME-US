@@ -21,7 +21,6 @@ import ReceiptList from "./components/receipt/ReceiptList";
 
 import MyPage from "./pages/mypage/MyPage";
 import MyPageInfo from "./pages/mypage/MyPageInfo";
-import MyPageEdit from "./pages/mypage/MyPageEdit";
 import MyReceipts from "./pages/mypage/MyReceipts";
 import LikeStores from "./pages/mypage/LikeStores";
 
@@ -98,7 +97,6 @@ const App = () => {
         {/* 마이페이지 */}
         <Route path="/mypage" element={<MyPage />}>
           <Route path="info" element={<MyPageInfo />} />
-          <Route path="edit" element={<MyPageEdit />} />
           <Route path="receipts" element={<MyReceipts />} />
           <Route path="likestores" element={<LikeStores />} />
           <Route path="" element={<Navigate replace to="info" />} />

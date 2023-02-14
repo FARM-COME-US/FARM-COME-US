@@ -80,7 +80,7 @@ const AddLiveModal = (props) => {
       .catch((err) => {
         console.error(err);
       });
-    // props.onToggleModal();
+    props.onToggleModal();
   };
 
   const isValidNewInfo = () => {
