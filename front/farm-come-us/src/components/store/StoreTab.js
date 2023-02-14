@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import classes from "./style/StoreTab.module.scss";
 
 const StoreTab = (props) => {
+  console.log(props);
   return (
     <div className={classes.LiveTab}>
       <NavLink

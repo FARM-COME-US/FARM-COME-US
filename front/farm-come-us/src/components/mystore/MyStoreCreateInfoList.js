@@ -8,8 +8,8 @@ const MyStoreCreateInfoList = (props) => {
   const [openModal, setOpenModal] = useState(false);
 
   const selectAddress = (data) => {
-    props.onStoreInfoChange("streetAddr", data.roadAddress);
-    props.onStoreInfoChange("zipcode", data.zonecode);
+    props.onStoreInfoChange("storeStreetAddr", data.roadAddress);
+    props.onStoreInfoChange("storeZipcode", data.zonecode);
     setOpenModal(!openModal);
   };
 
@@ -58,54 +58,54 @@ const MyStoreCreateInfoList = (props) => {
           label="대표 번호"
           value={props.info.storePhoneNumber}
           readOnly={false}
-          name="phoneNumber"
+          name="storePhoneNumber"
           onChange={props.onStoreInfoChange}
         />
       </li>
       <li className={classes.infoItem}>
         <MyStoreInput
           label="기본 배송비"
-          value={props.info.deliveryCost}
+          value={props.info.storeDeliveryCost}
           readOnly={false}
-          name="deliveryCost"
+          name="storeDeliveryCost"
           onChange={props.onStoreInfoChange}
         />
       </li>
       <li className={classes.infoItem}>
         <MyStoreInput
           label="무료배송 기준 금액"
-          value={props.info.deliveryFree}
+          value={props.info.storeDeliveryFree}
           readOnly={false}
-          name="deliveryFree"
+          name="storeDeliveryFree"
           onChange={props.onStoreInfoChange}
         />
       </li>
       <li className={classes.infoItem}>
         <MyStoreInput
           label="농장 주소"
-          value={props.info.streetAddr}
+          value={props.info.storeStreetAddr}
           readOnly={true}
           onChange={props.onStoreInfoChange}
-          name="streetAddr"
+          name="storeStreetAddr"
           onFocus={onEditAddr}
         />
       </li>
       <li className={classes.infoItem}>
         <MyStoreInput
           label="우편번호"
-          value={props.info.zipcode}
+          value={props.info.storeZipcode}
           readOnly={true}
           onChange={props.onStoreInfoChange}
-          name="zipcode"
+          name="storeZipcode"
         />
       </li>
       <li className={classes.infoItem}>
         <MyStoreInput
           label="상세주소"
-          value={props.info.detailAddr}
+          value={props.info.storeDetailAddr}
           readOnly={false}
           onChange={props.onStoreInfoChange}
-          name="detailAddr"
+          name="storeDetailAddr"
         />
       </li>
       {openModal && (

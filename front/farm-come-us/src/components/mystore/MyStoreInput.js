@@ -35,7 +35,9 @@ const MyStoreInput = (props) => {
     >
       <span className={`${classes.label} title`}>{props.label}</span>
       <Input
-        className={`${classes.itemInput}`}
+        className={`${classes.itemInput} ${
+          props.readOnly ? classes.readOnly : null
+        }`}
         value={props.value}
         name={props.name}
         readOnly={props.readOnly}
@@ -50,6 +52,7 @@ const MyStoreInput = (props) => {
         onBlur={onBlurHandler}
         placeholder={props.placeholder}
         accept={props.accept}
+        required={props.required}
       />
     </div>
   );
