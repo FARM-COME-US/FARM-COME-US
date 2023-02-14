@@ -91,7 +91,11 @@ public class OrderController {
 
     @GetMapping()
     @ApiOperation(value = "사용자 주문 목록 조회")
+<<<<<<< HEAD
+    public ResponseEntity<HashMap<String, Object>> findMyCarts(@RequestBody Member member) {
+=======
     public ResponseEntity<HashMap<String, Object>> findMyCarts(@RequestParam Member member) {
+>>>>>>> 6854da7ca032057e272658e7fff0cfbcd4ab550b
 
         HashMap<String, Object> resultMap = new HashMap<>();
 

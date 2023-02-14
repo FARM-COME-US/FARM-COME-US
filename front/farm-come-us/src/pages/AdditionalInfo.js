@@ -3,6 +3,7 @@ import { useState } from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { MdSearch, MdPhoneIphone } from "react-icons/md";
 import classes from "./style/AdditionalInfo.module.scss";
+import _ from "lodash";
 
 // 수정필요 - 카카오로그인을 하면 모든 필드가 다 주어지지않는데, 회원수정에서 모든걸 required
 // ㅈ
@@ -37,11 +38,109 @@ const AdditionalInfo = () => {
     setOpenModal(!openModal);
   };
 
+  // 카카오 로그인하면 토큰이랑 userId 준다고 했나?
+  async function modifyUserInfo() {
+    const adjArr = [
+      "귀여운 ",
+      "새콤 ",
+      "부끄러운 ",
+      "아삭한 ",
+      "보은 ",
+      "지친 ",
+      "착한 ",
+      "매운 ",
+    ];
+    const vegeArr = [
+      "양파",
+      "상추",
+      "사과",
+      "배추",
+      "자몽",
+      "포도",
+      "양배추",
+      "고구마",
+      "쪽파",
+      "달걀",
+    ];
+    let nickname = _.sample(adjArr) + _.sample(vegeArr);
+
+    const formData = new FormData();
+    // formData.append("uploadFile", storeInfo.uploadFile);
+    formData.append("uploadFile", ""); //😀프로필사진 보낼생각없는데?
+
+    // 위의 4개 데이터만 보내면 되나? 아니면 다 보내야되나?
+    // const data = {
+    //   memberId: userInfo.memberId,
+    //   storeDeliveryCost: storeInfo.deliveryCost,
+    //   storeDeliveryFree: storeInfo.deliveryFree,
+    //   storeDescription: storeInfo.storeDescription,
+    //   storeDetailAddr: storeInfo.detailAddr,
+    //   storeImg: storeInfo.filename,
+    //   storeName: storeInfo.storeName,
+    //   storePhoneNumber: storeInfo.phoneNumber,
+    //   storeStreetAddr: storeInfo.streetAddr,
+    //   storeZipcode: storeInfo.zipcode,
+    // };
+
+    // const data = {
+    //   memberId: userInfo.memberId,
+    //   storeDeliveryCost: storeInfo.deliveryCost,
+    //   storeDeliveryFree: storeInfo.deliveryFree,
+    //   storeDescription: storeInfo.storeDescription,
+    //   storeDetailAddr: storeInfo.detailAddr,
+    //   storeImg: storeInfo.filename,
+    //   storeName: storeInfo.storeName,
+    //   storePhoneNumber: storeInfo.phoneNumber,
+    //   storeStreetAddr: storeInfo.streetAddr,
+    //   storeZipcode: storeInfo.zipcode,
+    // };
+
+    // 😀 4개만 보내도 되는지 확인.
+    const userInfo = {
+      phoneNumber,
+      streetAddr,
+      detailAddr,
+      zipcode,
+      nickname,
+    };
+
+    formData.append(
+      "memberUpdateReq",
+      new Blob([JSON.stringify(userInfo)], {
+        type: "application/json",
+      })
+    );
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: { token: sessionStorage.getItem("accessToken") },
+        token: sessionStorage.getItem("accessToken"),
+      },
+      withCredentials: false,
+    };
+
+    console.log("이 아래에 생성후 응답 바로아래 dispatch");
+
+    axios
+      .put(
+        process.env.REACT_APP_API_SERVER_URL + "/api/v1/member",
+        formData,
+        config
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  }
+
   const submitHandler = async (e) => {
     e.preventDefault();
     // 보내는 로직 수정 필요함.
-    const data = { phoneNumber, streetAddr, zipcode, detailAddr };
-    axios.put(process.env.REACT_APP_API_SERVER_URL + "/api/v1/member");
+    // const data = { phoneNumber, streetAddr, zipcode, detailAddr };
+    // axios.put(process.env.REACT_APP_API_SERVER_URL + "/api/v1/member");
+    modifyUserInfo();
   };
 
   return (

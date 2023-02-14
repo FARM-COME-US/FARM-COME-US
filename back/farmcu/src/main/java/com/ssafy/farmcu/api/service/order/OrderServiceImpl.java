@@ -107,7 +107,11 @@ public class OrderServiceImpl implements OrderService{
         try {
             return orderRepository.findByMember(member);
         } catch (Exception e ){
+<<<<<<< HEAD
+         return null;
+=======
             return null;
+>>>>>>> 6854da7ca032057e272658e7fff0cfbcd4ab550b
         }
     }
 

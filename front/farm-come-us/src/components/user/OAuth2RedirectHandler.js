@@ -55,7 +55,8 @@ function OAuth2RedirectHandler(props) {
       // 백엔드에서 넘겨주는 데이터를 dispatch로 내 리덕스에 넘김.
 
       navigate("/");
-      // 토큰 받아왔으면 리덕스에 넘긴다. session에 던질까? 이건 고민 필요하다.
+      // 😀 헤더에 있는 nickname이 null이면, additional Info로 넘긴다.
+      // if (value?.header.nickname === null) {navigate(/additional-info)}
     } else {
       alert("로그인이 실패하였습니다. 다시 시도해주세요.");
       navigate("/login");
