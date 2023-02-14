@@ -2,6 +2,7 @@ package com.ssafy.farmcu.api.controller.store;
 
 import com.ssafy.farmcu.api.dto.member.MemberJoinReq;
 import com.ssafy.farmcu.api.dto.store.*;
+import com.ssafy.farmcu.api.entity.store.Store;
 import com.ssafy.farmcu.api.service.image.S3Service;
 import com.ssafy.farmcu.api.service.store.StoreImageServiceImpl;
 import com.ssafy.farmcu.api.service.store.StoreServiceImpl;
@@ -55,6 +56,7 @@ public class StoreController {
                         .savedPath(savedPath).build();
 
                 storeImageService.saveStoreImage(storeImageDto);
+                storeService.saveStoreImage(storeId, savedPath);
         }
 
         HashMap<String, Object> result = new HashMap<>();
@@ -120,6 +122,7 @@ public class StoreController {
                         .savedPath(savedPath).build();
 
                 storeImageService.updateStoreImage(storeImageDto);
+                storeService.saveStoreImage(storeId, savedPath);
             }
 
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);

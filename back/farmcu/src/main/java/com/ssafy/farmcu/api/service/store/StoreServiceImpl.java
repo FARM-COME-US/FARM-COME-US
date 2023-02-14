@@ -150,4 +150,16 @@ public class StoreServiceImpl implements StoreService{
         }
     }
 
+
+    @Transactional
+    public boolean saveStoreImage(Long storeId, String path){
+        try{
+            Store store = Store.builder().storeImg(path).storeId(storeId).build();
+            storeRepository.save(store);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
+
+    }
 }
