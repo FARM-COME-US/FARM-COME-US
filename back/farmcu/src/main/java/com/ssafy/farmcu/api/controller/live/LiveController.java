@@ -88,14 +88,16 @@ public class LiveController {
         Boolean hasNextPage = (Boolean) liveText.get("hasNextPage");
 
         //라이브 대표 이미지
+        List<LiveListRes> liveInfoList = new ArrayList<>();
         for (LiveListRes liveListRes : liveList) {
             ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(liveListRes.getItemId());
             if(itemImageDto != null)
                 liveListRes.setSavedPath(itemImageDto.getSavedPath());
+            liveInfoList.add(liveListRes);
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("storeLiveList", liveList);
+        resultMap.put("storeLiveList", liveInfoList);
         resultMap.put("hasNextPage", hasNextPage);
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
@@ -110,14 +112,16 @@ public class LiveController {
         Boolean hasNextPage = (Boolean) liveText.get("hasNextPage");
 
         //라이브 대표 이미지
+        List<LiveListRes> liveInfoList = new ArrayList<>();
         for (LiveListRes liveListRes : liveList) {
             ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(liveListRes.getItemId());
             if(itemImageDto != null)
                 liveListRes.setSavedPath(itemImageDto.getSavedPath());
+            liveInfoList.add(liveListRes);
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("liveOnList", liveList);
+        resultMap.put("liveOnList", liveInfoList);
         resultMap.put("hasNextPage", hasNextPage);
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
@@ -132,14 +136,16 @@ public class LiveController {
         Boolean hasNextPage = (Boolean) liveText.get("hasNextPage");
 
         //라이브 대표 이미지
+        List<LiveListRes> liveInfoList = new ArrayList<>();
         for (LiveListRes liveListRes : liveList) {
             ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(liveListRes.getItemId());
             if(itemImageDto != null)
                 liveListRes.setSavedPath(itemImageDto.getSavedPath());
+            liveInfoList.add(liveListRes);
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("liveOffList", liveList);
+        resultMap.put("liveOffList", liveInfoList);
         resultMap.put("hasNextPage", hasNextPage);
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
