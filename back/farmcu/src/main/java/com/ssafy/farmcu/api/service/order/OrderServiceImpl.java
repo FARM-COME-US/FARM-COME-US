@@ -82,9 +82,15 @@ public class OrderServiceImpl implements OrderService{
     }
 
     // 주문 취소
+    @Transactional
     public void updateOrder(Long orderId) {
+
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(EntityNotFoundException::new);
-        order.updateOrder();
+        String status = String.valueOf(order.getOrderStatus());
+
+        if ( "ORDER".equals(status) ) {
+            order.updateOrder();
+        }
     }
 
     // 내 주문 목록 조회
@@ -94,6 +100,26 @@ public class OrderServiceImpl implements OrderService{
             return orderRepository.findByMember(member);
         } catch (Exception e ){
          return null;
+        }
+    }
+
+    //  주문 상세 조회
+    @Transactional
+    public List<OrderItem> findOrderDetail(Order order) {
+        try {
+            return orderItemRepository.findByOrder(order);
+        } catch (Exception e ){
+            return null;
+        }
+    }
+
+    // 스토어 주문 목록 조회
+    @Transactional
+    public List<OrderItem> findStoreOrder(Long storeNum) {
+        try {
+            return orderItemRepository.findByStoreNum(storeNum);
+        } catch (Exception e ){
+            return null;
         }
     }
 

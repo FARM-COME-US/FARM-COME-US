@@ -27,22 +27,26 @@ public class OrderItem {
 
     private int oitemPrice;
 
+    private Long storeNum;
+
     // 연결
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
 
     //빌더
     @Builder
-    public OrderItem(Order order, Item item, Long oitemId, int oitemCount, LocalDateTime oitemCreatedAt, int oitemPrice ) {
+    public OrderItem(Order order, Item item, Long oitemId,Long storeNum, int oitemCount, LocalDateTime oitemCreatedAt, int oitemPrice ) {
         this.order = order;
         this.item = item;
         this.oitemId = oitemId;
+        this.storeNum = storeNum;
         this.oitemCount = oitemCount;
         this.oitemCreatedAt = oitemCreatedAt;
         this.oitemPrice = oitemPrice;
@@ -55,7 +59,7 @@ public class OrderItem {
         orderItem.setOitemCount(oitemCount);
         orderItem.setOitemPrice( oitemCount * item.getItemPrice() * (100 - item.getItemDiscount()) / 100);
         orderItem.setOitemCreatedAt(LocalDateTime.now()); //주문시간
-
+        orderItem.setStoreNum(item.getStore().getStoreId());
         // 주문 상품 재고 차감
         item.removeStock(oitemCount);
         return orderItem;
@@ -71,7 +75,11 @@ public class OrderItem {
         return oitemPrice;
     }
 
-    // 주문 취소 시 재고 원상 복구
+    //스토어
+
+
+
+   // 주문 취소 시 재고 원상 복구
     public void cancel() { this.getItem().addStock(oitemCount); }
 
 }
