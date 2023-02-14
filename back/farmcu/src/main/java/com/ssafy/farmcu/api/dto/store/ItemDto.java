@@ -22,7 +22,7 @@ public class ItemDto {
     private String itemCreatedAt;
     private String titleCategoryName;
     private String detailCategoryName;
-    private List<String> savedPath; //대표 이미지
+    private List<String> savedPath; //이미지
     private Long storeId;
     private String storeName;
 
