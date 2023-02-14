@@ -6,14 +6,13 @@ import MyPageMenu from "../../pages/mypage/MyPageMenu";
 const MyPageHeader = (props) => {
   const inputProfileRef = useRef();
   const profileImgRef = useRef();
-  // const nickname = props.nickname;
 
   const loadProfileFile = () => {
     const file = inputProfileRef.current.files[0]; //선택된 파일 가져오기
     //이미지 source 가져오기
     profileImgRef.current.src = URL.createObjectURL(file);
     props.userInfoChangeHandler("imgSrc", profileImgRef.current.src);
-    props.userInfoChangeHandler("file", file);
+    props.userInfoChangeHandler("uploadFile", file);
   };
 
   return (
