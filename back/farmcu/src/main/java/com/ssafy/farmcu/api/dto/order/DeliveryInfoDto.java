@@ -10,17 +10,6 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 public class DeliveryInfoDto {
-//    @NotNull
-//    private Long deliveryId;
-//    @NotNull
-//    private String deliveryName;
-//    private String deliveryPhoneNumber;
-//    private String deliveryAddr;
-//
-//    @NotNull
-//    private Long MemberId;
-//    @NotNull
-//    private Long itemId;
 
     Long deliveryId;
     String deliveryName;

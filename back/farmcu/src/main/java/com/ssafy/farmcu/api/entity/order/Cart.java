@@ -47,10 +47,10 @@ public class Cart {
     }
 
     public static Cart createCart(Member member, Item item, int cartItemCount){
-        Cart cart = new Cart(); // 새 장바구니
+        Cart cart = new Cart();
         cart.setMember(member);
-        cart.setItem(item);//장바구니 속 상품 정보
-        cart.setCartItemCount(cartItemCount); //장바구니에 담은 상품 개수
+        cart.setItem(item);
+        cart.setCartItemCount(cartItemCount);
 
         return cart;
     }
