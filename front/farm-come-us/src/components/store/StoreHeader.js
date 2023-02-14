@@ -10,7 +10,7 @@ const StoreHeader = (props) => {
 
   return (
     <div className={classes.container}>
-      <img src={props.storeInfo.storeImage} alt="공백"></img>
+      <img src={props.storeInfo.storeImage.savedPath} alt="공백"></img>
       <div className={classes.imgfilter}></div>
       <div className={classes.headerdes}>
         <div className={classes.storename}>
