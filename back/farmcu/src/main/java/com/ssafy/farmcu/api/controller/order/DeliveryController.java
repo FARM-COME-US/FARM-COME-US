@@ -24,7 +24,7 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("api/v1/delivery")
+@RequestMapping("/delivery")
 @RestController
 @Api("배송 관련")
 
@@ -36,17 +36,20 @@ public class DeliveryController {
 
     // 배송 정보 넣는 건 결제 한 뒤
 
-    @ApiOperation("기본 배송 정보 조회")
+    @ApiOperation("배송 정보 조회")
     @GetMapping("/{memberId}")
-    public ResponseEntity findMemberAddr(@PathVariable Long memberId) {
+    public ResponseEntity<MemberDto> findMemberAddr(@PathVariable Long memberId) {
 
-        HashMap<String, Object> resultMap = new HashMap<>();
-        MemberDto memberDto = memberService.getUserInfo(memberId);
-        resultMap.put("userInfo", memberDto);
+        try {
+            MemberDto memberDto = memberService.getUserInfo(memberId);
 
-        return ResponseEntity.ok(resultMap);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
-
 
 //    @ApiOperation("배송 정보 수정")
 //    @PutMapping("/{memberId}")

@@ -63,6 +63,7 @@ const MyStore = () => {
     });
     // dispatch(userSlice.actions.saveStoreInfo(res.data.store.storeId));
     console.log(res.data);
+    // console.log(res.storeImage.savedPath, ...res.data.store);
 
     return res.data.store;
   };

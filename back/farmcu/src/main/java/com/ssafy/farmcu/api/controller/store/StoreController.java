@@ -84,9 +84,25 @@ public class StoreController {
             return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
         }
         else
-            return new ResponseEntity<String>("store not exist", HttpStatus.ACCEPTED);
+            return new ResponseEntity<String>("store not exist", HttpStatus.NOT_FOUND);
     }
+    @GetMapping("/mystore/{memberId}")
+    @ApiOperation(value="스토어 상세조회", notes = "")
+    public ResponseEntity<?> selectMyStore(@PathVariable("memberId") Long id){
+        StoreDto result = storeService.findMyStoreInfo(id);
+        StoreImageDto storeImageDto = storeImageService.findStoreImageByStoreId(result.getStoreId());
 
+        HashMap<String, Object> resultMap = new HashMap<>();
+
+        resultMap.put("store", result);
+        resultMap.put("storeImage", storeImageDto);
+
+        if(result!=null){
+            return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
+        }
+        else
+            return new ResponseEntity<String>("store not exist", HttpStatus.NOT_FOUND);
+    }
     @PutMapping("/{storeId}")
     @ApiOperation(value="스토어 정보 수정", notes = "")
     public ResponseEntity updateStore(@PathVariable("storeId") Long storeId, @RequestPart StoreUpdateReq request,  MultipartFile uploadFile)throws Exception {
@@ -108,7 +124,7 @@ public class StoreController {
 
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         }else{
-            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("error", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -120,7 +136,7 @@ public class StoreController {
             storeImageService.deleteStoreImage(id);
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         }else{
-            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("error", HttpStatus.NOT_FOUND);
         }
     }
 
