@@ -207,7 +207,7 @@ public class MemberController {
 
 
     @ApiOperation(value = "회원 정보 수정", notes = "", response = Map.class)
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<?> updateMember(@RequestPart MemberUpdateReq memberUpdateReq, HttpServletRequest request, MultipartFile uploadFile) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
@@ -287,6 +287,38 @@ public class MemberController {
         log.info("/me");
         MemberDto memberDto = memberService.getUserInfo(id);
         return ResponseEntity.ok(memberDto);
+    }
+
+    @ApiOperation(value = "회원 추가정보 입력", notes = "", response = Map.class)
+    @PutMapping("/additional")
+    public ResponseEntity<?> addtionalMemberInfo(@RequestPart MemberAdditionalReq memberAdditionalReq, HttpServletRequest request, MultipartFile uploadFile) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        String token = request.getHeader("token"); // 리프레시 토큰
+        AuthToken authToken = tokenProvider.convertAuthToken(token);
+        Long id = tokenProvider.getId(authToken);
+        MemberDto member = memberService.getUserInfo(id);
+        if (authToken.validate()) {
+            memberService.updateMember(memberAdditionalReq, member.getId());
+            if(uploadFile!=null){
+                String savedPath = s3Service.uploadFile(uploadFile);
+                log.info("here save file");
+                MemberImageDto memberImageDto = MemberImageDto.builder()
+                        .memberId(id)
+                        .originalName(uploadFile.getOriginalFilename())
+                        .savedPath(savedPath).build();
+
+                memberImageService.saveMemberImage(memberImageDto);
+            }
+
+            resultMap.put("message", "success");
+
+            status = HttpStatus.ACCEPTED;
+        } else {
+            resultMap.put("message", "fail");
+            status = HttpStatus.NOT_FOUND;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
     private AuthToken getAccessToken(Long memberId) {

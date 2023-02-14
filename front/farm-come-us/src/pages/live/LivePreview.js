@@ -17,7 +17,7 @@ import {
   fetchRunningLiveList,
   fetchScheduledLiveList,
 } from "../../utils/api/live-http";
-import { productList } from "../../utils/api/product-http";
+import { fetchProductList } from "../../utils/api/product-http";
 
 // 더미 데이터
 const LIVE_LIST = [
@@ -175,7 +175,7 @@ const LivePreview = () => {
     status: itemStatus,
     data: itemList,
     errorItem,
-  } = useHttp(productList, true);
+  } = useHttp(fetchProductList, true);
 
   useEffect(() => {
     getLiveSessions();

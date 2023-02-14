@@ -1,29 +1,22 @@
 import axios from "axios";
 
-const DUMMY_SERVER_URL = "https:localhost:3000";
-const PRODUCT_API_URL = `${DUMMY_SERVER_URL}/item`;
+const PRODUCT_API_URL = `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item`;
 
 /* 상품 등록 */
 export async function createProduct(productInfo) {
-  const DUMMY_STORE_ID = 1;
   const formData = new FormData();
 
-  // formData.append("itemName", productInfo.itemName);
-  // formData.append("itemDescription", productInfo.itemDescription);
-  // formData.append("itemPrice", productInfo.itemPrice);
-  // formData.append("itemStock", productInfo.itemStock);
-  // formData.append("storeId", productInfo.storeId);
-  // formData.append("categoryName", productInfo.categoryName);
   const data = {
-    storeId: DUMMY_STORE_ID,
+    storeId: productInfo.storeId,
+    titleCategoryName: productInfo.categoryTitle,
+    detailCategoryName: productInfo.categoryDetail,
     itemName: productInfo.itemName,
     itemDescription: productInfo.itemDescription,
     itemPrice: productInfo.itemPrice,
     itemStock: productInfo.itemStock,
-    categoryName: productInfo.categoryName,
+    imgSrc: productInfo.imgSrc,
   };
-  formData.append("uploadFile", productInfo.file);
-  console.log(data);
+  formData.append("uploadFile", productInfo.uploadFile);
 
   formData.append(
     "item",
@@ -32,16 +25,20 @@ export async function createProduct(productInfo) {
     })
   );
 
+  console.log(data);
+
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",
       "Access-Control-Allow-Origin": "*",
+      Authorization: { token: sessionStorage.getItem("accessToken") },
+      token: sessionStorage.getItem("accessToken"),
     },
   };
 
   try {
     const response = axios.post(
-      process.env.REACT_APP_API_SERVER_URL + "/api/v1/item",
+      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item`,
       formData,
       config
     );
@@ -71,28 +68,48 @@ export async function productDetail(productId) {
 }
 
 /* 상품 목록 조회 */
-export async function productList(category, itemName, subCategory) {
+export async function fetchProductList(
+  category,
+  itemName,
+  subCategory,
+  page,
+  size
+) {
+  const params = {
+    page: page,
+    size: size,
+  };
+  const data = {
+    titleCategoryName: category,
+    detailCategoryName: subCategory,
+    itemName: itemName,
+
+    page: page,
+    size: size,
+  };
+  const config = { "Content-Type": "application/json" };
   try {
-    console.log(category, subCategory);
-    const response = await axios({
-      method: "post",
-      url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item/keyword`,
-      data: {
-        itemSearchReq: {
-          detailCategoryName: subCategory,
-          itemName: itemName,
-          titleCategoryName: category,
-        },
-        page: 0,
-        size: 6,
-      },
-    });
-    const data = response.data;
-    console.log(data);
-    return data;
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item/keyword/`,
+      data,
+      { config, params }
+    );
+    // const data = response.data;
+    return response.data.itemList;
   } catch (err) {
     console.err(err);
   }
+}
+
+/* 스토어 상품 조회 */
+export function fetchStoreProducts(storeId, page, size) {
+  const params = {
+    storeId,
+    page,
+    size,
+  };
+  console.log(params);
+  return axios.get(`${PRODUCT_API_URL}/store`, { params });
 }
 
 /* 등록 상품 삭제 */

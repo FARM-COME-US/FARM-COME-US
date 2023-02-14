@@ -8,8 +8,12 @@ import classes from "./OAuth2RedirectHandler.module.scss";
 
 // import Spinner from "../spinner";
 
-const getTokenURL = "api/api/v1/login/oauth";
-const getUserInfoURL = "api/api/v1/member";
+const getStateURL =
+  process.env.REACT_APP_API_SERVER_URL + "/api/v1/login/oauth";
+const getCallbackURL =
+  process.env.REACT_APP_API_SERVER_URL + "/api/v1/login/callback";
+
+const getUserInfoURL = process.env.REACT_APP_API_SERVER_URL + "/api/v1/member";
 
 function OAuth2RedirectHandler(props) {
   const dispatch = useDispatch();
@@ -30,30 +34,6 @@ function OAuth2RedirectHandler(props) {
   const data = {
     code: code,
   };
-  const getAxios = async () => {
-    console.log("0");
-    await axios
-      .get(getTokenURL, { params: { code: code } })
-      .then((res) => {
-        console.log(res);
-        console.log("1");
-        console.log(res.data);
-        const token = res.data;
-        sessionStorage.setItem("accessToken", token); //😀
-        console.log("2");
-        KakaoLoginMatch(res);
-        console.log("3");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    getAxios();
-  }, []);
-  // 로딩중인 화면을 띄우면서, 뒤의 로직이 발동되는것임.
-  //
 
   const KakaoLoginMatch = async (value) => {
     if (value?.status === 200) {
@@ -75,13 +55,82 @@ function OAuth2RedirectHandler(props) {
       // 백엔드에서 넘겨주는 데이터를 dispatch로 내 리덕스에 넘김.
 
       navigate("/");
-      // 토큰 받아왔으면 리덕스에 넘긴다. session에 던질까? 이건 고민 필요하다.
+      // 😀 헤더에 있는 nickname이 null이면, additional Info로 넘긴다.
+      // if (value?.header.nickname === null) {navigate(/additional-info)}
     } else {
       alert("로그인이 실패하였습니다. 다시 시도해주세요.");
       navigate("/login");
       //예외처리 추가
     }
   };
+
+  const getToken = async (code, state) => {
+    const params = { state: state, code: code };
+    await axios
+      .get(getCallbackURL, params)
+      .then((res) => console.log(`res:${res}`))
+      .catch((err) => console.log(err));
+  };
+
+  // 😀 여기서 시작
+  const getState = async () => {
+    console.log("0");
+    await axios
+      .get(getStateURL, { params: { code: code } })
+      .then((res) => {
+        console.log(res);
+        let state = new URL(res.data).searchParams.get("state");
+        console.log(state);
+
+        getToken(code, state);
+
+        // const params = {
+        //   state: state,
+        //   code: code,
+        // };
+
+        // axios
+        //   .get(getCallbackURL, params)
+        //   .then((res) => console.log(`res:${res}`));
+
+        // console.log("1");
+        // console.log(res.data);
+        // const token = res.data;
+        // sessionStorage.setItem("accessToken", token); //😀
+        // console.log("2");
+        // KakaoLoginMatch(res);
+        // console.log("3");
+      })
+      // .then((res) => {
+      //   let state = new URL(res.data).searchParams.get("state");
+      //   console.log(state);
+      //   const params = {
+      //     state: state,
+      //     code: code,
+      //   };
+
+      //   axios
+      //     .get(getCallbackURL, params)
+      //     .then((res) => console.log(`res:${res}`));
+
+      //   console.log("1");
+      //   // console.log(res.data);
+      //   // const token = res.data;
+      //   // sessionStorage.setItem("accessToken", token); //😀
+      //   console.log("2");
+      //   KakaoLoginMatch(res);
+      //   console.log("3");
+      // })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getState();
+  }, []);
+  // 로딩중인 화면을 띄우면서, 뒤의 로직이 발동되는것임.
+  //
 
   // const data = JSON.stringify({
   //   grant_type: "authorization_code",

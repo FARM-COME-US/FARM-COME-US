@@ -72,14 +72,11 @@ public class LiveController {
 
     @PostMapping
     @ApiOperation(value = "라이브 등록")
-    public ResponseEntity<HashMap<String, Boolean>> createLive(@RequestBody LiveInsertReq liveInsertReq) {
+    public ResponseEntity<String> createLive(@RequestBody LiveInsertReq liveInsertReq) {
         boolean isSuccess = liveService.saveLive(liveInsertReq);
 
-        HashMap<String, Boolean> resultMap = new HashMap<>();
-        if(isSuccess) resultMap.put("success", true);
-        else resultMap.put("success", false);
-
-        return ResponseEntity.ok(resultMap);
+        if(isSuccess) return new ResponseEntity<>(HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/store")
@@ -91,18 +88,17 @@ public class LiveController {
         Boolean hasNextPage = (Boolean) liveText.get("hasNextPage");
 
         //라이브 대표 이미지
-        List<ItemImageDto> liveImage = new ArrayList<>();
         for (LiveListRes liveListRes : liveList) {
-            if(itemImageService.findItemImagesByItemId(liveListRes.getItemId()) != null)
-                liveImage.add(itemImageService.findItemImagesByItemId(liveListRes.getItemId()).get(0));
+            ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(liveListRes.getItemId());
+            if(itemImageDto != null)
+                liveListRes.setSavedPath(itemImageDto.getSavedPath());
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("storeLiveList", liveList);
-        resultMap.put("storeLiveImage", liveImage);
         resultMap.put("hasNextPage", hasNextPage);
 
-        return ResponseEntity.ok(resultMap);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @GetMapping("/list/on")
@@ -114,18 +110,17 @@ public class LiveController {
         Boolean hasNextPage = (Boolean) liveText.get("hasNextPage");
 
         //라이브 대표 이미지
-        List<ItemImageDto> liveImage = new ArrayList<>();
         for (LiveListRes liveListRes : liveList) {
-            if(itemImageService.findItemImagesByItemId(liveListRes.getItemId()) != null)
-                liveImage.add(itemImageService.findItemImagesByItemId(liveListRes.getItemId()).get(0));
+            ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(liveListRes.getItemId());
+            if(itemImageDto != null)
+                liveListRes.setSavedPath(itemImageDto.getSavedPath());
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("liveOnList", liveList);
-        resultMap.put("liveOnImage", liveImage);
         resultMap.put("hasNextPage", hasNextPage);
 
-        return ResponseEntity.ok(resultMap);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @GetMapping("/list/off")
@@ -137,62 +132,52 @@ public class LiveController {
         Boolean hasNextPage = (Boolean) liveText.get("hasNextPage");
 
         //라이브 대표 이미지
-        List<ItemImageDto> liveImage = new ArrayList<>();
         for (LiveListRes liveListRes : liveList) {
-            if(itemImageService.findItemImagesByItemId(liveListRes.getItemId()) != null)
-                liveImage.add(itemImageService.findItemImagesByItemId(liveListRes.getItemId()).get(0));
+            ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(liveListRes.getItemId());
+            if(itemImageDto != null)
+                liveListRes.setSavedPath(itemImageDto.getSavedPath());
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("liveOffList", liveList);
-        resultMap.put("liveOffImage", liveImage);
         resultMap.put("hasNextPage", hasNextPage);
 
-        return ResponseEntity.ok(resultMap);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @GetMapping
     @ApiOperation(value = "라이브 상세 조회")
     public ResponseEntity<LiveDetailRes> selectLiveDetail(Long LiveId) {
-        return ResponseEntity.ok(liveService.findOne(LiveId));
+        return new ResponseEntity<>(liveService.findOne(LiveId), HttpStatus.OK);
     }
 
     @PutMapping
     @ApiOperation(value = "라이브 수정")
-    public ResponseEntity<HashMap<String, Boolean>> updateLive(@RequestBody LiveInsertReq liveInsertReq) {
+    public ResponseEntity<String> updateLive(@RequestBody LiveInsertReq liveInsertReq) {
         boolean isSuccess = liveService.updateLive(liveInsertReq);
 
-        HashMap<String, Boolean> resultMap = new HashMap<>();
-        if(isSuccess) resultMap.put("success", true);
-        else resultMap.put("success", false);
-
-        return ResponseEntity.ok(resultMap);
+        if(isSuccess) return new ResponseEntity<>(HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping
     @ApiOperation(value = "라이브 삭제")
-    public ResponseEntity<HashMap<String, Boolean>> deleteLive(Long liveId) {
+    public ResponseEntity<String> deleteLive(Long liveId) {
         boolean isSuccess = liveService.deleteLive(liveId);
 
-        HashMap<String, Boolean> resultMap = new HashMap<>();
-        if(isSuccess) resultMap.put("success", true);
-        else resultMap.put("success", false);
-
-        return ResponseEntity.ok(resultMap);
+        if(isSuccess) return new ResponseEntity<>(HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/discount")
     @ApiOperation(value = "라이브 시작, 종료 시 일반 상품 할인률 업데이트)")
-    public ResponseEntity<HashMap<String, Boolean>> updateItemDiscount(Long itemId, int itemDiscount) {
+    public ResponseEntity<String> updateItemDiscount(Long itemId, int itemDiscount) {
         ItemDto itemDto = itemService.findOne(itemId);
         itemDto.setItemDiscount(itemDiscount);
         boolean isSuccess = itemService.updateItem(itemDto);
 
-        HashMap<String, Boolean> resultMap = new HashMap<>();
-        if(isSuccess) resultMap.put("seccess", true);
-        else resultMap.put("success", false);
-
-        return ResponseEntity.ok(resultMap);
+        if(isSuccess) return new ResponseEntity<>(HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -85,4 +85,21 @@ public class ItemImageServiceImpl implements ItemImageService {
         }
     }
 
+    @Override
+    public ItemImageDto findItemImageByItemId(Long itemId) {
+        try {
+            Item item = itemRepository.findByItemId(itemId).orElseThrow(NullPointerException::new);
+            ItemImage itemImage = itemImageRepository.findTopByItem(item).orElse(null);
+            ItemImageDto result = null;
+            if(itemImage != null) {
+                result = new ItemImageDto(itemImage);
+            }
+
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

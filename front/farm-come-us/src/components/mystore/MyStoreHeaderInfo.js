@@ -6,7 +6,7 @@ const MyStoreHeaderInfo = (props) => {
   return (
     <div className={classes.infoContainer}>
       <div className={`${classes.storeName} title`}>{props.storeName}</div>
-      <p className={classes.storeDesc}>{props.desc}</p>
+      <p className={classes.storeDesc}>{props.storeDescription}</p>
     </div>
   );
 };

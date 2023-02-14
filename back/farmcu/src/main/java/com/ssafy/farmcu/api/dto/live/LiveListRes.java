@@ -4,8 +4,10 @@ import com.ssafy.farmcu.api.entity.live.Live;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class LiveListRes {
@@ -18,6 +20,7 @@ public class LiveListRes {
     private int liveViewers;
     private Long itemId;
     private String storeName;
+    private String savedPath; //대표 이미지
 
     public LiveListRes(Live live) {
         this.liveId = live.getLiveId();
