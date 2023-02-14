@@ -47,11 +47,11 @@ public class KakaoServiceImpl implements KakaoService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//    @Value("${KaKao.client_id}")
+    //    @Value("${KaKao.client_id}")
     private String client_id;
-//    @Value("${KaKao.admin_id}")
+    //    @Value("${KaKao.admin_id}")
     private String admin;
-//    @Value("${config.domain}")
+    //    @Value("${config.domain}")
     private String domain;
 
     private int count = 0001;
