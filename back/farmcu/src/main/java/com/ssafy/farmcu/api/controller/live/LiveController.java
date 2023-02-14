@@ -117,7 +117,7 @@ public class LiveController {
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("storeLiveList", liveList);
+        resultMap.put("liveOnList", liveList);
         resultMap.put("hasNextPage", hasNextPage);
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
@@ -139,7 +139,7 @@ public class LiveController {
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("storeLiveList", liveList);
+        resultMap.put("liveOffList", liveList);
         resultMap.put("hasNextPage", hasNextPage);
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
