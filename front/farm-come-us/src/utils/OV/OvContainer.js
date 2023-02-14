@@ -14,13 +14,13 @@ import LiveInfo from "../../components/broadcast/LiveInfo";
 import LiveFooter from "../../components/broadcast/LiveFooter";
 import LeaveButton from "../../components/broadcast/LeaveButton";
 import LiveProductInfo from "../../components/broadcast/LiveProductInfo";
-
-const OV_SERVER_URL = "http://localhost:5000";
+import Loading from "../../components/common/Loading";
 
 const OvContainer = (props) => {
   let tempOV = null;
   const navigate = useNavigate();
 
+  const [isPending, setIsPending] = useState(true);
   const [OV, setOV] = useState(null);
   const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
@@ -37,6 +37,8 @@ const OvContainer = (props) => {
   useEffect(() => {
     joinSession();
   }, []);
+
+  useEffect(() => {}, [isPending]);
 
   useEffect(() => {
     if (!session) return;
@@ -67,6 +69,9 @@ const OvContainer = (props) => {
     tempOV = new OpenVidu();
     setOV(tempOV);
 
+    // 소켓 통신에서 생기는 여러 로그들을 띄우지 않는 모드
+    tempOV.enableProdMode();
+
     // --- 2) Init a session ---
     const mySession = tempOV.initSession();
     setSession(mySession);
@@ -78,7 +83,7 @@ const OvContainer = (props) => {
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
       const subscriber = mySession.subscribe(event.stream, undefined);
-      console.log(mySession);
+
       // Update the state with the new subscribers
       setSubscribers((prev) => [...prev, subscriber]);
     });
@@ -116,46 +121,79 @@ const OvContainer = (props) => {
       mySession
         .connect(token, { clientData: props.username })
         .then(async (res) => {
-          // --- 5) Get your own camera stream ---
-          // Obtain the current video device in use
-          var devices = await tempOV.getDevices();
+          tempOV
+            .getUserMedia({
+              audioSource: false,
+              videoSource: undefined,
+              resolution: "1280x720",
+              frameRate: 10,
+            })
+            .then((mediaStream) => {
+              var videoTrack = mediaStream.getVideoTracks()[0];
 
-          var videoDevices = devices.filter(
-            (device) => device.kind === "videoinput"
-          );
+              var newPublisher = tempOV.initPublisher(props.username, {
+                audioSource: undefined,
+                videoSource: videoTrack,
+                publishAudio: true,
+                publishVideo: true,
+                // resolution: '1280x720',
+                // frameRate: 10,
+                insertMode: "APPEND",
+                mirror: true,
+              });
+              // 4-c publish
+              newPublisher.once("accessAllowed", () => {
+                mySession.publish(newPublisher);
+                setPublisher(newPublisher);
+              });
 
-          var audioDevices = devices.filter(
-            (device) => device.kind === "audioinput"
-          );
+              setCurrentVideoDevice(videoTrack);
+              setMainStreamManager(newPublisher);
+              setPublisher(newPublisher);
+              setIsPending(false);
+            });
 
-          // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
-          // element: we will manage it on our own) and with the desired properties
-          const tempPublisher = await tempOV.initPublisherAsync(undefined, {
-            audioSource: props.isPublisher ? audioDevices[0].deviceId : null, // The source of audio. If undefined default microphone
-            videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
-            publishAudio: props.isPublisher ? true : false, // Whether you want to start publishing with your audio unmuted or not
-            publishVideo: true, // Whether you want to start publishing with your video enabled or not
-            resolution: `${props.width}x${props.height}`, // The resolution of your video
-            frameRate: 30, // The frame rate of your video
-            insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-            mirror: false, // Whether to mirror your local video or not
-          });
+          // // --- 5) Get your own camera stream ---
+          // // Obtain the current video device in use
+          // var devices = await tempOV.getUserMedia();
 
-          // --- 6) Publish your stream ---
-          mySession.publish(tempPublisher);
+          // var videoDevices = devices.filter(
+          //   (device) => device.kind === "videoinput"
+          // );
 
-          var currentVideoDeviceId = tempPublisher.stream
-            .getMediaStream()
-            .getVideoTracks()[0]
-            .getSettings().deviceId;
-          var currentVideoDevice = videoDevices.find(
-            (device) => device.deviceId === currentVideoDeviceId
-          );
+          // var audioDevices = devices.filter(
+          //   (device) => device.kind === "audioinput"
+          // );
+
+          // // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
+          // // element: we will manage it on our own) and with the desired properties
+          // const tempPublisher = await tempOV.initPublisherAsync(undefined, {
+          //   audioSource: props.isPublisher ? audioDevices[0].deviceId : null, // The source of audio. If undefined default microphone
+          //   videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
+          //   publishAudio: props.isPublisher ? true : false, // Whether you want to start publishing with your audio unmuted or not
+          //   publishVideo: true, // Whether you want to start publishing with your video enabled or not
+          //   resolution: `${props.width}x${props.height}`, // The resolution of your video
+          //   frameRate: 30, // The frame rate of your video
+          //   insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
+          //   mirror: false, // Whether to mirror your local video or not
+          // });
+
+          // // --- 6) Publish your stream ---
+          // mySession.publish(tempPublisher);
+
+          // var currentVideoDeviceId = tempPublisher.stream
+          //   .getMediaStream()
+          //   .getVideoTracks()[0]
+          //   .getSettings().deviceId;
+          // var currentVideoDevice = videoDevices.find(
+          //   (device) => device.deviceId === currentVideoDeviceId
+          // );
 
           // Set the main video in the page to display our webcam and store our Publisher
-          setCurrentVideoDevice(currentVideoDevice);
-          setMainStreamManager(tempPublisher);
-          setPublisher(tempPublisher);
+
+          // setCurrentVideoDevice(currentVideoDevice);
+          // setMainStreamManager(tempPublisher);
+          // setPublisher(tempPublisher);
         })
         .catch((error) => {
           console.log(
@@ -206,56 +244,69 @@ const OvContainer = (props) => {
   };
 
   const switchCamera = async () => {
-    axios
-      .get(
-        process.env.REACT_APP_OPENVIDU_SERVER +
-          "/openvidu/api/sessions/" +
-          props.sessionId +
-          "/connection",
-        {
-          headers: {
-            Authorization:
-              "Basic " +
-              btoa("OPENVIDUAPP:" + process.env.REACT_APP_OPENVIDU_SECRET),
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-      });
-
     try {
-      const devices = await OV.getDevices();
-      var videoDevices = devices.filter(
-        (device) => device.kind === "videoinput"
-      );
+      OV.getUserMedia({
+        audioSource: false,
+        videoSource: undefined,
+        resolution: "1280x720",
+        frameRate: 30,
+      }).then(async (mediaStream) => {
+        const newVideoTrack = mediaStream
+          .getVideoTracks()
+          .filter((device) => device.deviceId !== currentVideoDevice.deviceId);
 
-      if (videoDevices && videoDevices.length > 1) {
-        var newVideoDevice = videoDevices.filter(
-          (device) => device.deviceId !== currentVideoDevice.deviceId
-        );
+        console.log(mediaStream.getVideoTracks());
+        if (newVideoTrack && newVideoTrack.length > 0) {
+          const videoTrack = newVideoTrack[0];
 
-        if (newVideoDevice.length > 0) {
-          // Creating a new publisher with specific videoSource
-          // In mobile devices the default and first camera is the front one
-          var newPublisher = OV.initPublisher(undefined, {
-            videoSource: newVideoDevice[0].deviceId,
+          var newPublisher = tempOV.initPublisher(props.username, {
+            audioSource: undefined,
+            videoSource: videoTrack,
             publishAudio: true,
             publishVideo: true,
+            resolution: "1280x720",
+            frameRate: 30,
+            insertMode: "APPEND",
             mirror: true,
           });
-
-          //newPublisher.once("accessAllowed", () => {
           await session.unpublish(mainStreamManager);
-
           await session.publish(newPublisher);
-          setCurrentVideoDevice(newVideoDevice[0]);
+
+          setCurrentVideoDevice(videoTrack);
           setMainStreamManager(newPublisher);
           setPublisher(newPublisher);
         }
-      }
+      });
+
+      // const devices = await OV.getUserMedia();
+      // var videoDevices = devices.filter(
+      //   (device) => device.kind === "videoinput"
+      // );
+
+      // if (videoDevices && videoDevices.length > 1) {
+      //   var newVideoDevice = videoDevices.filter(
+      //     (device) => device.deviceId !== currentVideoDevice.deviceId
+      //   );
+
+      //   if (newVideoDevice.length > 0) {
+      //     // Creating a new publisher with specific videoSource
+      //     // In mobile devices the default and first camera is the front one
+      //     var newPublisher = OV.initPublisher(undefined, {
+      //       videoSource: newVideoDevice[0].deviceId,
+      //       publishAudio: true,
+      //       publishVideo: true,
+      //       mirror: true,
+      //     });
+
+      //     //newPublisher.once("accessAllowed", () => {
+      //     await session.unpublish(mainStreamManager);
+
+      //     await session.publish(newPublisher);
+      //     setCurrentVideoDevice(newVideoDevice[0]);
+      //     setMainStreamManager(newPublisher);
+      //     setPublisher(newPublisher);
+      //   }
+      // }
     } catch (e) {
       console.error(e);
     }
@@ -266,31 +317,34 @@ const OvContainer = (props) => {
     return await createToken(mySessionId);
   };
 
-  const createSession = async (sessionId) => {
-    const data = JSON.stringify({ customSessionId: sessionId });
-    let response;
-    try {
-      response = await axios.post(
-        process.env.REACT_APP_OPENVIDU_SERVER + "/openvidu/api/sessions",
-        data,
-        {
-          headers: {
-            Authorization:
-              "Basic " +
-              btoa("OPENVIDUAPP:" + process.env.REACT_APP_OPENVIDU_SECRET),
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      );
-    } catch (err) {
-      if (err.response.status === 409) {
-        return Promise.resolve(sessionId);
-      } else {
-        alert(err);
-      }
-    }
-    return response.data.sessionId; // The sessionId
+  const createSession = (sessionId) => {
+    return new Promise((resolve, reject) => {
+      const data = JSON.stringify({ customSessionId: sessionId });
+      axios
+        .post(
+          process.env.REACT_APP_OPENVIDU_SERVER + "/openvidu/api/sessions",
+          data,
+          {
+            headers: {
+              Authorization:
+                "Basic " +
+                btoa("OPENVIDUAPP:" + process.env.REACT_APP_OPENVIDU_SECRET),
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
+        )
+        .then((res) => {
+          resolve(res.data.sessionId);
+        })
+        .catch((err) => {
+          if (err.response.status === 409) {
+            resolve(sessionId);
+          } else {
+            alert(err);
+          }
+        });
+    });
   };
 
   const createToken = async (sessionId) => {
@@ -353,62 +407,68 @@ const OvContainer = (props) => {
 
   return (
     <div className={props.className}>
-      {session !== undefined && mainStreamManager !== undefined ? (
+      {isPending ? (
+        <Loading className={classes.loading} />
+      ) : (
         <Fragment>
-          <div className={classes.ovInfoContainer}>
-            <LiveHeader
-              className={classes.liveHeader}
-              isPublisher={props.isPublisher}
-              isMute={isMute}
-              title={props.liveInfo.title}
-              onCameraSwitch={switchCamera}
-              onLiveLeave={leaveSessionHandler}
-              onToggleMute={toggleMuteHandler}
-            />
-            <LiveInfo
-              subCnt={subscribers.length}
-              title={props.liveInfo.title}
-              stock={props.liveInfo.stock}
-              unit={props.liveInfo.unit}
-            />
-            <LiveChat
-              chatList={chatList}
-              onTextMsgChangeHandler={onTextMsgChangeHandler}
-              onSubmit={sendChatMsgHandler}
-              msg={chatMsg}
-              isPublisher={props.isPublisher}
-            />
+          {session !== undefined && mainStreamManager !== undefined ? (
+            <Fragment>
+              <div className={classes.ovInfoContainer}>
+                <LiveHeader
+                  className={classes.liveHeader}
+                  isPublisher={props.isPublisher}
+                  isMute={isMute}
+                  title={props.liveInfo.title}
+                  onCameraSwitch={switchCamera}
+                  onLiveLeave={leaveSessionHandler}
+                  onToggleMute={toggleMuteHandler}
+                />
+                <LiveInfo
+                  subCnt={subscribers.length}
+                  title={props.liveInfo.title}
+                  stock={props.liveInfo.stock}
+                  unit={props.liveInfo.unit}
+                />
+                <LiveChat
+                  chatList={chatList}
+                  onTextMsgChangeHandler={onTextMsgChangeHandler}
+                  onSubmit={sendChatMsgHandler}
+                  msg={chatMsg}
+                  isPublisher={props.isPublisher}
+                />
 
-            <LiveFooter>
-              {!props.isPublisher ? (
-                <Fragment>
-                  <LiveProductInfo liveInfo={props.liveInfo} />
-                  <div className={classes.btnBox}>
-                    <TbTruckDelivery className={classes.btnPurchase} />
-                  </div>
-                </Fragment>
-              ) : (
-                <Fragment>
-                  <LeaveButton onClick={closeSessionHandler} />
-                </Fragment>
-              )}
-            </LiveFooter>
-          </div>
-          <UserVideoComponent
-            className={classes.streamContainer}
-            streamManager={mainStreamManager}
-          />
-          {subscribers.map((sub, i) => (
-            <div
-              key={i}
-              className={`stream-container ${classes.hiddenVideo}`}
-              onClick={() => this.handleMainVideoStream(sub)}
-            >
-              <UserVideoComponent streamManager={sub} />
-            </div>
-          ))}
+                <LiveFooter>
+                  {!props.isPublisher ? (
+                    <Fragment>
+                      <LiveProductInfo liveInfo={props.liveInfo} />
+                      <div className={classes.btnBox}>
+                        <TbTruckDelivery className={classes.btnPurchase} />
+                      </div>
+                    </Fragment>
+                  ) : (
+                    <Fragment>
+                      <LeaveButton onClick={closeSessionHandler} />
+                    </Fragment>
+                  )}
+                </LiveFooter>
+              </div>
+              <UserVideoComponent
+                className={classes.streamContainer}
+                streamManager={mainStreamManager}
+              />
+              {subscribers.map((sub, i) => (
+                <div
+                  key={i}
+                  className={`stream-container ${classes.hiddenVideo}`}
+                  onClick={() => this.handleMainVideoStream(sub)}
+                >
+                  <UserVideoComponent streamManager={sub} />
+                </div>
+              ))}
+            </Fragment>
+          ) : null}
         </Fragment>
-      ) : null}
+      )}
     </div>
   );
 };

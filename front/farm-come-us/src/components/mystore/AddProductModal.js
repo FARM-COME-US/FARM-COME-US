@@ -9,7 +9,8 @@ import Button from "../common/Button";
 
 const AddProductModal = (props) => {
   const [productInfo, setProductInfo] = useState({
-    categoryName: "",
+    categoryTitle: "",
+    categoryDetail: "",
     itemCreatedAt: "",
     itemDescription: "",
     itemDiscount: 0,
@@ -19,12 +20,12 @@ const AddProductModal = (props) => {
     itemStock: 0,
     storeId: 0,
     imgSrc: "",
-    file: "",
+    uploadFile: "",
+    storeId: props.storeInfo.storeId,
   });
 
   const addProductSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(productInfo);
     createProduct(productInfo);
   };
 
