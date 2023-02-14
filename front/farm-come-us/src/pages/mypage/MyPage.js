@@ -1,27 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import MyPageHeader from "../../components/mypage/MyPageHeader";
-import {
-  fetchUserInfo,
-  fetchUserInfoWithAccessToken,
-} from "../../utils/api/user-http";
+import { fetchUpdateUserInfo } from "../../utils/api/user-http";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import userSlice from "../../reduxStore/userSlice";
 import axios from "axios";
-
-const DUMMY_MYPAGE_INFO = {
-  id: 1,
-  nickname: "홍당홍당",
-  name: "홍당무",
-  email: "ssafy123@ssafy.com",
-  phoneNumber: "010-1234-1234",
-  storeId: null,
-  streetAddr: "강원도 평창군 봉평면 무야리 23-12",
-  detailAddr: "강원 아파트",
-  zipcode: 34212,
-  imgSrc: process.env.PUBLIC_URL + "/img/defaultProfile.png",
-};
 
 const MyPage = (props) => {
   const dispatch = useDispatch();
@@ -36,6 +20,8 @@ const MyPage = (props) => {
   // setUserInfo(user);
   const [userInfo, setUserInfo] = useState({
     ...user,
+    imgSrc: "",
+    uploadFile: "",
   });
 
   useEffect(() => {
@@ -54,15 +40,12 @@ const MyPage = (props) => {
         );
         // dispatch(userSlice.actions.login());
         userSlice.actions.login(userDataRes.data.userInfo);
-        const userInfo = userDataRes;
-        // console.log(userDataRes);
-        // console.log(userInfo);
-        // setUserInfo(userInfo);
+        const userInfo = userDataRes.data.userInfo;
+        userInfo["imgSrc"] = userDataRes.data.userImage.savedPath;
+        setUserInfo(userInfo);
       } catch (err) {
         console.log(err);
       }
-
-      // setUserInfo(userDataRes.data);
     };
     // const testMemberId = 1;
     storeUserData();
@@ -77,12 +60,14 @@ const MyPage = (props) => {
 
   const editInfoHandler = (e) => {
     e.preventDefault();
-    console.log("수정된이벤트");
-    console.log(e);
-    console.log(userInfo);
+    fetchUpdateUserInfo(userInfo)
+      .then((res) => {
+        alert("사용자 정보가 수정되었습니다.");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
 
-    alert("사용자 정보가 수정되었습니다.");
-    console.log(userInfo);
     setIsEditting((prev) => !prev);
   };
 
