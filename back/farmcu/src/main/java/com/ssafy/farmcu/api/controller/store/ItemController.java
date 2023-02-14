@@ -103,16 +103,19 @@ public class ItemController {
 
         //상품 대표 이미지
         List<String> itemImages = new ArrayList<>();
+        List<ItemDto> itemInfoList = new ArrayList<>();
+
         for(ItemDto itemDto : itemList) {
             ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(itemDto.getItemId());
             if(itemImageDto != null) {
                 itemImages.add(itemImageDto.getSavedPath());
                 itemDto.setSavedPath(itemImages);
             }
+            itemInfoList.add(itemDto);
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("itemList", itemList);
+        resultMap.put("itemInfoList", itemInfoList);
         resultMap.put("hasNextPage", hasNextPage);
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
@@ -128,16 +131,19 @@ public class ItemController {
 
         //상품 대표 이미지
         List<String> itemImages = new ArrayList<>();
+        List<ItemDto> itemInfoList = new ArrayList<>();
+
         for(ItemDto itemDto : itemList) {
             ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(itemDto.getItemId());
             if(itemImageDto != null) {
                 itemImages.add(itemImageDto.getSavedPath());
                 itemDto.setSavedPath(itemImages);
             }
+            itemInfoList.add(itemDto);
         }
 
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("itemList", itemList);
+        resultMap.put("itemInfoList", itemInfoList);
         resultMap.put("hasNextPage", hasNextPage);
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
