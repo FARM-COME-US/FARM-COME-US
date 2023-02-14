@@ -35,7 +35,6 @@ const AdditionalInfo = () => {
   };
 
   const selectAddress = (data) => {
-    console.log(data);
     setIsStreetAddr(true);
     setStreetAddr(data.roadAddress);
     setZipcode(data.zonecode);
@@ -98,8 +97,6 @@ const AdditionalInfo = () => {
       withCredentials: false,
     };
 
-    console.log("이 아래에 생성후 응답 바로아래 dispatch");
-
     axios
       .put(
         process.env.REACT_APP_API_SERVER_URL + "/api/v1/member",
@@ -107,7 +104,6 @@ const AdditionalInfo = () => {
         config
       )
       .then((res) => {
-        console.log(res);
         navigate("/oauthRedirect");
       })
       .catch((err) => console.log(err));
@@ -122,10 +118,13 @@ const AdditionalInfo = () => {
   };
 
   useEffect(() => {
-    let givenNickname = new URL(window.location.href).searchParams.get("code");
+    let givenNickname = new URL(window.location.href).searchParams.get(
+      "nickname"
+    );
     let accessToken = new URL(window.location.href).searchParams.get("token");
     sessionStorage.setItem("accessToken", accessToken);
-    if (givenNickname !== null) {
+
+    if (!(givenNickname === null || givenNickname === "")) {
       navigate("/oauthRedirect");
     }
   }, []);

@@ -43,8 +43,8 @@ const MyStoreLive = () => {
   const { storeInfo } = useOutletContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sessionInfo, setSessionInfo] = useState({
-    id: "sessionA",
-    username: "Participant" + Math.floor(Math.random() * 100),
+    id: storeInfo.memberId,
+    username: storeInfo.storeName,
   });
 
   const navigate = useNavigate();
