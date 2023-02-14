@@ -10,11 +10,15 @@ const StoreHeader = (props) => {
 
   return (
     <div className={classes.container}>
-      <img src="https://via.placeholder.com/300" alt="공백"></img>
+      <img src={props.storeInfo.storeImage} alt="공백"></img>
       <div className={classes.imgfilter}></div>
       <div className={classes.headerdes}>
-        <div className={classes.storename}>{props.storeInfo.storeName}</div>
-        <div className={classes.prtext}>{props.storeInfo.storeDes}</div>
+        <div className={classes.storename}>
+          {props.storeInfo.store.storeName}
+        </div>
+        <div className={classes.prtext}>
+          {props.storeInfo.store.storeDescription}
+        </div>
         <div className={classes.headerbottom}>
           <div onClick={dealSetPick}>
             <div
@@ -31,10 +35,10 @@ const StoreHeader = (props) => {
           </div>
           <div className={classes.bottomtext}>
             <div className={classes.address}>
-              {props.storeInfo.storeAddress}
+              {props.storeInfo.store.storeStreetAddr}
             </div>
             <div className={classes.phonenumber}>
-              {props.storeInfo.phoneNumber}
+              {props.storeInfo.store.storePhoneNumber}
             </div>
           </div>
         </div>

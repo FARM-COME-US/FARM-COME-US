@@ -14,11 +14,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
+
+    svg {
+      font-size: 1.8rem;
+    }
   }
 
   .text {
     color: #fff;
+    font-size: 0.8rem;
     font-weight: 300;
   }
 }
