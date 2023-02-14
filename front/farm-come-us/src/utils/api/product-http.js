@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const DUMMY_SERVER_URL = "https:localhost:3000";
-const PRODUCT_API_URL = `${DUMMY_SERVER_URL}/item`;
+const PRODUCT_API_URL = `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item`;
 
 /* 상품 등록 */
 export async function createProduct(productInfo) {
@@ -69,7 +68,13 @@ export async function productDetail(productId) {
 }
 
 /* 상품 목록 조회 */
-export async function productList(category, itemName, subCategory, page, size) {
+export async function fetchProductList(
+  category,
+  itemName,
+  subCategory,
+  page,
+  size
+) {
   const params = {
     page: page,
     size: size,
@@ -95,43 +100,17 @@ export async function productList(category, itemName, subCategory, page, size) {
     console.err(err);
   }
 }
-/*
-export async function productList(category, itemName, subCategory, page, size) {
-  try {
-    console.log(category, itemName, subCategory, page, size);
-    const response = await axios({
-      method: "post",
-      url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item/keyword`,
-      config: {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "Access-Control-Allow-Origin": "*",
-          Authorization: { token: sessionStorage.getItem("accessToken") },
-          token: sessionStorage.getItem("accessToken"),
-        },
-      },
-      data: {
-        itemSearchReq: {
-          detailCategoryName: subCategory,
-          itemName: itemName,
-          titleCategoryName: category,
-        },
-        page: page,
-        size: size,
-      },
-      // params: {
-      //   page: 0,
-      //   size: 6,
-      // },
-    });
-    const data = response.data;
-    console.log(data);
-    return data;
-  } catch (err) {
-    console.log(err);
-  }
+
+/* 스토어 상품 조회 */
+export function fetchStoreProducts(storeId, page, size) {
+  const params = {
+    storeId,
+    page,
+    size,
+  };
+  console.log(params);
+  return axios.get(`${PRODUCT_API_URL}/store`, { params });
 }
-*/
 
 /* 등록 상품 삭제 */
 export async function deleteProduct(productId) {
