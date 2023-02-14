@@ -16,8 +16,8 @@ const MyStoreInfoList = (props) => {
   }, [props.isEditting]);
 
   const selectAddress = (data) => {
-    props.onChange("streetAddr", data.roadAddress);
-    props.onChange("zipcode", data.zonecode);
+    props.onChange("storeStreetAddr", data.roadAddress);
+    props.onChange("storeZipcode", data.zonecode);
     setOpenModal((prev) => !prev);
   };
 
