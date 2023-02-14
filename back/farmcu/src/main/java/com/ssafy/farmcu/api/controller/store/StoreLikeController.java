@@ -57,17 +57,17 @@ public class StoreLikeController {
         List<StoreListRes> list = (List<StoreListRes>) storeLikes.get("storeLikes");
         Boolean hasNextPage = (Boolean) storeLikes.get("hasNextPage");
 
-        List<StoreImageDto> storeImage = new ArrayList<>();
-        for(StoreListRes res : list){
-            StoreImageDto storeImageDto = storeImageService.findStoreImageByStoreId(res.getStoreId());
-            if(storeImageDto!=null)
-                storeImage.add(storeImageDto);
-        }
+//        List<StoreImageDto> storeImage = new ArrayList<>();
+//        for(StoreListRes res : list){
+//            StoreImageDto storeImageDto = storeImageService.findStoreImageByStoreId(res.getStoreId());
+//            if(storeImageDto!=null)
+//                storeImage.add(storeImageDto);
+//        }
 
         HashMap<String, Object> resultMap = new HashMap<>();
         try{
             resultMap.put("storeLikes", list);
-            resultMap.put("storeImage", storeImage);
+//            resultMap.put("storeImage", storeImage);
             resultMap.put("hasNextPage", hasNextPage);
 
         }catch (Exception e){
