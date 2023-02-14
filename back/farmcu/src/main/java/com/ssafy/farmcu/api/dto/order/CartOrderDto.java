@@ -13,7 +13,7 @@ import java.util.List;
 @ToString
 public class CartOrderDto {
     // not null 새로 적용
-    @NotNull
+//    @NotNull
     private Long cartId;
 
     private List<CartOrderDto> CartOrderDtoList;
