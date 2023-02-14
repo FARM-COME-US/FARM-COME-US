@@ -27,6 +27,7 @@ const AddProductModal = (props) => {
   const addProductSubmitHandler = (e) => {
     e.preventDefault();
     createProduct(productInfo);
+    props.modalToggleHandler();
   };
 
   const onInputChangeHandler = (name, value) => {

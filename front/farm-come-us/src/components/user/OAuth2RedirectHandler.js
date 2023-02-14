@@ -21,7 +21,6 @@ function OAuth2RedirectHandler(props) {
 
   // 인가코드
   let code = new URL(window.location.href).searchParams.get("code");
-  console.log(code);
   // const config = {
   //   headers: {
   //     "Content-Type": "application/json",
@@ -37,11 +36,7 @@ function OAuth2RedirectHandler(props) {
 
   const KakaoLoginMatch = async (value) => {
     if (value?.status === 200) {
-      console.log("로그인 성공!");
-      console.log("아래에 res들어감.");
-      console.log(value);
       const accessToken = sessionStorage.getItem("accessToken");
-      console.log(accessToken);
       const userDataRes = await axios.get("/api/api/v1/member/", {
         headers: {
           "Content-Type": "application/json",
@@ -74,32 +69,12 @@ function OAuth2RedirectHandler(props) {
 
   // 😀 여기서 시작
   const getState = async () => {
-    console.log("0");
     await axios
       .get(getStateURL, { params: { code: code } })
       .then((res) => {
-        console.log(res);
         let state = new URL(res.data).searchParams.get("state");
-        console.log(state);
 
         getToken(code, state);
-
-        // const params = {
-        //   state: state,
-        //   code: code,
-        // };
-
-        // axios
-        //   .get(getCallbackURL, params)
-        //   .then((res) => console.log(`res:${res}`));
-
-        // console.log("1");
-        // console.log(res.data);
-        // const token = res.data;
-        // sessionStorage.setItem("accessToken", token); //😀
-        // console.log("2");
-        // KakaoLoginMatch(res);
-        // console.log("3");
       })
 
       .catch((err) => {
@@ -108,7 +83,7 @@ function OAuth2RedirectHandler(props) {
   };
 
   const getUserData = async () => {
-    const accessToken = sessionStorage.getItem("accessToken", accessToken);
+    const accessToken = sessionStorage.getItem("accessToken");
 
     const userDataRes = await axios.get(
       process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/",
@@ -120,10 +95,6 @@ function OAuth2RedirectHandler(props) {
         },
       }
     );
-    // console.log("응답");
-    // console.log(userDataRes);
-    // console.log("응답의 data의 userInfo");
-    // console.log(userDataRes.data.userInfo);
     dispatch(userSlice.actions.login(userDataRes.data.userInfo));
     navigate("/");
   };
