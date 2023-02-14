@@ -62,7 +62,6 @@ public class ItemServiceImpl implements ItemService {
         try {
             CategoryTitle categoryTitle = categoryTitleRepository.findByTitleName(itemDto.getTitleCategoryName());
             CategoryDetail categoryDetail = categoryDetailRepository.findByDetailName(itemDto.getDetailCategoryName());
-            Store store = storeRepository.findByStoreId(itemDto.getStoreId()).orElseThrow(NullPointerException::new);
             Item item = itemRepository.findByItemId(itemDto.getItemId()).orElseThrow(NullPointerException::new);
 
             item.setItemName(itemDto.getItemName());
