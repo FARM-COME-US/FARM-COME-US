@@ -67,7 +67,7 @@ public class PrincipalOauth2MemberService extends DefaultOAuth2UserService {
         if (member.isEmpty()) {
             log.info("소셜 회원가입");
             log.info("**************************kakao login********************");
-            attributes.put("Join", true);
+//            attributes.put("Join", true);
             Member newMember = Member.builder()
                     .id(ID)
                     .detailAddr("")

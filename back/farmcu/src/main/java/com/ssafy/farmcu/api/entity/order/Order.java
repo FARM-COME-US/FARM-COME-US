@@ -1,6 +1,5 @@
 package com.ssafy.farmcu.api.entity.order;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.farmcu.api.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,8 +52,7 @@ public class Order {
     @JoinColumn(name="delivery_id")
     private DeliveryInfo delivery;
 
-    @OneToMany(mappedBy = "order")
-    @JsonManagedReference
+    @OneToMany(mappedBy = "orderInfo")
     private List<OrderItem> orderItems = new ArrayList<>();
 
     // 주문 정보에 배송 정보 추가
@@ -72,7 +70,7 @@ public class Order {
     // 주문에 주문 상품 주입 -> OrderItem.java 의 setOrder
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
-        orderItem.setOrder(this);
+        orderItem.setOrderInfo(this);
 //        orderItem.setOitemPrice(getTotalOrderPrice());
 
     }
@@ -105,7 +103,7 @@ public class Order {
     //** 주문 취소 **//
     public void updateOrder(){
         this.orderStatus = OrderStatus.CANCEL; //주문 상태를 CANCEL로
-        System.out.println("@@@@@@@@@###############################");
+
         for(OrderItem orderItem : orderItems){ //주문 취소, 재고 원상복구
             orderItem.cancel();
         }

@@ -23,7 +23,6 @@ import java.util.NoSuchElementException;
 
 @RestController
 @Component
-@RequestMapping("api/v1/pay")
 @Api(value = "pay API")
 public class KakaoController {
 
@@ -46,7 +45,7 @@ public class KakaoController {
     }
 
     // Client 에서 카카오 인증들 통해서 받은 인가코드 받기
-    @GetMapping("/kakao")
+    @GetMapping("/api/v1/kakao")
     @ApiOperation(value = "카카오 로그인")
     public ResponseEntity<?> KaKaoLogIn(@RequestParam("code") String code, HttpServletResponse response) {
 

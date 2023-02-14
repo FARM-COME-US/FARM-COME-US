@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MyReceiptItem from "../../components/mypage/MyReceiptItem";
 import classes from "./style/MyReceipts.module.scss";
+<<<<<<< HEAD
 import { orderList } from "../../utils/api/order-http";
 
 const res = orderList()
 console.log(res)
+=======
+import axios from "axios";
+import { useSelector } from "react-redux";
+>>>>>>> origin/FE
 
 const MyReceipts = (props) => {
-  const [myReceiptsInfoArr, setReceiptsInfoArr] = useState("1");
+  const [myReceiptsInfoArr, setReceiptsInfoArr] = useState("");
   // receiptsInfoArr가 list형태의 객체들로 들어올것이고, [obj1, obj2... 이렇게.]
   // item1 = { id:orderId, items:[강원도배추, 제즈스윗당근], cost:429,000, orderdate:2023.01.10 21:12:58, }
+  const memberId = useSelector((state) => state.userSlice.value.memberId);
 
   const fetchReceipts = () => {
     const asyncSomethingFetch = async () => {
@@ -19,7 +25,14 @@ const MyReceipts = (props) => {
     };
   };
 
-  let list = <span className={classes.noItem}>구매 내역이 없습니다.</span>;
+  useEffect(() => {
+    const res = axios.get(
+      process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/" + memberId
+    );
+    console.log(res);
+  }, []);
+
+  let list = <div className={classes.noItem}>주문 내역이 없습니다.</div>;
 
   // if (myReceiptsInfoArr.length > 0) {
   //   list = props.myReceipts.map((item) => (
@@ -31,16 +44,20 @@ const MyReceipts = (props) => {
 
   return (
     <div className={classes.screen}>
-      <div className={classes.header}>구매내역</div>
+      <div className={classes.header}>주문내역</div>
 
       <div
         className={`${classes.flexbox} ${classes.mt} ${
-          myReceiptsInfoArr ? "" : classes.centerAlignWrapper
+          myReceiptsInfoArr
+            ? ""
+            : `${classes.centerAlignWrapper} ${classes.noItem}`
         }`}
       >
-        <MyReceiptItem />
-        <MyReceiptItem />
-        <MyReceiptItem />;{/* {list} 원상복구 필요. 수정필요*/}
+        {/* <MyReceiptItem /> */}
+        {/* <MyReceiptItem /> */}
+        {/* <MyReceiptItem />; */}
+        {list}
+        {/* <div className={classes.flexbox}></div> */}
       </div>
     </div>
   );
