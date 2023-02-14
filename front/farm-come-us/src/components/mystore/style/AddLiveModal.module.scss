@@ -1,4 +1,24 @@
 .modal {
+  .myProducts {
+    width: 100%;
+    padding: 10px;
+
+    .productList {
+      padding: 10px;
+      width: 95%;
+      border-radius: 5px;
+
+      &:focus {
+        outline: none;
+      }
+
+      option {
+        padding: 10px;
+        height: 30px;
+      }
+    }
+  }
+
   .form {
     .btnRegist {
       width: 90%;
