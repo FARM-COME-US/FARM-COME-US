@@ -95,7 +95,8 @@ export async function fetchProductList(
       { config, params }
     );
     // const data = response.data;
-    return response.data.itemList;
+    console.log(response);
+    return response.data.itemInfoList;
   } catch (err) {
     console.err(err);
   }

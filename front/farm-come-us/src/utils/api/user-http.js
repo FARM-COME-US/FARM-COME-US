@@ -96,3 +96,42 @@ export async function fetchUserInfo(id) {
     console.err(err);
   }
 }
+
+export async function fetchUpdateUserInfo(userInfo) {
+  console.log(userInfo);
+  const formData = new FormData();
+  formData.append("uploadFile", userInfo.uploadFile);
+
+  const data = {
+    nickname: userInfo.nickname,
+    name: userInfo.name,
+    email: userInfo.email,
+    phoneNumber: userInfo.phoneNumber,
+    streetAddr: userInfo.streetAddr,
+    zipcode: userInfo.zipcode,
+    detailAddr: userInfo.detailAddr,
+  };
+  formData.append(
+    "memberUpdateReq",
+    new Blob([JSON.stringify(data)], {
+      type: "application/json",
+    })
+  );
+
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: { token: sessionStorage.getItem("accessToken") },
+      token: sessionStorage.getItem("accessToken"),
+    },
+    withCredentials: false,
+  };
+  console.log(formData);
+
+  return axios.put(
+    `${process.env.REACT_APP_API_SERVER_URL}/api/v1/member`,
+    formData,
+    config
+  );
+}

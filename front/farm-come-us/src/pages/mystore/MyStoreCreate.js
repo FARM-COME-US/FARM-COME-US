@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-// import { fetchCreateStore, fetchStoreDetail } from "../../utils/api/store-http";
 import classes from "./style/MyStoreCreate.module.scss";
 
 import { useDispatch } from "react-redux";
@@ -48,15 +47,15 @@ const MyStoreCreate = () => {
 
       const data = {
         memberId: userInfo.memberId,
-        storeDeliveryCost: storeInfo.deliveryCost,
-        storeDeliveryFree: storeInfo.deliveryFree,
+        storeDeliveryCost: storeInfo.storeDeliveryCost,
+        storeDeliveryFree: storeInfo.storeDeliveryFree,
         storeDescription: storeInfo.storeDescription,
-        storeDetailAddr: storeInfo.detailAddr,
+        storeDetailAddr: storeInfo.storeDetailAddr,
         storeImg: storeInfo.filename,
         storeName: storeInfo.storeName,
-        storePhoneNumber: storeInfo.phoneNumber,
-        storeStreetAddr: storeInfo.streetAddr,
-        storeZipcode: storeInfo.zipcode,
+        storePhoneNumber: storeInfo.storePhoneNumber,
+        storeStreetAddr: storeInfo.storeStreetAddr,
+        storeZipcode: storeInfo.storeZipcode,
       };
 
       formData.append(
