@@ -1,6 +1,8 @@
 package com.ssafy.farmcu.api.entity.order;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.farmcu.api.entity.member.Member;
+import com.ssafy.farmcu.api.entity.order.pay.KaKaoPay;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,13 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "order_info")
-// 주문 그 자체, 예: order_info(pk = 1) = 배추*3 + 당근*4 의 값이 담겨 있음
 public class Order {
-
-//     주문 상태
-//     public emun OrderStatus{
-//        ORDER, CANCLE
-//     }
 
     //필드
     @Id
@@ -35,13 +31,29 @@ public class Order {
 
     private int totalOrderPrice;
 
-    // 주문 - (결제 대기 - 결제 완료) - 주문 완료 - 주문취소 / B = before, A = after
+    // 주문 : 주문 완료 - 주문취소
     public enum OrderStatus{
-        BORDER, ORDER, CANCEL
+        ORDER, CANCEL
+    }
+
+    // 결제 : 결제 전 - 결제 - 결제 취소
+    public enum PayStatus{
+        BPAY, PAY, REFUND
+    }
+
+    // 배송 : 배송 전 / 배송 중 / 배송 완료
+    public  enum DeliveryStatus {
+        BSHIP, SHIP, ASHIP
     }
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus = OrderStatus.BORDER;
+    private OrderStatus orderStatus;
+
+    @Enumerated(EnumType.STRING)
+    private PayStatus payStatus;
+
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus deliveryStatus;
 
     //연결
     @ManyToOne
@@ -52,25 +64,31 @@ public class Order {
     @JoinColumn(name="delivery_id")
     private DeliveryInfo delivery;
 
-    @OneToMany(mappedBy = "orderInfo")
+    @OneToOne
+    @JoinColumn(name="pay_id")
+    private KaKaoPay kaKaoPay;
+
+    @OneToMany(mappedBy = "order")
+    @JsonManagedReference
     private List<OrderItem> orderItems = new ArrayList<>();
 
     // 주문 정보에 배송 정보 추가
 
 
     @Builder
-    public Order(Member member, LocalDateTime orderCreateAt, int totalOrderPrice, OrderStatus orderStatus, List<OrderItem> orderItems) {
+    public Order(Member member, LocalDateTime orderCreateAt, DeliveryInfo delivery, KaKaoPay kaKaoPay, int totalOrderPrice, OrderStatus orderStatus, List<OrderItem> orderItems) {
         this.member = member;
+        this.delivery = delivery;
+        this.kaKaoPay = kaKaoPay;
         this.orderCreateAt = orderCreateAt;
         this.orderStatus = orderStatus;
         this.orderItems = orderItems;
         this.totalOrderPrice = totalOrderPrice;
     }
 
-    // 주문에 주문 상품 주입 -> OrderItem.java 의 setOrder
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
-        orderItem.setOrderInfo(this);
+        orderItem.setOrder(this);
 //        orderItem.setOitemPrice(getTotalOrderPrice());
 
     }
@@ -78,16 +96,20 @@ public class Order {
     //** 주문 생성 **//
     public static Order createOrder(Member member, List<OrderItem> orderItems){
         Order order = new Order();
-        order.setMember(member); //멤버 정보 set
+        order.setMember(member);
 
-        for(OrderItem orderItem : orderItems){ //주문 상세 리스트 주입
+        for(OrderItem orderItem : orderItems){
             order.addOrderItem(orderItem);
         }
-        order.setTotalOrderPrice(order.getTotalPrice());
-        order.setOrderStatus(OrderStatus.ORDER); //주문상태를 ORDER로 set
-        order.setOrderCreateAt(LocalDateTime.now()); //주문시간
 
-        return order; //완성된 주문정보
+        order.setTotalOrderPrice(order.getTotalPrice());
+        order.setOrderCreateAt(LocalDateTime.now());
+
+        order.setOrderStatus(OrderStatus.ORDER);
+        order.setPayStatus(PayStatus.BPAY);
+        order.setDeliveryStatus(DeliveryStatus.BSHIP);
+
+        return order;
     }
 
     //** 전체 주문 가격 조회 **//
@@ -102,8 +124,9 @@ public class Order {
 
     //** 주문 취소 **//
     public void updateOrder(){
-        this.orderStatus = OrderStatus.CANCEL; //주문 상태를 CANCEL로
 
+        this.orderStatus = OrderStatus.CANCEL; //주문 상태를 CANCEL로
+        System.out.println(orderStatus);
         for(OrderItem orderItem : orderItems){ //주문 취소, 재고 원상복구
             orderItem.cancel();
         }
