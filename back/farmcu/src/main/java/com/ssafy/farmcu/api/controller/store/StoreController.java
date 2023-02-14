@@ -105,8 +105,23 @@ public class StoreController {
     }
     @PutMapping("/{storeId}")
     @ApiOperation(value="스토어 정보 수정", notes = "")
-    public ResponseEntity updateStore(@PathVariable("storeId") Long id, @Validated @RequestBody StoreUpdateReq request){
-        if(storeService.updateStore(id, request)){
+    public ResponseEntity updateStore(@PathVariable("storeId") Long storeId, @RequestPart StoreUpdateReq request,  MultipartFile uploadFile)throws Exception {
+
+        HashMap<String, Object> result = new HashMap<>();
+
+        if(storeService.updateStore(storeId, request)){ // 스토어 정보 업데이트 완료하고
+            //이미지 첨부
+            if(uploadFile != null) { // 이미지 업데이트
+                String savedPath = s3Service.uploadFile(uploadFile);
+                log.info("here save file");
+                StoreImageDto storeImageDto = StoreImageDto.builder()
+                        .storeId(storeId)
+                        .originalName(uploadFile.getOriginalFilename())
+                        .savedPath(savedPath).build();
+
+                storeImageService.updateStoreImage(storeImageDto);
+            }
+
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         }else{
             return new ResponseEntity<String>("error", HttpStatus.NOT_FOUND);
@@ -118,6 +133,7 @@ public class StoreController {
     public ResponseEntity<?> deleteStore(@PathVariable("storeId")Long id){
         //회원 유효성 검사 추후 추가
         if(storeService.deleteStore(id)){
+            storeImageService.deleteStoreImage(id);
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         }else{
             return new ResponseEntity<String>("error", HttpStatus.NOT_FOUND);
