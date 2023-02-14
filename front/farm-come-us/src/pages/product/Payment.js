@@ -3,7 +3,9 @@ import classes from "./style/Payment.module.scss";
 import Card from "../../components/common/Card";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdOutlineArrowBackIos } from "react-icons/md";
+import { orderProduct } from "../../utils/api/order-http";
 import axios from "axios";
+import { isObject } from "lodash";
 
 const customerData = {
   customerName: "김덕배",
@@ -48,15 +50,40 @@ const Payment = () => {
       withCredentials: false,
     };
     try {
-      const res = await axios.post("/api/v1/order", params);
+      const res = await axios.post(
+        process.env.REACT_APP_API_SERVER_URL + "/api/v1/order",
+        params
+      );
       console.log(res);
     } catch (err) {
       console.log(err);
     }
   };
 
+  // 😀 테스트
+  async function orderProduct1() {
+    console.log("#############################");
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/order",
+        data: {
+          itemId: 8,
+          memberId: 8,
+          oitemCount: 1,
+          // orderInfoDtoList: [null],
+        },
+      });
+      console.log(response);
+    } catch (err) {
+      console.err(err);
+    }
+  }
+
   useEffect(() => {
-    orderRequest();
+    // orderRequest();
+    // orderProduct();
+    // orderProduct1();
   });
 
   const navigate = useNavigate();
@@ -141,9 +168,9 @@ const Payment = () => {
       const response = axios.post(
         process.env.REACT_APP_API_SERVER_URL + "/api/v1/kakaopay",
         {
-          kaKaoPayDTO: {
+          data: {
             itemName: 1,
-            memberId: 3,
+            memberId: 1,
             orderId: 2,
             quantity: 1,
             tax: 0,
