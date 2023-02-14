@@ -6,6 +6,8 @@ import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
+import com.ssafy.farmcu.api.entity.store.Item;
+import com.ssafy.farmcu.api.entity.store.Store;
 import com.ssafy.farmcu.api.service.order.CartService;
 import com.ssafy.farmcu.api.service.order.OrderServiceImpl;
 import io.swagger.annotations.Api;
@@ -53,7 +55,7 @@ public class OrderController {
 
     @GetMapping()
     @ApiOperation(value = "사용자 주문 목록 조회")
-    public ResponseEntity<HashMap<String, Object>> findMyCarts(@RequestParam Member member) {
+    public ResponseEntity<HashMap<String, Object>> findMyOrders(@RequestParam Member member) {
 
         HashMap<String, Object> resultMap = new HashMap<>();
 
@@ -68,7 +70,41 @@ public class OrderController {
 
     }
 
-    @PutMapping("/orderId")
+    @GetMapping("/detail")
+    @ApiOperation(value = "주문 상세 조회")
+    public ResponseEntity<HashMap<String, Object>> findOrderDetail(@RequestParam Order order) {
+
+        HashMap<String, Object> resultMap = new HashMap<>();
+
+        try {
+            List<OrderItem> orderDetail = orderService.findOrderDetail(order);
+            resultMap.put("orderdetailList", orderDetail);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(resultMap);
+
+    }
+
+    @GetMapping("/store/item")
+    @ApiOperation(value = "스토어 주문 상품 목록 조회")
+    public ResponseEntity<HashMap<String, Object>> findStoreOrderItems(@RequestParam Long storeNum) {
+
+        HashMap<String, Object> resultMap = new HashMap<>();
+
+        try {
+            List<OrderItem> orderItems = orderService.findStoreOrder(storeNum);
+            resultMap.put("orderItemList", orderItems);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(resultMap);
+
+    }
+
+    @PutMapping("/{orderId}")
     @ApiOperation(value = "주문 취소")
     public ResponseEntity updateOrder(@PathVariable Long orderId){
 
@@ -79,7 +115,7 @@ public class OrderController {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<String>("주문 취소 완료", HttpStatus.OK);
     }
 
     @GetMapping("/allItem")
