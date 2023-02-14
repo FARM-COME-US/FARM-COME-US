@@ -25,7 +25,6 @@ public class DeliveryServiceImpl implements DeliveryService {
     //** 배송 정보 작성 **//
     @Override
     public boolean saveDelivery(DeliveryInfoDto deliveryInfoDto, Long Id) {
-
         try {
             Order order = orderRepository.findById(Id).get();
             DeliveryInfo deliveryInfo = DeliveryInfo.builder()
@@ -37,7 +36,6 @@ public class DeliveryServiceImpl implements DeliveryService {
                     .build();
             deliveryInfoRepository.save(deliveryInfo);
             return true;
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -47,7 +45,6 @@ public class DeliveryServiceImpl implements DeliveryService {
     //** 배송 정보 수정 **//
     @Override
     public boolean updateDelivery(DeliveryInfoDto deliveryInfoDto, Long Id) {
-
         try {
             Order order = orderRepository.findById(Id).get();
             DeliveryInfo deliveryInfo = DeliveryInfo.builder()
@@ -59,7 +56,6 @@ public class DeliveryServiceImpl implements DeliveryService {
                     .build();
             deliveryInfoRepository.save(deliveryInfo);
             return true;
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;

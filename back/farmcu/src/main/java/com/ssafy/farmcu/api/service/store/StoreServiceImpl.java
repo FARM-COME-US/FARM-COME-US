@@ -36,7 +36,34 @@ public class StoreServiceImpl implements StoreService{
         else return store.getStoreId();
     }
 
-    @Transactional// 스토어 생성 save service
+    public StoreDto findMyStoreInfo(Long memberId) { //내 스토어 정보 찾아오기
+        try {
+            Store store = storeRepository.findByMemberId(memberId).orElse(null);
+            if(store==null){
+                return null;
+            }
+            StoreDto finded = StoreDto.builder()
+                    .storeId(store.getStoreId())
+                    .storeDeliveryCost(store.getStoreDeliveryCost())
+                    .storeName(store.getStoreName())
+                    .storeZipcode(store.getStoreZipcode())
+                    .storeDeliveryFree(store.getStoreDeliveryFree())
+                    .storeDescription(store.getStoreDescription())
+                    .storeDetailAddr(store.getStoreDetailAddr())
+//                    .storeImg(store.getStoreImg())
+                    .storePhoneNumber(store.getStorePhoneNumber())
+                    .storeStreetAddr(store.getStoreStreetAddr())
+                    .memberId(store.getMember().getMemberId())
+                    .build();
+            return finded;
+        }catch (Exception e){
+//            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+        @Transactional// 스토어 생성 save service
     public Long saveStore(StoreCreateReq storeDto){
         try {
 //            Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));

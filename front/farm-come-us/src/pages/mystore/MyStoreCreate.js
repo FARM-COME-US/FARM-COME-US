@@ -48,15 +48,15 @@ const MyStoreCreate = () => {
 
       const data = {
         memberId: userInfo.memberId,
-        storeDeliveryCost: storeInfo.storeDeliveryCost,
-        storeDeliveryFree: storeInfo.storeDeliveryFree,
+        storeDeliveryCost: storeInfo.deliveryCost,
+        storeDeliveryFree: storeInfo.deliveryFree,
         storeDescription: storeInfo.storeDescription,
-        storeDetailAddr: storeInfo.storeDetailAddr,
+        storeDetailAddr: storeInfo.detailAddr,
         storeImg: storeInfo.filename,
         storeName: storeInfo.storeName,
-        storePhoneNumber: storeInfo.storePhoneNumber,
-        storeStreetAddr: storeInfo.storeStreetAddr,
-        storeZipcode: storeInfo.storeZipcode,
+        storePhoneNumber: storeInfo.phoneNumber,
+        storeStreetAddr: storeInfo.streetAddr,
+        storeZipcode: storeInfo.zipcode,
       };
 
       formData.append(
