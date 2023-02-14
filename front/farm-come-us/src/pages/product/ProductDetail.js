@@ -6,11 +6,9 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { productDetail } from "../../utils/api/product-http";
-import { fetchStoreDetail } from "../../utils/api/store-http";
 
 const ProductDetail = () => {
   const [itemDetail, setItemDetail] = useState({});
-  const [storeDetail, setStoreDetail] = useState({});
   const [amount, setAmount] = useState(1);
 
   const location = useLocation();
@@ -19,11 +17,8 @@ const ProductDetail = () => {
     async function getItemDetail() {
       try {
         const itemData = await productDetail(location.state.item_id);
-        const storeData = await fetchStoreDetail(itemData.item.storeId);
         console.log(itemData);
-        console.log(storeData.data);
         setItemDetail(itemData);
-        setStoreDetail(storeData.data);
       } catch (err) {
         console.log(err);
       }
@@ -45,6 +40,7 @@ const ProductDetail = () => {
 
   if (itemDetail.item) {
     console.log("렌더링 성공");
+    console.log(itemDetail);
 
     const discountPrice =
       itemDetail.item.itemPrice * (1 - itemDetail.item.itemDiscount / 100);
@@ -62,12 +58,12 @@ const ProductDetail = () => {
           ></MdOutlineArrowBackIos>
           <div className={classes.storename}>
             <Link to="/store" state={{ storeId: itemDetail.item.storeId }}>
-              {storeDetail.store.storeName}
+              {itemDetail.item.storeName}
             </Link>
           </div>
         </div>
         <Card className={classes.imagecard}>
-          <img src={itemDetail.itemImage[0]} alt="공백"></img>
+          <img src={itemDetail.item.savedPath} alt="공백"></img>
         </Card>
         <div className={classes.productname}>{itemDetail.item.itemName}</div>
         <div className={classes.productscript}>
@@ -111,7 +107,7 @@ const ProductDetail = () => {
             <Link
               to="/payment"
               state={{
-                storename: storeDetail.store.storeName,
+                storename: itemDetail.item.storeName,
                 productname: itemDetail.item.itemName,
                 price: resultPrice,
                 amount: amount,
