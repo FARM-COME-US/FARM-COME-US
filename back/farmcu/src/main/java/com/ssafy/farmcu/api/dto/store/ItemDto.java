@@ -1,7 +1,10 @@
 package com.ssafy.farmcu.api.dto.store;
 
 import com.ssafy.farmcu.api.entity.store.Item;
+import com.ssafy.farmcu.api.entity.store.ItemImage;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,7 +22,9 @@ public class ItemDto {
     private String itemCreatedAt;
     private String titleCategoryName;
     private String detailCategoryName;
+    private List<String> savedPath; //이미지
     private Long storeId;
+    private String storeName;
 
     public ItemDto(Item item) {
         this.itemId = item.getItemId();
@@ -32,6 +37,7 @@ public class ItemDto {
         this.titleCategoryName = item.getCategoryTitle().getTitleName();
         this.detailCategoryName = item.getCategoryDetail().getDetailName();
         this.storeId = item.getStore().getStoreId();
+        this.storeName = item.getStore().getStoreName();
     }
 
 }
