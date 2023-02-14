@@ -9,18 +9,15 @@ const ProductItem = (props) => {
   const [storeImg, setStoreImg] = useState();
 
   useEffect(() => {
-    async function getStoreDetail() {
-      try {
-        const storeData = await fetchStoreDetail(props.item.storeId);
-        setStoreDetail(storeData.data.store);
-        setStoreImg(storeData.data.storeImage);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    getStoreDetail();
-  }, [props.item.storeId]);
+    fetchStoreDetail(props.item.storeId)
+      .then((res) => {
+        setStoreDetail(res.data.store);
+        setStoreImg(res.data.storeImage);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   if (props) {
     const convertedPrice = props.item.itemPrice
@@ -29,33 +26,35 @@ const ProductItem = (props) => {
 
     return (
       <li className={`${classes.productItem}`}>
-        <Link
-          to={`/product-detail`}
-          state={{
-            item_id: props.item.itemId,
-          }}
-        >
-          <Card className={`${classes.productCard}`}>
-            <img src={storeImg} alt="productImg" />
-            <div className={`${classes.productInfo}`}>
-              <div className={`${classes.productName}`}>
-                <div className={classes.text}>{props.item.itemName}</div>
+        {storeImg && storeDetail ? (
+          <Link
+            to={`/product-detail`}
+            state={{
+              item_id: props.item.itemId,
+            }}
+          >
+            <Card className={`${classes.productCard}`}>
+              <img src={storeImg.savedPath} alt="productImg" />
+              <div className={`${classes.productInfo}`}>
+                <div className={`${classes.productName}`}>
+                  <div className={classes.text}>{props.item.itemName}</div>
+                </div>
+                <div className={`${classes.priceInfo}`}>
+                  <span className={`${classes.discount}`}>
+                    {`${props.item.itemDiscount}%`}
+                  </span>
+                  <span>{`${convertedPrice}원 / ${props.item.itemStock}상자`}</span>
+                </div>
+                <div className={`${classes.storeInfo}`}>
+                  <span className={`${classes.storeName}`}>
+                    {storeDetail.storeName}
+                  </span>
+                  <span> 스토어</span>
+                </div>
               </div>
-              <div className={`${classes.priceInfo}`}>
-                <span className={`${classes.discount}`}>
-                  {`${props.item.itemDiscount}%`}
-                </span>
-                <span>{`${convertedPrice}원 / ${props.item.itemStock}상자`}</span>
-              </div>
-              <div className={`${classes.storeInfo}`}>
-                <span className={`${classes.storeName}`}>
-                  {storeDetail.storeName}
-                </span>
-                <span> 스토어</span>
-              </div>
-            </div>
-          </Card>
-        </Link>
+            </Card>
+          </Link>
+        ) : null}
       </li>
     );
   }

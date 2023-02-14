@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    public List<OrderItem> findOrderDetail(Member member);
+//    public List<OrderItem> findOrderDetail(Member member);
 
     public Long order(OrderInfoDto orderinfoDto);
 

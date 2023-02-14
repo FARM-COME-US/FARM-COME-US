@@ -12,7 +12,6 @@ export async function cartDetail() {
         params: {member : 2}
     });
     console.log((await response).data.cartList);
-    console.log(CART_API_URL + "#######################")
   } catch (err) {
     console.err(err);
   }
