@@ -23,6 +23,7 @@ const StoreProducts = () => {
   }, [location.state.storeId]);
 
   if (itemList.data) {
+    console.log(itemList.data);
     return (
       <div className={classes.container}>
         <StoreProductList productList={itemList}></StoreProductList>

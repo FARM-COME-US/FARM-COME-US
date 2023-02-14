@@ -18,6 +18,8 @@ const ProductList = (props) => {
           page,
           size
         );
+
+        console.log(categoryList);
         setItemList(categoryList);
       } catch (err) {
         console.log(err);
