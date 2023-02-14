@@ -23,18 +23,9 @@ import java.util.NoSuchElementException;
 
 @RestController
 @Component
+@RequestMapping("api/v1/pay")
 @Api(value = "pay API")
 public class KakaoController {
-
-    //오류
-//    private final KakaoService kakaoService;
-//    private final MemberService memberService;
-//
-//    @Autowired
-//    public KakaoController(KakaoService kakaoService, MemberService memberService) {
-//        this.kakaoService = kakaoService;
-//        this.memberService = memberService;
-//    }
 
     private final KakaoService kakaoService;
     private final MemberService memberService;
@@ -45,7 +36,7 @@ public class KakaoController {
     }
 
     // Client 에서 카카오 인증들 통해서 받은 인가코드 받기
-    @GetMapping("/api/v1/kakao")
+    @GetMapping("/kakao")
     @ApiOperation(value = "카카오 로그인")
     public ResponseEntity<?> KaKaoLogIn(@RequestParam("code") String code, HttpServletResponse response) {
 
