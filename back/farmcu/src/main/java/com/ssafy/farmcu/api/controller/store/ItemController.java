@@ -123,7 +123,7 @@ public class ItemController {
         //상품 대표 이미지
         List<ItemImageDto> itemImage = new ArrayList<>();
         for(ItemDto itemDto : itemList) {
-            if(!itemImageService.findItemImagesByItemId(itemDto.getItemId()).isEmpty())
+            if(itemImageService.findItemImagesByItemId(itemDto.getItemId()) != null)
                 itemImage.add(itemImageService.findItemImagesByItemId(itemDto.getItemId()).get(0));
         }
 

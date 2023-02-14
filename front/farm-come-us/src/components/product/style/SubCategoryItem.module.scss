@@ -1,12 +1,16 @@
 .container {
-  width: 15%;
-  margin-top: 0.75rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  font-size: 1rem;
+  width: 80px;
+  height: 32px;
+  box-sizing: border-box;
+  padding: 8px 4px;
+  font-size: 0.9rem;
   font-weight: bold;
-  color: #265040;
+  color: #275241;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &:hover {
+    cursor: pointer;
+  }
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import classes from "./style/StoreProducts.module.scss";
 import StoreProductList from "../../components/store/StoreProductList";
 import { useLocation } from "react-router-dom";
-import { storeProductList } from "../../utils/api/product-http";
+import { fetchProductList } from "../../utils/api/product-http";
 
 const StoreProducts = () => {
   const [itemList, setItemList] = useState({});
@@ -12,7 +12,8 @@ const StoreProducts = () => {
   useEffect(() => {
     async function getItemList() {
       try {
-        const itemArr = await storeProductList(0, 4, location.state.storeId);
+        const itemArr = await fetchProductList(1, 1, location.state.storeId);
+        console.log(itemArr);
         setItemList(itemArr);
       } catch (err) {
         console.log(err);

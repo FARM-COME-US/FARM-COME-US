@@ -1,9 +1,6 @@
 package com.ssafy.farmcu.api.service.member;
 
-import com.ssafy.farmcu.api.dto.member.MemberJoinReq;
-import com.ssafy.farmcu.api.dto.member.MemberLoginReq;
-import com.ssafy.farmcu.api.dto.member.MemberDto;
-import com.ssafy.farmcu.api.dto.member.MemberUpdateReq;
+import com.ssafy.farmcu.api.dto.member.*;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.exception.NotFoundUserException;
 import com.ssafy.farmcu.api.repository.MemberRepository;
@@ -73,6 +70,18 @@ public class MemberServiceImpl implements MemberService{
 //        }
 
         member.updateInfo(memberUpdateReq);
+        memberRepository.save(member);
+        return true;
+    }
+
+    @Transactional
+    public boolean updateMember(MemberAdditionalReq memberAdditionalReq, String id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundUserException("아이디를 가진 사람이 없습니다."));
+//        if(!pwEncoder.matches(member.getPassword(), member.getPassword())){ // 비밀번호 검증
+//            return false;
+//        }
+
+        member.updateAddInfo(memberAdditionalReq);
         memberRepository.save(member);
         return true;
     }
