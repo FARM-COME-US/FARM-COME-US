@@ -41,18 +41,18 @@ public class ItemController {
     @GetMapping("/title")
     @ApiOperation(value = "부류 목록")
     public ResponseEntity<List<CategoryDto>> selectTitles() {
-        return ResponseEntity.ok(categoryService.findTitles());
+        return new ResponseEntity<>(categoryService.findTitles(), HttpStatus.OK);
     }
 
     @GetMapping("/detail")
     @ApiOperation(value = "품목 목록")
     public ResponseEntity<List<CategoryDto>> selectDetails(String titleName) {
-        return ResponseEntity.ok(categoryService.findDetails(titleName));
+        return new ResponseEntity<>(categoryService.findDetails(titleName), HttpStatus.OK);
     }
 
     @PostMapping
     @ApiOperation(value = "상품 등록")
-    public ResponseEntity<HashMap<String, Boolean>> createItem(@RequestPart("item") ItemDto itemDto, MultipartFile[] uploadFile) throws Exception {
+    public ResponseEntity<String> createItem(@RequestPart("item") ItemDto itemDto, MultipartFile[] uploadFile) throws Exception {
         Long itemId = itemService.saveItem(itemDto);
 
         //이미지 첨부
@@ -69,11 +69,8 @@ public class ItemController {
             }
         }
 
-        HashMap<String, Boolean> resultMap = new HashMap<>();
-        if(itemId > 0L) resultMap.put("success", true);
-        else resultMap.put("success", false);
-
-        return ResponseEntity.ok(resultMap);
+        if(itemId > 0L) return new ResponseEntity<>(HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping()
@@ -93,7 +90,7 @@ public class ItemController {
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("item", itemDto);
 
-        return ResponseEntity.ok(resultMap);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @PostMapping("/keyword")
@@ -118,7 +115,7 @@ public class ItemController {
         resultMap.put("itemList", itemList);
         resultMap.put("hasNextPage", hasNextPage);
 
-        return ResponseEntity.ok(resultMap);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @GetMapping("/store")
@@ -143,39 +140,33 @@ public class ItemController {
         resultMap.put("itemList", itemList);
         resultMap.put("hasNextPage", hasNextPage);
 
-        return ResponseEntity.ok(resultMap);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @DeleteMapping()
     @ApiOperation(value = "상품 삭제")
-    public ResponseEntity<HashMap<String, Boolean>> deleteItem(Long itemId) {
+    public ResponseEntity<String> deleteItem(Long itemId) {
         HashMap<String, Boolean> resultMap = new HashMap<>();
         List<ItemImageDto> itemImageDtos = itemImageService.findItemImagesByItemId(itemId);
 
         for(ItemImageDto itemImageDto : itemImageDtos) {
             if(!itemImageService.deleteItemImage(itemImageDto.getItemImageId())) {
-                resultMap.put("success", false);
-                return ResponseEntity.ok(resultMap);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         }
 
         boolean isSuccess = itemService.deleteItem(itemId);
-        if(isSuccess) resultMap.put("success", true);
-        else resultMap.put("success", false);
-
-        return ResponseEntity.ok(resultMap);
+        if(isSuccess) return new ResponseEntity<>(HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping()
     @ApiOperation(value = "상품 정보 수정")
-    public ResponseEntity<HashMap<String, Boolean>> updateItem(@RequestBody ItemDto itemDto) {
+    public ResponseEntity<String> updateItem(@RequestBody ItemDto itemDto) {
         boolean isSuccess = itemService.updateItem(itemDto);
 
-        HashMap<String, Boolean> resultMap = new HashMap<>();
-        if(isSuccess) resultMap.put("success", true);
-        else resultMap.put("success", false);
-
-        return ResponseEntity.ok(resultMap);
+        if(isSuccess) return new ResponseEntity<>(HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }
