@@ -13,7 +13,11 @@ const ReceiptList = (props) => {
     "axios 주문번호, 유저아이디";
   }, []);
 
-  let reciptCards = <div>주문 내역이 없습니다.</div>;
+  let reciptCards = (
+    <div className={classes.flexbox}>
+      <div className={classes.noItem}>주문 내역이 없습니다.</div>
+    </div>
+  );
   let [orderData, setOrderData] = useState([]);
   const data = [
     {

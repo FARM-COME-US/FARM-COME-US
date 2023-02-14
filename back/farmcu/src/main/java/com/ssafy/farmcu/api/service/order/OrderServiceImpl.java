@@ -2,7 +2,9 @@ package com.ssafy.farmcu.api.service.order;
 
 import com.ssafy.farmcu.api.dto.order.OrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
+import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.entity.member.Member;
+import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
 import com.ssafy.farmcu.api.entity.store.Item;
@@ -27,7 +29,7 @@ import java.util.Optional;
 @Component // 왜 있는지 모르겠어
 public class OrderServiceImpl implements OrderService{
 
-//    @Autowired
+    //    @Autowired
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
@@ -45,15 +47,13 @@ public class OrderServiceImpl implements OrderService{
     //**  단일 상품 주문 **//
     // (한 종류의 상품만 주문 가능, 상품 바로 구매 or live 주문)
     @Transactional
-    public Long order(OrderDto orderDto) {
+    public Long order(OrderInfoDto orderinfoDto) {
 
-        Item item = itemRepository.findByItemId(orderDto.getItem_id()).orElseThrow(() -> new ItemNotFoundException("상품에 대한 정보가 없습니다."));
-
-        // item 객체에서 OrderItem 객체 생성
-        Member member = memberRepository.findById(orderDto.getMember_id()).orElseThrow(() -> new NotFoundUserException("사용자애 대한 정보가 없습니다."));
+        Item item = itemRepository.findByItemId(orderinfoDto.getItemId()).orElseThrow(() -> new ItemNotFoundException("상품에 대한 정보가 없습니다."));
+        Member member = memberRepository.findById(orderinfoDto.getMemberId()).orElseThrow(() -> new NotFoundUserException("사용자애 대한 정보가 없습니다."));
         List<OrderItem> orderItems = new ArrayList<>();
 
-        OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getOrderCount());
+        OrderItem orderItem = OrderItem.createOrderItem(item, orderinfoDto.getOitemCount());
         orderItems.add(orderItem);
         Order order = Order.createOrder(member, orderItems);
         orderRepository.save(order);
@@ -66,8 +66,7 @@ public class OrderServiceImpl implements OrderService{
 
     }
 
-    //** 다양한 상품 주문 **//
-    // (장바구니 주문)
+    // 다양한 종류의 상품 주문 (장바구니)
     public Long orders(List<OrderInfoDto> orderInfoDtoList, String memberId) {
 
         Member member = memberRepository.findById(memberId).get();
@@ -84,35 +83,47 @@ public class OrderServiceImpl implements OrderService{
         return order.getOrderId();
     }
 
-    //** 주문 취소 **//
-    // controller 에서 작성
-    public void updateOrder(Long orderId){
-        Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+    // 주문 취소
+    public void updateOrder(Long orderId) {
+        Order order = orderRepository.findByOrderId(orderId).orElseThrow(EntityNotFoundException::new);
         order.updateOrder();
     }
 
-    //** 전체 목록 상세 조회 **//
-    public List<OrderItem> findOrderDetail(Member member) {
-        return orderItemRepository.findByOrOrderInfoMember(member);
+    // 전체 목록 상세 조회
+//    public List<OrderItem> findOrderDetail(Member member) {
+//        return orderItemRepository.findByOrOrderMember(member);
+//    }
+
+
+    // 주문 상세 조회
+//    public List<Order> findOne(Order order) {
+////        Order order = orderRepository.findByOrderId(orderId).orElseThrow(NullPointerException::new);
+//        return orderRepository.findByOrderId(order);
+//    }
+
+    // 내 주문 목록 조회
+    @Transactional
+    public List<Order> findMyOrder(Member member) {
+        try {
+            return orderRepository.findByMember(member);
+        } catch (Exception e ){
+            return null;
+        }
     }
 
-    //** 전체 주문 상세 조회 **//
-    public List<OrderItem> findAllItems() {
+//    //** 주문 번호 별 주문 상세 조회
+//    public List<Order> findSameOrder(Order order) {
+//        return orderRepository.findByOrderId(order);
+//    }
+
+    // 전체 주문 상품 조회
+    public List<OrderItem> findAllOrderItem() {
         return orderItemRepository.findAll();
     }
 
-    //** 나의 주문 조회 **//
-    public List<Order> findMyOrders(Member member) {
-        return orderRepository.findByMember(member);
+    // 전체 주문 조회
+    public List<Order> findAllOrder() {
+        return orderRepository.findAll();
     }
-//    public List<OrderItem> findMyDetails(Long num)
-//        return orderRepository.findById(num);
-//    }
-
-    //** 주문 번호 조회 **//
-//    public Optional<Order> findById(Long order_num) {
-//        return orderRepository.findById(order_num);
-//    }
-
 
 }

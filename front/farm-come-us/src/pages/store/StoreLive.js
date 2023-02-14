@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./style/StoreLive.module.scss";
 import StoreLiveList from "../../components/store/StoreLiveList";
 import { useLocation } from "react-router-dom";
 
+/*
 const DUMMY_LIVE_LIST = [
   {
     liveId: 1,
@@ -67,13 +68,31 @@ const DUMMY_LIVE_LIST = [
     liveDate: "2022.11.29 04:00 ~ 05:00",
   },
 ];
+*/
 
 const StoreLive = () => {
+  const [liveList, setLiveList] = useState([]);
   const location = useLocation();
+  /*
+  useEffect(() => {
+    async function getLiveList() {
+      try {
+        const itemArr = await storeLiveList(1, 1, location.state.storeId);
+        console.log(itemArr);
+        setLiveList(itemArr);
+      } catch (err) {
+        console.log(err);
+      }
+    }
 
+    getLiveList();
+  }, [location.state.storeId]);
+
+  /*
   const liveList = DUMMY_LIVE_LIST.filter(
     (item) => item.storeId === location.state.storeId
   );
+  */
 
   return (
     <div className={classes.container}>
