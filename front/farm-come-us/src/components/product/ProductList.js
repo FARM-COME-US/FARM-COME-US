@@ -18,6 +18,8 @@ const ProductList = (props) => {
           page,
           size
         );
+
+        console.log(categoryList);
         setItemList(categoryList);
       } catch (err) {
         console.log(err);
@@ -26,6 +28,7 @@ const ProductList = (props) => {
 
     getItemList(props.category_name, "", props.sub_category_name, 0, 8);
   }, [props.category_name, props.sub_category_name]);
+  console.log(itemList);
 
   let content = <ProductNoData>등록된 상품이 없습니다.</ProductNoData>;
 
