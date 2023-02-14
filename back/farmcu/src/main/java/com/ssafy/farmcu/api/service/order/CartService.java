@@ -24,7 +24,7 @@ public interface CartService {
     // 장바구니 항목 주문
     public Long orderCart(List<CartOrderDto> cartOrderDtoList, String memberId);
 
-//     장바구니 항목 삭제
+    //     장바구니 항목 삭제
     public void deleteCart(Long cartId);
 
     public List<Cart> findAllCart();

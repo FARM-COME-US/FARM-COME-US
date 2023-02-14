@@ -14,6 +14,7 @@ const initialStateValue = {
   phoneNumber: "",
   profileImg: "",
   isLogin: false,
+  storeId: false,
 };
 
 const asynclogin = createAsyncThunk(
@@ -57,12 +58,13 @@ const userSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
     },
     saveStoreInfo: (state, action) => {
-      state.store = action.payload;
+      state.value = { ...state.value, storeId: true };
     },
     // up: (state, action) => {
     //   state.value = state.value + action.payload;
     // }, 참고용 예시 코드
   },
+
   extraReducers: (builder) => {
     builder.addCase(asyncSomethingFetch.pending, (state, action) => {
       state.status = "loading";

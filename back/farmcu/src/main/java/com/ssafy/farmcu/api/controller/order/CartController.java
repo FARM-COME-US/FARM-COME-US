@@ -64,7 +64,7 @@ public class CartController {
             resultMap.put("cartList", carts);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-       }
+        }
 
         return ResponseEntity.ok(resultMap);
 

@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { fetchStoreProducts } from "../../utils/api/product-http";
 
 import classes from "./style/MyStoreProducts.module.scss";
 
@@ -35,7 +37,21 @@ const DUMMY_PRODUCT_LIST = [
 ];
 
 const MyStoreProduct = () => {
+  const { storeInfo } = useOutletContext();
+  console.log(storeInfo);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [productList, setProductList] = useState([]);
+
+  useEffect(() => {
+    if (storeInfo.storeId) {
+      fetchStoreProducts(storeInfo.storeId, 0, 8).then((res) => {
+        const data = res.data;
+        console.log(data.itemImage);
+        console.log(data.itemList);
+        // setProductList(data.itemList);
+      });
+    }
+  }, [storeInfo]);
 
   /* 기타 메서드 */
   const modalToggleHandler = () => {
@@ -46,14 +62,6 @@ const MyStoreProduct = () => {
     }
 
     setIsModalOpen((prev) => !prev);
-  };
-
-  const addProductHandler = (e) => {
-    e.preventDefault();
-    alert("상품 등록 이벤트 발생");
-
-    modalToggleHandler();
-    return;
   };
 
   const showProductDetailHandler = (product, event) => {
@@ -77,9 +85,8 @@ const MyStoreProduct = () => {
         <AddProductModal
           title="상품 정보 입력"
           className={isModalOpen ? null : "close"}
+          storeInfo={storeInfo}
           onToggleModal={modalToggleHandler}
-          onSubmit={addProductHandler}
-          onClick={addProductHandler}
         />
       ) : null}
     </div>

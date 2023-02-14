@@ -3,16 +3,13 @@ import axios from "axios";
 const LIVE_API_URL = `${process.env.REACT_APP_API_SERVER_URL}/api/v1/live`;
 
 /* 라이브 등록 */
-export async function fetchAddLive(data) {
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      "Access-Control-Allow-Origin": "*",
-    },
-  };
-
+export async function fetchAddLive(liveInfo) {
+  const data = { ...liveInfo };
+  console.log(data);
+  // return;
   try {
-    const response = axios.post(`LIVE_API_URL`, data, config);
+    const response = axios.post(`${LIVE_API_URL}`, data);
+    console.log(response);
     return response;
   } catch (err) {
     console.error(err);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { fetchCreateStore, fetchStoreDetail } from "../../utils/api/store-http";
+// import { fetchCreateStore, fetchStoreDetail } from "../../utils/api/store-http";
 import classes from "./style/MyStoreCreate.module.scss";
 
 import { useDispatch } from "react-redux";
@@ -10,6 +10,7 @@ import MyStoreCreateInfoList from "../../components/mystore/MyStoreCreateInfoLis
 import Button from "../../components/common/Button";
 import { useSelector } from "react-redux";
 import userSlice from "../../reduxStore/userSlice";
+import axios from "axios";
 
 const MyStoreCreate = () => {
   const location = useLocation();
@@ -17,20 +18,21 @@ const MyStoreCreate = () => {
   const dispatch = useDispatch();
   const { userInfo } = location.state;
   const [storeInfo, setStoreInfo] = useState({
+    memberId: "",
+    storeDeliveryCost: "",
+    storeDeliveryFree: "",
+    storeDescription: "",
+    storeDetailAddr: "",
+    storeImg: "",
     storeName: "",
-    desc: "",
-    streetAddr: "",
-    detailAddr: "",
-    zipcode: "",
-    phoneNumber: "",
-    imgSrc: "",
-    uploadFile: "",
-    deliveryCost: "",
-    deliveryFree: "",
+    storePhoneNumber: "",
+    storeStreetAddr: "",
+    storeZipcode: "",
   });
   const [storeNameIsValid, setStoreNameIsValid] = useState();
   const [storeId, setStoreId] = useState("");
   // 마이스토어가 있는데 들어왔으면 마이스토어로 redirect
+
   useEffect(() => {
     if (userInfo.storeId) {
       navigate("/mystore", { replace: true });
@@ -38,15 +40,78 @@ const MyStoreCreate = () => {
   }, []);
 
   const user = useSelector((state) => state.userSlice.value);
-  // console.log(user);
 
   const createStoreHandler = (e) => {
+    async function fetchCreateStore(storeInfo, userInfo) {
+      const formData = new FormData();
+      formData.append("uploadFile", storeInfo.uploadFile);
+
+      const data = {
+        memberId: userInfo.memberId,
+        storeDeliveryCost: storeInfo.deliveryCost,
+        storeDeliveryFree: storeInfo.deliveryFree,
+        storeDescription: storeInfo.storeDescription,
+        storeDetailAddr: storeInfo.detailAddr,
+        storeImg: storeInfo.filename,
+        storeName: storeInfo.storeName,
+        storePhoneNumber: storeInfo.phoneNumber,
+        storeStreetAddr: storeInfo.streetAddr,
+        storeZipcode: storeInfo.zipcode,
+      };
+
+      formData.append(
+        "store",
+        new Blob([JSON.stringify(data)], {
+          type: "application/json",
+        })
+      );
+
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: { token: sessionStorage.getItem("accessToken") },
+          token: sessionStorage.getItem("accessToken"),
+        },
+        withCredentials: false,
+      };
+      console.log("유저정보");
+      console.log(userInfo.memberId);
+      console.log(data);
+      console.log("이 아래에 생성후 응답 바로아래 dispatch");
+      dispatch(userSlice.actions.saveStoreInfo());
+      axios
+        .post(
+          process.env.REACT_APP_API_SERVER_URL + "/api/v1/store",
+          formData,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    }
+
+    //   try {
+    //     const response = axios.post("/api/api/v1/store", formData, config);
+    //     console.log(formData);
+    //     console.log(response);
+    //     return response;
+    //   } catch (err) {
+    //     console.err(err);
+    //   }
+    // }
+
+    // 😀 실행부
     e.preventDefault();
     // alert("스토어 생성로직 - 멤버 id 더미 데이터 ");
     try {
       const res = fetchCreateStore(storeInfo, user);
-      dispatch(userSlice.actions.saveStoreInfo(res));
+      console.log("스토어 생성 res.data");
+      console.log(res.data);
+      console.log("스토어 생성 res");
       console.log(res);
+      // dispatch(userSlice.actions.saveStoreInfo());
       alert("스토어가 생성되었습니다.");
       // 스토어 생성하고, 내 스토어로 넘김.
     } catch (err) {

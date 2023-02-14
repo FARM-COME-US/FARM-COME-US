@@ -33,7 +33,7 @@ public class Order {
 
     // 주문 : 주문 완료 - 주문취소
     public enum OrderStatus{
-         ORDER, CANCEL
+        ORDER, CANCEL
     }
 
     // 결제 : 결제 전 - 결제 - 결제 취소

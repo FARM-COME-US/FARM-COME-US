@@ -18,4 +18,7 @@ public interface ItemImageService {
     //이미지 조회
     public List<ItemImageDto> findItemImagesByItemId(Long itemId);
 
+    //대표 이미지 조회
+    ItemImageDto findItemImageByItemId(Long itemId);
+
 }

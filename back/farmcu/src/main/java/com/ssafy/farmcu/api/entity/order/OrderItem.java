@@ -79,7 +79,7 @@ public class OrderItem {
 
 
 
-   // 주문 취소 시 재고 원상 복구
+    // 주문 취소 시 재고 원상 복구
     public void cancel() { this.getItem().addStock(oitemCount); }
 
 }
