@@ -52,6 +52,8 @@ const MyPage = (props) => {
             },
           }
         );
+        // dispatch(userSlice.actions.login());
+        userSlice.actions.login(userDataRes.data.userInfo);
         const userInfo = userDataRes;
         // console.log(userDataRes);
         // console.log(userInfo);
@@ -75,6 +77,9 @@ const MyPage = (props) => {
 
   const editInfoHandler = (e) => {
     e.preventDefault();
+    console.log("수정된이벤트");
+    console.log(e);
+    console.log(userInfo);
 
     alert("사용자 정보가 수정되었습니다.");
     console.log(userInfo);

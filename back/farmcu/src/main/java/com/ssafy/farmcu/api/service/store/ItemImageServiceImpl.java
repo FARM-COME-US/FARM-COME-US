@@ -7,6 +7,7 @@ import com.ssafy.farmcu.api.repository.ItemImageRepository;
 import com.ssafy.farmcu.api.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,12 +15,14 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ItemImageServiceImpl implements ItemImageService {
 
     private final ItemRepository itemRepository;
     private final ItemImageRepository itemImageRepository;
 
     @Override
+    @Transactional
     public boolean saveItemImage(ItemImageDto itemImageDto) {
         try {
             Item item = itemRepository.findByItemId(itemImageDto.getItemId()).orElseThrow(NullPointerException::new);
@@ -38,6 +41,7 @@ public class ItemImageServiceImpl implements ItemImageService {
     }
 
     @Override
+    @Transactional
     public boolean updateItemImage(ItemImageDto itemImageDto) {
         try {
             Item item = itemRepository.findByItemId(itemImageDto.getItemId()).orElseThrow(NullPointerException::new);
@@ -54,6 +58,7 @@ public class ItemImageServiceImpl implements ItemImageService {
     }
 
     @Override
+    @Transactional
     public boolean deleteItemImage(Long itemImageId) {
         try {
             itemImageRepository.deleteByItemImageId(itemImageId);
@@ -66,13 +71,18 @@ public class ItemImageServiceImpl implements ItemImageService {
 
     @Override
     public List<ItemImageDto> findItemImagesByItemId(Long itemId) {
-        Item item = itemRepository.findByItemId(itemId).orElseThrow(NullPointerException::new);
-        List<ItemImage> itemImages = itemImageRepository.findAllByItem(item);
-        List<ItemImageDto> result = itemImages.stream()
-                .map(i -> new ItemImageDto(i))
-                .collect(toList());
+        try {
+            Item item = itemRepository.findByItemId(itemId).orElseThrow(NullPointerException::new);
+            List<ItemImage> itemImages = itemImageRepository.findAllByItem(item);
+            List<ItemImageDto> result = itemImages.stream()
+                    .map(i -> new ItemImageDto(i))
+                    .collect(toList());
 
-        return result;
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }
