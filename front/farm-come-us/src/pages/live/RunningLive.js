@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchLiveSession, fetchLiveSessions } from "../../utils/api/ov-http";
 import { fetchRunningLiveList } from "../../utils/api/live-http";
@@ -81,6 +81,7 @@ const LIVE_LIST = [
 
 const RunningLive = () => {
   const navigate = useNavigate();
+  const [currPage, setCurrPage] = useState(0);
 
   const {
     sendRequest: getLiveSessions,
@@ -92,7 +93,7 @@ const RunningLive = () => {
   const {
     sendRequest: getRunningLiveInfo,
     status: rllStatus,
-    data: runningLiveList,
+    data: runningLiveData,
     errorRll,
   } = useHttp(fetchRunningLiveList, true);
 
@@ -101,7 +102,7 @@ const RunningLive = () => {
   }, [getLiveSessions]);
 
   useEffect(() => {
-    getRunningLiveInfo();
+    getRunningLiveInfo(currPage);
   }, [getRunningLiveInfo]);
 
   const liveRoomEnterHandler = async (liveInfo) => {
@@ -128,7 +129,8 @@ const RunningLive = () => {
         <Loading className={classes.loading} />
       ) : (
         <LiveList
-          liveList={LIVE_LIST}
+          liveList={runningLiveData.liveOnList}
+          hasNextPage={runningLiveData.hasNextPage}
           sessionList={sessionList}
           isLive={true}
           onEnter={liveRoomEnterHandler}

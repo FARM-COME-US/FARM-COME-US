@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { fetchStoreProducts } from "../../utils/api/product-http";
+import useHttp from "../../hooks/use-http";
 
 import classes from "./style/MyStoreProducts.module.scss";
 
@@ -9,49 +10,23 @@ import MyStoreProductList from "../../components/mystore/MyStoreProductList";
 
 import AddButton from "../../components/mystore/AddButton";
 import AddProductModal from "../../components/mystore/AddProductModal";
-
-const DUMMY_PRODUCT_LIST = [
-  {
-    productId: 1,
-    productName: "강원도 고랭지 배추",
-    stock: 140,
-    discount: 14,
-    price: 14000,
-    count: 1,
-    unit: "개",
-    regDate: new Date(2023, 1, 10, 23, 0, 0),
-    imgSrc: "https://via.placeholder.com/300",
-  },
-  {
-    productId: 2,
-    productName: "강원도 고랭지 배추",
-    storeName: "강원고랭",
-    stock: 140,
-    discount: 14,
-    price: 14000,
-    count: 1,
-    unit: "개",
-    regDate: new Date(2023, 0, 30, 6, 0, 0),
-    imgSrc: "https://via.placeholder.com/300",
-  },
-];
+import Loading from "../../components/common/Loading";
 
 const MyStoreProduct = () => {
   const { storeInfo } = useOutletContext();
-  console.log(storeInfo);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [productList, setProductList] = useState([]);
+  const [currPage, setCurrPage] = useState(0);
+
+  const {
+    sendRequest: getStoreProducts,
+    status: spStatus,
+    data: storeProductList,
+    errorSp,
+  } = useHttp(fetchStoreProducts, true);
 
   useEffect(() => {
-    if (storeInfo.storeId) {
-      fetchStoreProducts(storeInfo.storeId, 0, 8).then((res) => {
-        const data = res.data;
-        console.log(data.itemImage);
-        console.log(data.itemList);
-        // setProductList(data.itemList);
-      });
-    }
-  }, [storeInfo]);
+    getStoreProducts(storeInfo.storeId, currPage);
+  }, [storeInfo, getStoreProducts]);
 
   /* 기타 메서드 */
   const modalToggleHandler = () => {
@@ -72,10 +47,15 @@ const MyStoreProduct = () => {
   return (
     <div className={classes.pageContainer}>
       <MyStoreContentTitle text="판매상품" />
-      <MyStoreProductList
-        products={DUMMY_PRODUCT_LIST}
-        onClick={showProductDetailHandler}
-      />
+      {spStatus === "pending" || !storeProductList ? (
+        <Loading className={classes.loading} />
+      ) : (
+        <MyStoreProductList
+          products={storeProductList.itemInfoList}
+          hasNextPage={storeProductList.hasNextPage}
+          onClick={showProductDetailHandler}
+        />
+      )}
 
       <div className={classes.btnBox}>
         <AddButton className={classes.btnAdd} onClick={modalToggleHandler} />
