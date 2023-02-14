@@ -58,7 +58,10 @@ const Cart = () => {
   // 
   const res = cartDetail()
   console.log(res)
-  
+
+  // 장바구니 삭제 => 주석 풀고 장바구니 번호 넣어서 사용하기
+  // const ret = delteCart()
+  // console.log(ret)
 
   const plusSetList = (Id, price) => {
     setList([...itemIdList, Id]);
