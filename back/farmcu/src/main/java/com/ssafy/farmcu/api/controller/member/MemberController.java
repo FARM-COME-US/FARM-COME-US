@@ -64,7 +64,6 @@ public class MemberController {
         if (memberService.createMember(request)) {
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
         } else {
-            // 회원가입 에러
             return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
         }
     }
@@ -75,12 +74,12 @@ public class MemberController {
     public ResponseEntity<?> login(@RequestBody MemberLoginReq loginReq) {
         Member loginMember = memberService.findUser(loginReq.getId());
         log.info("here login start");
-        if (loginMember == null) { // 존재하지 않음.
+        if (loginMember == null) {
             log.info("not exist user");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ErrorResponse("error.not.exist.user"));
         }
-        if (!passwordEncoder.matches(loginReq.getPassword(), loginMember.getPassword())) { // password 틀렸음.
+        if (!passwordEncoder.matches(loginReq.getPassword(), loginMember.getPassword())) {
             log.info("wrong password");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ErrorResponse("error.wrong.pw"));
@@ -147,12 +146,12 @@ public class MemberController {
             } catch (Exception e) {
                 log.info("정보 조회 실패 : ", e);
                 resultMap.put("message", e.getMessage());
-                status = HttpStatus.NOT_FOUND;
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
             }
         } else {
             log.info("사용 불가능한 토큰");
             resultMap.put("message", "fail");
-            status = HttpStatus.ACCEPTED;
+            status = HttpStatus.UNAUTHORIZED;
         }
         return new ResponseEntity<>(resultMap, status);
 
@@ -170,7 +169,7 @@ public class MemberController {
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("message", e.getMessage());
-            status = HttpStatus.NOT_FOUND;
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
@@ -233,7 +232,7 @@ public class MemberController {
             status = HttpStatus.ACCEPTED;
         } else {
             resultMap.put("message", "fail");
-            status = HttpStatus.NOT_FOUND;
+            status = HttpStatus.UNAUTHORIZED;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
