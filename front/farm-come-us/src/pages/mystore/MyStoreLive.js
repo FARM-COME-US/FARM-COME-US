@@ -46,14 +46,6 @@ const MyStoreLive = () => {
     id: "sessionA",
     username: "Participant" + Math.floor(Math.random() * 100),
   });
-  const [newLiveInfo, setNewLiveInfo] = useState({
-    itemId: "",
-    liveDiscount: 0,
-    liveStart: "",
-    liveStock: "",
-    liveTitle: "",
-    storeId: storeInfo.storeId,
-  });
 
   const navigate = useNavigate();
 
@@ -66,22 +58,6 @@ const MyStoreLive = () => {
     }
 
     setIsModalOpen((prev) => !prev);
-  };
-
-  const addLiveHandler = (e) => {
-    e.preventDefault();
-    console.log(newLiveInfo);
-    modalToggleHandler();
-    return;
-  };
-
-  const newLiveInputChangeHandler = (name, value) => {
-    setNewLiveInfo((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
   };
 
   const startLiveHandler = (liveInfo) => {
@@ -127,11 +103,8 @@ const MyStoreLive = () => {
         <AddLiveModal
           title="Live 정보 입력"
           className={isModalOpen ? null : "close"}
-          newLiveInfo={newLiveInfo}
+          storeInfo={storeInfo}
           onToggleModal={modalToggleHandler}
-          onInputChange={newLiveInputChangeHandler}
-          onSubmit={addLiveHandler}
-          onClick={addLiveHandler}
         />
       ) : null}
     </div>

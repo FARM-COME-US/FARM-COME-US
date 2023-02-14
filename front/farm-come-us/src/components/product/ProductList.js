@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import classes from "./style/ProductList.module.scss";
 import ProductItem from "./ProductItem";
-import { productList } from "../../utils/api/product-http";
+import { fetchProductList } from "../../utils/api/product-http";
+
+import ProductNoData from "./ProductNoData";
 
 const ProductList = (props) => {
   const [itemList, setItemList] = useState([]);
@@ -9,7 +11,7 @@ const ProductList = (props) => {
   useEffect(() => {
     async function getItemList(category, itemName, subCategory, page, size) {
       try {
-        const categoryList = await productList(
+        const categoryList = await fetchProductList(
           category,
           itemName,
           subCategory,
@@ -25,16 +27,15 @@ const ProductList = (props) => {
     getItemList(props.category_name, "", props.sub_category_name, 0, 8);
   }, [props.category_name, props.sub_category_name]);
 
-  if (itemList.length === 0) {
-    return <span></span>;
-  } else if (itemList.length > 0) {
-    const content = itemList.map((item) => (
-      <ProductItem key={item.item_id} item={item} />
+  let content = <ProductNoData>등록된 상품이 없습니다.</ProductNoData>;
+
+  if (itemList.length > 0) {
+    content = itemList.map((item) => (
+      <ProductItem key={item.itemId} item={item} />
     ));
-    return <ul className={`${classes.productList}`}>{content}</ul>;
-  } else {
-    console.log("렌더링 실패");
   }
+
+  return <ul className={`${classes.productList}`}>{content}</ul>;
 };
 
 export default ProductList;
