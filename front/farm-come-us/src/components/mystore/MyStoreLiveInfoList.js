@@ -32,14 +32,8 @@ const MyStoreLiveInfoList = (props) => {
   };
 
   const onLiveTimeChangeHandler = (name, value) => {
-    // const liveDate = new Date(props.newLiveInfo.liveStart);
-
     if (name === "liveStartDate") {
       const [year, month, date] = value.split("-");
-
-      // liveDate.setYear(year);
-      // liveDate.setMonth(month);
-      // liveDate.setDate(date);
 
       props.onChange(
         "liveStart",
@@ -49,12 +43,9 @@ const MyStoreLiveInfoList = (props) => {
       value += ":00";
       const [hour, minute] = value.split(":");
 
-      // liveDate.setHours(hour);
-      // liveDate.setMinutes(minute);
-
       props.onChange(
         "liveStart",
-        props.newLiveInfo.liveStartDate + " " + value
+        props.newLiveInfo.liveStartDate + "T" + value
       );
     }
     props.onChange(name, value);

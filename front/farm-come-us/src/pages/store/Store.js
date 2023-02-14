@@ -12,7 +12,6 @@ const Store = () => {
     async function getItemDetail() {
       try {
         const storeData = await fetchStoreDetail(location.state.storeId);
-        console.log(storeData.data);
         setStoreDetail(storeData.data);
       } catch (err) {
         console.log(err);

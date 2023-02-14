@@ -72,8 +72,35 @@ const AddLiveModal = (props) => {
 
   const addLiveHandler = (e) => {
     e.preventDefault();
-    fetchAddLive(newLiveInfo);
-    // props.onToggleModal();
+    if (!isValidNewInfo()) return;
+    fetchAddLive(newLiveInfo)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    props.onToggleModal();
+  };
+
+  const isValidNewInfo = () => {
+    if (newLiveInfo.liveStartDate && newLiveInfo.liveStartTime) {
+      const [year, month, date] = newLiveInfo.liveStartDate.split("-");
+      const [hour, minute, second] = newLiveInfo.liveStartTime.split(":");
+      const reservedDate = new Date(
+        year,
+        month - 1,
+        date,
+        hour,
+        minute,
+        second
+      );
+      if (reservedDate - new Date() < 0) {
+        alert("예약 날짜는 오늘 이후여야 합니다.");
+        return false;
+      }
+    }
+    return true;
   };
 
   let options = null;
