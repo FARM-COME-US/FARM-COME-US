@@ -8,10 +8,8 @@ import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
 import com.ssafy.farmcu.api.entity.store.Item;
-import com.ssafy.farmcu.api.repository.ItemRepository;
-import com.ssafy.farmcu.api.repository.MemberRepository;
-import com.ssafy.farmcu.api.repository.OrderItemRepository;
-import com.ssafy.farmcu.api.repository.OrderRepository;
+import com.ssafy.farmcu.api.entity.store.Store;
+import com.ssafy.farmcu.api.repository.*;
 import com.ssafy.farmcu.exception.ItemNotFoundException;
 import com.ssafy.farmcu.exception.NotFoundUserException;
 import org.springframework.context.annotation.Lazy;
@@ -89,18 +87,6 @@ public class OrderServiceImpl implements OrderService{
         order.updateOrder();
     }
 
-    // 전체 목록 상세 조회
-    public List<OrderItem> findOrderDetail(Member member) {
-        return orderItemRepository.findByOrOrderMember(member);
-    }
-
-
-    // 주문 상세 조회
-//    public List<Order> findOne(Order order) {
-////        Order order = orderRepository.findByOrderId(orderId).orElseThrow(NullPointerException::new);
-//        return orderRepository.findByOrderId(order);
-//    }
-
     // 내 주문 목록 조회
     @Transactional
     public List<Order> findMyOrder(Member member) {
@@ -110,11 +96,6 @@ public class OrderServiceImpl implements OrderService{
          return null;
         }
     }
-
-//    //** 주문 번호 별 주문 상세 조회
-//    public List<Order> findSameOrder(Order order) {
-//        return orderRepository.findByOrderId(order);
-//    }
 
     // 전체 주문 상품 조회
     public List<OrderItem> findAllOrderItem() {
