@@ -45,15 +45,15 @@ public class Item {
     private Timestamp itemCreatedAt;
 
     //연결
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = CategoryTitle.class)
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = CategoryTitle.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_title_code", updatable = false)
     private CategoryTitle categoryTitle;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = CategoryDetail.class)
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = CategoryDetail.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_detail_code", updatable = false)
     private CategoryDetail categoryDetail;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Store.class)
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Store.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", updatable = false)
     private Store store;
 
