@@ -120,7 +120,7 @@ public class CartController {
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{cartId}")
+    @DeleteMapping()
     @ApiOperation(value = "장바구니 상품 삭제")
     public ResponseEntity deleteCart(@PathVariable Long cartId) {
 

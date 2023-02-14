@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import MyReceiptItem from "../../components/mypage/MyReceiptItem";
 import classes from "./style/MyReceipts.module.scss";
+import { orderList } from "../../utils/api/order-http";
 import axios from "axios";
 import { useSelector } from "react-redux";
+
+const res = orderList();
+console.log(res);
 
 const MyReceipts = (props) => {
   const [myReceiptsInfoArr, setReceiptsInfoArr] = useState("");

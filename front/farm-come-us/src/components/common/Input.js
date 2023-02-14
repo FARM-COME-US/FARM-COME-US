@@ -20,6 +20,7 @@ const Input = (props) => {
       step={props.step}
       onChange={props.onChange}
       accept={props.accept}
+      required={props.required}
     />
   );
 };

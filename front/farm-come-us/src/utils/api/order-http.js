@@ -12,13 +12,13 @@ const clientOrderObjFormatter = (obj) => {
   };
 };
 
-const serverOrderObjFormatter = () => {
-  return {
-    memberId: 3,
-    itemId: 1,
-    oitemCount: 10,
-  };
-};
+// const serverOrderObjFormatter = () => {
+//   return {
+//     memberId: 3,
+//     itemId: 1,
+//     oitemCount: 10,
+//   };
+// };
 
 /* 단건 주문 */
 export async function orderProduct() {
@@ -27,17 +27,29 @@ export async function orderProduct() {
       method: "post",
       url: "api/api/v1/order",
       data: {
-        orderInfoDto: {
-          "itemId": 1,
-          "memberId": 3,
-          "oitemCount": 12,
-          "orderInfoDtoList": [
+          itemId: 1,
+          memberId: 3,
+          oitemCount: 2,
+          orderInfoDtoList: [
             null
           ]
-        },
       },
     });
     console.log(response);
+  } catch (err) {
+    console.err(err);
+  }
+}
+
+// 주문 조회
+ export async function orderList() {
+  try {
+    const response = axios({
+        method: "get",
+        url:  ORDER_API_URL,
+        params: {member : 2}
+    });
+    console.log((await response).data.orderList);
   } catch (err) {
     console.err(err);
   }
