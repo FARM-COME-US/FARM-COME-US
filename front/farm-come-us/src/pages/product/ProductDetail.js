@@ -6,24 +6,29 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { productDetail } from "../../utils/api/product-http";
-import { fetchStoreDetail } from "../../utils/api/store-http";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const ProductDetail = () => {
+  // const user = useSelector((state) => state.user); // 😀 고쳤음
+  const userId = useSelector((state) => state.userSlice.value.memberId);
+  console.log(userId);
+  console.log("유저입니다");
+  console.log(userId);
+
   const [itemDetail, setItemDetail] = useState({});
-  const [storeDetail, setStoreDetail] = useState({});
   const [amount, setAmount] = useState(1);
 
   const location = useLocation();
+  console.log("로케이션");
+  console.log(location);
 
   useEffect(() => {
     async function getItemDetail() {
       try {
         const itemData = await productDetail(location.state.item_id);
-        const storeData = await fetchStoreDetail(itemData.item.storeId);
         console.log(itemData);
-        console.log(storeData.data);
         setItemDetail(itemData);
-        setStoreDetail(storeData.data);
       } catch (err) {
         console.log(err);
       }
@@ -31,6 +36,28 @@ const ProductDetail = () => {
 
     getItemDetail();
   }, [location.state.item_id]);
+
+  const orderProduct = async function orderProduct() {
+    try {
+      console.log("######################@!@@@@@@@@@@@@@@@@");
+      console.log(
+        `아이템번호:${location.state.item_id} 유저번호:${userId} 개수:${amount}`
+      );
+      const response = await axios({
+        method: "post",
+        url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/order",
+        data: {
+          itemId: location.state.item_id,
+          memberId: userId,
+          oitemCount: amount,
+          // orderInfoDtoList: [null],
+        },
+      });
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -45,6 +72,7 @@ const ProductDetail = () => {
 
   if (itemDetail.item) {
     console.log("렌더링 성공");
+    console.log(itemDetail);
 
     const discountPrice =
       itemDetail.item.itemPrice * (1 - itemDetail.item.itemDiscount / 100);
@@ -62,12 +90,12 @@ const ProductDetail = () => {
           ></MdOutlineArrowBackIos>
           <div className={classes.storename}>
             <Link to="/store" state={{ storeId: itemDetail.item.storeId }}>
-              {storeDetail.store.storeName}
+              {itemDetail.item.storeName}
             </Link>
           </div>
         </div>
         <Card className={classes.imagecard}>
-          <img src={itemDetail.itemImage[0]} alt="공백"></img>
+          <img src={itemDetail.item.savedPath} alt="공백"></img>
         </Card>
         <div className={classes.productname}>{itemDetail.item.itemName}</div>
         <div className={classes.productscript}>
@@ -107,18 +135,19 @@ const ProductDetail = () => {
           <div className={classes.cartbutton}>
             <MdShoppingCart className={classes.carticon} />
           </div>
-          <div className={classes.buybutton}>
+          <div className={classes.buybutton} onClick={orderProduct}>
             <Link
               to="/payment"
               state={{
-                storename: storeDetail.store.storeName,
+                storename: itemDetail.item.storeName,
                 productname: itemDetail.item.itemName,
+                memberId: userId,
                 price: resultPrice,
                 amount: amount,
               }}
               className={classes.buybuttonlink}
             >
-              구매하기
+              <div>구매하기</div>
             </Link>
           </div>
         </div>
