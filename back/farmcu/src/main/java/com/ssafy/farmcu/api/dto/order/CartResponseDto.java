@@ -21,10 +21,16 @@ public class CartResponseDto {
     @NotNull
     private Long itemId;
 
-//    private Long storeId;   // => 같은 상점끼리 묶어서 보여주기
-//    private Long cartId;
-//    private int getTotalPrice;
-//    private int itemSalePercent;
-//    private String cartItemImg;
-//    private String storeName;
+    private Long storeId;
+
+    private Long cartId;
+
+    private int getTotalPrice;
+
+    private int itemSale;
+
+    private String cartItemImg;
+
+    private String storeName;
+
 }
