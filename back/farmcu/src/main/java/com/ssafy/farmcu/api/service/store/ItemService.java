@@ -1,7 +1,6 @@
 package com.ssafy.farmcu.api.service.store;
 
 import com.ssafy.farmcu.api.dto.store.ItemDto;
-import com.ssafy.farmcu.api.dto.store.ItemListRes;
 import com.ssafy.farmcu.api.dto.store.ItemSearchReq;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
