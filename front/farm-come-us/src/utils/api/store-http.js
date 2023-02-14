@@ -151,17 +151,28 @@ export async function fetchFavStores(memberId) {
 
 /* 스토어 찜 */
 export async function addFavStore(userId, storeId) {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: { token: sessionStorage.getItem("accessToken") },
+      token: sessionStorage.getItem("accessToken"),
+    },
+    withCredentials: false,
+  };
+
+  const data = {
+    memberId: userId,
+    storeId: storeId,
+  };
+
   try {
-    const response = axios({
-      method: "post",
-      url: STORE_LIKE_API_URL,
-      data: {
-        id: null,
-        memberId: userId,
-        storeId: storeId,
-      },
-    });
-    console.log(response);
+    const response = axios.post(
+      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/storelikes`,
+      data,
+      config
+    );
+    console.log(response.success);
   } catch (err) {
     console.err(err);
   }

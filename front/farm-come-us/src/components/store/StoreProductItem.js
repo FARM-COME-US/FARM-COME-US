@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import classes from "./style/StoreProductItem.module.scss";
 
 const StoreProductItem = (props) => {
+  console.log(props);
   const convertedPrice = props.product.itemPrice
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -11,7 +12,7 @@ const StoreProductItem = (props) => {
     <Link to={`/product-detail`} state={{ item_id: props.product.itemId }}>
       <div className={classes.container}>
         <div className={classes.imagespace}>
-          <img src="https://via.placeholder.com/300" alt="공백"></img>
+          <img src={props.product.savedPath[0]} alt="공백"></img>
         </div>
         <div className={classes.scriptspace}>
           <div className={classes.firstline}>
@@ -20,7 +21,9 @@ const StoreProductItem = (props) => {
               {props.product.itemStock}kg
             </div>
           </div>
-          <div className={classes.thirdline}>{props.product.productScript}</div>
+          <div className={classes.thirdline}>
+            {props.product.itemDescription}
+          </div>
           <div className={classes.secondline}>5kg / {convertedPrice}원</div>
         </div>
       </div>
