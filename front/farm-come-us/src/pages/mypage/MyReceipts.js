@@ -1,15 +1,12 @@
 import { useState, useEffect } from "react";
 import MyReceiptItem from "../../components/mypage/MyReceiptItem";
 import classes from "./style/MyReceipts.module.scss";
-<<<<<<< HEAD
 import { orderList } from "../../utils/api/order-http";
-
-const res = orderList()
-console.log(res)
-=======
 import axios from "axios";
 import { useSelector } from "react-redux";
->>>>>>> origin/FE
+
+const res = orderList();
+console.log(res);
 
 const MyReceipts = (props) => {
   const [myReceiptsInfoArr, setReceiptsInfoArr] = useState("");
