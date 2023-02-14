@@ -162,7 +162,7 @@ export async function addFavStore(userId, storeId) {
   };
 
   const data = {
-    userId: userId,
+    memberId: userId,
     storeId: storeId,
   };
 
