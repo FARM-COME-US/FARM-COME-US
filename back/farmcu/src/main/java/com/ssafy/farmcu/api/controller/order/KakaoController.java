@@ -27,16 +27,6 @@ import java.util.NoSuchElementException;
 @Api(value = "pay API")
 public class KakaoController {
 
-    //오류
-//    private final KakaoService kakaoService;
-//    private final MemberService memberService;
-//
-//    @Autowired
-//    public KakaoController(KakaoService kakaoService, MemberService memberService) {
-//        this.kakaoService = kakaoService;
-//        this.memberService = memberService;
-//    }
-
     private final KakaoService kakaoService;
     private final MemberService memberService;
 

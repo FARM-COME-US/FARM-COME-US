@@ -2,34 +2,26 @@ package com.ssafy.farmcu.api.controller.order;
 
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.ssafy.farmcu.api.dto.order.CartDto;
 import com.ssafy.farmcu.api.dto.order.CartOrderDto;
-import com.ssafy.farmcu.api.dto.store.ItemDto;
-import com.ssafy.farmcu.api.dto.store.ItemImageDto;
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.service.order.CartService;
 import com.ssafy.farmcu.api.service.order.CartServiceImpl;
 import com.ssafy.farmcu.api.service.order.OrderServiceImpl;
-import com.ssafy.farmcu.oauth.PrincipalDetails;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.Model;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-//@RequiredArgsConstructor
+
 @RestController
 @RequestMapping("api/v1/cart")
 @Component
@@ -103,9 +95,9 @@ public class CartController {
         if (cartOrderDtoList == null || cartOrderDtoList.size() == 0) { //리스트가 비었거나 0개면
             return new ResponseEntity<String>("선택된 상품이 없습니다.", HttpStatus.BAD_REQUEST);
         }
-        //주문로직에 장바구니 리스트와 멤버 정보 전달
+
         Long orderId = cartService.orderCart(cartOrderDtoList, memberId);
-        //주문번호 리턴
+
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 
