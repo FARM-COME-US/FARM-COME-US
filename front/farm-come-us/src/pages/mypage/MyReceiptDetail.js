@@ -3,6 +3,7 @@ import classes from "./style/MyReceiptDetail.module.scss";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import MyReceiptDetailItem from "../../components/receipt/myreceipt/MyReceiptDetailItem";
+import Button from "../../components/common/Button";
 import axios from "axios";
 
 const MyReceiptDetail = () => {
@@ -138,7 +139,7 @@ const MyReceiptDetail = () => {
           </div>
         </div>
         <div>
-          <div>환불 / 결제취소</div>
+          <Button>환불 / 결제취소</Button>
         </div>
       </div>
     </div>
