@@ -22,7 +22,7 @@ public class MemberDto {
         this.nickname = member.getNickname();
         this.name = member.getName();
         this.email = member.getEmail();
-        this.streetAddr = member.getEmail();
+        this.streetAddr = member.getStreetAddr();
         this.detailAddr = member.getDetailAddr();
         this.zipcode = member.getZipcode();
         this.phoneNumber = member.getPhoneNumber();
