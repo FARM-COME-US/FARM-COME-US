@@ -18,8 +18,6 @@ function Login() {
   // const dispatch = useDispatch();
   const dispatch = useDispatch();
   const location = useLocation();
-  // console.log("성공");
-  // console.log(location);
   let signUpId = "";
   let signUpPassword = "";
 
@@ -55,15 +53,11 @@ function Login() {
     };
 
     try {
-      console.log("로그인시도");
-      console.log(data);
-
       const response = await axios.post(
         process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/login",
         data,
         config
       );
-      console.log(response);
 
       const accessToken = response.data["token"];
       sessionStorage.setItem("accessToken", accessToken);
@@ -78,10 +72,7 @@ function Login() {
           },
         }
       );
-      // console.log("응답");
-      // console.log(userDataRes);
-      // console.log("응답의 data의 userInfo");
-      // console.log(userDataRes.data.userInfo);
+
       dispatch(userSlice.actions.login(userDataRes.data.userInfo));
       navigate("/");
     } catch (err) {
@@ -98,15 +89,6 @@ function Login() {
   const LoginSubmit = (e) => {
     e.preventDefault();
     loginHandler();
-
-    // dispatch(
-    //   userSlice.actions.login({ userId: userId, password: password })
-    // );
-
-    // console.log({ userId: userId, password: password });
-    // alert(
-    //   "이렇게 하지말고 밑 오른쪽에 오류를 알려주는걸 흔들면서 넣어줘야지. 수정필요"
-    // );
   };
 
   return (
@@ -116,9 +98,6 @@ function Login() {
         className={`${classes.centeralign} ${classes.marginSpacing20px}`}
         onSubmit={LoginSubmit}
       >
-        {/* <label htmlFor="id">
-          <MdPermIdentity />
-        </label> 😀라벨 일단 제거 */}
         <div className={isError ? classes.vibration : ""}>
           <MdPermIdentity className={classes.idicon} />
           <input
@@ -132,7 +111,7 @@ function Login() {
           />
         </div>
         <br />
-        {/* <label htmlFor="password">PW: </label>😀라벨 일단 제거 */}
+
         <div className="asdasd">
           <div className={isError ? classes.vibration : ""}>
             <MdLockOutline className={classes.pwicon} />
