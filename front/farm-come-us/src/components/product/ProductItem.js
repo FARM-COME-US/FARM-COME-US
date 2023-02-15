@@ -4,8 +4,6 @@ import Card from "../common/Card";
 import { Link } from "react-router-dom";
 
 const ProductItem = (props) => {
-  console.log(props.item);
-
   if (props) {
     const convertedPrice = props.item.itemPrice
       .toString()

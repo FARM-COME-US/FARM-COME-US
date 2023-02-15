@@ -102,18 +102,11 @@ export async function fetchUpdateStore(storeInfo) {
     headers: {
       "Content-Type": "multipart/form-data",
       "Access-Control-Allow-Origin": "*",
-      token: sessionStorage.getItem("accessToken"),
     },
     withCredentials: false,
   };
 
-  const storeId = storeInfo.storeId;
-  try {
-    const response = axios.put(`${STORE_API_URL}/${storeId}`, formData, config);
-    console.log(response.success);
-  } catch (err) {
-    console.err(err);
-  }
+  return axios.put(`${STORE_API_URL}`, formData, config);
 }
 
 /* 스토어 삭제 */

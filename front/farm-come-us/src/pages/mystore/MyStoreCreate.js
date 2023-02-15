@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { fetchMyStoreDetail } from "../../utils/api/store-http";
 import classes from "./style/MyStoreCreate.module.scss";
 
 import { useDispatch } from "react-redux";
@@ -15,7 +16,12 @@ const MyStoreCreate = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { userInfo } = location.state;
+
+  let userInfo = null;
+  if (location.state) {
+    userInfo = location.state;
+  }
+
   const [storeInfo, setStoreInfo] = useState({
     memberId: "",
     storeDeliveryCost: "",
@@ -29,13 +35,21 @@ const MyStoreCreate = () => {
     storeZipcode: "",
   });
   const [storeNameIsValid, setStoreNameIsValid] = useState();
-  const [storeId, setStoreId] = useState("");
-  // 마이스토어가 있는데 들어왔으면 마이스토어로 redirect
 
   useEffect(() => {
-    if (userInfo.storeId) {
-      navigate("/mystore", { replace: true });
+    if (!userInfo) {
+      alert("잘못된 접근입니다.");
+      navigate(-1);
+      return;
     }
+
+    fetchMyStoreDetail(userInfo.memberId)
+      .then((res) => {
+        navigate("/mystore");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const user = useSelector((state) => state.userSlice.value);

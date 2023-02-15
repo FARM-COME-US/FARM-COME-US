@@ -12,6 +12,7 @@ import com.ssafy.farmcu.api.service.store.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 @RestController
 @RequestMapping("api/v1/item")
 @RequiredArgsConstructor
@@ -96,6 +98,7 @@ public class ItemController {
     @PostMapping("/keyword")
     @ApiOperation(value = "상품 목록 조회")
     public ResponseEntity<HashMap<String, Object>> selectItemList(@RequestBody ItemSearchReq itemSearchReq, Integer page, Integer size) {
+        log.info("ItemSearchReq DTO: {}", itemSearchReq);
         PageRequest pageRequest = PageRequest.of(page, size);
         HashMap<String, Object> itemText = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq, pageRequest);
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");

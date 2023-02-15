@@ -8,16 +8,16 @@ const ProductItem = (props) => {
   return (
     <li className={`${classes.productItem}`}>
       <Card className={`${classes.productCard}`}>
-        <img src="https://via.placeholder.com/300" alt="productImg" />
+        <img src={props.product.savedPath} alt="product-img" />
         <div className={`${classes.productInfo}`}>
           <div className={`${classes.productName}`}>
-            {props.product.productName}
+            {props.product.itemName}
           </div>
           <div className={`${classes.priceInfo}`}>
             <span className={`${classes.discount}`}>
-              {`${props.product.discount}%`}
+              {`${props.product.itemDiscount}%`}
             </span>
-            <span>{`${props.product.price} / ${props.product.unit}상자`}</span>
+            <span>{`${props.product.itemPrice}원`}</span>
           </div>
           <div className={`${classes.storeInfo}`}>
             <span className={`${classes.storeName}`}>
