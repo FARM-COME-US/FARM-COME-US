@@ -34,9 +34,7 @@ const LiveItem = (props) => {
             </div>
             <div className={classes.productInfo}>
               <span className={classes.discount}>{props.live.discount}%</span>
-              <span>
-                {convertedPrice} / {props.live.unit}상자
-              </span>
+              <span>{convertedPrice} 원</span>
             </div>
           </CardCaption>
         </figure>
