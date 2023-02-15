@@ -32,9 +32,6 @@ export async function userSignUp(userInfo) {
       config
     );
     sessionStorage.setItem("accessToken", response.data);
-    // asdasd
-    console.log(response);
-    console.log(response.data);
   } catch (err) {
     console.err(err);
   }
@@ -50,7 +47,7 @@ export async function login(id, password) {
         password: password,
       }
     );
-    console.log(response);
+
     const accessToken = response.data["token"];
     sessionStorage.setItem("accessToken", accessToken);
   } catch (err) {
@@ -60,7 +57,7 @@ export async function login(id, password) {
 
 export async function fetchUserInfoWithAccessToken() {
   const accessToken = sessionStorage.getItem("accessToken");
-  console.log(accessToken);
+
   try {
     const userDataRes = axios.get("/api/api/v1/member/", {
       headers: {

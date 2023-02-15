@@ -7,6 +7,7 @@ import com.ssafy.farmcu.api.repository.StoreImageRepository;
 import com.ssafy.farmcu.api.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,11 +15,13 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class StoreImageServiceImpl implements StoreImageService {
 
     private final StoreRepository storeRepository;
     private final StoreImageRepository storeImageRepository;
 
+    @Transactional
     @Override
     public boolean saveStoreImage(StoreImageDto storeImageDto) {
         try {
@@ -37,15 +40,22 @@ public class StoreImageServiceImpl implements StoreImageService {
         }
     }
 
+    @Transactional
     @Override
     public boolean updateStoreImage(StoreImageDto storeImageDto) {
         try {
             Store store = storeRepository.findByStoreId(storeImageDto.getStoreId()).orElseThrow(NullPointerException::new);
-            StoreImage storeImage = storeImageRepository.findByStoreAndStoreImageId(store, storeImageDto.getStoreImageId()).orElseThrow(NullPointerException::new);
+            StoreImage storeImage = storeImageRepository.findByStoreId(storeImageDto.getStoreId()).orElseThrow(NullPointerException::new);
             storeImage.setOriginalName(storeImageDto.getOriginalName());
             storeImage.setSavedPath(storeImage.getSavedPath());
 
-            storeImageRepository.save(storeImage);
+            StoreImage newStoreImage =  StoreImage.builder()
+                            .storeImageId(storeImageDto.getStoreImageId())
+                    .originalName(storeImageDto.getOriginalName())
+                    .savedPath(storeImageDto.getSavedPath())
+                                    .store(store).build();
+
+            storeImageRepository.save(newStoreImage);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,6 +63,7 @@ public class StoreImageServiceImpl implements StoreImageService {
         }
     }
 
+    @Transactional
     @Override
     public boolean deleteStoreImage(Long storeImageId) {
         try {
