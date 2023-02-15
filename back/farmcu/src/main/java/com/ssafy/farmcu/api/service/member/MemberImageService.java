@@ -7,7 +7,7 @@ public interface MemberImageService {
     public boolean saveMemberImage(MemberImageDto memberImageDto);
 
     //이미지 수정
-    public boolean updateMemberImage(MemberImageDto memberImageDto);
+    public boolean updateMemberImage(Long id, String savedPath, String originalName);
 
     //이미지 삭제
     public boolean deleteMemberImage(Long memberImageId);
