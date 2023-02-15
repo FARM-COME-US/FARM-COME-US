@@ -11,7 +11,13 @@ const MyReceiptItem = (props) => {
   };
 
   const receiptDetailHandler = () => {
-    navigate(`/mypage/recipt/${props.id}`);
+    navigate(`/receipt/${props.id}`, {
+      state: {
+        orderId: props.orderId,
+        orderDate: props.orderDate,
+        orderLength: item.items.length,
+      },
+    });
   };
   // item1 = { id:orderId, items:[강원도배추, 제즈스윗당근],
   //         cost:429,000, orderdate:2023.01.10 21:12:58, }

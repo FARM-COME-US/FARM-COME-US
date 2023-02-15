@@ -112,7 +112,6 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
-        {/* <Route path="/kakao" element={<OAuth2RedirectHandler />}></Route> */}
         <Route path="/kakao" element={<AdditionalInfo />}></Route>
         <Route
           path="/oauthRedirect"
