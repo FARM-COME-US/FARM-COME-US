@@ -4,7 +4,12 @@ import classes from "./style/Card.module.scss";
 
 const Card = (props) => {
   return (
-    <div className={`${classes.card} ${props.className}`}>{props.children}</div>
+    <div
+      className={`${classes.card} ${props.className}`}
+      onClick={props.onClick}
+    >
+      {props.children}
+    </div>
   );
 };
 

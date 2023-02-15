@@ -29,24 +29,26 @@ public class StoreDto {
     private String storeDetailAddr;
     private String storeZipcode;
     private String storePhoneNumber;
-    private Integer storeDeliveryCost;
-    private Integer storeDeliveryFree;
+    private int storeDeliveryCost;
+    private int storeDeliveryFree;
     private Timestamp createdAt;
     private Live live;
     private Member member;
+    private Long memberId;
 //    private List<StoreLike> storeLike = new ArrayList<>();
 
     public StoreDto(Store store){
         this.storeId = store.getStoreId();
         this.storeName = store.getStoreName();
         this.storeDescription = store.getStoreDescription();
-        this.storeImg = store.getStoreImg();
+        if(!store.getStoreId().equals(".")) {
+            this.storeImg = store.getStoreImg();
+        }
         this.storeStreetAddr = store.getStoreStreetAddr();
         this.storeDetailAddr = store.getStoreDetailAddr();
         this.storeZipcode = store.getStoreZipcode();
         this.storePhoneNumber = store.getStorePhoneNumber();
         this.storeDeliveryCost = store.getStoreDeliveryCost();
         this.storeDeliveryFree = store.getStoreDeliveryFree();
-
     }
 }

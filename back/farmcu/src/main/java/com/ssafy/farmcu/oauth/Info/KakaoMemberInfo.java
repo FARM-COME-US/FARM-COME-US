@@ -29,7 +29,9 @@ public class KakaoMemberInfo implements OAuth2MemberInfo{
 
     @Override
     public String getName() {
-        return (String) attributes.get("nickname");
+        Map<String, Object> map = (Map<String, Object>)attributes.get("profile");
+        String name = (String)map.get("nickname");
+        return name;
     }
 
 //    @Override

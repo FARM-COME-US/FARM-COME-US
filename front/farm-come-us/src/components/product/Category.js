@@ -1,13 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CategoryItem from "./CategoryItem";
 import classes from "./style/Category.module.scss";
+import { categoryTitle } from "../../utils/api/category-http";
 
 const Category = (props) => {
-  let list = props.list.map((item) => (
-    <CategoryItem key={item.categoryId} name={item.categoryName}></CategoryItem>
-  ));
+  const [categoryTitleState, setCategoryTitleState] = useState([]);
 
-  return <div className={classes.container}>{list}</div>;
+  useEffect(() => {
+    async function getCategoryTitle() {
+      try {
+        const categoryList = await categoryTitle();
+        setCategoryTitleState(categoryList);
+        return categoryList;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    getCategoryTitle();
+  }, []);
+
+  const sendName = (category_name) => {
+    props.getCategoryName(category_name);
+  };
+
+  if (categoryTitleState.length > 0) {
+    let list = [];
+    list = categoryTitleState.map((item) => (
+      <CategoryItem
+        category_name={item.categoryName}
+        category_id={item.categoryCode}
+        key={item.categoryCode}
+        getName={sendName}
+      ></CategoryItem>
+    ));
+
+    return (
+      <div>
+        <div className={classes.container}>{list}</div>
+      </div>
+    );
+  }
 };
 
 export default Category;

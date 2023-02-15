@@ -13,7 +13,10 @@ const LiveItem = (props) => {
 
   return (
     <li className={classes.liveItem}>
-      <Card className={classes.liveCard}>
+      <Card
+        className={classes.liveCard}
+        onClick={() => props.onClick(props.live)}
+      >
         <figure>
           <img src="https://via.placeholder.com/300" alt="livePreview" />
           <figcaption className={classes.badge}>
