@@ -2,55 +2,63 @@ import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import MyPageHeader from "../../components/mypage/MyPageHeader";
 import { fetchUpdateUserInfo } from "../../utils/api/user-http";
-import { useDispatch } from "react-redux";
+import { fetchMyStoreDetail } from "../../utils/api/store-http";
 import { useSelector } from "react-redux";
 import userSlice from "../../reduxStore/userSlice";
 import axios from "axios";
 
-const MyPage = (props) => {
-  const dispatch = useDispatch();
-  // 유저정보 관리 변수
-
+const MyPage = () => {
   const [isEditting, setIsEditting] = useState(false);
+
   const user = useSelector((state) => {
-    // console.log(state.userSlice.value);
     return state.userSlice.value;
   });
-  // console.log(user);
-  // setUserInfo(user);
   const [userInfo, setUserInfo] = useState({
     ...user,
     imgSrc: "",
     uploadFile: "",
   });
+  const [initUserInfo, setInitUserInfo] = useState({
+    ...user,
+    imgSrc: "",
+    uploadFile: "",
+  });
+  const [hasMyStore, setHasMyStore] = useState(false);
 
   useEffect(() => {
-    const storeUserData = async () => {
-      try {
-        const accessToken = sessionStorage.getItem("accessToken");
-        const userDataRes = await axios.get(
-          process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-              token: accessToken,
-            },
-          }
-        );
-        // dispatch(userSlice.actions.login());
-        userSlice.actions.login(userDataRes.data.userInfo);
-        const userInfo = userDataRes.data.userInfo;
-        userInfo["imgSrc"] = userDataRes.data.userImage.savedPath;
-        setUserInfo(userInfo);
-      } catch (err) {
+    const accessToken = sessionStorage.getItem("accessToken");
+    axios
+      .get(process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          token: accessToken,
+        },
+      })
+      .then((res) => {
+        const { userInfo, userImage } = res.data;
+        if (userImage) {
+          userInfo["imgSrc"] = userImage.savedPath;
+        }
+        setUserInfo((prev) => {
+          return { ...prev, ...userInfo };
+        });
+        userSlice.actions.login(userInfo);
+        setInitUserInfo((prev) => {
+          return { ...prev, ...userInfo };
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    fetchMyStoreDetail(userInfo.memberId)
+      .then((res) => {
+        setHasMyStore(true);
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    };
-    // const testMemberId = 1;
-    storeUserData();
-    // const fetchedInfo = fetchUserInfo(testMemberId);
-    // console.log(fetchedInfo);
+      });
   }, []);
 
   const toggleIsEditting = (e) => {
@@ -61,13 +69,12 @@ const MyPage = (props) => {
   const editInfoHandler = (e) => {
     e.preventDefault();
     fetchUpdateUserInfo(userInfo)
-      .then((res) => {
+      .then(() => {
         alert("사용자 정보가 수정되었습니다.");
       })
       .catch((err) => {
         console.error(err);
       });
-
     setIsEditting((prev) => !prev);
   };
 
@@ -83,7 +90,7 @@ const MyPage = (props) => {
   const cancelInfoEditHandler = () => {
     setUserInfo((prev) => {
       return {
-        ...userInfo,
+        ...initUserInfo,
       };
     });
 
@@ -99,6 +106,7 @@ const MyPage = (props) => {
         userInfo={userInfo}
         isEditting={isEditting}
         userInfoChangeHandler={userInfoChangeHandler}
+        hasMyStore={hasMyStore}
       />
       <Outlet
         context={{

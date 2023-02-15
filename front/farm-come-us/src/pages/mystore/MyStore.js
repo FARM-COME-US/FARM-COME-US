@@ -1,35 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { fetchUserInfoWithAccessToken } from "../../utils/api/user-http";
 import classes from "./style/MyStore.module.scss";
-import { fetchUpdateStore } from "../../utils/api/store-http";
-// import { fetchStoreDetail } from "../../utils/api/store-http";
+import {
+  fetchUpdateStore,
+  fetchStoreDetail,
+  fetchMyStoreDetail,
+} from "../../utils/api/store-http";
 import axios from "axios";
 import userSlice from "../../reduxStore/userSlice";
 import MyStoreHeader from "../../components/mystore/MyStoreHeader";
 
-const DUMMY_STORE_INFO = {
-  storeId: 1,
-  storeName: "고랭강원농장",
-  storeDescription:
-    "저희 농장은 강원도 고산지대에서 재배한 신선한 작물들을 제공합니다.",
-  storeStreetAddr: "강원도 평창군 봉평면 무야리 23-12",
-  storeDetailAddr: "",
-  zipcode: 18310,
-  detailAddr: "초가집",
-  phoneNumber: "010-1234-1234",
-  imgSrc: "https://via.placeholder.com/300",
-};
-
 const MyStore = () => {
-  const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice.value);
   let storeId = useSelector((state) => state.userSlice.store);
 
-  const [memberId, setMemberId] = useState("");
   const [isEditting, setIsEditting] = useState(false);
+  const [userInfo, setUserInfo] = useState();
   const [storeInfo, setStoreInfo] = useState({
     storeId: "",
     storeName: "",
@@ -43,43 +33,63 @@ const MyStore = () => {
     uploadFile: "",
   });
 
-  const fetchStoreData = async () => {
-    const accessToken = sessionStorage.getItem("accessToken");
-
-    const res = await axios.get(
-      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/mystore/${user.memberId}`,
-      {
-        headers: {
-          token: accessToken,
-        },
-      }
-    );
-    setStoreInfo((prev) => {
-      return {
-        ...prev,
-        ...res.data.store,
-        imgSrc: res.data.storeImage.savedPath,
-      };
-    });
-    // dispatch(userSlice.actions.saveStoreInfo(res.data.store.storeId));
-    console.log(res.data);
-    // console.log(res.storeImage.savedPath, ...res.data.store);
-
-    return res.data.store;
-  };
+  const [initStoreInfo, setInitStoreInfo] = useState({
+    storeId: "",
+    storeName: "",
+    storeDescription: "",
+    storeStreetAddr: "",
+    storeZipcode: "",
+    storeDetailAddr: "",
+    storePhoneNumber: "",
+    imgSrc: "",
+    savePath: "",
+    uploadFile: "",
+  });
 
   useEffect(() => {
-    fetchStoreData()
+    const accessToken = sessionStorage.getItem("accessToken");
+    if (!accessToken) {
+      alert("로그인 후 사용가능한 페이지입니다.");
+      navigate("/", { replace: true });
+    }
+
+    fetchUserInfoWithAccessToken()
       .then((res) => {
-        setStoreInfo((prev) => {
-          return { ...prev, res };
-        });
+        const data = res.data;
+        if (data.userInfo) {
+          setUserInfo((prev) => {
+            return {
+              ...prev,
+              ...data.userInfo,
+            };
+          });
+        }
       })
       .catch((err) => {
         console.error(err);
+        alert("존재하지 않는 사용자입니다.");
+        navigate("/", { replace: true });
       });
-    // dispatch(userSlice.actions.saveStoreInfo()); // 😀
-  }, [storeId]);
+  }, []);
+
+  useEffect(() => {
+    if (userInfo) {
+      fetchMyStoreDetail(userInfo.memberId)
+        .then((res) => {
+          const data = res.data;
+          console.log(data);
+          setStoreInfo(() => {
+            return { ...data };
+          });
+          setInitStoreInfo(() => {
+            return { ...data };
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [userInfo]);
 
   const reLoadUserData = async () => {
     const accessToken = sessionStorage.getItem("accessToken");
@@ -106,7 +116,7 @@ const MyStore = () => {
   const editInfoHandler = (e) => {
     e.preventDefault();
 
-    const store = {
+    const newStoreInfo = {
       memberId: storeInfo.memberId,
       storeDeliveryCost: storeInfo.storeDeliveryCost,
       storeDeliveryFree: storeInfo.storeDeliveryFree,
@@ -120,55 +130,31 @@ const MyStore = () => {
       storeZipcode: storeInfo.storeZipcode,
       uploadFile: storeInfo.uploadFile,
     };
-    // axios.put(process.env.REACT_APP_API_SERVER_URL + "/api/v1/store/");
 
-    async function updateStore(store, storeId) {
-      try {
-        const accessToken = sessionStorage.getItem("accessToken");
-        const response = axios({
-          method: "put",
-          url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${storeId}`,
-          // params: {
-          //   storeId: storeId,
-          // },
-          data: {
-            request: store,
-          },
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: "Bearer " + accessToken,
-            // Authorization: "Bearer " + accessToken,
-            token: accessToken,
-          },
-        });
-        // console.log(store.storeId);
-        // console.log(store);
-
-        console.log(response.success);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    updateStore(store, store.storeId);
-
-    fetchUpdateStore(store);
-    alert("스토어 정보가 수정되었습니다.");
-    fetchStoreData(store);
+    fetchUpdateStore(newStoreInfo)
+      .then((res) => {
+        console.log(res);
+        alert("스토어 정보가 수정되었습니다.");
+        fetchStoreDetail(newStoreInfo.storeId);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("스토어 정보 수정 중 오류가 발생했습니다.");
+      });
     setIsEditting((prev) => !prev);
   };
 
   const cancelInfoEditHandler = () => {
     setStoreInfo((prev) => {
       return {
-        storeId: DUMMY_STORE_INFO.storeId,
-        storeName: DUMMY_STORE_INFO.storeName,
-        storeDescription: DUMMY_STORE_INFO.storeDescription,
-        storeStreetAddr: DUMMY_STORE_INFO.storeStreetAddr,
-        storeZipcode: DUMMY_STORE_INFO.storeZipcode,
-        storeDetailAddr: DUMMY_STORE_INFO.storeDetailAddr,
-        storePhoneNumber: DUMMY_STORE_INFO.storePhoneNumber,
-        imgSrc: DUMMY_STORE_INFO.imgSrc,
+        storeId: initStoreInfo.storeId,
+        storeName: initStoreInfo.storeName,
+        storeDescription: initStoreInfo.storeDescription,
+        storeStreetAddr: initStoreInfo.storeStreetAddr,
+        storeZipcode: initStoreInfo.storeZipcode,
+        storeDetailAddr: initStoreInfo.storeDetailAddr,
+        storePhoneNumber: initStoreInfo.storePhoneNumber,
+        imgSrc: initStoreInfo.imgSrc,
       };
     });
 

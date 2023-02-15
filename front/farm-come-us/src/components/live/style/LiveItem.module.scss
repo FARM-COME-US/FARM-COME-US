@@ -39,6 +39,7 @@
           background-color: red;
           color: #fff;
           font-weight: bold;
+          font-size: 0.8rem;
         }
       }
 
@@ -58,7 +59,6 @@
         background-color: rgba(0, 0, 0, 0.6);
 
         .storeInfo {
-          font-size: 0.7rem;
           margin-bottom: 5px;
           font-family: "NanumSquareRoundB";
           font-weight: 600;
@@ -71,9 +71,11 @@
             text-overflow: ellipsis;
             margin: 0;
             padding: 0;
+            font-size: 0.7rem;
 
             .subfix {
               color: #f7863b;
+              font-size: 0.7rem;
             }
           }
         }
@@ -83,12 +85,20 @@
           overflow: hidden;
           white-space: nowrap;
           margin-bottom: 5px;
+
+          .text {
+            font-size: 0.9rem;
+          }
         }
 
         .productInfo {
           width: 100%;
           overflow: hidden;
           white-space: nowrap;
+
+          span {
+            font-size: 0.8rem;
+          }
 
           .discount {
             color: red;
