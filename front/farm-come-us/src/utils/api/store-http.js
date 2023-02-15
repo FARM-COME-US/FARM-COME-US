@@ -37,9 +37,6 @@ export async function fetchCreateStore(storeInfo, userInfo) {
     },
     withCredentials: false,
   };
-  console.log("유저정보");
-  console.log(userInfo.memberId);
-  console.log(data);
   try {
     const response = axios.post("/api/api/v1/store", formData, config);
     console.log(formData);
@@ -52,9 +49,10 @@ export async function fetchCreateStore(storeInfo, userInfo) {
 
 /* 스토어 상세 조회 */
 export async function fetchStoreDetail(storeId) {
+  const id = storeId;
   try {
     const response = axios.get(
-      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${storeId}`,
+      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${id}`,
       {
         // params: {
         //   storeId,
@@ -69,9 +67,15 @@ export async function fetchStoreDetail(storeId) {
   }
 }
 
+/* 사용자 아이디로 조회 */
+export async function fetchMyStoreDetail(memberId) {
+  return axios.get(
+    `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/mystore/${memberId}`
+  );
+}
+
 /* 스토어 정보 수정 */
 export async function fetchUpdateStore(storeInfo) {
-  console.log(storeInfo);
   const formData = new FormData();
   formData.append("uploadFile", storeInfo.uploadFile);
 
@@ -87,11 +91,8 @@ export async function fetchUpdateStore(storeInfo) {
     storeZipcode: storeInfo.storeZipcode,
   };
 
-  console.log(data);
-  console.log(storeInfo.uploadFile);
-
   formData.append(
-    "store",
+    "request",
     new Blob([JSON.stringify(data)], {
       type: "application/json",
     })
@@ -101,22 +102,11 @@ export async function fetchUpdateStore(storeInfo) {
     headers: {
       "Content-Type": "multipart/form-data",
       "Access-Control-Allow-Origin": "*",
-      Authorization: { token: sessionStorage.getItem("accessToken") },
-      token: sessionStorage.getItem("accessToken"),
     },
     withCredentials: false,
   };
 
-  try {
-    const response = axios(
-      `${STORE_API_URL}/${storeInfo.storeId}`,
-      data,
-      config
-    );
-    console.log(response.success);
-  } catch (err) {
-    console.err(err);
-  }
+  return axios.put(`${STORE_API_URL}`, formData, config);
 }
 
 /* 스토어 삭제 */

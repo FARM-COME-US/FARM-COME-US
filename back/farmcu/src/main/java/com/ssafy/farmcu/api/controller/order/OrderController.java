@@ -38,7 +38,7 @@ public class OrderController {
 
     @PostMapping(value = "")
     @ApiOperation(value = "상품 주문")
-    public ResponseEntity order(@RequestBody OrderInfoDto orderInfoDto){
+    public ResponseEntity order(@RequestBody OrderInfoDto orderInfoDto) {
 
         Long orderId; //주문번호 생성
 
@@ -106,12 +106,11 @@ public class OrderController {
 
     @PutMapping("/{orderId}")
     @ApiOperation(value = "주문 취소")
-    public ResponseEntity updateOrder(@PathVariable Long orderId){
+    public ResponseEntity updateOrder(@PathVariable Long orderId) {
 
         try {
-            orderService.updateOrder(orderId);
-        }
-        catch (Exception e) {
+            Order order = orderService.updateOrder(orderId);
+        } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
@@ -141,4 +140,5 @@ public class OrderController {
 
         return ResponseEntity.ok(resultMap2);
     }
+
 }
