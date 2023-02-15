@@ -2,6 +2,7 @@ import React from "react";
 
 import MyStoreContentTitle from "../../components/mystore/MyStoreContentTItle";
 import MyStoreReceiptList from "../../components/mystore/MyStoreReceiptList";
+import { useNavigate } from "react-router-dom";
 
 const DUMMY_RECEIPT = [
   {
@@ -52,6 +53,7 @@ const DUMMY_RECEIPT = [
 ];
 
 const MyStoreReceipt = () => {
+  const navigate = useNavigate();
   const showReceiptDetailHandler = (receipt) => {
     console.log(receipt);
   };
