@@ -98,9 +98,6 @@ function Login() {
         className={`${classes.centeralign} ${classes.marginSpacing20px}`}
         onSubmit={LoginSubmit}
       >
-        {/* <label htmlFor="id">
-          <MdPermIdentity />
-        </label> 😀라벨 일단 제거 */}
         <div className={isError ? classes.vibration : ""}>
           <MdPermIdentity className={classes.idicon} />
           <input
@@ -114,7 +111,7 @@ function Login() {
           />
         </div>
         <br />
-        {/* <label htmlFor="password">PW: </label>😀라벨 일단 제거 */}
+
         <div className="asdasd">
           <div className={isError ? classes.vibration : ""}>
             <MdLockOutline className={classes.pwicon} />
