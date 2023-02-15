@@ -40,9 +40,11 @@ public class OrderItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    private String tid;
+
     //빌더
     @Builder
-    public OrderItem(Order order, Item item, Long oitemId,Long storeNum, int oitemCount, LocalDateTime oitemCreatedAt, int oitemPrice ) {
+    public OrderItem(Order order, Item item, Long oitemId,Long storeNum,String tid ,int oitemCount, LocalDateTime oitemCreatedAt, int oitemPrice ) {
         this.order = order;
         this.item = item;
         this.oitemId = oitemId;
@@ -50,10 +52,11 @@ public class OrderItem {
         this.oitemCount = oitemCount;
         this.oitemCreatedAt = oitemCreatedAt;
         this.oitemPrice = oitemPrice;
+        this.tid = tid;
     }
 
     // 주문 상품 상세 정보 생성
-    public static OrderItem createOrderItem(Item item, int oitemCount) {
+    public static OrderItem createOrderItem( Item item, int oitemCount) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setOitemCount(oitemCount);
