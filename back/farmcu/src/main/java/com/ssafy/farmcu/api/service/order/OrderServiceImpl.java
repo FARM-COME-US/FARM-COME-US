@@ -104,6 +104,9 @@ public class OrderServiceImpl implements OrderService{
         return order;
     }
 
+    // threadLocal 선언
+    public static ThreadLocal<String> threadLocalValue = new ThreadLocal<>();
+
     // 카카오 결제시 tid 컬럼 값 생성
     @Transactional
     public Order updateTid(Long orderId, String tid) {
@@ -111,8 +114,22 @@ public class OrderServiceImpl implements OrderService{
         order.setTid(tid);
         order.getOrderItems().get(0).setTid(tid);
         orderRepository.save(order);
+        threadLocalValue.set(tid);
 
         return order;
+    }
+
+    public String tidtid(String tid) {
+        threadLocalValue.set(tid); // ThreadLocal에 set 값을 세팅
+        String tids = threadLocalValue.get();
+        return tids;
+    }
+
+    // ThreadLocal에 있는 값을 가져오기
+    public String threadLocal_1() {
+        String tid = threadLocalValue.get();
+        System.out.println("##############" + tid);
+        return tid;
     }
 
  // 내 주문 목록 조회
@@ -147,7 +164,7 @@ public class OrderServiceImpl implements OrderService{
 
     // 결제 완료
     public List<Order> completeOrder( Long orderId ){
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
+
        Order order = orderRepository.findById(orderId).get();
         order.setPayStatus(Order.PayStatus.PAY);
         return null;
@@ -162,5 +179,7 @@ public class OrderServiceImpl implements OrderService{
     public List<Order> findAllOrder() {
         return orderRepository.findAll();
     }
+
+
 
 }

@@ -9,6 +9,7 @@ import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
 import com.ssafy.farmcu.api.entity.order.pay.KaKaoPay;
+import com.ssafy.farmcu.api.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -27,6 +28,7 @@ import java.util.List;
 public class PayService {
 
     private final OrderServiceImpl orderService;
+    private final OrderRepository orderRepository;
     private final String PARTNER_USER_ID = "pillivery";
     private final String KAKAO_APPROVE_URL = "https://kapi.kakao.com/v1/payment/approve";
     private Long order_id;
@@ -57,10 +59,10 @@ public class PayService {
         return requestResponse;
     }
 
-    public KakaoPayApproveDto kakaoPayApprove(String tid, String pgToken ){
+    public KakaoPayApproveDto kakaoPayApprove(String pgToken ){
         MultiValueMap<String, String> parameters;
 
-        parameters = getApproveParams(tid, pgToken, order_id);
+        parameters = getApproveParams(pgToken, order_id);
 
         KakaoPayApproveDto kakaoPayApproveDto = getKakaoPayApproveDto(parameters);
 
@@ -76,10 +78,13 @@ public class PayService {
         return kakaoPayApproveDto;
     }
 
-    private MultiValueMap<String, String> getApproveParams( String tid, String pgToken, Long order_id ){ //TODO : 파라미터 추가
+    private MultiValueMap<String, String> getApproveParams(String pgToken, Long order_id ){ //TODO : 파라미터 추가
 
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
 
+        String tid = orderRepository.findByOrderId(order_id).get().getTid();
+
+        System.out.println(tid + "###########################");
         parameters.add("cid", "TC0ONETIME");
         parameters.add("tid", tid);
         parameters.add("partner_order_id", String.valueOf(order_id));
