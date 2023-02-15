@@ -216,16 +216,19 @@ public class MemberController {
         Long id = tokenProvider.getId(authToken);
         MemberDto member = memberService.getUserInfo(id);
         if (authToken.validate()) {
+            System.out.println("***************************회원 정보 수정할게요*********************");
             memberService.updateMember(memberUpdateReq, member.getId());
             if(uploadFile!=null){
                 String savedPath = s3Service.uploadFile(uploadFile);
                 log.info("here save file");
-                MemberImageDto memberImageDto = MemberImageDto.builder()
-                        .memberId(id)
-                        .originalName(uploadFile.getOriginalFilename())
-                        .savedPath(savedPath).build();
-
-                memberImageService.saveMemberImage(memberImageDto);
+                MemberImageDto memberImageDto = memberImageService.findMemberImageByMemberId(id);
+                if(memberImageDto!=null){
+                    System.out.println(memberImageDto.getMemberId()+" "+memberImageDto.getMemberImageId());
+                    System.out.println("memberImageDTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                    Long imageId = memberImageDto.getMemberImageId();
+                    String originalName = uploadFile.getOriginalFilename();
+                    memberImageService.updateMemberImage(imageId, savedPath, originalName);
+                }
             }
 
             resultMap.put("message", "success");
