@@ -38,6 +38,7 @@ import MyStoreLive from "./pages/mystore/MyStoreLive";
 import MyStoreProducts from "./pages/mystore/MyStoreProducts";
 import MyStoreReceipt from "./pages/mystore/MyStoreReceipt";
 import BroadCast from "./pages/BroadCast";
+import Test from "./pages/test";
 
 import Store from "./pages/store/Store";
 import StoreLive from "./pages/store/StoreLive";
@@ -128,6 +129,7 @@ const App = () => {
         </Route>
         <Route path="mystorecreate" element={<MyStoreCreate />} />
         <Route path="/broadcast" element={<BroadCast />} />
+        <Route path="/testttt" element={<Test />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
