@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import classes from "./style/LiveList.module.scss";
 
@@ -6,16 +6,7 @@ import LiveItem from "./LiveItem";
 import ReservedLiveItem from "./ReservedLiveItem";
 
 const LivePreviewList = (props) => {
-  let list = <span>등록된 라이브가 없습니다.</span>;
-
-  if (props.isLive) {
-    console.log("======== Live ======= ");
-    console.log(props.sessionList);
-    console.log(props.liveList);
-  } else {
-    console.log("======== Reserved Live ======= ");
-    console.log(props.liveList);
-  }
+  let list = <p className={classes.noData}>등록된 라이브가 없습니다.</p>;
 
   if (props.liveList && props.liveList.length > 0) {
     list = props.isLive

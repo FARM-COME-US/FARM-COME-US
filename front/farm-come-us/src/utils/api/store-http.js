@@ -37,9 +37,6 @@ export async function fetchCreateStore(storeInfo, userInfo) {
     },
     withCredentials: false,
   };
-  console.log("유저정보");
-  console.log(userInfo.memberId);
-  console.log(data);
   try {
     const response = axios.post("/api/api/v1/store", formData, config);
     console.log(formData);
@@ -69,9 +66,21 @@ export async function fetchStoreDetail(storeId) {
   }
 }
 
+export async function fetchMyStoreDetail(memberId) {
+  const accessToken = sessionStorage.getItem("accessToken");
+  return axios.get(
+    `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/mystore/${memberId}`,
+
+    {
+      headers: {
+        token: accessToken,
+      },
+    }
+  );
+}
+
 /* 스토어 정보 수정 */
 export async function fetchUpdateStore(storeInfo) {
-  console.log(storeInfo);
   const formData = new FormData();
   formData.append("uploadFile", storeInfo.uploadFile);
 
@@ -87,11 +96,8 @@ export async function fetchUpdateStore(storeInfo) {
     storeZipcode: storeInfo.storeZipcode,
   };
 
-  console.log(data);
-  console.log(storeInfo.uploadFile);
-
   formData.append(
-    "store",
+    "request",
     new Blob([JSON.stringify(data)], {
       type: "application/json",
     })
@@ -101,18 +107,14 @@ export async function fetchUpdateStore(storeInfo) {
     headers: {
       "Content-Type": "multipart/form-data",
       "Access-Control-Allow-Origin": "*",
-      Authorization: { token: sessionStorage.getItem("accessToken") },
       token: sessionStorage.getItem("accessToken"),
     },
     withCredentials: false,
   };
 
+  const storeId = storeInfo.storeId;
   try {
-    const response = axios(
-      `${STORE_API_URL}/${storeInfo.storeId}`,
-      data,
-      config
-    );
+    const response = axios.put(`${STORE_API_URL}/${storeId}`, formData, config);
     console.log(response.success);
   } catch (err) {
     console.err(err);

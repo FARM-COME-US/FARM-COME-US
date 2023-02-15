@@ -9,7 +9,6 @@ const SideMenuItem = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.userSlice.value.memberId);
-  console.log(user);
 
   return (
     <div
