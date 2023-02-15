@@ -33,7 +33,7 @@ public class PayService {
 
     public KakaoReqDto kakaoPayRequest(int totalPrice, int quantity, Long orderId, Long memberId){
 
-        Order order = orderService.updateOrder(orderId);
+        Order order = orderService.updateOrderForPay(orderId);
         List<OrderItem> orderItems = orderService.findOrderDetail(order);
 
         int itemQuantity = quantity;
@@ -67,15 +67,6 @@ public class PayService {
         return kakaoPayApproveDto;
     }
 
-//    public KakaoPayApproveDto kakaoSubsPayApprove( String tid, String pgToken ){
-//
-//        MultiValueMap<String, String> parameters;
-//        parameters = getSubsApproveParams(tid, pgToken, order_id);
-//        KakaoPayApproveDto kakaoPayApproveDto = getKakaoPayApproveDto(parameters);
-//
-//        return kakaoPayApproveDto;
-//    }
-
     private KakaoPayApproveDto getKakaoPayApproveDto( MultiValueMap<String, String> parameters ){
 
         HttpEntity<MultiValueMap<String, String>> kakaoRequestEntity = new HttpEntity<>(parameters, getKakaoHeader());
@@ -98,18 +89,6 @@ public class PayService {
         return parameters;
     }
 
-    private MultiValueMap<String, String> getSubsApproveParams( String tid, String pgToken, Long order_id ){ //TODO : 파라미터 추가
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-
-        parameters.add("cid", "TCSUBSCRIP");
-        parameters.add("tid", tid);
-        parameters.add("partner_order_id", String.valueOf(order_id));
-        parameters.add("partner_user_id", PARTNER_USER_ID);
-        parameters.add("pg_token", pgToken);
-
-        return parameters;
-    }
-
     private MultiValueMap<String, String> getRequestParams( int totalAmount, int quantity, String item_name, Long order_Id ){ //TODO: 파라미터 추가
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
 
@@ -120,7 +99,7 @@ public class PayService {
         parameters.add("total_amount", String.valueOf(totalAmount));
         parameters.add("tax_free_amount", "0");
         parameters.add("cid", "TC0ONETIME");
-        parameters.add("approval_url", "https://localhost:9090");
+        parameters.add("approval_url", "http://localhost:9090/api/v1/pay/kakao/success");
         parameters.add("cancel_url", "https://localhost:9090");
         parameters.add("fail_url", "https://localhost:9090");
 

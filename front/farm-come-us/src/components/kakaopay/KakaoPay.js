@@ -4,17 +4,14 @@ const kakaoClick = async () => {
     const setUrl = ""
     try {
         const response = await axiosInstance.get(
-            `api/api/v1/pay/kakaoreq?orderId=${orderId}?memberId=${memberId}?itemCount${itemCount}`,
+            `api/api/v1/pay/kakaoreq?orderId=35?memberId=1?itemCount=10`,
         );
         const setUrl = response.data.next_redirect_pc_url;
         
         if (setUrl) {
             const kakapGo = async() => {
                 try {
-                    const response = await axiosInstance.get(
-                        setUrl,
-                        
-                    );
+                    window.open(setUrl)
                 } catch(err) {
                     console.err(err);
                 }
