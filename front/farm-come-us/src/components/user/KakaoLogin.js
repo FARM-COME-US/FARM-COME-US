@@ -13,7 +13,7 @@ const KakaoLogin = (props) => {
   // const KAKAO_AUTH_URL =
   //   process.env.REACT_APP_API_SERVER_URL + "/api/v1/login/oauth";
 
-  console.log(KAKAO_AUTH_URL);
+  // console.log(KAKAO_AUTH_URL);
   const handleKakaoLogin = (e) => {
     e.preventDefault();
     console.log(KAKAO_AUTH_URL);
