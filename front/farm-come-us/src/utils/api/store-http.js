@@ -49,9 +49,10 @@ export async function fetchCreateStore(storeInfo, userInfo) {
 
 /* 스토어 상세 조회 */
 export async function fetchStoreDetail(storeId) {
+  const id = storeId;
   try {
     const response = axios.get(
-      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${storeId}`,
+      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/${id}`,
       {
         // params: {
         //   storeId,
@@ -66,16 +67,10 @@ export async function fetchStoreDetail(storeId) {
   }
 }
 
+/* 사용자 아이디로 조회 */
 export async function fetchMyStoreDetail(memberId) {
-  const accessToken = sessionStorage.getItem("accessToken");
   return axios.get(
-    `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/mystore/${memberId}`,
-
-    {
-      headers: {
-        token: accessToken,
-      },
-    }
+    `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/mystore/${memberId}`
   );
 }
 

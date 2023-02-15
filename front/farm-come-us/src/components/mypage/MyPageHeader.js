@@ -54,7 +54,7 @@ const MyPageHeader = (props) => {
         ) : null}
       </div>
 
-      <MyPageMenu userInfo={props.userInfo} />
+      <MyPageMenu userInfo={props.userInfo} myStoreInfo={props.myStoreInfo} />
     </div>
 
     // <div className={classes.storeHeader}>

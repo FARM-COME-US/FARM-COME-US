@@ -2,7 +2,6 @@ import React, { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import classes from "./style/SignUp.module.scss";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import userSlice from "../reduxStore/userSlice";
 import {
   MdPermIdentity,
   MdEmail,
@@ -13,27 +12,12 @@ import {
 } from "react-icons/md";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
-import {
-  userSignUp,
-  login,
-  fetchUserInfoWithAccessToken,
-} from "../utils/api/user-http";
+import { userSignUp } from "../utils/api/user-http";
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
-  //이름, 닉네임, 전화번호, 비밀번호, 비밀번호 확인, 주소, 상세주소(얘는 유효성검사 안함. 주택이면 없으니까.), 우편번호(주소 들어오면 있는거니까 얘도 유효성X)
-  //이름, 이메일, 비밀번호, 비밀번호 확인
-  // const [id, setId] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [name, setName] = useState("");
-  // const [pno, setPno] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [passwordConfirm, setPasswordConfirm] = useState("");
-  // const [streetAddr, setStreetAddr] = useState("");
-  // const [detailAddr, setDetailAddr] = useState("");
-  // const [zipcode, setZipcode] = useState("");
 
   const [id, setId] = useState("myFarm");
   const [email, setEmail] = useState("myfarm@gmail.com");
@@ -120,18 +104,6 @@ const SignUp = () => {
       setIsid(true);
     }
   }, []);
-
-  // // 닉네임 😀 랜덤으로 보내주기로 했음.
-  // const onChangeNickname = useCallback((e) => {
-  //   setNickname(e.target.value);
-  //   if (e.target.value.length < 2 || e.target.value.length > 10) {
-  //     setNicknameMessage("닉네임을 2글자 이상 10글자 미만으로 입력해주세요.");
-  //     setIsNickname(false);
-  //   } else {
-  //     setNicknameMessage("올바른 닉네임 형식입니다 :)");
-  //     setIsNickname(true);
-  //   }
-  // }, []);
 
   // // 닉네임 😀 랜덤으로 보내주기로 했음.
   const onChangeName = useCallback((e) => {
@@ -229,19 +201,6 @@ const SignUp = () => {
     setZipcode(data.zonecode);
     setOpenModal(!openModal);
   };
-
-  // const onChangezipcode = useCallback(
-  //   (e) => {
-  //     setZipcode(e.target.value);
-  //     if (zipcode.length === 0) {
-  //       // setStreetAddrMessage("주소를 입력해주세요."); 클릭눌렀을때..
-  //       setIsStreetAddr(false);
-  //     } else {
-  //       setIsStreetAddr(true);
-  //     }
-  //   },
-  //   [zipcode]
-  // );
 
   return (
     <form className={classes.container} onSubmit={submitHandler}>
