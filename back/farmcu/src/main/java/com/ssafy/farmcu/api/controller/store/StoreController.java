@@ -95,8 +95,8 @@ public class StoreController {
 
     @PutMapping
     @ApiOperation(value = "스토어 정보 수정", notes = "")
-    public ResponseEntity updateStore(@RequestPart StoreUpdateReq request, MultipartFile uploadFile) throws Exception {
-
+    public ResponseEntity updateStore(@RequestPart("request") StoreUpdateReq request, MultipartFile uploadFile) throws Exception {
+        log.info("Request: ", request);
         HashMap<String, Object> result = new HashMap<>();
         Long storeId = request.getStoreId();
 
