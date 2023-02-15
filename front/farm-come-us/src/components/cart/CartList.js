@@ -57,10 +57,7 @@ const CartList = (props) => {
   const [productIdList, setProductIdList] = useState([]);
   const [resultPrice, setResultPrice] = useState(0);
 
-  useEffect(() => {
-    console.log(productIdList);
-    console.log(resultPrice);
-  }, [productIdList, resultPrice]);
+  useEffect(() => {}, [productIdList, resultPrice]);
 
   const dealOnCheck = () => {
     if (styleCheck === false) {
@@ -82,7 +79,6 @@ const CartList = (props) => {
   };
 
   const popStoreProducts = (idList, price) => {
-    console.log(`popStore ${idList}`);
     let tmpIdList = [];
     for (let i = 0; i < idList.length; i++) {
       tmpIdList = productIdList.filter((id) => id !== idList[i]);
