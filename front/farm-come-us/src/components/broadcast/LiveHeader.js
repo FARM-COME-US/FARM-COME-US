@@ -20,7 +20,10 @@ const LiveHeader = (props) => {
         </p>
       </div>
       {!props.isPublisher ? (
-        <MdOutlineClose className={classes.btn} onClick={props.onLiveLeave} />
+        <MdOutlineClose
+          className={classes.closeBtn}
+          onClick={props.onLiveLeave}
+        />
       ) : props.isMute ? (
         <div className={classes.btnList}>
           <MdFlipCameraIos

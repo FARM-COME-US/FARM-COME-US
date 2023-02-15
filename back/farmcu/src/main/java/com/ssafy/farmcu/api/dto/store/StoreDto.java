@@ -24,7 +24,7 @@ public class StoreDto {
     private Long storeId;
     private String storeName;
     private String storeDescription;
-//    private String storeImg;
+    private String storeImg;
     private String storeStreetAddr;
     private String storeDetailAddr;
     private String storeZipcode;
@@ -41,7 +41,9 @@ public class StoreDto {
         this.storeId = store.getStoreId();
         this.storeName = store.getStoreName();
         this.storeDescription = store.getStoreDescription();
-//        this.storeImg = store.getStoreImg();
+        if(!store.getStoreId().equals(".")) {
+            this.storeImg = store.getStoreImg();
+        }
         this.storeStreetAddr = store.getStoreStreetAddr();
         this.storeDetailAddr = store.getStoreDetailAddr();
         this.storeZipcode = store.getStoreZipcode();

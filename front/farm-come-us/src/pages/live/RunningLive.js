@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchLiveSession, fetchLiveSessions } from "../../utils/api/ov-http";
 import { fetchRunningLiveList } from "../../utils/api/live-http";
@@ -10,77 +10,9 @@ import classes from "./style/RunningLive.module.scss";
 import LiveList from "../../components/live/LiveList";
 import Loading from "../../components/common/Loading";
 
-const LIVE_LIST = [
-  {
-    liveId: 1,
-    storeId: 1,
-    storeName: "강원 고랭 배추",
-    productId: 1,
-    productName: "강원도 고랭지 배추",
-    discount: 14,
-    price: 10800,
-    unit: 1,
-    sessionId: 1,
-  },
-  {
-    liveId: 2,
-    storeId: 2,
-    storeName: "제주 당근당근",
-    productId: 2,
-    productName: "[서귀포] 신선 당근",
-    discount: 12,
-    price: 6200,
-    unit: 1,
-    sessionId: 2,
-  },
-  {
-    liveId: 3,
-    storeId: 3,
-    storeName: "강원 고랭 배추",
-    productId: 3,
-    productName: "강원도 고랭지 배추",
-    discount: 14,
-    price: 10800,
-    unit: 3,
-    sessionId: 3,
-  },
-  {
-    liveId: 4,
-    storeId: 4,
-    storeName: "제주 당근당근",
-    productId: 4,
-    productName: "[서귀포] 신선 당근",
-    discount: 16,
-    price: 13200,
-    unit: 1,
-    sessionId: 4,
-  },
-  {
-    liveId: 5,
-    storeId: 5,
-    storeName: "강원 고랭 배추",
-    productId: 5,
-    productName: "강원도 고랭지 배추",
-    discount: 14,
-    price: 10800,
-    unit: 3,
-    sessionId: 5,
-  },
-  {
-    liveId: 6,
-    storeId: 6,
-    storeName: "제주 당근당근",
-    productId: 6,
-    productName: "[서귀포] 신선 당근",
-    discount: 16,
-    price: 13200,
-    unit: 1,
-    sessionId: 6,
-  },
-];
-
 const RunningLive = () => {
   const navigate = useNavigate();
+  const [currPage, setCurrPage] = useState(0);
 
   const {
     sendRequest: getLiveSessions,
@@ -92,7 +24,7 @@ const RunningLive = () => {
   const {
     sendRequest: getRunningLiveInfo,
     status: rllStatus,
-    data: runningLiveList,
+    data: runningLiveData,
     errorRll,
   } = useHttp(fetchRunningLiveList, true);
 
@@ -101,7 +33,7 @@ const RunningLive = () => {
   }, [getLiveSessions]);
 
   useEffect(() => {
-    getRunningLiveInfo();
+    getRunningLiveInfo(currPage);
   }, [getRunningLiveInfo]);
 
   const liveRoomEnterHandler = async (liveInfo) => {
@@ -128,7 +60,8 @@ const RunningLive = () => {
         <Loading className={classes.loading} />
       ) : (
         <LiveList
-          liveList={LIVE_LIST}
+          liveList={runningLiveData.liveOnList}
+          hasNextPage={runningLiveData.hasNextPage}
           sessionList={sessionList}
           isLive={true}
           onEnter={liveRoomEnterHandler}
