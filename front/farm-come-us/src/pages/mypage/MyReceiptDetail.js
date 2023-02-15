@@ -52,7 +52,7 @@ const MyReceiptDetail = () => {
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  //location.param으로 온 orderId 통해,
+  //location.param으로 온 orderId 통해 아래와 같은 형식의 데이터가 온다.
   /* 
   {
   "orderdetailList": [
@@ -73,9 +73,9 @@ const MyReceiptDetail = () => {
         params: { order: param.orderId },
       })
       .then((res) => {
-        console.log(`itemDatas에 들어감: ${res.data.orderdetailList}`);
-        console.log(res.data.orderdetailList);
-        console.log(typeof eval(res.data.orderdetailList));
+        // console.log(`itemDatas에 들어감: ${res.data.orderdetailList}`);
+        // console.log(res.data.orderdetailList);
+        // console.log(typeof eval(res.data.orderdetailList));
         setDate(res.data.orderdetailList[0].oitemCreatedAt);
         setItemsDatas(res.data.orderdetailList);
         setTotalPrice(getTotalPrice(res.data.orderdetailList));
@@ -97,14 +97,6 @@ const MyReceiptDetail = () => {
       itemPrice={item.oitemPrice}
     />;
     // itemId를 이용해서 axios 요청을 보내면(아이템에 대한 상세정보) - 거기에 savedPath라는 이름으로 이미지 주소가 주어집니다.(그걸로 이미지 카드를 채움.)
-
-    // <ReceiptImgCard
-    //   // imgSrc={item.savedPath}
-    //   itemId={item.oitemId}
-    //   count={item.oitemCount}
-    //   storeName={item.storeName}
-    //   totalPrice={item.totalPrice}
-    // />;
   });
 
   return (
