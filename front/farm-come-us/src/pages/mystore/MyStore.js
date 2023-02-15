@@ -9,21 +9,7 @@ import axios from "axios";
 import userSlice from "../../reduxStore/userSlice";
 import MyStoreHeader from "../../components/mystore/MyStoreHeader";
 
-const DUMMY_STORE_INFO = {
-  storeId: 1,
-  storeName: "고랭강원농장",
-  storeDescription:
-    "저희 농장은 강원도 고산지대에서 재배한 신선한 작물들을 제공합니다.",
-  storeStreetAddr: "강원도 평창군 봉평면 무야리 23-12",
-  storeDetailAddr: "",
-  zipcode: 18310,
-  detailAddr: "초가집",
-  phoneNumber: "010-1234-1234",
-  imgSrc: "https://via.placeholder.com/300",
-};
-
 const MyStore = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice.value);
   let storeId = useSelector((state) => state.userSlice.store);
@@ -31,6 +17,19 @@ const MyStore = () => {
   const [memberId, setMemberId] = useState("");
   const [isEditting, setIsEditting] = useState(false);
   const [storeInfo, setStoreInfo] = useState({
+    storeId: "",
+    storeName: "",
+    storeDescription: "",
+    storeStreetAddr: "",
+    storeZipcode: "",
+    storeDetailAddr: "",
+    storePhoneNumber: "",
+    imgSrc: "",
+    savePath: "",
+    uploadFile: "",
+  });
+
+  const [initStoreInfo, setInitStoreInfo] = useState({
     storeId: "",
     storeName: "",
     storeDescription: "",
@@ -61,10 +60,7 @@ const MyStore = () => {
         imgSrc: res.data.storeImage.savedPath,
       };
     });
-    // dispatch(userSlice.actions.saveStoreInfo(res.data.store.storeId));
     console.log(res.data);
-    // console.log(res.storeImage.savedPath, ...res.data.store);
-
     return res.data.store;
   };
 
@@ -72,6 +68,9 @@ const MyStore = () => {
     fetchStoreData()
       .then((res) => {
         setStoreInfo((prev) => {
+          return { ...prev, res };
+        });
+        setInitStoreInfo((prev) => {
           return { ...prev, res };
         });
       })
@@ -161,14 +160,14 @@ const MyStore = () => {
   const cancelInfoEditHandler = () => {
     setStoreInfo((prev) => {
       return {
-        storeId: DUMMY_STORE_INFO.storeId,
-        storeName: DUMMY_STORE_INFO.storeName,
-        storeDescription: DUMMY_STORE_INFO.storeDescription,
-        storeStreetAddr: DUMMY_STORE_INFO.storeStreetAddr,
-        storeZipcode: DUMMY_STORE_INFO.storeZipcode,
-        storeDetailAddr: DUMMY_STORE_INFO.storeDetailAddr,
-        storePhoneNumber: DUMMY_STORE_INFO.storePhoneNumber,
-        imgSrc: DUMMY_STORE_INFO.imgSrc,
+        storeId: initStoreInfo.storeId,
+        storeName: initStoreInfo.storeName,
+        storeDescription: initStoreInfo.storeDescription,
+        storeStreetAddr: initStoreInfo.storeStreetAddr,
+        storeZipcode: initStoreInfo.storeZipcode,
+        storeDetailAddr: initStoreInfo.storeDetailAddr,
+        storePhoneNumber: initStoreInfo.storePhoneNumber,
+        imgSrc: initStoreInfo.imgSrc,
       };
     });
 
