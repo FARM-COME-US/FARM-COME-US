@@ -2,7 +2,6 @@ package com.ssafy.farmcu.api.controller.order;
 
 
 
-import com.ssafy.farmcu.api.dto.order.KaKaoPayDTO;
 import com.ssafy.farmcu.api.dto.order.pay.KakaoPayApproveDto;
 import com.ssafy.farmcu.api.dto.order.pay.KakaoReqDto;
 import com.ssafy.farmcu.api.entity.order.Order;
@@ -18,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.TimeUnit;
-
 @RestController
 @Component
 @Slf4j
@@ -31,32 +28,45 @@ public class KakaoController {
     private final MemberService memberService;
     private final OrderServiceImpl orderService;
     private final OrderController orderController;
+    private Long memberId;
 
     KakaoController(@Lazy OrderServiceImpl orderService, @Lazy OrderController orderController, @Lazy PayService payService, @Lazy MemberService memberService) {
         this.orderService = orderService;
         this.payService = payService;
         this.memberService = memberService;
         this.orderController = orderController;
+
     }
 
     //    @PreAuthorize("isAuthenticated()")
     @GetMapping("/kakaoreq")
     public KakaoReqDto payRequest(@RequestParam Long orderId, Long memberId, int itemCount ){
 
-        Order order = orderService.updateOrder(orderId);
+        Order order = orderService.updateOrderForPay(orderId);
         memberId = memberId;
         KakaoReqDto requestResponse = payService.kakaoPayRequest(order.getTotalPrice(), itemCount, orderId, memberId);
-
-//        redis.redisTemplate().opsForValue().set(String.valueOf(userId), requestResponse.getTid(), 1000 * 60 * 15, TimeUnit.MILLISECONDS);
-
         return requestResponse;
+    }
+
+    @PutMapping("/tid")
+    @ApiOperation(value = "tid 생성")
+    public ResponseEntity updateTid(@RequestParam String tid, Long orderId){
+
+        try {
+            Order order = orderService.updateTid(orderId, tid);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<String>("tid 생성 완료", HttpStatus.OK);
     }
 
     @GetMapping("/kakao/success")
     public ResponseEntity payApprove( @RequestParam("pg_token") String pgToken ){
 
+//        String tid = (String) redis.redisTemplate().opsForValue().get(String.valueOf(memberId));
         String tid = "";
-
         KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoPayApprove(tid, pgToken);
 
         Long orderId = Long.valueOf(kakaoPayApproveDto.getPartner_order_id());
@@ -66,43 +76,4 @@ public class KakaoController {
         return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
     }
 
-
-//    // 카카오페이 결제
-//    @PostMapping("kakaopay")
-//    @ApiOperation(value = "카카오 페이 결제")
-//    public String KakaoPay(@RequestBody KaKaoPayDTO kaKaoPayDTO) {
-//
-//        // kaKaoPayDTO 에 맞춰서 카카오페이 결제 진행
-//        String kaKaoPay = payService.KaKaoPay(kaKaoPayDTO);
-//
-//        return kaKaoPay;
-//    }
-//
-//    // 카카오 페이 결제가 성공적으로 진행됬을 경우
-//    @GetMapping("kakao/success")
-//    @ApiOperation(value = "카카오 페이 결제 성공")
-//    public ResponseEntity KaKaoSuccess(@RequestParam String pg_token) {
-//
-//        String kakaoaAprove = kakaoService.KakaoAprove(pg_token);
-//
-//        return ResponseEntity.ok().body(kakaoaAprove);
-//    }
-//
-//    // 카카오 페이 결제가 취소 됬을 경우
-//    @GetMapping("kakao/cancel")
-//    @ApiOperation(value = "카카오 페이 결제 취소")
-//    public String KaKaoCancel() {
-//
-//        return "카카오 결제 취소";
-//    }
-//
-//
-//    // 카카오 페이 결제가 실패 했을 경우
-//    @GetMapping("kakao/fail")
-//    @ApiOperation(value = "카카오 페이 결제 실패")
-//    public String KaKaoFail() {
-//
-//        return "카카오 결제 실패";
-//    }
-//
 }

@@ -91,10 +91,31 @@ public class OrderServiceImpl implements OrderService{
         if ( "ORDER".equals(status) ) {
             order.updateOrder();
         }
+
         return order;
     }
 
-    // 내 주문 목록 조회
+    // 결제할 order 정보 찾기
+    @Transactional
+    public Order updateOrderForPay(Long orderId) {
+
+        Order order = orderRepository.findByOrderId(orderId).orElseThrow(EntityNotFoundException::new);
+
+        return order;
+    }
+
+    // 카카오 결제시 tid 컬럼 값 생성
+    @Transactional
+    public Order updateTid(Long orderId, String tid) {
+        Order order = orderRepository.findByOrderId(orderId).orElseThrow(EntityNotFoundException::new);
+        order.setTid(tid);
+        order.getOrderItems().get(0).setTid(tid);
+        orderRepository.save(order);
+
+        return order;
+    }
+
+ // 내 주문 목록 조회
     @Transactional
     public List<Order> findMyOrder(Member member) {
         try {
@@ -126,7 +147,8 @@ public class OrderServiceImpl implements OrderService{
 
     // 결제 완료
     public List<Order> completeOrder( Long orderId ){
-        Order order = orderRepository.findById(orderId).get();
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
+       Order order = orderRepository.findById(orderId).get();
         order.setPayStatus(Order.PayStatus.PAY);
         return null;
     }
