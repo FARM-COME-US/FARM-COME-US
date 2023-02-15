@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./style/Payment.module.scss";
 import Card from "../../components/common/Card";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { orderProduct } from "../../utils/api/order-http";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { isObject } from "lodash";
 
-const customerData = {
+let customerData = {
   customerName: "김덕배",
   customerPhoneNumber: "010-5251-1234",
   customerAddress: "대전광역시 유성구 온천북로7 레자미멀티홈 102-892",
@@ -23,6 +24,14 @@ const orderData = {
 
 const Payment = () => {
   const location = useLocation();
+  const userinfo = useSelector((state) => state.userSlice.value);
+  const [customername, setCustomername] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [streetAddr, setStreetAddr] = useState("");
+  const [detailAddr, setDetailAddr] = useState("");
+
+  console.log("유저정보 받아오기");
+  console.log(userinfo);
 
   const shippingfee = 2500;
 
@@ -84,7 +93,11 @@ const Payment = () => {
     // orderRequest();
     // orderProduct();
     // orderProduct1();
-  });
+    setCustomername(userinfo.name);
+    setPhoneNumber(userinfo.phoneNumber);
+    setStreetAddr(userinfo.streetAddr);
+    setDetailAddr(userinfo.detailAddr);
+  }, []);
 
   const navigate = useNavigate();
   console.log(location);
@@ -201,12 +214,17 @@ const Payment = () => {
       <Card className={classes.paymentcard}>
         <div className={classes.cardheader}>배송지</div>
         <div className={classes.cardscript}>
-          <div className={classes.username}>{customerData.customerName}</div>
+          <div className={classes.username}>
+            {/* {customerData.customerName} */}
+            {customername}
+          </div>
           <div className={classes.userphonenumber}>
-            {customerData.customerPhoneNumber}
+            {/* {customerData.customerPhoneNumber} */}
+            {phoneNumber}
           </div>
           <div className={classes.useraddress}>
-            {customerData.customerAddress}
+            {/* {customerData.customerAddress} */}
+            {streetAddr + " / " + detailAddr}
           </div>
         </div>
       </Card>
