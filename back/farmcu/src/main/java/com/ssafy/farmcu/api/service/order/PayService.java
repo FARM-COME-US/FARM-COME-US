@@ -1,14 +1,11 @@
 package com.ssafy.farmcu.api.service.order;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.farmcu.api.dto.order.pay.GeneralPayDto;
+
 import com.ssafy.farmcu.api.dto.order.pay.KakaoPayApproveDto;
 import com.ssafy.farmcu.api.dto.order.pay.KakaoReqDto;
-import com.ssafy.farmcu.api.entity.order.Cart;
+
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
-import com.ssafy.farmcu.api.entity.order.pay.KaKaoPay;
 import com.ssafy.farmcu.api.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +16,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Service
