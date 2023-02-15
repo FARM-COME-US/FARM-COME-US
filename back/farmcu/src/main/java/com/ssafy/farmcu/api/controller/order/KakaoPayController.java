@@ -1,7 +1,5 @@
 package com.ssafy.farmcu.api.controller.order;
 
-
-
 import com.ssafy.farmcu.api.dto.order.pay.KakaoPayApproveDto;
 import com.ssafy.farmcu.api.dto.order.pay.KakaoReqDto;
 import com.ssafy.farmcu.api.entity.order.Order;
@@ -38,7 +36,6 @@ public class KakaoPayController {
 
     }
 
-    //    @PreAuthorize("isAuthenticated()")
     @GetMapping("/kakaoreq")
     public KakaoReqDto payRequest(@RequestParam Long orderId, Long memberId, int itemCount ){
 
@@ -49,7 +46,6 @@ public class KakaoPayController {
     }
 
 
-    // 이거 시점을 ... 언제로 할지 생각하고
     @PutMapping("/tid")
     @ApiOperation(value = "tid 생성")
     public ResponseEntity updateTid(@RequestParam String tid, Long orderId){
@@ -65,19 +61,16 @@ public class KakaoPayController {
         return new ResponseEntity<String>("tid 생성 완료", HttpStatus.OK);
     }
 
-    // 이거 시점이 위에것 보다 뒤로가게
+
     @GetMapping("/kakao/success")
     public ResponseEntity payApprove( @RequestParam("pg_token") String pgToken ){
 
-//        String tid = orderService.threadLocal_1();
-//        System.out.println("@@@@@@@@@@@@@@@@@@@@@" + tid);
-//        String tid = String.valueOf(kakaoPayApproveDto.getTid());
-//        log.info();
         KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoPayApprove(pgToken);
 
         Long orderId = Long.valueOf(kakaoPayApproveDto.getPartner_order_id());
         log.info("orderId = {}", orderId);
         orderService.completeOrder(orderId);
+
 
         return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
     }

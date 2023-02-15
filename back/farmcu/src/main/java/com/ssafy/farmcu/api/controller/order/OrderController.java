@@ -43,7 +43,7 @@ public class OrderController {
         Long orderId; //주문번호 생성
 
         try {
-            orderId = orderService.order(orderInfoDto); //주문 시도 및 주문번호 가져오기
+            orderId = orderService.order(orderInfoDto);
 
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
