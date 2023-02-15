@@ -18,6 +18,7 @@ function Login() {
   // const dispatch = useDispatch();
   const dispatch = useDispatch();
   const location = useLocation();
+
   let signUpId = "";
   let signUpPassword = "";
 
@@ -72,7 +73,6 @@ function Login() {
           },
         }
       );
-
       dispatch(userSlice.actions.login(userDataRes.data.userInfo));
       navigate("/");
     } catch (err) {

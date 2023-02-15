@@ -135,9 +135,9 @@ public class MemberController {
                 memberDto.aboutStore(storeService.checkStoreExist(id));
                 resultMap.put("userInfo", memberDto);
                 MemberImageDto memberImageDto = memberImageService.findMemberImageByMemberId(id);
-                if(memberImageDto!=null){
+                if (memberImageDto != null) {
                     resultMap.put("userImage", memberImageDto);
-                }else{
+                } else {
                     resultMap.put("userImage", null);
 
                 }
@@ -187,7 +187,7 @@ public class MemberController {
         MemberRefreshToken memberRefreshToken = refreshService.getTokenFromTable(id);
 
         AuthToken refreshToken = tokenProvider.convertAuthToken(memberRefreshToken.getRefreshToken());
-        if(refreshToken.validate()){
+        if (refreshToken.validate()) {
             accessToken = getAccessToken(memberId);
             try {
                 resultMap.put("token", accessToken.getToken());
@@ -198,7 +198,7 @@ public class MemberController {
                 resultMap.put("message", "fail");
                 status = HttpStatus.BAD_REQUEST;
             }
-        }else{
+        } else {
             resultMap.put("message", "다시 로그인 필요");
             status = HttpStatus.ACCEPTED;
         }
@@ -217,15 +217,26 @@ public class MemberController {
         MemberDto member = memberService.getUserInfo(id);
         if (authToken.validate()) {
             memberService.updateMember(memberUpdateReq, member.getId());
-            if(uploadFile!=null){
+            if (uploadFile != null) {
                 String savedPath = s3Service.uploadFile(uploadFile);
                 log.info("here save file");
-                MemberImageDto memberImageDto = MemberImageDto.builder()
-                        .memberId(id)
-                        .originalName(uploadFile.getOriginalFilename())
-                        .savedPath(savedPath).build();
+                MemberImageDto memberImageDto = memberImageService.findMemberImageByMemberId(id);
+                if (memberImageDto == null) {
+                    MemberImageDto newMemberImage = MemberImageDto.builder()
+                            .memberId(id)
+                            .originalName(uploadFile.getOriginalFilename())
+                            .savedPath(savedPath).build();
 
-                memberImageService.saveMemberImage(memberImageDto);
+                    memberImageService.saveMemberImage(newMemberImage);
+                } else {
+                    memberImageService.deleteMemberImage(memberImageDto.getMemberImageId());
+                    MemberImageDto newMemberImage = MemberImageDto.builder()
+                            .memberId(id)
+                            .originalName(uploadFile.getOriginalFilename())
+                            .savedPath(savedPath).build();
+
+                    memberImageService.saveMemberImage(newMemberImage);
+                }
             }
 
             resultMap.put("message", "success");
@@ -300,7 +311,7 @@ public class MemberController {
         MemberDto member = memberService.getUserInfo(id);
         if (authToken.validate()) {
             memberService.updateMember(memberAdditionalReq, member.getId());
-            if(uploadFile!=null){
+            if (uploadFile != null) {
                 String savedPath = s3Service.uploadFile(uploadFile);
                 log.info("here save file");
                 MemberImageDto memberImageDto = MemberImageDto.builder()

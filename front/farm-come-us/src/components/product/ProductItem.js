@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import classes from "./style/ProductItem.module.scss";
 import Card from "../common/Card";
 import { Link } from "react-router-dom";
 
 const ProductItem = (props) => {
-  console.log(props);
-
   if (props) {
     const convertedPrice = props.item.itemPrice
       .toString()
@@ -29,7 +27,7 @@ const ProductItem = (props) => {
                 <span className={`${classes.discount}`}>
                   {`${props.item.itemDiscount}%`}
                 </span>
-                <span>{`${convertedPrice}원 / ${props.item.itemStock}상자`}</span>
+                <span>{`${convertedPrice}원`}</span>
               </div>
               <div className={`${classes.storeInfo}`}>
                 <span className={`${classes.storeName}`}>
