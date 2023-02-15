@@ -7,6 +7,7 @@ import com.ssafy.farmcu.api.repository.MemberImageRepository;
 import com.ssafy.farmcu.api.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,10 +15,12 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
-public class MemberImageServiceImpl implements MemberImageService{
+@Transactional(readOnly = true)
+public class MemberImageServiceImpl implements MemberImageService {
     private final MemberRepository memberRepository;
     private final MemberImageRepository memberImageRepository;
 
+    @Transactional
     @Override
     public boolean saveMemberImage(MemberImageDto memberImageDto) {
         try {
@@ -36,13 +39,14 @@ public class MemberImageServiceImpl implements MemberImageService{
         }
     }
 
+    @Transactional
     @Override
-    public boolean updateMemberImage(MemberImageDto memberImageDto) {
+    public boolean updateMemberImage(Long id, String savedPath, String originalName) {
         try {
-            Member member = memberRepository.findByMemberId(memberImageDto.getMemberId()).orElseThrow(NullPointerException::new);
-            MemberImage memberImage = memberImageRepository.findByMemberAndMemberImageId(member, memberImageDto.getMemberImageId()).orElseThrow(NullPointerException::new);
-            memberImage.setOriginalName(memberImageDto.getOriginalName());
-            memberImage.setSavedPath(memberImage.getSavedPath());
+            MemberImage memberImage = MemberImage.builder()
+                    .memberImageId(id)
+                    .savedPath(savedPath)
+                    .originalName(originalName).build();
 
             memberImageRepository.save(memberImage);
             return true;
@@ -52,6 +56,7 @@ public class MemberImageServiceImpl implements MemberImageService{
         }
     }
 
+    @Transactional
     @Override
     public boolean deleteMemberImage(Long memberImageId) {
         try {
@@ -63,11 +68,12 @@ public class MemberImageServiceImpl implements MemberImageService{
         }
     }
 
+    @Transactional
     @Override
     public MemberImageDto findMemberImageByMemberId(Long memberId) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(NullPointerException::new);
         MemberImage memberImage = memberImageRepository.findByMemberId(member.getMemberId()).orElse(null);
-        if(memberImage==null)
+        if (memberImage == null)
             return null;
         return new MemberImageDto(memberImage);
     }
