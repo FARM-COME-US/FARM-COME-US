@@ -1,44 +1,61 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
+import useHttp from "../../hooks/use-http";
+
 import classes from "./style/ProductList.module.scss";
-import ProductItem from "./ProductItem";
 import { fetchProductList } from "../../utils/api/product-http";
 
+import ProductItem from "./ProductItem";
 import ProductNoData from "./ProductNoData";
+import Loading from "../../components/common/Loading";
 
 const ProductList = (props) => {
-  const [itemList, setItemList] = useState([]);
+  const categoryTitle = props.category_name;
+  const categoryDetail = props.sub_category_name;
+
+  const [productsList, setProductsList] = useState([]);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [currPage, setCurrPage] = useState(0);
+
+  const {
+    sendRequest: getItemList,
+    status: itemStatus,
+    data: productsInfo,
+    errorItem,
+  } = useHttp(fetchProductList, true);
 
   useEffect(() => {
-    async function getItemList(category, itemName, subCategory, page, size) {
-      try {
-        const categoryList = await fetchProductList(
-          category,
-          itemName,
-          subCategory,
-          page,
-          size
-        );
+    const data = {
+      category: categoryTitle,
+      itemName: "",
+      subCategory: categoryDetail,
+      page: currPage,
+      size: 8,
+    };
+    getItemList(data);
+  }, [getItemList]);
 
-        console.log(categoryList);
-        setItemList(categoryList);
-      } catch (err) {
-        console.log(err);
-      }
+  useEffect(() => {
+    if (productsInfo) {
+      setProductsList((prev) => {
+        return [...prev, ...productsInfo.itemInfoList];
+      });
+      setHasNextPage(() => productsInfo.hasNextPage);
     }
+  }, [productsInfo]);
 
-    getItemList(props.category_name, "", props.sub_category_name, 0, 8);
-  }, [props.category_name, props.sub_category_name]);
-  console.log(itemList);
-
-  let content = <ProductNoData>등록된 상품이 없습니다.</ProductNoData>;
-
-  if (itemList.length > 0) {
-    content = itemList.map((item) => (
-      <ProductItem key={item.itemId} item={item} />
-    ));
-  }
-
-  return <ul className={`${classes.productList}`}>{content}</ul>;
+  return (
+    <ul className={`${classes.productList}`}>
+      {itemStatus === "pending" ? (
+        <Loading className={classes.loading} />
+      ) : productsList && productsList.length > 0 ? (
+        productsList.map((item, idx) => <ProductItem key={idx} item={item} />)
+      ) : (
+        <ProductNoData>
+          <p></p>
+        </ProductNoData>
+      )}
+    </ul>
+  );
 };
 
 export default ProductList;
