@@ -19,5 +19,8 @@ public class CategoryTitle {
     @Column
     private String titleName;
 
+    @Column
+    private String imageUrl;
+
 }
 

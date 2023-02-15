@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ImageButton from "../../components/common/ImageButton";
 
 import { HiUser } from "react-icons/hi";
@@ -10,9 +10,16 @@ import { FaHeart } from "react-icons/fa";
 import classes from "./style/MyPageMenu.module.scss";
 
 const MyPageMenu = (props) => {
+  const navigate = useNavigate();
   const redirectMyStoreHandler = (e) => {
     e.preventDefault();
     if (!window.confirm("마이스토어로 이동하시겠습니까?")) return;
+    if (!props.myStoreInfo.storeId) {
+      alert("조회된 스토어가 없습니다. 생성 페이지로 이동합니다.");
+      navigate("/mystorecreate", { state: { userInfo: props.userInfo } });
+      return;
+    }
+    navigate("/mystore");
   };
 
   return (
