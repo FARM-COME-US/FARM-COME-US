@@ -71,8 +71,7 @@ public class MemberImageServiceImpl implements MemberImageService {
     @Transactional
     @Override
     public MemberImageDto findMemberImageByMemberId(Long memberId) {
-        Member member = memberRepository.findByMemberId(memberId).orElseThrow(NullPointerException::new);
-        MemberImage memberImage = memberImageRepository.findByMemberId(member.getMemberId()).orElse(null);
+        MemberImage memberImage = memberImageRepository.findByMemberId(memberId).orElse(null);
         if (memberImage == null)
             return null;
         return new MemberImageDto(memberImage);

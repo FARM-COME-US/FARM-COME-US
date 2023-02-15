@@ -60,13 +60,14 @@
       flex-direction: column;
 
       .title {
-        font-size: 1.02rem;
+        font-size: 1rem;
       }
 
       .stock {
         margin-top: 4px;
         margin-left: 4px;
         color: #555;
+        font-size: 0.8rem;
       }
     }
 
@@ -74,11 +75,12 @@
       color: #f7863b;
       font-family: "NanumSquareRoundB";
       margin-bottom: 4px;
-      font-size: 1.05rem;
+      font-size: 1rem;
     }
 
     .date {
       font-weight: 600;
+      font-size: 0.7rem;
     }
   }
 }

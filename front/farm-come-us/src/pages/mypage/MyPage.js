@@ -8,49 +8,45 @@ import userSlice from "../../reduxStore/userSlice";
 import axios from "axios";
 
 const MyPage = (props) => {
-  const dispatch = useDispatch();
-  // 유저정보 관리 변수
-
   const [isEditting, setIsEditting] = useState(false);
   const user = useSelector((state) => {
-    // console.log(state.userSlice.value);
     return state.userSlice.value;
   });
-  // console.log(user);
-  // setUserInfo(user);
   const [userInfo, setUserInfo] = useState({
+    ...user,
+    imgSrc: "",
+    uploadFile: "",
+  });
+  const [initUserInfo, setInitUserInfo] = useState({
     ...user,
     imgSrc: "",
     uploadFile: "",
   });
 
   useEffect(() => {
-    const storeUserData = async () => {
-      try {
-        const accessToken = sessionStorage.getItem("accessToken");
-        const userDataRes = await axios.get(
-          process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-              token: accessToken,
-            },
-          }
-        );
-        // dispatch(userSlice.actions.login());
-        userSlice.actions.login(userDataRes.data.userInfo);
-        const userInfo = userDataRes.data.userInfo;
-        userInfo["imgSrc"] = userDataRes.data.userImage.savedPath;
-        setUserInfo(userInfo);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    // const testMemberId = 1;
-    storeUserData();
-    // const fetchedInfo = fetchUserInfo(testMemberId);
-    // console.log(fetchedInfo);
+    const accessToken = sessionStorage.getItem("accessToken");
+    axios
+      .get(process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          token: accessToken,
+        },
+      })
+      .then((res) => {
+        const { userInfo, userImage } = res.data;
+        if (userImage) {
+          userInfo["imgSrc"] = userImage.savedPath;
+        }
+        setUserInfo((prev) => {
+          return { ...prev, ...userInfo };
+        });
+        userSlice.actions.login(userInfo);
+        setInitUserInfo(userInfo);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   const toggleIsEditting = (e) => {
@@ -61,13 +57,12 @@ const MyPage = (props) => {
   const editInfoHandler = (e) => {
     e.preventDefault();
     fetchUpdateUserInfo(userInfo)
-      .then((res) => {
+      .then(() => {
         alert("사용자 정보가 수정되었습니다.");
       })
       .catch((err) => {
         console.error(err);
       });
-
     setIsEditting((prev) => !prev);
   };
 
@@ -83,7 +78,7 @@ const MyPage = (props) => {
   const cancelInfoEditHandler = () => {
     setUserInfo((prev) => {
       return {
-        ...userInfo,
+        ...initUserInfo,
       };
     });
 
