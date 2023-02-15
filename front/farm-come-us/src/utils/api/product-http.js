@@ -68,35 +68,33 @@ export async function productDetail(productId) {
 }
 
 /* 상품 목록 조회 */
-export async function fetchProductList(
-  category,
-  itemName,
-  subCategory,
-  page,
-  size
-) {
-  const params = {
-    page: page,
-    size: size,
-  };
+export function fetchProductList(fetchInfo) {
   const data = {
-    titleCategoryName: category,
-    detailCategoryName: subCategory,
-    itemName: itemName,
+    titleCategoryName: fetchInfo["category"],
+    itemName: fetchInfo["itemName"],
+    detailCategoryName: fetchInfo["subCategory"],
   };
-  const header = { "Content-Type": "application/json" };
-  try {
-    const response = await axios.post(
+
+  const config = { "Content-Type": "application/json" };
+
+  const params = {
+    page: fetchInfo["page"],
+    size: fetchInfo["size"],
+  };
+
+  return axios
+    .post(
       `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item/keyword/`,
       data,
-      { header, params }
-    );
-    // const data = response.data;
-    console.log(response);
-    return response.data.itemInfoList;
-  } catch (err) {
-    console.error(err);
-  }
+      { config, params }
+    )
+    .then((res) => {
+      console.log(res.data);
+      return res.data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 /* 스토어 상품 조회 */
