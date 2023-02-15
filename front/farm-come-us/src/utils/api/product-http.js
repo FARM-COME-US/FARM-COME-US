@@ -52,6 +52,7 @@ export async function createProduct(productInfo) {
 /* 상품 상세 조회 */
 export async function productDetail(productId) {
   try {
+    console.log("아이템 불러오는 함수 실행");
     const response = await axios({
       method: "get",
       url: `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item`,
@@ -63,7 +64,7 @@ export async function productDetail(productId) {
     console.log(data);
     return data;
   } catch (err) {
-    console.err(err);
+    console.log(err);
   }
 }
 
