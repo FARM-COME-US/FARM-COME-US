@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MyStoreReceiptItem from "./MyStoreReceiptItem";
 
 import classes from "./style/MyStoreReceiptList.module.scss";
@@ -16,11 +16,33 @@ const MyStoreReceiptList = (props) => {
       if (set.has(selDate)) {
         arr[pointer].push(receipt);
       } else {
+        if (pointer > -1) {
+          arr[pointer] = codeHandler(arr[pointer]);
+        }
         set.add(selDate);
         arr[++pointer] = [receipt];
       }
     }
+    arr[pointer] = codeHandler(arr[pointer]);
     return arr;
+  };
+
+  const codeHandler = (array) => {
+    const codeSet = new Set();
+    const sortedCode = array.sort((a, b) => b.orderId - a.orderId);
+
+    const codeArr = [];
+    let pointer2 = -1;
+    for (let code of sortedCode) {
+      const orderId = code.orderId;
+      if (codeSet.has(orderId)) {
+        codeArr[pointer2].push(code);
+      } else {
+        codeSet.add(orderId);
+        codeArr[++pointer2] = [code];
+      }
+    }
+    return codeArr;
   };
 
   const diassembledReceipt = diassembledReceiptHandler();
@@ -35,11 +57,15 @@ const MyStoreReceiptList = (props) => {
             <div key={idx} className={classes.listContainer}>
               <div
                 className={classes.date}
-              >{`${dateItem[0].date.getFullYear()}.${
-                dateItem[0].date.getMonth() + 1
-              }.${dateItem[0].date.getDate()}`}</div>
-              {dateItem.map((item, iIdx) => (
-                <MyStoreReceiptItem key={iIdx} itemInfo={item} />
+              >{`${dateItem[0][0].date.getFullYear()}.${
+                dateItem[0][0].date.getMonth() + 1
+              }.${dateItem[0][0].date.getDate()}`}</div>
+              {dateItem.map((receiptItem, iIdx) => (
+                <MyStoreReceiptItem
+                  key={iIdx}
+                  receipt={receiptItem}
+                  onClick={props.showReceiptDetailHandler}
+                />
               ))}
             </div>
           ))}

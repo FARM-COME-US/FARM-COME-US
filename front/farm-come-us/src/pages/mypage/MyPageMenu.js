@@ -5,12 +5,16 @@ import ImageButton from "../../components/common/ImageButton";
 import { HiUser } from "react-icons/hi";
 import { MdStoreMallDirectory } from "react-icons/md";
 import { MdOutlineCreditCard } from "react-icons/md";
-import { MdLocalGroceryStore } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 
 import classes from "./style/MyPageMenu.module.scss";
 
-const MyPageMenu = () => {
+const MyPageMenu = (props) => {
+  const redirectMyStoreHandler = (e) => {
+    e.preventDefault();
+    if (!window.confirm("마이스토어로 이동하시겠습니까?")) return;
+  };
+
   return (
     <ul className={classes.menuList}>
       <li>
@@ -27,21 +31,18 @@ const MyPageMenu = () => {
       </li>
       <li>
         <NavLink
-          to="live"
+          to="receipts"
           className={({ isActive }) => (isActive ? classes.active : null)}
         >
           <ImageButton
             className={classes.menuItem}
             icon={<MdOutlineCreditCard />}
-            text="구매내역"
+            text="주문내역"
           />
         </NavLink>
       </li>
       <li>
-        <NavLink
-          to="product"
-          className={({ isActive }) => (isActive ? classes.active : null)}
-        >
+        <NavLink to="" onClick={redirectMyStoreHandler}>
           <ImageButton
             className={classes.menuItem}
             icon={<MdStoreMallDirectory />}
@@ -51,7 +52,7 @@ const MyPageMenu = () => {
       </li>
       <li>
         <NavLink
-          to="receipt"
+          to="likestores"
           className={({ isActive }) => (isActive ? classes.active : null)}
         >
           <ImageButton

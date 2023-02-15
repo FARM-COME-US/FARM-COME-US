@@ -2,33 +2,20 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 // createAsyncThunk
 // import axios from "axios";
-
-// const myServerURL = 'myserverURL'
-// const asyncCodePost = createAsyncThunk(
-//     'userSlice/asyncCodePost',
-//     async () => {
-//         const res = await axios.post(myServerURL, {
-//             code:
-//         })
-//     }
-// )
-// const initialStateValue = {
-//   accessToken: "",
-//   refreshToken: "",
-//   accessCode: "",
-//   email: "",
-//   id: "",
-//   nickname: "",
-//   roadAddress: "",
-//   specificAddress: "",
-//   zonecode: "",
-//   isLogin: false,
-// }; //정확히 어떤 변수명으로 가지고 있어야할지 정하지 못함. BE와 문의
 const initialStateValue = {
-  username: "",
-  password: "",
+  memberId: "",
+  id: "",
+  nickname: "",
+  name: "",
+  email: "",
+  streetAddr: "",
+  detailAddr: "",
+  zipcode: "",
+  phoneNumber: "",
+  profileImg: "",
   isLogin: false,
-}; //정확히 어떤 변수명으로 가지고 있어야할지 정하지 못함. BE와 문의
+  storeId: false,
+};
 
 const asynclogin = createAsyncThunk(
   "userSlice/asynclogin",
@@ -57,24 +44,28 @@ const userSlice = createSlice({
   name: "userSlice",
   initialState: {
     value: initialStateValue,
-    accessToken: "",
-    refreshToken: "",
+    store: {},
   },
   reducers: {
     login: (state, action) => {
-      state.value = action.payload;
+      state.value = { isLogin: true, ...action.payload };
     },
     logout: (state, action) => {
       state.value = initialStateValue;
+      sessionStorage.clear();
     },
     savetoken: (state, action) => {
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
     },
+    saveStoreInfo: (state, action) => {
+      state.value = { ...state.value, storeId: true };
+    },
     // up: (state, action) => {
     //   state.value = state.value + action.payload;
     // }, 참고용 예시 코드
   },
+
   extraReducers: (builder) => {
     builder.addCase(asyncSomethingFetch.pending, (state, action) => {
       state.status = "loading";

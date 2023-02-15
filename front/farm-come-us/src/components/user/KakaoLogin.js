@@ -1,18 +1,34 @@
-import { KAKAO_AUTH_URL } from "./OAuth";
+import classes from "./KakaoLogin.module.scss";
+import axios from "axios";
 
 const KakaoLogin = (props) => {
-  // <Button href={KAKAO_AUTH_URL}>카카오로 로그인하기</Button>
-  // function kakaoLoginHandler() {
-  //   fetch(KAKAO_AUTH_URL)
-  // } onClick={kakaoLoginHandler}
+  // const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
+  // 버튼 누르면 OAuth2RedirectHandler를 보여주는걸로 라우팅 추가
+  // const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
+
+  const KAKAO_AUTH_URL =
+    process.env.REACT_APP_API_SERVER_URL +
+    `/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/kakao`;
+
+  // const KAKAO_AUTH_URL =
+  //   process.env.REACT_APP_API_SERVER_URL + "/api/v1/login/oauth";
+
+  console.log(KAKAO_AUTH_URL);
+  const handleKakaoLogin = (e) => {
+    e.preventDefault();
+    console.log(KAKAO_AUTH_URL);
+    axios.get(`${KAKAO_AUTH_URL}}`);
+  };
 
   return (
     <a href={KAKAO_AUTH_URL}>
-      <img src="img/kakao_login.png" alt="" />
+      <img
+        src="img/kakao_login_button.png"
+        alt=""
+        className={classes.kakaobutton}
+      />
     </a>
   );
-
-  // (<button type='button' href={KAKAO_AUTH_URL}><img src="image/kakao_login.png" alt=""/></button>);
 };
 
 export default KakaoLogin;

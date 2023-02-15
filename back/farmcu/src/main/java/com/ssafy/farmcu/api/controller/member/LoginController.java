@@ -3,6 +3,7 @@ package com.ssafy.farmcu.api.controller.member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.farmcu.oauth.dto.TokenVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -21,16 +22,19 @@ import java.security.SecureRandom;
 
 @Slf4j
 @RestController
+@RequestMapping("api/v1/login")
 public class LoginController {
 
-    private static String CLIENT_ID = "186db3a276355426492e41a502011b88";
-    private static String CLIENT_SECRET = "n9EZSS2eagtrsOO1U5kR2YuO1XZUgk62";
+    @Value("#{config['KAKAO_CLIENT_ID']}")
+    private static String CLIENT_ID;
+    @Value("#{config['KAKAO_CLIENT_SECRET']}")
+    private static String CLIENT_SECRET;
 
     @GetMapping("/oauth")
-    public String naverConnect() throws UnsupportedEncodingException {
-        log.info("kakao 로그인 바로가기");
+    public String kakaoConnect() throws UnsupportedEncodingException {
+        log.info("kakao 로그인 바로가기-  여기 뜨나요:?");
 
-        String REDIRECT_URL = URLEncoder.encode("http://localhost:8080/login/oauth2/code/kakao", "UTF-8");
+        String REDIRECT_URL = URLEncoder.encode("http://localhost:3000/login/oauth2/code/kakao", "UTF-8");
         SecureRandom secureRandom = new SecureRandom();
         String state = new BigInteger(130, secureRandom).toString();
         String apiURL = "https://kauth.kakao.com/oauth/authorize?response_type=code";
@@ -46,7 +50,7 @@ public class LoginController {
     public void getAccessToken(@RequestParam(value = "code") String code, @RequestParam(value = "state") String state, HttpServletResponse response) throws UnsupportedEncodingException {
         log.info("토큰 발급/갱신/삭제 요청 URL");
 
-        String REDIRECT_URL = URLEncoder.encode("http://localhost:8080/login/oauth2/code/kakao", "UTF-8");
+        String REDIRECT_URL = URLEncoder.encode("http://localhost:3000/login/oauth2/code/kakao", "UTF-8");
         String apiURL = "https://kauth.kakao.com/oauth/token?grant_type=authorization_code&";
         apiURL += "client_id=" + CLIENT_ID;
         apiURL += "&client_secret=" + CLIENT_SECRET;
@@ -86,8 +90,6 @@ public class LoginController {
             System.out.println(e);
         }
     }
-
-
 
     @GetMapping("/getProfile")
     public void apiExamMemberProfile(){

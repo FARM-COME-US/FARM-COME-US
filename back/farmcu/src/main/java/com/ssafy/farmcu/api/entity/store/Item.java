@@ -33,12 +33,9 @@ public class Item {
     private String itemDescription;
 
     @Column(nullable = false)
-    private String itemImg;
-
-    @Column(nullable = false)
     private int itemPrice;
 
-    @Column(nullable = false)
+    @Column
     private int itemDiscount;
 
     @Column
@@ -48,37 +45,30 @@ public class Item {
     private Timestamp itemCreatedAt;
 
     //연결
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Category.class)
-    @JoinColumn(name = "category_code", updatable = false)
-    private Category category;
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = CategoryTitle.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_title_code", updatable = false)
+    private CategoryTitle categoryTitle;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Store.class)
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = CategoryDetail.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_detail_code", updatable = false)
+    private CategoryDetail categoryDetail;
+
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Store.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", updatable = false)
     private Store store;
 
-    //연관 관계 메서드
-//    public void setCategory(Category category) {
-//        this.category = category;
-//        category.getItem().add(this);
-//    }
-//
-//    public void setStore(Store store) {
-//        this.store = store;
-//        store.getItem().add(this);
-//    }
-
     //빌더
     @Builder
-    public Item(Long itemId, String itemName, String itemDescription, String itemImg, int itemDiscount, int itemPrice, int itemStock, Timestamp itemCreatedAt, Category category, Store store ) {
+    public Item(Long itemId, String itemName, String itemDescription, int itemDiscount, int itemPrice, int itemStock, Timestamp itemCreatedAt, CategoryTitle categoryTitle, CategoryDetail categoryDetail, Store store) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
-        this.itemImg = itemImg;
         this.itemPrice = itemPrice;
         this.itemDiscount = itemDiscount;
         this.itemStock = itemStock;
         this.itemCreatedAt = itemCreatedAt;
-        this.category = category;
+        this.categoryTitle = categoryTitle;
+        this.categoryDetail = categoryDetail;
         this.store = store;
     }
 

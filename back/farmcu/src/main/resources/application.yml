@@ -16,22 +16,23 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-jwt:
-  secretKey: "d21b5b9c6ee776cac626c60a1d113ee43e9055c04f17cafb37bcfb4b128e01fe2566a1b7c159343279cab64b375ed3eee848b7a2efb65f17325a1f15f50bc5d10427108b5452bf8ca62cdb7ab1ce7c69713746c26121760be8eac9f231258b473416640dd60d68a591ddec2ce55bc1a4fe65332aedf45ab9ce2dd0d0a3c358d9"
-  algorithm: "HS256"
+
 cors:
-  allowed-origins: http://localhost:8080
+  enabled: true
+  allowed-origins: http://localhost:3000,https://localhost:3000,https://i8b103.p.ssafy.io/
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
-  allowed-headers: authorization,content-type,x-auth-token
+  allowed-headers: authorization,content-type,x-auth-token, token
   max-age: 3600
 
 app:
   auth:
     token-secret: 926D96C90030DD58429D2751AC1BDBBC
-    token-expiry: 1800000
+    token-expiry: 9000000
     refresh-token-expiry: 604800000
   oauth2:
-    authorized-redirect-uris: http://localhost:8080/oauth/redirect
+    authorized-redirect-uris: http://localhost:3000/kakao
 logging.level:
   org.hibernate.SQL: debug
+  org:
+    springframework: info
 # org.hibernate.type: trace

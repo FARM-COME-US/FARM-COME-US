@@ -50,7 +50,7 @@ public class JwtServiceImpl implements JwtService {
     public <T> String create(String key, T data, String subject, long expire) {
         String jwt = Jwts.builder()
                 // Header 설정 : 토큰의 타입, 해쉬 알고리즘 정보 세팅.
-                .setHeaderParam("typ", "JWT").setHeaderParam("regDate", System.currentTimeMillis()) // 생성 시간
+                .setHeaderParam("type", "JWT").setHeaderParam("regDate", System.currentTimeMillis()) // 생성 시간
                 // Payload 설정 : 유효기간(Expiration), 토큰 제목 (Subject), 데이터 (Claim) 등 정보 세팅.
                 .setExpiration(new Date(System.currentTimeMillis() + expire)) // 토큰 유효기간
                 .setSubject(subject) // 토큰 제목 설정 ex) access-token, refresh-token

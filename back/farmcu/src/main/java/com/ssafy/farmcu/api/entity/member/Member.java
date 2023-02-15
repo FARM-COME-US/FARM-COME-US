@@ -1,5 +1,6 @@
 package com.ssafy.farmcu.api.entity.member;
 
+import com.ssafy.farmcu.api.dto.member.MemberAdditionalReq;
 import com.ssafy.farmcu.api.dto.member.MemberUpdateReq;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,9 +18,9 @@ public class Member {
     @Column(name = "member_id")
     private Long memberId;
 
+//    @Column(unique = true)
     private String id;
 
-    @Column(length = 255)
     private String password;
     @Column(length = 50)
     private String nickname;
@@ -90,7 +91,14 @@ public class Member {
         this.phoneNumber = memberUpdateReq.getPhoneNumber(); // 휴대폰 번호 인증?
 
     }
+    public void updateAddInfo(MemberAdditionalReq memberUpdateReq){
+        this.name = memberUpdateReq.getName();
+        this.streetAddr = memberUpdateReq.getStreetAddr();
+        this.detailAddr = memberUpdateReq.getDetailAddr();
+        this.zipcode = memberUpdateReq.getZipcode();
+        this.phoneNumber = memberUpdateReq.getPhoneNumber();
 
+    }
 
     public String getRoleType(){
         return this.getRole().toString();

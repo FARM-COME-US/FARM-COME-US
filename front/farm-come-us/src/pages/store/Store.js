@@ -1,18 +1,37 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import StoreHeader from "../../components/store/StoreHeader";
 import StoreTab from "../../components/store/StoreTab";
+import { fetchStoreDetail } from "../../utils/api/store-http";
 
 const Store = () => {
-  return (
-    <div>
-      <StoreHeader></StoreHeader>
-      <StoreTab></StoreTab>
+  const location = useLocation();
+  const [storeDetail, setStoreDetail] = useState();
+
+  useEffect(() => {
+    async function getItemDetail() {
+      try {
+        const storeData = await fetchStoreDetail(location.state.storeId);
+        setStoreDetail(storeData.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    getItemDetail();
+  }, [location.state.storeId]);
+
+  if (storeDetail) {
+    return (
       <div>
-        <Outlet />
+        <StoreHeader storeInfo={storeDetail}></StoreHeader>
+        <StoreTab storeId={location.state.storeId}></StoreTab>
+        <div>
+          <Outlet />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Store;

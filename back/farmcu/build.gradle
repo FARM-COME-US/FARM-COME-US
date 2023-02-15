@@ -26,13 +26,12 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	// 소셜 로그인등 클라이언트 입장에서 소셜 기능 구현 시 필요
+	//소셜 로그인등 클라이언트 입장에서 소셜 기능 구현 시 필요
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-	// jwt
+	//jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5', 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
 
 	//security
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -46,8 +45,15 @@ dependencies {
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
-	// ConfigurationProperties 애노테이션 사용
+	//ConfigurationProperties 애노테이션 사용
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	//S3
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.281'
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// https://mvnrepository.com/artifact/io.openvidu/openvidu-java-client
+	implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.25.0'
 }
 
 tasks.named('test') {

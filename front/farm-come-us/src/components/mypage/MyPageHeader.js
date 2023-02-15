@@ -1,48 +1,60 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef } from "react";
 import classes from "./style/MyPageHeader.module.scss";
 import { MdAddCircle } from "react-icons/md";
-import axios from "axios";
 import MyPageMenu from "../../pages/mypage/MyPageMenu";
-// import MyStoreHeaderInfo from "./MyStoreHeaderInfo";
-// import MyStoreMenu from "./MyStoreMenu";
-
-const DUMMY_STORE_INFO = {
-  storeName: "고랭강원농장",
-  desc: "저희 농장은 강원도 고산 지대에서 재배한 신선한 작물들을 제공합니다",
-};
 
 const MyPageHeader = (props) => {
-  const profileImg = props.profileImg;
-  // const nickname = props.nickname;
-  const nickname = "귀여운 양파";
+  const inputProfileRef = useRef();
+  const profileImgRef = useRef();
 
-  const addBgImageHandler = () => {
-    alert("이미지 추가 이벤트");
-    return;
+  const loadProfileFile = () => {
+    const file = inputProfileRef.current.files[0]; //선택된 파일 가져오기
+    //이미지 source 가져오기
+    profileImgRef.current.src = URL.createObjectURL(file);
+    props.userInfoChangeHandler("imgSrc", profileImgRef.current.src);
+    props.userInfoChangeHandler("uploadFile", file);
   };
 
   return (
     <div className={classes.myPageHeader}>
       <div className={classes.flexbox}>
         <div className={classes.innerflexbox}>
-          <div className={classes.nicknameTxt}>{props.nickname}</div>
-          <div className={classes.normalTxt}>{"님 안녕하세요."}</div>
+          <div className={classes.nicknameTxt}>{props.userInfo.nickname}</div>
+          {!props.isEditting ? (
+            <div className={classes.normalTxt}>{"님 안녕하세요."}</div>
+          ) : null}
         </div>
         <div className={classes.imgWrapper}>
           <img
             className={classes.profileImg}
-            src={process.env.PUBLIC_URL + "/img/defaultProfile.png"}
+            src={
+              props.userInfo.imgSrc
+                ? props.userInfo.imgSrc
+                : process.env.PUBLIC_URL + "/img/defaultProfile.png"
+            }
+            // 😀 수정필요 (이미지 업로드 해서 받아오는거 상의안했음.)
             alt="이미지"
+            ref={profileImgRef}
           />
-          <MdAddCircle
-            className={classes.btnAddBg}
-            onClick={addBgImageHandler}
-          />
+          <input
+            ref={inputProfileRef}
+            id="select-profile"
+            className={classes.imgInput}
+            type="file"
+            accept=".gif, .jpg, .png"
+            onChange={loadProfileFile}
+          ></input>
+
           {/* props로 경로 받아오거나, 이미지 던짐. */}
         </div>
+        {props.isEditting ? (
+          <label htmlFor="select-profile">
+            <MdAddCircle className={classes.btnAddBg} />
+          </label>
+        ) : null}
       </div>
 
-      <MyPageMenu />
+      <MyPageMenu userInfo={props.userInfo} />
     </div>
 
     // <div className={classes.storeHeader}>

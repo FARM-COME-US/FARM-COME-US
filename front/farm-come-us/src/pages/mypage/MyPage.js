@@ -1,90 +1,110 @@
 import React, { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import MyPageHeader from "../../components/mypage/MyPageHeader";
+import { fetchUpdateUserInfo } from "../../utils/api/user-http";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import userSlice from "../../reduxStore/userSlice";
 import axios from "axios";
-import Button from "../../components/common/Button";
-import MyPageInput from "./MyPageInput";
-import classes from "./style/MyPage.module.scss";
 
 const MyPage = (props) => {
-  // 유저정보 관리 변수
-  const [userInfo, setUserInfo] = useState("");
+  const [isEditting, setIsEditting] = useState(false);
+  const user = useSelector((state) => {
+    return state.userSlice.value;
+  });
+  const [userInfo, setUserInfo] = useState({
+    ...user,
+    imgSrc: "",
+    uploadFile: "",
+  });
+  const [initUserInfo, setInitUserInfo] = useState({
+    ...user,
+    imgSrc: "",
+    uploadFile: "",
+  });
 
-  const header = "";
-  const param = "";
-  const fetchURL = "backend/userinfo";
-  const profileImg = "";
-  const [nickname, setNickname] = useState("귀여운 양파");
-  const [name, setName] = useState("sjkim");
-  const [email, setEmail] = useState("foobar@naver.com");
-  const [fullAddress, setFullAddress] = useState("멀캠 72-13");
-  const [phoneNumber, setPhoneNumber] = useState("010-1234-5678");
-  // useState로 받아와서 갈아치워야할거같음.
-
-  // useEffect로 첫 렌더링시 데이터 가져옴.
-  const getUserInfo = useEffect(() => {
-    async function fetchData() {
-      const res = await axios.get(fetchURL, header, param);
-      // 수정필요. 토큰 넣어서 전송해야됨. 그리고, 넣어서 전송해줘야함.
-      setUserInfo(res.data);
-    }
+  useEffect(() => {
     const accessToken = sessionStorage.getItem("accessToken");
-    fetchData();
-
-    return;
+    axios
+      .get(process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          token: accessToken,
+        },
+      })
+      .then((res) => {
+        const { userInfo, userImage } = res.data;
+        if (userImage) {
+          userInfo["imgSrc"] = userImage.savedPath;
+        }
+        setUserInfo((prev) => {
+          return { ...prev, ...userInfo };
+        });
+        userSlice.actions.login(userInfo);
+        setInitUserInfo(userInfo);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
+
+  const toggleIsEditting = (e) => {
+    e.preventDefault();
+    setIsEditting((prev) => !prev);
+  };
+
+  const editInfoHandler = (e) => {
+    e.preventDefault();
+    fetchUpdateUserInfo(userInfo)
+      .then(() => {
+        alert("사용자 정보가 수정되었습니다.");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    setIsEditting((prev) => !prev);
+  };
+
+  const userInfoChangeHandler = (name, value) => {
+    setUserInfo((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const cancelInfoEditHandler = () => {
+    setUserInfo((prev) => {
+      return {
+        ...initUserInfo,
+      };
+    });
+
+    setIsEditting((prev) => !prev);
+
+    alert("수정이 취소되었습니다.");
+  };
 
   return (
     <div>
-      <MyPageHeader profileImg={profileImg} nickname={nickname} />
-      <div>
-        <div className={classes.title}>가입정보</div>
-        <hr />
-        <div>
-          <div className={classes.label} htmlFor="">
-            이름
-          </div>
-
-          <MyPageInput
-            className={classes.input}
-            disabled={true}
-            placeholder={name}
-          />
-        </div>
-        <div>
-          <div className={classes.label} htmlFor="">
-            이메일
-          </div>
-
-          <MyPageInput
-            className={classes.input}
-            disabled={true}
-            placeholder={email}
-          />
-        </div>
-        <div>
-          <div className={classes.label} htmlFor="">
-            주소
-          </div>
-
-          <MyPageInput
-            className={classes.input}
-            disabled={true}
-            placeholder={fullAddress}
-          />
-        </div>
-        <div>
-          <div className={classes.label} htmlFor="">
-            연락처
-          </div>
-
-          <MyPageInput
-            className={classes.input}
-            disabled={true}
-            placeholder={phoneNumber}
-          />
-        </div>
-        <Button className={classes.button}>가입정보 수정</Button>
-      </div>
+      <MyPageHeader
+        profileImg={userInfo.imgSrc}
+        userInfo={userInfo}
+        isEditting={isEditting}
+        userInfoChangeHandler={userInfoChangeHandler}
+      />
+      <Outlet
+        context={{
+          userInfo: userInfo,
+          isEditting,
+          toggleIsEditting,
+          editInfoHandler,
+          userInfoChangeHandler,
+          cancelInfoEditHandler,
+        }}
+      />
     </div>
   );
 };

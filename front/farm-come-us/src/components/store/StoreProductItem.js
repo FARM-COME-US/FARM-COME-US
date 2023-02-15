@@ -3,34 +3,28 @@ import { Link } from "react-router-dom";
 import classes from "./style/StoreProductItem.module.scss";
 
 const StoreProductItem = (props) => {
-  const convertedPrice = props.product.productPrice
+  console.log(props);
+  const convertedPrice = props.product.itemPrice
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  const storeProfile = {
-    storeName: "고랭 강원 농장",
-  };
-
   return (
-    <Link
-      to={`/product-detail`}
-      state={{ productInfo: props.product, storeInfo: storeProfile }}
-    >
+    <Link to={`/product-detail`} state={{ item_id: props.product.itemId }}>
       <div className={classes.container}>
-        <div className={classes.imagespace}></div>
+        <div className={classes.imagespace}>
+          <img src={props.product.savedPath[0]} alt="공백"></img>
+        </div>
         <div className={classes.scriptspace}>
           <div className={classes.firstline}>
-            <div className={classes.productname}>
-              {props.product.productName}
-            </div>
+            <div className={classes.productname}>{props.product.itemName}</div>
             <div className={classes.productamount}>
-              {props.product.productAmount}kg
+              {props.product.itemStock}kg
             </div>
           </div>
-          <div className={classes.thirdline}>{props.product.productScript}</div>
-          <div className={classes.secondline}>
-            {props.product.productOption}kg / {convertedPrice}원
+          <div className={classes.thirdline}>
+            {props.product.itemDescription}
           </div>
+          <div className={classes.secondline}>5kg / {convertedPrice}원</div>
         </div>
       </div>
     </Link>

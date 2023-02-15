@@ -1,13 +1,20 @@
 import React from "react";
 import classes from "./style/CategoryItem.module.scss";
-import ImageButton from "../common/ImageButton";
+import CategoryButton from "./CategoryButton";
 
-const CategoryList = (props) => {
+const CategoryItem = (props) => {
+  const sendName = () => {
+    props.getName(props.category_name);
+  };
+
   return (
-    <div className={classes.container}>
-      <ImageButton text={props.name}></ImageButton>
+    <div className={classes.container} onClick={sendName}>
+      <CategoryButton
+        className={classes.categoryItem}
+        category_name={props.category_name}
+      ></CategoryButton>
     </div>
   );
 };
 
-export default CategoryList;
+export default CategoryItem;
