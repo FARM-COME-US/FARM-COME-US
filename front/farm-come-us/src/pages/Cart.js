@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import classes from "./style/Cart.module.scss";
 import CartHeader from "../components/cart/CartHeader";
 import CartList from "../components/cart/CartList";
 import CartFooter from "../components/cart/CartFooter";
-import { useSelector } from "react-redux";
 import { cartDetail } from "../utils/api/cart-http";
-import { delteCart } from "../utils/api/cart-http";
 
 const DUMMY_CART_LIST = [
   {
@@ -51,13 +50,19 @@ const DUMMY_CART_LIST = [
 ];
 
 const Cart = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    alert("준비 중인 기능입니다.");
+    navigate(-1);
+  }, []);
+
   // const memberId = useSelector(state => state.user.value.memberId) => 오류 나는 것 같아서 뺄게요~!
   const [itemIdList, setList] = useState([]);
   const [resultPrice, setPrice] = useState(0);
 
-  // 
-  const res = cartDetail()
-  console.log(res)
+  //
+  const res = cartDetail();
 
   // 장바구니 삭제 => 주석 풀고 장바구니 번호 넣어서 사용하기
   // const ret = delteCart()
