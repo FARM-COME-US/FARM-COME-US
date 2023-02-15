@@ -123,43 +123,35 @@ const OvContainer = (props) => {
       }
     });
 
-    // --- 4) Connect to the session with a valid user token ---
-    // Get a token from the OpenVidu deployment
     getToken().then((token) => {
-      // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
-      // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+      console.log("token: ", token);
       mySession
         .connect(token, { clientData: props.username })
         .then(async () => {
-          tempOV
-            .getUserMedia({
-              audioSource: false,
-              videoSource: undefined,
-              resolution: "1280x720",
-              frameRate: 10,
-            })
-            .then((mediaStream) => {
-              var videoTrack = mediaStream.getVideoTracks()[0];
+          let devices = await tempOV.getDevices();
+          let videoTrack = devices.filter(
+            (device) => device.kind === "videoinput"
+          );
 
-              var newPublisher = tempOV.initPublisher(props.username, {
-                audioSource: undefined,
-                videoSource: videoTrack,
-                publishAudio: props.isPublisher ? true : false,
-                publishVideo: true,
-                resolution: "1280x720",
-                // frameRate: 10,
-                insertMode: "APPEND",
-                mirror: true,
-              });
+          var newPublisher = tempOV.initPublisher(undefined, {
+            audioSource: undefined,
+            videoSource: videoTrack,
+            publishAudio: props.isPublisher ? true : false,
+            publishVideo: props.isPublisher ? true : false,
+            resolution: "1280x720",
+            // frameRate: 10,
+            insertMode: "APPEND",
+            mirror: true,
+          });
+          console.log(mySession);
 
-              // 4-c publish
-              mySession.publish(newPublisher);
+          // 4-c publish
+          mySession.publish(newPublisher);
 
-              setPublisher(newPublisher);
-              setCurrentVideoDevice(videoTrack);
-              setMainStreamManager(newPublisher);
-              setIsPending(false);
-            });
+          setPublisher(newPublisher);
+          setCurrentVideoDevice(videoTrack);
+          setMainStreamManager(newPublisher);
+          setIsPending(false);
         })
         .catch((error) => {
           console.log(
@@ -260,6 +252,7 @@ const OvContainer = (props) => {
 
   const getToken = async () => {
     const mySessionId = await createSession(props.sessionId);
+    console.log("mySessionId: ", mySessionId);
     return await createToken(mySessionId);
   };
 
@@ -307,7 +300,6 @@ const OvContainer = (props) => {
             `OPENVIDUAPP:${process.env.REACT_APP_OPENVIDU_SECRET}`
           )}`,
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
         },
       }
     );

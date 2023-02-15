@@ -118,38 +118,9 @@ const RESERVED_LIVE_LIST = [
   },
 ];
 
-const PRODUCT_LIST = [
-  {
-    productId: 1,
-    productName: "[청송] 무농약 당도 높은 가을 사과, 박스",
-    discount: 0,
-    price: 44800,
-    unit: 1,
-    storeId: 1,
-    storeName: "애플 인 더 청송",
-  },
-  {
-    productId: 2,
-    productName: "[청송] 무농약 당도 높은 가을 사과, 박스",
-    discount: 0,
-    price: 44800,
-    unit: 1,
-    storeId: 2,
-    storeName: "애플 인 더 청송",
-  },
-  {
-    productId: 3,
-    productName: "[청송] 무농약 당도 높은 가을 사과, 박스",
-    discount: 0,
-    price: 44800,
-    unit: 1,
-    storeId: 3,
-    storeName: "애플 인 더 청송",
-  },
-];
-
 const LivePreview = () => {
   const navigate = useNavigate();
+
   const {
     sendRequest: getLiveSessions,
     status: ovStatus,
@@ -160,13 +131,14 @@ const LivePreview = () => {
   const {
     sendRequest: getRunningLiveInfo,
     status: rllStatus,
+    data: runningLiveData,
     errorRll,
   } = useHttp(fetchRunningLiveList, true);
 
   const {
     sendRequest: getScheduledLiveInfo,
     status: sllStatus,
-    data: scheduledLiveList,
+    data: scheduledLiveData,
     errorSll,
   } = useHttp(fetchScheduledLiveList, true);
 
@@ -182,15 +154,23 @@ const LivePreview = () => {
   }, [getLiveSessions]);
 
   useEffect(() => {
-    getRunningLiveInfo();
+    getRunningLiveInfo(0);
   }, [getRunningLiveInfo]);
 
   useEffect(() => {
-    getScheduledLiveInfo();
+    getScheduledLiveInfo(0);
   }, [getScheduledLiveInfo]);
 
   useEffect(() => {
-    getItemList();
+    const data = {
+      category: "전체",
+      itemName: "",
+      subCategory: "전체",
+      page: 0,
+      size: 8,
+    };
+    getItemList(data);
+    console.log(itemList);
   }, [getItemList]);
 
   const liveRoomEnterHandler = async (liveInfo) => {
@@ -202,7 +182,7 @@ const LivePreview = () => {
       return;
     }
     const sessionId = data.sessionId;
-    alert(`${sessionId}`);
+    alert(`Room_id : ${sessionId}`);
     navigate("/broadcast", {
       state: {
         id: sessionId,
@@ -213,7 +193,6 @@ const LivePreview = () => {
   };
 
   const moveMorePageHandler = (uri) => {
-    console.log(uri);
     navigate(uri);
   };
 
@@ -249,7 +228,7 @@ const LivePreview = () => {
         <Loading className={classes.loading} />
       ) : (
         <LiveList
-          liveList={RESERVED_LIVE_LIST}
+          liveList={scheduledLiveData.liveOffList}
           isLive={false}
           isPreview={true}
         />
@@ -265,7 +244,7 @@ const LivePreview = () => {
       {itemStatus === "pending" ? (
         <Loading className={classes.loading} />
       ) : (
-        <ProductList productList={PRODUCT_LIST} />
+        <ProductList productList={itemList.itemInfoList} isPreview={true} />
       )}
     </div>
   );

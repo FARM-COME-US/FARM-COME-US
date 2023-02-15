@@ -11,21 +11,15 @@ import classes from "./style/MyPageMenu.module.scss";
 
 const MyPageMenu = (props) => {
   const navigate = useNavigate();
-
   const redirectMyStoreHandler = (e) => {
     e.preventDefault();
     if (!window.confirm("마이스토어로 이동하시겠습니까?")) return;
-    console.log(
-      `내스토어아이디 있으면 숫자로. 없으면 null :${props.userInfo.storeId}`
-    );
-    if (props.userInfo.storeId) {
-      navigate("/mystore", { state: { userInfo: props.userInfo } });
-      // 😀 수정필요. 여기는 마이스토어 조회페이지.
-    } else {
-      alert("생성된 마이스토어가 없습니다. 스토어 생성 페이지로 이동합니다.");
-      console.log(props.userInfo);
+    if (!props.hasMyStore) {
+      alert("조회된 스토어가 없습니다. 생성 페이지로 이동합니다.");
       navigate("/mystorecreate", { state: { userInfo: props.userInfo } });
+      return;
     }
+    navigate("/mystore");
   };
 
   return (

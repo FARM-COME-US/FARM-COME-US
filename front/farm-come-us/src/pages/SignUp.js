@@ -2,7 +2,6 @@ import React, { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import classes from "./style/SignUp.module.scss";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import userSlice from "../reduxStore/userSlice";
 import {
   MdPermIdentity,
   MdEmail,
@@ -13,11 +12,7 @@ import {
 } from "react-icons/md";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
-import {
-  userSignUp,
-  login,
-  fetchUserInfoWithAccessToken,
-} from "../utils/api/user-http";
+import { userSignUp } from "../utils/api/user-http";
 
 const SignUp = () => {
   const dispatch = useDispatch();
