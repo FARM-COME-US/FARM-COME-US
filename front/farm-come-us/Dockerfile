@@ -1,7 +1,8 @@
-FROM node:14
+FROM nginx:stable-alpine
 WORKDIR /app
-COPY package.json .
-RUN npm install
-COPY . .
+RUN mkdir ./build
+ADD ./build ./build
+RUN rm /etc/nginx/conf.d/default.conf
+COPY ./nginx.conf /etc/nginx/conf.d
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
