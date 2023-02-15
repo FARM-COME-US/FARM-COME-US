@@ -121,10 +121,6 @@ const RESERVED_LIVE_LIST = [
 const LivePreview = () => {
   const navigate = useNavigate();
 
-  const getProductListHandler = () => {
-    fetchProductList("전체", null, "전체", 0, 8);
-  };
-
   const {
     sendRequest: getLiveSessions,
     status: ovStatus,
@@ -166,10 +162,16 @@ const LivePreview = () => {
   }, [getScheduledLiveInfo]);
 
   useEffect(() => {
-    getItemList("", "", "", 0, 8);
+    const data = {
+      category: "전체",
+      itemName: "",
+      subCategory: "전체",
+      page: 0,
+      size: 8,
+    };
+    getItemList(data);
+    console.log(itemList);
   }, [getItemList]);
-
-  getProductListHandler();
 
   const liveRoomEnterHandler = async (liveInfo) => {
     const data = await fetchLiveSession(liveInfo.sessionId);
@@ -242,7 +244,7 @@ const LivePreview = () => {
       {itemStatus === "pending" ? (
         <Loading className={classes.loading} />
       ) : (
-        <ProductList productList={itemList} />
+        <ProductList productList={itemList.itemInfoList} isPreview={true} />
       )}
     </div>
   );

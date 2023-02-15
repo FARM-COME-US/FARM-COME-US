@@ -50,7 +50,7 @@ public class StoreServiceImpl implements StoreService{
                     .storeDeliveryFree(store.getStoreDeliveryFree())
                     .storeDescription(store.getStoreDescription())
                     .storeDetailAddr(store.getStoreDetailAddr())
-//                    .storeImg(store.getStoreImg())
+                    .storeImg(store.getStoreImg())
                     .storePhoneNumber(store.getStorePhoneNumber())
                     .storeStreetAddr(store.getStoreStreetAddr())
                     .memberId(store.getMember().getMemberId())
@@ -100,7 +100,7 @@ public class StoreServiceImpl implements StoreService{
                     .storeDeliveryFree(store.getStoreDeliveryFree())
                     .storeDescription(store.getStoreDescription())
                     .storeDetailAddr(store.getStoreDetailAddr())
-//                    .storeImg(store.getStoreImg())
+                    .storeImg(store.getStoreImg())
                     .storePhoneNumber(store.getStorePhoneNumber())
                     .storeStreetAddr(store.getStoreStreetAddr())
                     .memberId(store.getMember().getMemberId())
@@ -154,12 +154,14 @@ public class StoreServiceImpl implements StoreService{
     @Transactional
     public boolean saveStoreImage(Long storeId, String path){
         try{
-            Store store = Store.builder().storeImg(path).storeId(storeId).build();
-            storeRepository.save(store);
+            Store store = storeRepository.findByStoreId(storeId).orElse(null);
+            if(store!=null) {
+                store.updateStoreImg(path);
+                storeRepository.save(store);
+            }
         }catch (Exception e){
             return false;
         }
         return true;
-
     }
 }

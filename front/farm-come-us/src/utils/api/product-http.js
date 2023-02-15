@@ -89,7 +89,6 @@ export function fetchProductList(fetchInfo) {
       { config, params }
     )
     .then((res) => {
-      console.log(res.data);
       return res.data;
     })
     .catch((err) => {

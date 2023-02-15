@@ -37,114 +37,101 @@ public class StoreController {
 
 
     @PostMapping
-    @ApiOperation(value="스토어 생성", notes = "")
+    @ApiOperation(value = "스토어 생성", notes = "")
     public ResponseEntity createStore(@RequestPart("store") StoreCreateReq request, MultipartFile uploadFile) throws Exception {
         log.info("member id: {}", request.getMemberId());
-        if(storeService.checkStoreExist(request.getMemberId())!=null){
+        if (storeService.checkStoreExist(request.getMemberId()) != null) {
             return new ResponseEntity<String>("already exist", HttpStatus.ACCEPTED);
         }
         Long storeId = storeService.saveStore(request);
         log.info("store id : {}", storeId);
 
         //이미지 첨부
-        if(storeId > 0L && uploadFile != null) {
-                String savedPath = s3Service.uploadFile(uploadFile);
-                log.info("here save file");
-                StoreImageDto storeImageDto = StoreImageDto.builder()
-                        .storeId(storeId)
-                        .originalName(uploadFile.getOriginalFilename())
-                        .savedPath(savedPath).build();
+        if (storeId > 0L && uploadFile != null) {
+            String savedPath = s3Service.uploadFile(uploadFile);
+            log.info("here save file");
+            StoreImageDto storeImageDto = StoreImageDto.builder()
+                    .storeId(storeId)
+                    .originalName(uploadFile.getOriginalFilename())
+                    .savedPath(savedPath).build();
 
-                storeImageService.saveStoreImage(storeImageDto);
-                storeService.saveStoreImage(storeId, savedPath);
+            storeImageService.saveStoreImage(storeImageDto);
+            storeService.saveStoreImage(storeId, savedPath);
         }
 
         HashMap<String, Object> result = new HashMap<>();
 
-        if(storeId>0L){
+        if (storeId > 0L) {
             result.put("storeId", storeId);
             result.put("message", "success");
             return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
-        }else{
+        } else {
             result.put("message", "error");
             return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
         }
     }
 
     @GetMapping("/{storeId}")
-    @ApiOperation(value="스토어 상세조회", notes = "")
-    public ResponseEntity<?> selectOneStore(@PathVariable("storeId") Long id){
+    @ApiOperation(value = "스토어 상세조회", notes = "")
+    public ResponseEntity<?> selectOneStore(@PathVariable("storeId") Long id) {
         StoreDto result = storeService.findStoreInfo(id);
-        StoreImageDto storeImageDto = storeImageService.findStoreImageByStoreId(id);
 
-        HashMap<String, Object> resultMap = new HashMap<>();
-
-        resultMap.put("store", result);
-        resultMap.put("storeImage", storeImageDto);
-
-        if(result!=null){
-            return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
-        }
-        else
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+        } else
             return new ResponseEntity<String>("store not exist", HttpStatus.NOT_FOUND);
     }
+
     @GetMapping("/mystore/{memberId}")
-    @ApiOperation(value="스토어 상세조회", notes = "")
-    public ResponseEntity<?> selectMyStore(@PathVariable("memberId") Long id){
+    @ApiOperation(value = "스토어 멤버 아이디로 상세조회", notes = "")
+    public ResponseEntity<?> selectMyStore(@PathVariable("memberId") Long id) {
         StoreDto result = storeService.findMyStoreInfo(id);
-        StoreImageDto storeImageDto = storeImageService.findStoreImageByStoreId(result.getStoreId());
 
-        HashMap<String, Object> resultMap = new HashMap<>();
-
-        resultMap.put("store", result);
-        resultMap.put("storeImage", storeImageDto);
-
-        if(result!=null){
-            return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
-        }
-        else
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+        } else
             return new ResponseEntity<String>("store not exist", HttpStatus.NOT_FOUND);
     }
-    @PutMapping("/{storeId}")
-    @ApiOperation(value="스토어 정보 수정", notes = "")
-    public ResponseEntity updateStore(@PathVariable("storeId") Long storeId, @RequestPart StoreUpdateReq request,  MultipartFile uploadFile)throws Exception {
 
+    @PutMapping
+    @ApiOperation(value = "스토어 정보 수정", notes = "")
+    public ResponseEntity updateStore(@RequestPart("request") StoreUpdateReq request, MultipartFile uploadFile) throws Exception {
+        log.info("Request: ", request);
         HashMap<String, Object> result = new HashMap<>();
+        Long storeId = request.getStoreId();
 
-        if(storeService.updateStore(storeId, request)){ // 스토어 정보 업데이트 완료하고
+        if (storeService.updateStore(storeId, request)) { // 스토어 정보 업데이트 완료하고
             //이미지 첨부
-            if(uploadFile != null) { // 이미지 업데이트
+            if (uploadFile != null) { // 이미지 업데이트
                 String savedPath = s3Service.uploadFile(uploadFile);
                 log.info("here save file");
-                StoreImageDto storeImageDto = StoreImageDto.builder()
+                StoreImageDto storeImageDto = storeImageService.findStoreImageByStoreId(storeId);
+                StoreImageDto newStoreImageDto = StoreImageDto.builder()
+                        .storeImageId(storeImageDto.getStoreImageId())
                         .storeId(storeId)
                         .originalName(uploadFile.getOriginalFilename())
                         .savedPath(savedPath).build();
-
-                storeImageService.updateStoreImage(storeImageDto);
+                storeImageService.updateStoreImage(newStoreImageDto);
                 storeService.saveStoreImage(storeId, savedPath);
             }
 
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
-        }else{
+        } else {
             return new ResponseEntity<String>("error", HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/{storeId}")
-    @ApiOperation(value = "스토어 삭제", notes="")
-    public ResponseEntity<?> deleteStore(@PathVariable("storeId")Long id){
+    @ApiOperation(value = "스토어 삭제", notes = "")
+    public ResponseEntity<?> deleteStore(@PathVariable("storeId") Long id) {
         //회원 유효성 검사 추후 추가
-        if(storeService.deleteStore(id)){
+        if (storeService.deleteStore(id)) {
             storeImageService.deleteStoreImage(id);
             return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
-        }else{
+        } else {
             return new ResponseEntity<String>("error", HttpStatus.NOT_FOUND);
         }
     }
-
-
-
 
 
 }

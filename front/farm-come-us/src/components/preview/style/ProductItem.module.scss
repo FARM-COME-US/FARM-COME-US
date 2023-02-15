@@ -1,7 +1,10 @@
 .productItem {
-  width: 47%;
+  width: 100% !important;
+  margin: 10px;
+  padding: 5px;
 
   .productCard {
+    width: 100%;
     aspect-ratio: 3 / 4;
     padding: 0;
     overflow: hidden;
@@ -14,6 +17,7 @@
       height: 60%;
       display: block;
       object-fit: cover;
+      background-color: #ccc;
     }
 
     .productInfo {
