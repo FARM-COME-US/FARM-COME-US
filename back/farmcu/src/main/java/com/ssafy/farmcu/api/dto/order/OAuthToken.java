@@ -1,4 +1,4 @@
-package com.ssafy.farmcu.api.entity.order.pay;
+package com.ssafy.farmcu.api.dto.order;
 
 
 import lombok.Getter;
