@@ -9,33 +9,38 @@ export async function fetchAddLive(liveInfo) {
 }
 
 /* 진행 중인 라이브 목록 조회 */
-export async function fetchRunningLiveList() {
+export async function fetchRunningLiveList(page) {
   const params = {
     liveTitle: "",
-    page: 0,
-    size: 10,
+    page: page,
+    size: 8,
   };
-  try {
-    const response = await axios.get(`${LIVE_API_URL}/list/on`, params);
-    console.log(response.data);
-  } catch (err) {
-    console.error(err);
-  }
+  return await axios
+    .get(`${LIVE_API_URL}/list/on`, { params })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 /* 예약된 라이브 목록 조회 */
-export async function fetchScheduledLiveList() {
+export async function fetchScheduledLiveList(page) {
   const params = {
     liveTitle: "",
-    page: 0,
-    size: 10,
+    page: page,
+    size: 8,
   };
-  try {
-    const response = await axios.get(`${LIVE_API_URL}/list/off`, params);
-    console.log(response.data);
-  } catch (err) {
-    console.error(err);
-  }
+
+  return await axios
+    .get(`${LIVE_API_URL}/list/off`, { params })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 /* 라이브 상세 조회 */

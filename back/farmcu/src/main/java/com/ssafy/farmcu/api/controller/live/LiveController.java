@@ -12,6 +12,7 @@ import io.openvidu.java.client.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("api/v1/live")
 @CrossOrigin(origins = "*")
@@ -130,6 +132,10 @@ public class LiveController {
     @GetMapping("/list/off")
     @ApiOperation(value = "라이브 예정 목록 조회")
     public ResponseEntity<HashMap<String, Object>> selectLiveOffList(String liveTitle, int page, int size) {
+        log.info("DTD: {}", liveTitle);
+        log.info("DTD: {}", page);
+        log.info("DTD: {}", size);
+
         PageRequest pageRequest = PageRequest.of(page, size);
         HashMap<String, Object> liveText = liveService.findLivesByLiveTitleLikeAndLiveStartLessThan(liveTitle, LocalDateTime.now(), pageRequest);
         List<LiveListRes> liveList = (List<LiveListRes>) liveText.get("liveList");

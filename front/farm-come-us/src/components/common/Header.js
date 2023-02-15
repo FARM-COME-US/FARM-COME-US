@@ -11,9 +11,9 @@ const Header = (props) => {
     <div className={`${classes.header} ${props.className}`}>
       <div className={`${classes.logo}`}>로고</div>
       <div className={classes.rightflexbox}>
-        <div className={classes.searchBtnWrapper}>
+        {/* <div className={classes.searchBtnWrapper}>
           <MdSearch className={classes.searchBtn} />
-        </div>
+        </div> */}
         <div
           className={classes.menuBtnWrapper}
           onClick={() => {
