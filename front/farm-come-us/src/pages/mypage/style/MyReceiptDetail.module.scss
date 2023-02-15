@@ -77,3 +77,20 @@ $upperCardHeight: 20%;
     font-weight: 300;
   }
 }
+
+.receiptsBody {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.totalPrice {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: end;
+  padding-right: 2.5%;
+  font-weight: 600;
+  color: #777;
+  // align-self: self-end;
+}
