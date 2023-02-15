@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("api/v1/pay")
 @Api(value = "pay API")
-public class KakaoController {
+public class KakaoPayController {
 
     private final PayService payService;
     private final MemberService memberService;
@@ -30,7 +30,7 @@ public class KakaoController {
     private final OrderController orderController;
     private Long memberId;
 
-    KakaoController(@Lazy OrderServiceImpl orderService, @Lazy OrderController orderController, @Lazy PayService payService, @Lazy MemberService memberService) {
+    KakaoPayController(@Lazy OrderServiceImpl orderService, @Lazy OrderController orderController, @Lazy PayService payService, @Lazy MemberService memberService) {
         this.orderService = orderService;
         this.payService = payService;
         this.memberService = memberService;
@@ -48,10 +48,13 @@ public class KakaoController {
         return requestResponse;
     }
 
+
+    // 이거 시점을 ... 언제로 할지 생각하고
     @PutMapping("/tid")
     @ApiOperation(value = "tid 생성")
     public ResponseEntity updateTid(@RequestParam String tid, Long orderId){
-
+        orderService.tidtid(tid);
+        orderService.threadLocal_1();
         try {
             Order order = orderService.updateTid(orderId, tid);
         }
@@ -62,12 +65,15 @@ public class KakaoController {
         return new ResponseEntity<String>("tid 생성 완료", HttpStatus.OK);
     }
 
+    // 이거 시점이 위에것 보다 뒤로가게
     @GetMapping("/kakao/success")
     public ResponseEntity payApprove( @RequestParam("pg_token") String pgToken ){
 
-//        String tid = (String) redis.redisTemplate().opsForValue().get(String.valueOf(memberId));
-        String tid = "";
-        KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoPayApprove(tid, pgToken);
+//        String tid = orderService.threadLocal_1();
+//        System.out.println("@@@@@@@@@@@@@@@@@@@@@" + tid);
+//        String tid = String.valueOf(kakaoPayApproveDto.getTid());
+//        log.info();
+        KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoPayApprove(pgToken);
 
         Long orderId = Long.valueOf(kakaoPayApproveDto.getPartner_order_id());
         log.info("orderId = {}", orderId);
@@ -75,5 +81,7 @@ public class KakaoController {
 
         return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
     }
+
+
 
 }

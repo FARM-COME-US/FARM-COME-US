@@ -7,7 +7,7 @@ const Test = () => {
     try {
         axios
         .get(
-            `http://localhost:9090/api/v1/pay/kakaoreq?itemCount=1&memberId=2&orderId=35`,
+            `http://localhost:9090/api/v1/pay/kakaoreq?itemCount=${itemCount}&memberId=${memberId}&orderId=${orderId}`,
         )
         .then((response) => {
             const setUrl = response.data.next_redirect_pc_url;
@@ -19,7 +19,7 @@ const Test = () => {
                 console.log("tid 주기")
                 axios
                 .put (
-                    `http://localhost:9090/api/v1/pay/tid?tid=${tid}&orderId=35`
+                    `http://localhost:9090/api/v1/pay/tid?tid=${tid}&orderId=${orderId}`
                 )
             } catch (err) {
                 console.log(err);
