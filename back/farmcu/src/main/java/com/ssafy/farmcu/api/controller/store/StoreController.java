@@ -84,8 +84,8 @@ public class StoreController {
 
     @GetMapping("/mystore/{memberId}")
     @ApiOperation(value = "스토어 멤버 아이디로 상세조회", notes = "")
-    public ResponseEntity<?> selectMyStore(@PathVariable("memberId") Long id) {
-        StoreDto result = storeService.findMyStoreInfo(id);
+    public ResponseEntity<?> selectMyStore(@PathVariable("memberId") Long memberId) {
+        StoreDto result = storeService.findMyStoreInfo(memberId);
 
         if (result != null) {
             return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
@@ -96,7 +96,6 @@ public class StoreController {
     @PutMapping
     @ApiOperation(value = "스토어 정보 수정", notes = "")
     public ResponseEntity updateStore(@RequestPart("request") StoreUpdateReq request, MultipartFile uploadFile) throws Exception {
-        log.info("Request: ", request);
         HashMap<String, Object> result = new HashMap<>();
         Long storeId = request.getStoreId();
 

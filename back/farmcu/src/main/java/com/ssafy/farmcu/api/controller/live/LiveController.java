@@ -132,9 +132,6 @@ public class LiveController {
     @GetMapping("/list/off")
     @ApiOperation(value = "라이브 예정 목록 조회")
     public ResponseEntity<HashMap<String, Object>> selectLiveOffList(String liveTitle, int page, int size) {
-        log.info("DTD: {}", liveTitle);
-        log.info("DTD: {}", page);
-        log.info("DTD: {}", size);
 
         PageRequest pageRequest = PageRequest.of(page, size);
         HashMap<String, Object> liveText = liveService.findLivesByLiveTitleLikeAndLiveStartLessThan(liveTitle, LocalDateTime.now(), pageRequest);
