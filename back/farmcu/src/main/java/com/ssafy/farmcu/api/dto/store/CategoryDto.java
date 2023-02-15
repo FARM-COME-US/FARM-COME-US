@@ -15,11 +15,13 @@ public class CategoryDto {
 
     private Long categoryCode;
     private String categoryName;
+    private String imageUrl;
 
     public CategoryDto(CategoryTitle categoryTitle, CategoryDetail categoryDetail) {
         if(categoryTitle != null) {
             this.categoryCode = categoryTitle.getTitleCode();
             this.categoryName = categoryTitle.getTitleName();
+            this.imageUrl = categoryTitle.getImageUrl();
         }
 
         if(categoryDetail != null) {
