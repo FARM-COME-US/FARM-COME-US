@@ -20,7 +20,7 @@ const MyUserInfo = () => {
   return (
     <div className={classes.userInfo}>
       <MyPageContentTitle text="가입 정보" />
-      <form>
+      <form encType="multipart/form-data">
         <MyPageInfoList
           className={classes.infoList}
           info={userInfo}

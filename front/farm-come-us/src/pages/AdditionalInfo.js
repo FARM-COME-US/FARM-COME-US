@@ -1,13 +1,17 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { MdSearch, MdPhoneIphone } from "react-icons/md";
 import classes from "./style/AdditionalInfo.module.scss";
+import { useNavigate } from "react-router-dom";
 import _ from "lodash";
 
 // 수정필요 - 카카오로그인을 하면 모든 필드가 다 주어지지않는데, 회원수정에서 모든걸 required
 // ㅈ
 const AdditionalInfo = () => {
+  // let nickname = new URL(window.location.href).searchParams.get("code");
+  // let accessToken = new URL(window.location.href).searchParams.get("token");
+  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [streetAddr, setStreetAddr] = useState("");
@@ -31,7 +35,6 @@ const AdditionalInfo = () => {
   };
 
   const selectAddress = (data) => {
-    console.log(data);
     setIsStreetAddr(true);
     setStreetAddr(data.roadAddress);
     setZipcode(data.zonecode);
@@ -68,33 +71,6 @@ const AdditionalInfo = () => {
     // formData.append("uploadFile", storeInfo.uploadFile);
     formData.append("uploadFile", ""); //😀프로필사진 보낼생각없는데?
 
-    // 위의 4개 데이터만 보내면 되나? 아니면 다 보내야되나?
-    // const data = {
-    //   memberId: userInfo.memberId,
-    //   storeDeliveryCost: storeInfo.deliveryCost,
-    //   storeDeliveryFree: storeInfo.deliveryFree,
-    //   storeDescription: storeInfo.storeDescription,
-    //   storeDetailAddr: storeInfo.detailAddr,
-    //   storeImg: storeInfo.filename,
-    //   storeName: storeInfo.storeName,
-    //   storePhoneNumber: storeInfo.phoneNumber,
-    //   storeStreetAddr: storeInfo.streetAddr,
-    //   storeZipcode: storeInfo.zipcode,
-    // };
-
-    // const data = {
-    //   memberId: userInfo.memberId,
-    //   storeDeliveryCost: storeInfo.deliveryCost,
-    //   storeDeliveryFree: storeInfo.deliveryFree,
-    //   storeDescription: storeInfo.storeDescription,
-    //   storeDetailAddr: storeInfo.detailAddr,
-    //   storeImg: storeInfo.filename,
-    //   storeName: storeInfo.storeName,
-    //   storePhoneNumber: storeInfo.phoneNumber,
-    //   storeStreetAddr: storeInfo.streetAddr,
-    //   storeZipcode: storeInfo.zipcode,
-    // };
-
     // 😀 4개만 보내도 되는지 확인.
     const userInfo = {
       phoneNumber,
@@ -121,8 +97,6 @@ const AdditionalInfo = () => {
       withCredentials: false,
     };
 
-    console.log("이 아래에 생성후 응답 바로아래 dispatch");
-
     axios
       .put(
         process.env.REACT_APP_API_SERVER_URL + "/api/v1/member",
@@ -130,7 +104,7 @@ const AdditionalInfo = () => {
         config
       )
       .then((res) => {
-        console.log(res);
+        navigate("/oauthRedirect");
       })
       .catch((err) => console.log(err));
   }
@@ -142,6 +116,18 @@ const AdditionalInfo = () => {
     // axios.put(process.env.REACT_APP_API_SERVER_URL + "/api/v1/member");
     modifyUserInfo();
   };
+
+  useEffect(() => {
+    let givenNickname = new URL(window.location.href).searchParams.get(
+      "nickname"
+    );
+    let accessToken = new URL(window.location.href).searchParams.get("token");
+    sessionStorage.setItem("accessToken", accessToken);
+
+    if (!(givenNickname === null || givenNickname === "")) {
+      navigate("/oauthRedirect");
+    }
+  }, []);
 
   return (
     <form className={classes.container} onSubmit={submitHandler}>
