@@ -11,7 +11,6 @@ public class StoreUpdateReq {
     private Long storeId;
     private String storeName;
     private String storeDescription;
-    private String storeImg;
     private String storeStreetAddr;
     private String storeDetailAddr;
     private String storeZipcode;
