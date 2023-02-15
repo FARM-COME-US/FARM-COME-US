@@ -76,6 +76,7 @@ const MyReceiptDetail = () => {
         // console.log(`itemDatas에 들어감: ${res.data.orderdetailList}`);
         // console.log(res.data.orderdetailList);
         // console.log(typeof eval(res.data.orderdetailList));
+        // console.log(res.data.orderdetailList[0]);
         setDate(res.data.orderdetailList[0].oitemCreatedAt);
         setItemsDatas(res.data.orderdetailList);
         setTotalPrice(getTotalPrice(res.data.orderdetailList));
@@ -89,6 +90,7 @@ const MyReceiptDetail = () => {
   // const dateFormatted = dateFormatter(date);
 
   let itemsCards = itemsDatas.map((item, idx) => {
+    // console.log(item);
     <MyReceiptDetailItem
       key={idx}
       itemId={item.oitemId}
@@ -134,6 +136,9 @@ const MyReceiptDetail = () => {
           <div className={classes.totalPrice}>
             전체 결제 금액: {convertedPrice}원
           </div>
+        </div>
+        <div>
+          <div>환불 / 결제취소</div>
         </div>
       </div>
     </div>
