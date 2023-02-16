@@ -67,6 +67,8 @@ const MyStoreProduct = () => {
           className={isModalOpen ? null : "close"}
           storeInfo={storeInfo}
           onToggleModal={modalToggleHandler}
+          onFetchProducts={getStoreProducts}
+          currPage={currPage}
         />
       ) : null}
     </div>

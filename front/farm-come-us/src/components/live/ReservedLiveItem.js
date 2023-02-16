@@ -15,7 +15,6 @@ const ReservedLiveItem = (props) => {
   const reservedDate = () => {
     const date = new Date(new Date(props.live.liveStart).getTime());
     const today = new Date();
-    console.log(date);
 
     let hour = date.getHours();
     hour = hour < 12 ? "0" + hour : hour;

@@ -73,6 +73,12 @@ const AddLiveModal = (props) => {
     fetchAddLive(newLiveInfo)
       .then((res) => {
         alert("라이브가 등록되었습니다.");
+        const params = {
+          storeId: props.storeInfo.storeId,
+          page: 0,
+          size: 100,
+        };
+        // props.onFetchLive(params);
       })
       .catch((err) => {
         console.error(err);

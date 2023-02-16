@@ -25,8 +25,8 @@ const ProductList = (props) => {
 
   useEffect(() => {
     if (productsInfo) {
-      setProductsList((prev) => {
-        return [...prev, ...productsInfo.itemInfoList];
+      setProductsList(() => {
+        return [...productsInfo.itemInfoList];
       });
       setHasNextPage(() => productsInfo.hasNextPage);
     }

@@ -29,6 +29,7 @@ const AddProductModal = (props) => {
     createProduct(productInfo)
       .then(() => {
         alert("상품이 등록되었습니다.");
+        props.onFetchProducts(props.storeInfo.storeId, props.currPage);
       })
       .catch((err) => {
         console.error(err);
