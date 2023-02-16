@@ -340,11 +340,8 @@ const OvContainer = (props) => {
     } else {
       publisher.publishAudio(false);
     }
-
     setIsMute((prev) => !prev);
   };
-
-  console.log("===============", props.isPublisher);
 
   return (
     <div className={props.className}>

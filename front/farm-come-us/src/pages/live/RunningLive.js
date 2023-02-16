@@ -56,8 +56,6 @@ const RunningLive = () => {
       });
   };
 
-  console.log(sessionList);
-
   return (
     <div className={classes.liveContainer}>
       {ovStatus === "pending" || rllStatus === "pending" ? (
