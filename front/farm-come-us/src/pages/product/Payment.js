@@ -7,6 +7,7 @@ import { orderProduct } from "../../utils/api/order-http";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { isObject } from "lodash";
+import KakaopayEvent from "../KakaopayEvent";
 
 let customerData = {
   customerName: "김덕배",
@@ -251,7 +252,7 @@ const Payment = () => {
         </div>
         <div className={classes.shippingfee}>
           <div className={classes.defaultscript}>총 배송비</div>
-          <div className={classes.price}>2500원</div>
+          <div className={classes.price}>{shippingfee}원</div>
         </div>
         <div className={classes.bill}>
           <div className={classes.defaultscript}>총 주문 금액</div>
@@ -262,8 +263,12 @@ const Payment = () => {
         <div className={classes.text}>
           주문 내용을 확인하였으며, 정보 제공 등에 동의합니다.
         </div>
-        <div className={classes.buttonspace} onClick={kakaoPayRequest}>
-          <div className={classes.button}>카카오페이로 결제하기</div>
+        <div>
+          <KakaopayEvent
+            itemCount={location.state.amount}
+            memberId={userinfo.memberId}
+            orderId={location.state.orderId}
+          />
         </div>
       </div>
     </div>

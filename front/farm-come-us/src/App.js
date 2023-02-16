@@ -39,7 +39,7 @@ import MyStoreLive from "./pages/mystore/MyStoreLive";
 import MyStoreProducts from "./pages/mystore/MyStoreProducts";
 import MyStoreReceipt from "./pages/mystore/MyStoreReceipt";
 import BroadCast from "./pages/BroadCast";
-import Test from "./pages/test";
+import Test from "./pages/KakaopayEvent";
 
 import Store from "./pages/store/Store";
 import StoreLive from "./pages/store/StoreLive";
