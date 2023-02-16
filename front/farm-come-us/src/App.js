@@ -22,6 +22,7 @@ import ReceiptList from "./components/receipt/ReceiptList";
 import MyPage from "./pages/mypage/MyPage";
 import MyPageInfo from "./pages/mypage/MyPageInfo";
 import MyReceipts from "./pages/mypage/MyReceipts";
+import MyReceiptDetail from "./pages/mypage/MyReceiptDetail";
 import LikeStores from "./pages/mypage/LikeStores";
 
 import ProductDetail from "./pages/product/ProductDetail";
@@ -44,6 +45,11 @@ import Store from "./pages/store/Store";
 import StoreLive from "./pages/store/StoreLive";
 import StoreProducts from "./pages/store/StoreProducts";
 import MyStoreCreate from "./pages/mystore/MyStoreCreate";
+
+import KakaoPayment from "./components/kakaopay/KakaoPayment";
+import KakaoPayResult from "./components/kakaopay/KakaoPayResult";
+import KakaoPayCancel from "./components/kakaopay/KakaoPayCancel";
+import KakaoPayFail from "./components/kakaopay/KakaoPayFail";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -78,7 +84,7 @@ const App = () => {
   return (
     <div id="app">
       <Header />
-      <div>
+      <div className="sideContainer">
         {menu && <Backdrop />}
         <SideMenu
           className={`${classes.sideMenu} ${
@@ -102,11 +108,11 @@ const App = () => {
           <Route path="likestores" element={<LikeStores />} />
           <Route path="" element={<Navigate replace to="info" />} />
         </Route>
+        <Route path="/receipt/:orderId" element={<MyReceiptDetail />} />
         {/* 스토어페이지 렌더링용. */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
-        {/* <Route path="/kakao" element={<OAuth2RedirectHandler />}></Route> */}
         <Route path="/kakao" element={<AdditionalInfo />}></Route>
         <Route
           path="/oauthRedirect"
@@ -118,6 +124,11 @@ const App = () => {
           <Route path="scheduled" element={<ScheduledLive />} />
           <Route path="" element={<Navigate replace to="running" />} />
         </Route>
+        <Route path="payment" element={<KakaoPayment />} />
+        <Route path="payment-result" element={<KakaoPayResult />} />
+        <Route path="payment-cancel" element={<KakaoPayCancel />} />
+        <Route path="payment-fail" element={<KakaoPayFail />} />
+
         <Route path="/products" element={<Products />} />
         {/* 마이스토어 생성을 안했으면 prompt 창 띄우고 마이페이지로 리다이렉션 */}
         <Route path="/mystore" element={<MyStore />}>

@@ -54,23 +54,8 @@ const MyPageHeader = (props) => {
         ) : null}
       </div>
 
-      <MyPageMenu userInfo={props.userInfo} myStoreInfo={props.myStoreInfo} />
+      <MyPageMenu userInfo={props.userInfo} hasMyStore={props.hasMyStore} />
     </div>
-
-    // <div className={classes.storeHeader}>
-    //   <div className={classes.headerBg}>
-    //     <div className={classes.backdrop}></div>
-    //     <img src="https://via.placeholder.com/300" alt="header-bg" />
-    //   </div>
-    //   <div className={classes.header}>
-    //     <MdAddCircle className={classes.btnAddBg} onClick={addBgImageHandler} />
-    //     <MyStoreHeaderInfo
-    //       storeName={DUMMY_STORE_INFO.storeName}
-    //       desc={DUMMY_STORE_INFO.desc}
-    //     />
-    //     <MyStoreMenu />
-    //   </div>
-    // </div>
   );
 };
 

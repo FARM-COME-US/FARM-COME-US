@@ -27,12 +27,10 @@ export async function orderProduct() {
       method: "post",
       url: "api/api/v1/order",
       data: {
-          itemId: 1,
-          memberId: 3,
-          oitemCount: 2,
-          orderInfoDtoList: [
-            null
-          ]
+        itemId: 1,
+        memberId: 3,
+        oitemCount: 2,
+        orderInfoDtoList: [null],
       },
     });
     console.log(response);
@@ -42,16 +40,16 @@ export async function orderProduct() {
 }
 
 // 주문 조회
- export async function orderList() {
+export async function orderList() {
   try {
     const response = axios({
-        method: "get",
-        url:  ORDER_API_URL,
-        params: {member : 2}
+      method: "get",
+      url: ORDER_API_URL,
+      params: { member: 2 },
     });
     console.log((await response).data.orderList);
   } catch (err) {
-    console.err(err);
+    console.log(err);
   }
 }
 
