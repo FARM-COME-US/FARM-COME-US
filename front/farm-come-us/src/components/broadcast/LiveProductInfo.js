@@ -5,7 +5,6 @@ import classes from "./style/LiveProductInfo.module.scss";
 import CardCaption from "../common/CardCaption";
 
 const LiveProductInfo = (props) => {
-  console.log(props.liveInfo);
   const convertedPrice = props.liveInfo.liveItemPrice
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");

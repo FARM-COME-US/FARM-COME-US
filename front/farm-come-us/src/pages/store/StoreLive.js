@@ -1,21 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import classes from "./style/StoreProducts.module.scss";
-import StoreProductList from "../../components/store/StoreProductList";
-import { useLocation } from "react-router-dom";
-import { fetchProductList } from "../../utils/api/product-http";
+import { fetchStoreLive } from "../../utils/api/live-http";
 
-const StoreProducts = () => {
-  const [itemList, setItemList] = useState([]);
+import useHttp from "../../hooks/use-http";
 
-  const location = useLocation();
+import Loading from "../../components/common/Loading";
+import StoreLiveList from "../../components/store/StoreLiveList";
 
-  if (itemList.length > 0) {
-    return (
-      <div className={classes.container}>
-        {/* <StoreProductList productList={itemList}></StoreProductList> */}
-      </div>
-    );
-  }
+const StoreLive = () => {
+  const [storeId] = useOutletContext();
+
+  const {
+    sendRequest: getStoreLive,
+    status: status,
+    data: storeLive,
+    error,
+  } = useHttp(fetchStoreLive, true);
+
+  useEffect(() => {
+    const params = {
+      storeId,
+      page: 0,
+      size: 100,
+    };
+
+    getStoreLive(params);
+  }, [getStoreLive]);
+
+  return (
+    <div className={classes.container}>
+      {status === "pending" ? (
+        <Loading className={classes.loading} />
+      ) : (
+        <StoreLiveList liveList={storeLive} />
+      )}
+    </div>
+  );
 };
 
-export default StoreProducts;
+export default StoreLive;
