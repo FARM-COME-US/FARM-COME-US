@@ -31,6 +31,7 @@ const BroadCast = () => {
         console.error(err);
       });
   }, []);
+  console.log(state);
 
   return (
     <Fragment>
@@ -38,7 +39,7 @@ const BroadCast = () => {
         <OvContainer
           width={width}
           height={height}
-          sessionId={state.id}
+          sessionId={`session${state.id}`}
           username={state.username}
           liveInfo={state.liveInfo}
           itemInfo={itemInfo}

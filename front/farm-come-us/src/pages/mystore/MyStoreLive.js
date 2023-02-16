@@ -81,15 +81,16 @@ const MyStoreLive = () => {
     return;
   };
 
-  console.log(liveList);
-
   return (
     <div className={classes.liveContainer}>
       <MyStoreContentTitle text="Live" />
       {status === "pending" && !liveList ? (
         <Loading className={classes.loading} />
       ) : (
-        <MyStoreLiveList lives={liveList} startLiveHandler={startLiveHandler} />
+        <MyStoreLiveList
+          liveList={liveList}
+          startLiveHandler={startLiveHandler}
+        />
       )}
 
       <div className={classes.btnBox}>

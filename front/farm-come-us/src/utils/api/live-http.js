@@ -18,7 +18,6 @@ export async function fetchRunningLiveList(page) {
   return await axios
     .get(`${LIVE_API_URL}/list/on`, { params })
     .then((res) => {
-      console.log(res.data);
       return res.data;
     })
     .catch((err) => {
@@ -39,7 +38,6 @@ export async function fetchScheduledLiveList(page) {
       params,
     })
     .then((res) => {
-      console.log(res.data);
       return res.data;
     })
     .catch((err) => {
