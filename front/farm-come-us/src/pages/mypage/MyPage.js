@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import userSlice from "../../reduxStore/userSlice";
 import axios from "axios";
 
-const MyPage = (props) => {
+const MyPage = () => {
   const [isEditting, setIsEditting] = useState(false);
 
   const user = useSelector((state) => {
@@ -23,7 +23,7 @@ const MyPage = (props) => {
     imgSrc: "",
     uploadFile: "",
   });
-  const [myStoreInfo, setMyStoreInfo] = useState({});
+  const [hasMyStore, setHasMyStore] = useState(false);
 
   useEffect(() => {
     const accessToken = sessionStorage.getItem("accessToken");
@@ -52,11 +52,10 @@ const MyPage = (props) => {
         console.error(err);
       });
 
+    console.log(userInfo);
     fetchMyStoreDetail(userInfo.memberId)
-      .then((res) => {
-        setMyStoreInfo(() => {
-          return { ...res.data.store };
-        });
+      .then(() => {
+        setHasMyStore(true);
       })
       .catch((err) => {
         console.log(err);
@@ -108,7 +107,7 @@ const MyPage = (props) => {
         userInfo={userInfo}
         isEditting={isEditting}
         userInfoChangeHandler={userInfoChangeHandler}
-        myStoreInfo={myStoreInfo}
+        hasMyStore={hasMyStore}
       />
       <Outlet
         context={{
