@@ -30,15 +30,14 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 public class DeliveryController {
 
-
     private final MemberService memberService;
     private final DeliveryService deliveryService;
 
     // 배송 정보 넣는 건 결제 한 뒤
 
     @ApiOperation("기본 배송 정보 조회")
-    @GetMapping("/{memberId}")
-    public ResponseEntity findMemberAddr(@PathVariable Long memberId) {
+    @GetMapping("/")
+    public ResponseEntity findMemberAddr(@RequestParam Long memberId) {
 
         HashMap<String, Object> resultMap = new HashMap<>();
         MemberDto memberDto = memberService.getUserInfo(memberId);
@@ -47,18 +46,17 @@ public class DeliveryController {
         return ResponseEntity.ok(resultMap);
     }
 
+    @ApiOperation("배송 정보 수정")
+    @PutMapping("/edit")
+    public ResponseEntity<HashMap<String, Boolean>> updateDelivery(@RequestBody DeliveryInfoDto deliveryInfoDto, Long Id) {
+        boolean isSuccess = deliveryService.updateDelivery(deliveryInfoDto, Id);
 
-//    @ApiOperation("배송 정보 수정")
-//    @PutMapping("/{memberId}")
-//    public ResponseEntity<HashMap<String, Boolean>> updateDelivery(@RequestBody DeliveryInfoDto deliveryInfoDto) {
-//        boolean isSuccess = deliveryService.updateDelivery(deliveryInfoDto);
-//
-//        HashMap<String, Boolean> resultMap = new HashMap<>();
-//        if(isSuccess) resultMap.put("success", true);
-//        else resultMap.put("success", false);
-//
-//        return ResponseEntity.ok(resultMap);
-//    }
+        HashMap<String, Boolean> resultMap = new HashMap<>();
+        if(isSuccess) resultMap.put("success", true);
+        else resultMap.put("success", false);
+
+        return ResponseEntity.ok(resultMap);
+    }
 
 
 }
