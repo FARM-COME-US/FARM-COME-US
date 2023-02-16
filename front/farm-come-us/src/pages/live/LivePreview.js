@@ -148,6 +148,8 @@ const LivePreview = () => {
     navigate(uri);
   };
 
+  console.log(itemList);
+
   return (
     <div className={classes.container}>
       {/* 라이브 목록 */}
