@@ -4,6 +4,7 @@ import { AiFillHeart } from "react-icons/ai";
 
 const StoreHeader = (props) => {
   const [pickStore, setPick] = useState(false);
+
   const dealSetPick = () => {
     setPick(!pickStore);
   };

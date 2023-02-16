@@ -4,24 +4,19 @@ import StoreHeader from "../../components/store/StoreHeader";
 import StoreTab from "../../components/store/StoreTab";
 import { fetchStoreDetail } from "../../utils/api/store-http";
 
-import Loading from "../../components/common/Loading";
-import LiveList from "../../components/live/LiveList";
-
 const Store = () => {
   const location = useLocation();
   const [storeDetail, setStoreDetail] = useState();
 
+  console.log(location.state.storeId);
   useEffect(() => {
-    async function getItemDetail() {
-      try {
-        const storeData = await fetchStoreDetail(location.state.storeId);
-        setStoreDetail(storeData.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    getItemDetail();
+    fetchStoreDetail(location.state.storeId)
+      .then((res) => {
+        setStoreDetail({ ...res.data });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, [location.state.storeId]);
 
   if (storeDetail) {

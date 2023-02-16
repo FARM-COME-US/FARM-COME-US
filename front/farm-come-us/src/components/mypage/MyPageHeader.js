@@ -16,6 +16,8 @@ const MyPageHeader = (props) => {
     props.userInfoChangeHandler("uploadFile", file);
   };
 
+  console.log(props.userInfo);
+
   return (
     <div className={classes.myPageHeader}>
       <div className={classes.flexbox}>
