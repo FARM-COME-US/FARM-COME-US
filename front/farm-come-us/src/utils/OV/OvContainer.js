@@ -84,10 +84,10 @@ const OvContainer = (props) => {
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
       const subscriber = mySession.subscribe(event.stream, "publisher");
-      setSubscribers(subscriber);
+      // setSubscribers(subscriber);
 
       // Update the state with the new subscribers
-      // setSubscribers((prev) => [...prev, subscriber]);
+      setSubscribers((prev) => [...prev, subscriber]);
     });
 
     // On every Stream destroyed...
@@ -124,7 +124,6 @@ const OvContainer = (props) => {
     });
 
     getToken().then((token) => {
-      console.log("token: ", token);
       mySession
         .connect(token, { clientData: props.username })
         .then(async () => {
@@ -137,16 +136,18 @@ const OvContainer = (props) => {
             audioSource: undefined,
             videoSource: videoTrack,
             publishAudio: props.isPublisher ? true : false,
-            publishVideo: props.isPublisher ? true : false,
+            // publishVideo: props.isPublisher ? true : false,
+            publishVideo: true,
             resolution: "1280x720",
             // frameRate: 10,
             insertMode: "APPEND",
             mirror: true,
           });
-          console.log(mySession);
 
           // 4-c publish
           mySession.publish(newPublisher);
+
+          console.log(newPublisher);
 
           setPublisher(newPublisher);
           setCurrentVideoDevice(videoTrack);
@@ -251,7 +252,6 @@ const OvContainer = (props) => {
 
   const getToken = async () => {
     const mySessionId = await createSession(props.sessionId);
-    console.log("mySessionId: ", mySessionId);
     return await createToken(mySessionId);
   };
 
@@ -279,20 +279,20 @@ const OvContainer = (props) => {
           if (err.response.status === 409) {
             resolve(sessionId);
           } else {
-            alert(err);
+            console.error(err);
           }
         });
     });
   };
 
   const createToken = async (sessionId) => {
-    const myRole = props.isPublisher ? "PUBLISHER" : "SUBSCRIBER";
-    const data = { role: myRole };
+    // const myRole = props.isPublisher ? "PUBLISHER" : "SUBSCRIBER";
+    // const data = { role: myRole };
 
     const response = await axios.post(
       process.env.REACT_APP_OPENVIDU_SERVER +
         `/openvidu/api/sessions/${sessionId}/connection`,
-      data,
+      {},
       {
         headers: {
           Authorization: `Basic ${btoa(
@@ -343,6 +343,10 @@ const OvContainer = (props) => {
     setIsMute((prev) => !prev);
   };
 
+  useEffect(() => {
+    console.log(subscribers);
+  }, [subscribers]);
+
   return (
     <div className={props.className}>
       {isPending ? (
@@ -364,7 +368,7 @@ const OvContainer = (props) => {
                 <LiveInfo
                   subCnt={viewerCnt}
                   title={props.liveInfo.liveTitle}
-                  stock={props.itemInfo.itemStock}
+                  stock={props.itemInfo ? props.itemInfo.itemStock : null}
                 />
                 <LiveChat
                   chatList={chatList}
@@ -389,19 +393,26 @@ const OvContainer = (props) => {
                   )}
                 </LiveFooter>
               </div>
-              {props.isPublisher && (
+              {/* {props.isPublisher && (
+                <UserVideoComponent
+                  className={classes.streamContainer}
+                  streamManager={publisher}
+                />
+              )} */}
+              {/* {!props.isPublisher && subscribers.length > 0 ? (
+                <UserVideoComponent
+                className={classes.streamContainer}
+                streamManager={subscribers}
+                />
+                ) : null}
+              {subscribers.length} */}
+              {publisher && (
                 <UserVideoComponent
                   className={classes.streamContainer}
                   streamManager={publisher}
                 />
               )}
-              {!props.isPublisher && (
-                <UserVideoComponent
-                  className={classes.streamContainer}
-                  streamManager={subscribers}
-                />
-              )}
-              {/* {subscribers.map((sub, i) => (
+              {subscribers.map((sub, i) => (
                 <div
                   key={i}
                   className={`stream-container ${classes.hiddenVideo}`}
@@ -409,7 +420,7 @@ const OvContainer = (props) => {
                 >
                   <UserVideoComponent streamManager={sub} />
                 </div>
-              ))} */}
+              ))}
             </Fragment>
           ) : null}
         </Fragment>
