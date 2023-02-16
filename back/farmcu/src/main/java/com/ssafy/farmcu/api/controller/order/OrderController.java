@@ -25,7 +25,6 @@ import java.util.List;
 @RequestMapping("api/v1/order")
 @Component
 @Api(value = "주문 관련 API")
-
 public class OrderController {
 
     public final OrderServiceImpl orderService;
