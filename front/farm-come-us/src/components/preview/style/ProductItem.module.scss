@@ -28,8 +28,12 @@
     }
 
     .productName {
+      width: 100%;
       margin-bottom: 5px;
       font-size: 0.9rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .priceInfo {

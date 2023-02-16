@@ -1,7 +1,12 @@
 .liveItem {
   width: 50%;
+  max-width: 280px;
+  display: flex;
+  justify-content: center;
 
   .liveCard {
+    width: 100%;
+    position: relative;
     aspect-ratio: 2 / 3;
     padding: 0;
     overflow: hidden;
@@ -10,6 +15,7 @@
     margin: 10px;
 
     figure {
+      width: 100%;
       margin: 0;
       padding: 0;
       position: relative;
@@ -54,7 +60,7 @@
       .liveCaption {
         position: absolute;
         bottom: 10px;
-        width: 60%;
+        width: 90%;
         color: #fff;
         background-color: rgba(0, 0, 0, 0.6);
 
@@ -116,18 +122,6 @@
 
         &:hover,
         &:focus {
-          // .storeInfo {
-          //   p {
-          //     display: inline-block;
-          //     animation-name: scroll-text;
-          //     animation-duration: 7s;
-          //     animation-timing-function: linear;
-          //     animation-delay: 0s;
-          //     animation-iteration-count: infinite;
-          //     animation-direction: normal;
-          //   }
-          // }
-
           .liveTitle {
             .text {
               display: inline-block;
@@ -135,8 +129,8 @@
               animation-duration: 7s;
               animation-timing-function: linear;
               animation-delay: 0s;
-              animation-iteration-count: infinite;
-              animation-direction: normal;
+              animation-iteration-count: normal;
+              animation-direction: initial;
             }
           }
         }

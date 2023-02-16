@@ -7,6 +7,7 @@ import Badge from "../common/Badge";
 import CardCaption from "../common/CardCaption";
 
 const LiveItem = (props) => {
+  console.log(props.live);
   const convertedPrice = props.live.price
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -18,7 +19,7 @@ const LiveItem = (props) => {
         onClick={() => props.onClick(props.live)}
       >
         <figure>
-          <img src="https://via.placeholder.com/300" alt="livePreview" />
+          <img src={props.item.savedPath} alt="livePreview" />
           <figcaption className={classes.badge}>
             <Badge className={classes.liveBadge}>Live</Badge>
           </figcaption>
@@ -33,7 +34,9 @@ const LiveItem = (props) => {
               <span className={classes.text}>{props.live.productName}</span>
             </div>
             <div className={classes.productInfo}>
-              <span className={classes.discount}>{props.live.discount}%</span>
+              <span className={classes.discount}>
+                {props.live.liveDiscount}%
+              </span>
               <span>{convertedPrice} 원</span>
             </div>
           </CardCaption>

@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import classes from "./style/MyPageHeader.module.scss";
-import { MdAddCircle } from "react-icons/md";
+
+import { MdAddCircle, MdAccountCircle } from "react-icons/md";
 import MyPageMenu from "../../pages/mypage/MyPageMenu";
 
 const MyPageHeader = (props) => {
@@ -25,15 +26,15 @@ const MyPageHeader = (props) => {
           ) : null}
         </div>
         <div className={classes.imgWrapper}>
+          {!props.userInfo.imgSrc ? (
+            <MdAccountCircle className={classes.noProfileImg} />
+          ) : null}
           <img
-            className={classes.profileImg}
-            src={
-              props.userInfo.imgSrc
-                ? props.userInfo.imgSrc
-                : process.env.PUBLIC_URL + "/img/defaultProfile.png"
-            }
-            // 😀 수정필요 (이미지 업로드 해서 받아오는거 상의안했음.)
-            alt="이미지"
+            className={`${props.userInfo.imgSrc ? null : classes.hidden} ${
+              classes.profileImg
+            }`}
+            src={props.userInfo.imgSrc}
+            alt="프로필 이미지"
             ref={profileImgRef}
           />
           <input

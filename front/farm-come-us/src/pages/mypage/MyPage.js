@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import MyPageHeader from "../../components/mypage/MyPageHeader";
 import { fetchUpdateUserInfo } from "../../utils/api/user-http";
 import { fetchMyStoreDetail } from "../../utils/api/store-http";
@@ -8,11 +8,13 @@ import userSlice from "../../reduxStore/userSlice";
 import axios from "axios";
 
 const MyPage = () => {
+  const navigate = useNavigate();
   const [isEditting, setIsEditting] = useState(false);
 
   const user = useSelector((state) => {
     return state.userSlice.value;
   });
+
   const [userInfo, setUserInfo] = useState({
     ...user,
     imgSrc: "",
@@ -27,6 +29,11 @@ const MyPage = () => {
 
   useEffect(() => {
     const accessToken = sessionStorage.getItem("accessToken");
+    if (!user.memberId || !accessToken) {
+      alert("로그인 후에 이용가능합니다.");
+      navigate("/login", { replace: true });
+    }
+
     axios
       .get(process.env.REACT_APP_API_SERVER_URL + "/api/v1/member/", {
         headers: {
@@ -52,7 +59,6 @@ const MyPage = () => {
         console.error(err);
       });
 
-    console.log(userInfo);
     fetchMyStoreDetail(userInfo.memberId)
       .then(() => {
         setHasMyStore(true);
