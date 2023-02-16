@@ -9,24 +9,10 @@ const StoreProducts = () => {
 
   const location = useLocation();
 
-  useEffect(() => {
-    async function getItemList() {
-      try {
-        const itemArr = await fetchProductList(1, 1, location.state.storeId);
-        console.log(itemArr);
-        setItemList(itemArr);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    getItemList();
-  }, [location.state.storeId]);
-
   if (itemList.length > 0) {
     return (
       <div className={classes.container}>
-        <StoreProductList productList={itemList}></StoreProductList>
+        {/* <StoreProductList productList={itemList}></StoreProductList> */}
       </div>
     );
   }
