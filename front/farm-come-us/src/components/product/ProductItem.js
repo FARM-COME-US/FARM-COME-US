@@ -4,8 +4,6 @@ import Card from "../common/Card";
 import { Link } from "react-router-dom";
 
 const ProductItem = (props) => {
-  console.log(props.item);
-
   if (props) {
     const convertedPrice = props.item.itemPrice
       .toString()
@@ -16,7 +14,7 @@ const ProductItem = (props) => {
         <Link
           to={`/product-detail`}
           state={{
-            item_id: props.item.itemId,
+            itemId: props.item.itemId,
           }}
         >
           <Card className={`${classes.productCard}`}>
@@ -32,10 +30,10 @@ const ProductItem = (props) => {
                 <span>{`${convertedPrice}원`}</span>
               </div>
               <div className={`${classes.storeInfo}`}>
-                <span className={`${classes.storeName}`}>
+                <p className={`${classes.storeName}`}>
                   {props.item.storeName}
-                </span>
-                <span> 스토어</span>
+                  <span> 스토어</span>
+                </p>
               </div>
             </div>
           </Card>

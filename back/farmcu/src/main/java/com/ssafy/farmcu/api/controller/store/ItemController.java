@@ -12,6 +12,7 @@ import com.ssafy.farmcu.api.service.store.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 @RestController
 @RequestMapping("api/v1/item")
 @RequiredArgsConstructor
@@ -101,11 +103,10 @@ public class ItemController {
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
         Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 
-        //상품 대표 이미지
-        List<String> itemImages = new ArrayList<>();
         List<ItemDto> itemInfoList = new ArrayList<>();
 
         for(ItemDto itemDto : itemList) {
+            List<String> itemImages = new ArrayList<>(); //상품 이미지
             ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(itemDto.getItemId());
             if(itemImageDto != null) {
                 itemImages.add(itemImageDto.getSavedPath());
@@ -129,11 +130,10 @@ public class ItemController {
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
         Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 
-        //상품 대표 이미지
-        List<String> itemImages = new ArrayList<>();
         List<ItemDto> itemInfoList = new ArrayList<>();
 
         for(ItemDto itemDto : itemList) {
+            List<String> itemImages = new ArrayList<>(); //상품 이미지
             ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(itemDto.getItemId());
             if(itemImageDto != null) {
                 itemImages.add(itemImageDto.getSavedPath());

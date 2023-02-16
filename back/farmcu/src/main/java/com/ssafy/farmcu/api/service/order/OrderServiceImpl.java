@@ -1,14 +1,10 @@
 package com.ssafy.farmcu.api.service.order;
 
-import com.ssafy.farmcu.api.dto.order.OrderDto;
 import com.ssafy.farmcu.api.dto.order.OrderInfoDto;
-import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.entity.member.Member;
-import com.ssafy.farmcu.api.entity.order.Cart;
 import com.ssafy.farmcu.api.entity.order.Order;
 import com.ssafy.farmcu.api.entity.order.OrderItem;
 import com.ssafy.farmcu.api.entity.store.Item;
-import com.ssafy.farmcu.api.entity.store.Store;
 import com.ssafy.farmcu.api.repository.*;
 import com.ssafy.farmcu.exception.ItemNotFoundException;
 import com.ssafy.farmcu.exception.NotFoundUserException;
@@ -20,14 +16,12 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 
 @Service
-@Component // 왜 있는지 모르겠어
+@Component
 public class OrderServiceImpl implements OrderService{
 
-    //    @Autowired
+
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
@@ -42,8 +36,6 @@ public class OrderServiceImpl implements OrderService{
         this.orderRepository = orderRepository;
     }
 
-    //**  단일 상품 주문 **//
-    // (한 종류의 상품만 주문 가능, 상품 바로 구매 or live 주문)
     @Transactional
     public Long order(OrderInfoDto orderinfoDto) {
 
@@ -56,7 +48,7 @@ public class OrderServiceImpl implements OrderService{
         Order order = Order.createOrder(member, orderItems);
         orderRepository.save(order);
 
-        //OrderItem Entity 클래스에 존재하는 createOrder 메소드로 Order 생성 및 저장
+
         orderItem.addOrderNum(order);
         orderItemRepository.save(orderItem);
 
@@ -64,7 +56,6 @@ public class OrderServiceImpl implements OrderService{
 
     }
 
-    // 다양한 종류의 상품 주문 (장바구니)
     public Long orders(List<OrderInfoDto> orderInfoDtoList, String memberId) {
 
         Member member = memberRepository.findById(memberId).get();
@@ -75,13 +66,11 @@ public class OrderServiceImpl implements OrderService{
             orderItemList.add(orderItem);
         }
 
-        //Order Entity 클래스에 존재하는 createOrder 메소드로 Order 생성 및 저장
         Order order = Order.createOrder(member, orderItemList);
         orderRepository.save(order);
         return order.getOrderId();
     }
 
-    // 주문 취소
     @Transactional
     public Order updateOrder(Long orderId) {
 
@@ -95,7 +84,6 @@ public class OrderServiceImpl implements OrderService{
         return order;
     }
 
-    // 결제할 order 정보 찾기
     @Transactional
     public Order updateOrderForPay(Long orderId) {
 
@@ -104,15 +92,29 @@ public class OrderServiceImpl implements OrderService{
         return order;
     }
 
-    // 카카오 결제시 tid 컬럼 값 생성
+    public static ThreadLocal<String> threadLocalValue = new ThreadLocal<>();
+
     @Transactional
     public Order updateTid(Long orderId, String tid) {
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(EntityNotFoundException::new);
         order.setTid(tid);
         order.getOrderItems().get(0).setTid(tid);
         orderRepository.save(order);
+        threadLocalValue.set(tid);
 
         return order;
+    }
+
+    public String tidtid(String tid) {
+        threadLocalValue.set(tid);
+        String tids = threadLocalValue.get();
+        return tids;
+    }
+
+    public String threadLocal_1() {
+        String tid = threadLocalValue.get();
+        System.out.println("##############" + tid);
+        return tid;
     }
 
  // 내 주문 목록 조회
@@ -125,7 +127,6 @@ public class OrderServiceImpl implements OrderService{
         }
     }
 
-    //  주문 상세 조회
     @Transactional
     public List<OrderItem> findOrderDetail(Order order) {
         try {
@@ -135,7 +136,6 @@ public class OrderServiceImpl implements OrderService{
         }
     }
 
-    // 스토어 주문 목록 조회
     @Transactional
     public List<OrderItem> findStoreOrder(Long storeNum) {
         try {
@@ -145,22 +145,21 @@ public class OrderServiceImpl implements OrderService{
         }
     }
 
-    // 결제 완료
     public List<Order> completeOrder( Long orderId ){
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
+
        Order order = orderRepository.findById(orderId).get();
-        order.setPayStatus(Order.PayStatus.PAY);
+       order.setPayStatus(Order.PayStatus.PAY);
         return null;
     }
 
-    // 전체 주문 상품 조회
     public List<OrderItem> findAllOrderItem() {
         return orderItemRepository.findAll();
     }
 
-    // 전체 주문 조회
     public List<Order> findAllOrder() {
         return orderRepository.findAll();
     }
+
+
 
 }

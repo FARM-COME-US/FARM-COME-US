@@ -3,12 +3,12 @@ import React from "react";
 import classes from "./style/MyStoreProductItem.module.scss";
 
 const MyStoreProductItem = (props) => {
-  const convertedPrice = props.item.price
+  const convertedPrice = props.item.itemPrice
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   const dateConversionHandler = () => {
-    const regDt = props.item.regDate;
+    const regDt = new Date(props.item.itemCreatedAt);
     const year = regDt.getFullYear();
     const month = regDt.getMonth() + 1;
     const date = regDt.getDate();
@@ -25,18 +25,16 @@ const MyStoreProductItem = (props) => {
   return (
     <div className={classes.productItem}>
       <div className={classes.productThumbnail}>
-        <img src={props.item.imgSrc} alt="live_img" />
+        <img src={props.item.savedPath} alt="live_img" />
       </div>
       <div className={classes.infoBox}>
         <div className={classes.productInfo}>
-          <span className={classes.productName}>{props.item.productName}</span>
+          <span className={classes.productName}>{props.item.itemName}</span>
           <span
             className={classes.stock}
-          >{`남은 수량: ${props.item.stock}${props.item.unit}`}</span>
+          >{`남은 수량: ${props.item.itemStock} 개`}</span>
         </div>
-        <div
-          className={classes.unitPrice}
-        >{`${convertedPrice} / ${props.item.count}${props.item.unit}`}</div>
+        <div className={classes.unitPrice}>{`${convertedPrice} 원`}</div>
         <div className={classes.date}>{`등록일 : ${convertedDate}`}</div>
       </div>
     </div>

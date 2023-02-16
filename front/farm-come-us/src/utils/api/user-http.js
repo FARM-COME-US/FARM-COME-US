@@ -32,16 +32,12 @@ export async function userSignUp(userInfo) {
       config
     );
     sessionStorage.setItem("accessToken", response.data);
-    // asdasd
-    console.log(response);
-    console.log(response.data);
   } catch (err) {
     console.err(err);
   }
 }
 
 export async function login(id, password) {
-  console.log("login", id, password);
   try {
     const response = axios.post(
       process.env.REACT_APP_API_SERVER_URL + "api/v1/member/login",
@@ -50,7 +46,7 @@ export async function login(id, password) {
         password: password,
       }
     );
-    console.log(response);
+
     const accessToken = response.data["token"];
     sessionStorage.setItem("accessToken", accessToken);
   } catch (err) {
@@ -60,7 +56,7 @@ export async function login(id, password) {
 
 export async function fetchUserInfoWithAccessToken() {
   const accessToken = sessionStorage.getItem("accessToken");
-  console.log(accessToken);
+
   try {
     const userDataRes = axios.get("/api/api/v1/member/", {
       headers: {
@@ -69,7 +65,7 @@ export async function fetchUserInfoWithAccessToken() {
         token: accessToken,
       },
     });
-    console.log(userDataRes);
+
     // dispatch(userSlice.actions.login(userDataRes.data.userInfo));
     return userDataRes;
   } catch (err) {
@@ -79,7 +75,6 @@ export async function fetchUserInfoWithAccessToken() {
 
 export async function fetchUserInfo(id) {
   const accessToken = sessionStorage.getItem("accessToken");
-  console.log(accessToken);
   const memberId = id;
 
   try {
@@ -98,7 +93,6 @@ export async function fetchUserInfo(id) {
 }
 
 export async function fetchUpdateUserInfo(userInfo) {
-  console.log(userInfo);
   const formData = new FormData();
   formData.append("uploadFile", userInfo.uploadFile);
 
@@ -127,7 +121,6 @@ export async function fetchUpdateUserInfo(userInfo) {
     },
     withCredentials: false,
   };
-  console.log(formData);
 
   return axios.put(
     `${process.env.REACT_APP_API_SERVER_URL}/api/v1/member`,

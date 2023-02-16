@@ -6,6 +6,17 @@
   padding: 0;
   overflow-x: scroll;
 
+  .itemContainer {
+    width: 50%;
+    max-width: 280px;
+    padding: 4px;
+    flex-shrink: 0;
+
+    .itemCard {
+      width: 100%;
+    }
+  }
+
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 

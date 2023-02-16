@@ -45,7 +45,7 @@ public class Live {
     @JoinColumn(name="item_id")
     private Item item;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Store.class, fetch = FetchType.LAZY)
     @JoinColumn(name="store_id")
     private Store store;
 

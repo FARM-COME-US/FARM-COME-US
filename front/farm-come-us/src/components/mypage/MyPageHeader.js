@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import classes from "./style/MyPageHeader.module.scss";
-import { MdAddCircle } from "react-icons/md";
+
+import { MdAddCircle, MdAccountCircle } from "react-icons/md";
 import MyPageMenu from "../../pages/mypage/MyPageMenu";
 
 const MyPageHeader = (props) => {
@@ -25,15 +26,15 @@ const MyPageHeader = (props) => {
           ) : null}
         </div>
         <div className={classes.imgWrapper}>
+          {!props.userInfo.imgSrc ? (
+            <MdAccountCircle className={classes.noProfileImg} />
+          ) : null}
           <img
-            className={classes.profileImg}
-            src={
-              props.userInfo.imgSrc
-                ? props.userInfo.imgSrc
-                : process.env.PUBLIC_URL + "/img/defaultProfile.png"
-            }
-            // 😀 수정필요 (이미지 업로드 해서 받아오는거 상의안했음.)
-            alt="이미지"
+            className={`${props.userInfo.imgSrc ? null : classes.hidden} ${
+              classes.profileImg
+            }`}
+            src={props.userInfo.imgSrc}
+            alt="프로필 이미지"
             ref={profileImgRef}
           />
           <input
@@ -54,23 +55,8 @@ const MyPageHeader = (props) => {
         ) : null}
       </div>
 
-      <MyPageMenu userInfo={props.userInfo} myStoreInfo={props.myStoreInfo} />
+      <MyPageMenu userInfo={props.userInfo} hasMyStore={props.hasMyStore} />
     </div>
-
-    // <div className={classes.storeHeader}>
-    //   <div className={classes.headerBg}>
-    //     <div className={classes.backdrop}></div>
-    //     <img src="https://via.placeholder.com/300" alt="header-bg" />
-    //   </div>
-    //   <div className={classes.header}>
-    //     <MdAddCircle className={classes.btnAddBg} onClick={addBgImageHandler} />
-    //     <MyStoreHeaderInfo
-    //       storeName={DUMMY_STORE_INFO.storeName}
-    //       desc={DUMMY_STORE_INFO.desc}
-    //     />
-    //     <MyStoreMenu />
-    //   </div>
-    // </div>
   );
 };
 

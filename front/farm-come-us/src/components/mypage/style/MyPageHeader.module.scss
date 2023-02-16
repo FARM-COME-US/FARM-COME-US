@@ -1,6 +1,6 @@
 .myPageHeader {
   position: relative;
-  padding: 5%;
+  padding: 3% 5% 5% 5%;
   width: 100%;
   aspect-ratio: 5/3;
   background-color: #f7863b;
@@ -67,12 +67,21 @@
   .imgInput {
     visibility: hidden;
   }
-}
 
-.profileImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  .noProfileImg {
+    color: #265040;
+  }
+
+  .hidden {
+    width: 0;
+    height: 0;
+  }
+
+  .profileImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .flexbox {

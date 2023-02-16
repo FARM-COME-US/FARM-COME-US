@@ -12,7 +12,11 @@ const ReceiptCard = (props) => {
   return (
     <div className={classes.card}>
       <div className={classes.imgWrapper}>
-        <img className={classes.img} src="" alt="사진이 들어갑니다"></img>
+        <img
+          className={classes.img}
+          src={props.img}
+          alt="사진이 들어갑니다"
+        ></img>
       </div>
       <div className={classes.letters}>
         <div>
