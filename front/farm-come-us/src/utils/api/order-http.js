@@ -15,7 +15,7 @@ export async function orderProduct() {
   try {
     axios({
       method: "post",
-      url: "api/api/v1/order",
+      url: `${ORDER_API_URL}`,
       data: {
         itemId: 1,
         memberId: 3,

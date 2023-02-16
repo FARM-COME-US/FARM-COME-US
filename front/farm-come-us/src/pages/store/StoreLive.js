@@ -9,7 +9,7 @@ import Loading from "../../components/common/Loading";
 import StoreLiveList from "../../components/store/StoreLiveList";
 
 const StoreLive = () => {
-  const [storeId] = useOutletContext();
+  const { storeId } = useOutletContext();
 
   const {
     sendRequest: getStoreLive,
