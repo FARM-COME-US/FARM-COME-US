@@ -15,14 +15,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeliveryServiceImpl implements DeliveryService {
 
-    //** 주문 시 배송 정보 생성 **// ===> 기본 배송 정보는 로그인 한 사용자
     @Autowired
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
     private final OrderRepository orderRepository;
     private final DeliveryInfoRepository deliveryInfoRepository;
 
-    //** 배송 정보 작성 **//
     @Override
     public boolean saveDelivery(DeliveryInfoDto deliveryInfoDto, Long Id) {
 
@@ -44,7 +42,6 @@ public class DeliveryServiceImpl implements DeliveryService {
         }
     }
 
-    //** 배송 정보 수정 **//
     @Override
     public boolean updateDelivery(DeliveryInfoDto deliveryInfoDto, Long Id) {
 
