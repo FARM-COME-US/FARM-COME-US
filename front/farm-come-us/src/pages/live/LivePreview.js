@@ -5,19 +5,17 @@ import useHttp from "../../hooks/use-http";
 import classes from "./style/LivePreview.module.scss";
 
 import PreviewHeader from "../../components/preview/PreviewHeader";
-import LiveList from "../../components/live/LiveList";
 import ProductList from "../../components/preview/ProductList";
 import Loading from "../../components/common/Loading";
 
 import { MdOutlineLiveTv } from "react-icons/md";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import { MdStorefront } from "react-icons/md";
-import { fetchLiveSession, fetchLiveSessions } from "../../utils/api/ov-http";
-import {
-  fetchRunningLiveList,
-  fetchScheduledLiveList,
-} from "../../utils/api/live-http";
+import { fetchLiveSessions } from "../../utils/api/ov-http";
+import { fetchRunningLiveList } from "../../utils/api/live-http";
 import { fetchProductList } from "../../utils/api/product-http";
+import ScheduledLive from "./ScheduledLive";
+import RunningLive from "./RunningLive";
 
 // 더미 데이터
 const LIVE_LIST = [
@@ -89,13 +87,6 @@ const LivePreview = () => {
   } = useHttp(fetchRunningLiveList, true);
 
   const {
-    sendRequest: getScheduledLiveInfo,
-    status: sllStatus,
-    data: scheduledLiveData,
-    errorSll,
-  } = useHttp(fetchScheduledLiveList, true);
-
-  const {
     sendRequest: getItemList,
     status: itemStatus,
     data: itemList,
@@ -111,10 +102,6 @@ const LivePreview = () => {
   }, [getRunningLiveInfo]);
 
   useEffect(() => {
-    getScheduledLiveInfo(0);
-  }, [getScheduledLiveInfo]);
-
-  useEffect(() => {
     const data = {
       category: "전체",
       itemName: "",
@@ -126,13 +113,7 @@ const LivePreview = () => {
   }, [getItemList]);
 
   const liveRoomEnterHandler = async (liveInfo) => {
-    fetchLiveSession(liveInfo.sessionId)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    getLiveSessions((res) => {});
     return;
 
     // if (!data) {
@@ -164,17 +145,7 @@ const LivePreview = () => {
         text="진행 중인 라이브"
         logo={<MdOutlineLiveTv className={`${classes.logo} ${classes.red}`} />}
       />
-      {ovStatus === "pending" || rllStatus === "pending" ? (
-        <Loading className={classes.loading} />
-      ) : (
-        <LiveList
-          liveList={LIVE_LIST}
-          sessionList={sessionList}
-          isLive={true}
-          isPreview={true}
-          onEnter={liveRoomEnterHandler}
-        />
-      )}
+      <RunningLive />
       <div className={classes.horzLine} />
       {/* 예정된 라이브 */}
       <PreviewHeader
@@ -183,15 +154,7 @@ const LivePreview = () => {
         text="라이브 예정"
         logo={<MdOutlineCalendarToday className={`${classes.logo}`} />}
       />
-      {sllStatus === "pending" ? (
-        <Loading className={classes.loading} />
-      ) : (
-        <LiveList
-          liveList={scheduledLiveData.liveOffList}
-          isLive={false}
-          isPreview={true}
-        />
-      )}
+      <ScheduledLive />
       <div className={classes.horzLine} />
       {/* 상품 최신순 */}
       <PreviewHeader
