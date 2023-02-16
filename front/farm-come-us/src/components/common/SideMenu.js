@@ -83,16 +83,11 @@ const SideMenu = (props) => {
             }}
           >
             <div className={classes.circleBox}>
-              {!userInfo || !userInfo.userImage.savedPath ? (
+              {!userInfo || !userInfo.userImage ? (
                 <MdAccountCircle className={classes.profileImg} />
               ) : (
                 <img src={userInfo.userImage.savedPath} />
               )}
-              {/* <img
-                className={classes.profileImg}
-                src={process.env.PUBLIC_URL + "/img/defaultProfile.png"}
-                alt="프로필이미지"
-              /> */}
             </div>
             <div className={classes.profileTxtBox}>
               <div className={classes.nickname}>{user.nickname}</div>

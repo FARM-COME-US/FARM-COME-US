@@ -52,7 +52,7 @@ export async function login(id, password) {
 export async function fetchUserInfoWithAccessToken() {
   const accessToken = sessionStorage.getItem("accessToken");
 
-  return axios.get("/api/api/v1/member/", {
+  return axios.get(`${process.env.REACT_APP_API_SERVER_URL}/api/v1/member/`, {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -66,14 +66,17 @@ export async function fetchUserInfo(id) {
   const memberId = id;
 
   try {
-    const response = axios.get(`/api/member`, {
-      params: { memberId: memberId },
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        token: `${accessToken}`,
-      },
-    });
+    const response = axios.get(
+      `${process.env.REACT_APP_API_SERVER_URL}/api/member`,
+      {
+        params: { memberId: memberId },
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          token: `${accessToken}`,
+        },
+      }
+    );
   } catch (err) {
     console.err(err);
   }
