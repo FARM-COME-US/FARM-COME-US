@@ -3,8 +3,8 @@ import React, { Fragment, useEffect, useState } from "react";
 import classes from "./style/MyReceiptDetailItem.module.scss";
 
 const MyReceiptDetailItem = (props) => {
-  //   console.log("prop을 보자");
-  //   console.log(props);
+  console.log("prop을 보자");
+  console.log(props);
   const [imgSrc, setImgSrc] = useState("");
   const [storeName, setStoreName] = useState("");
 
@@ -26,7 +26,7 @@ const MyReceiptDetailItem = (props) => {
         params: { itemId: itemId },
       })
       .then((res) => {
-        // console.log(`이미지경로: ${res.data.item.savedPath[0]}`);
+        console.log(`이미지경로: ${res.data.item.savedPath[0]}`);
         setImgSrc(res.data.item.savedPath[0]);
         setStoreName(res.data.storeName);
       });

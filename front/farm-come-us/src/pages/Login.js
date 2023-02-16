@@ -3,13 +3,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { MdPermIdentity, MdLockOutline } from "react-icons/md";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import jwt_decode from "jwt-decode";
 import axios from "axios";
 import userSlice from "../reduxStore/userSlice";
 
 // 이 함수도 수정필요 😀 기본형으로 해둠.
-// import { asyncSomethingFetch } from "../reduxStore/userSlice";
-// import userSlice from "../reduxStore/userSlice";
 import Button from "../components/common/Button";
 import KakaoLogin from "../components/user/KakaoLogin";
 import classes from "./style/Login.module.scss";
@@ -112,8 +109,12 @@ function Login() {
         </div>
         <br />
 
-        <div className="asdasd">
-          <div className={isError ? classes.vibration : ""}>
+        <div>
+          <div
+            className={`${classes.password} ${
+              isError ? classes.vibration : ""
+            }`}
+          >
             <MdLockOutline className={classes.pwicon} />
             {showPassword ? (
               <AiFillEyeInvisible

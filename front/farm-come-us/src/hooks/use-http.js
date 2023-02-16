@@ -42,7 +42,7 @@ function useHttp(requestFunction, startWithPending = false) {
         const responseData = await requestFunction(requestData);
         setTimeout(() => {
           dispatch({ type: "SUCCESS", responseData });
-        }, 1000);
+        }, 500);
       } catch (error) {
         dispatch({
           type: "ERROR",

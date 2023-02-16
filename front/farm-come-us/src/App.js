@@ -39,7 +39,7 @@ import MyStoreLive from "./pages/mystore/MyStoreLive";
 import MyStoreProducts from "./pages/mystore/MyStoreProducts";
 import MyStoreReceipt from "./pages/mystore/MyStoreReceipt";
 import BroadCast from "./pages/BroadCast";
-import Test from "./pages/test";
+import Test from "./pages/KakaopayEvent";
 
 import Store from "./pages/store/Store";
 import StoreLive from "./pages/store/StoreLive";
@@ -54,11 +54,6 @@ import KakaoPayFail from "./components/kakaopay/KakaoPayFail";
 const App = () => {
   const dispatch = useDispatch();
   const menu = useSelector((state) => {
-    // console.log("useSelector 확인용: userSlice 출력해!");
-    // console.log(state.userSlice);
-    // console.log("실험해보자");
-    // console.log(state.userSlice);
-    // console.log("userSlice확인용");
     return state.menuSlice.isOpen;
   }); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
 
@@ -83,7 +78,7 @@ const App = () => {
 
   return (
     <div id="app">
-      <Header />
+      <Header className="mainHeader" />
       <div className="sideContainer">
         {menu && <Backdrop />}
         <SideMenu
@@ -92,57 +87,59 @@ const App = () => {
           }`}
         />
       </div>
-      <Routes>
-        <Route path="/receipt" element={<ReceiptList />}></Route>
-        <Route path="/product-detail" element={<ProductDetail />}></Route>
-        <Route path="/payment" element={<Payment />}></Route>
-        <Route path="/cart-payment" element={<CartPayment />}></Route>
-        <Route path="/store" element={<Store />}>
-          <Route path="live" element={<StoreLive />}></Route>
-          <Route path="products" element={<StoreProducts />}></Route>
-        </Route>
-        {/* 마이페이지 */}
-        <Route path="/mypage" element={<MyPage />}>
-          <Route path="info" element={<MyPageInfo />} />
-          <Route path="receipts" element={<MyReceipts />} />
-          <Route path="likestores" element={<LikeStores />} />
-          <Route path="" element={<Navigate replace to="info" />} />
-        </Route>
-        <Route path="/receipt/:orderId" element={<MyReceiptDetail />} />
-        {/* 스토어페이지 렌더링용. */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/kakao" element={<AdditionalInfo />}></Route>
-        <Route
-          path="/oauthRedirect"
-          element={<OAuth2RedirectHandler />}
-        ></Route>
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/livestore" element={<Live />}>
-          <Route path="running" element={<RunningLive />} />
-          <Route path="scheduled" element={<ScheduledLive />} />
-          <Route path="" element={<Navigate replace to="running" />} />
-        </Route>
-        <Route path="payment" element={<KakaoPayment />} />
-        <Route path="payment-result" element={<KakaoPayResult />} />
-        <Route path="payment-cancel" element={<KakaoPayCancel />} />
-        <Route path="payment-fail" element={<KakaoPayFail />} />
+      <div className="mainContainer">
+        <Routes>
+          <Route path="/receipt" element={<ReceiptList />}></Route>
+          <Route path="/product-detail" element={<ProductDetail />}></Route>
+          <Route path="/payment" element={<Payment />}></Route>
+          <Route path="/cart-payment" element={<CartPayment />}></Route>
+          <Route path="/store" element={<Store />}>
+            <Route path="live" element={<StoreLive />}></Route>
+            <Route path="products" element={<StoreProducts />}></Route>
+          </Route>
+          {/* 마이페이지 */}
+          <Route path="/mypage" element={<MyPage />}>
+            <Route path="info" element={<MyPageInfo />} />
+            <Route path="receipts" element={<MyReceipts />} />
+            <Route path="likestores" element={<LikeStores />} />
+            <Route path="" element={<Navigate replace to="info" />} />
+          </Route>
+          <Route path="/receipt/:orderId" element={<MyReceiptDetail />} />
+          {/* 스토어페이지 렌더링용. */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/kakao" element={<AdditionalInfo />}></Route>
+          <Route
+            path="/oauthRedirect"
+            element={<OAuth2RedirectHandler />}
+          ></Route>
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/livestore" element={<Live />}>
+            <Route path="running" element={<RunningLive />} />
+            <Route path="scheduled" element={<ScheduledLive />} />
+            <Route path="" element={<Navigate replace to="running" />} />
+          </Route>
+          <Route path="/payment" element={<KakaoPayment />} />
+          <Route path="/payment-result" element={<KakaoPayResult />} />
+          <Route path="/payment-cancel" element={<KakaoPayCancel />} />
+          <Route path="/payment-fail" element={<KakaoPayFail />} />
 
-        <Route path="/products" element={<Products />} />
-        {/* 마이스토어 생성을 안했으면 prompt 창 띄우고 마이페이지로 리다이렉션 */}
-        <Route path="/mystore" element={<MyStore />}>
-          <Route path="info" element={<MyStoreInfo />} />
-          <Route path="live" element={<MyStoreLive />} />
-          <Route path="product" element={<MyStoreProducts />} />
-          <Route path="receipt" element={<MyStoreReceipt />} />
-          <Route path="" element={<Navigate replace to="info" />} />
-        </Route>
-        <Route path="mystorecreate" element={<MyStoreCreate />} />
-        <Route path="/broadcast" element={<BroadCast />} />
-        <Route path="/testttt" element={<Test />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          <Route path="/products" element={<Products />} />
+          {/* 마이스토어 생성을 안했으면 prompt 창 띄우고 마이페이지로 리다이렉션 */}
+          <Route path="/mystore" element={<MyStore />}>
+            <Route path="info" element={<MyStoreInfo />} />
+            <Route path="live" element={<MyStoreLive />} />
+            <Route path="product" element={<MyStoreProducts />} />
+            <Route path="receipt" element={<MyStoreReceipt />} />
+            <Route path="" element={<Navigate replace to="info" />} />
+          </Route>
+          <Route path="mystorecreate" element={<MyStoreCreate />} />
+          <Route path="/broadcast" element={<BroadCast />} />
+          <Route path="/testttt" element={<Test />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
     </div>
   );
 };

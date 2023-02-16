@@ -3,13 +3,12 @@
 ### **libary version**
 
 - node : 16.4.2
-- react : 18
-- react-router-dom : 6
-- redux :
-- redux-tool-kit : 1.9
+- react : 18.2.0
+- react-router-dom : 6.4
+- redux 8.0.5:
+- redux-tool-kit : 1.9.1
 - SASS : 1.57.1
-- eslint : (보류)
-- axios : 1.2.4
+- axios : 1.3.2
 - react-daum-postcode : 3.1.1
 - react-icons : 4.7.1
   [react-icons 사용 가이드](https://react-icons.github.io/react-icons/)
