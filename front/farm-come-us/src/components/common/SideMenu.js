@@ -1,9 +1,12 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { fetchUserInfoWithAccessToken } from "../../utils/api/user-http";
+
 import userSlice from "../../reduxStore/userSlice";
 import menuSlice from "../../reduxStore/menuSlice";
 import SideMenuItem from "./SideMenuItem";
 import classes from "./style/SideMenu.module.scss";
-import { useNavigate } from "react-router-dom";
 
 import { MdAccountCircle } from "react-icons/md";
 
@@ -13,7 +16,22 @@ const SideMenu = (props) => {
   const user = useSelector((state) => state.userSlice.value); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
   const isOpen = useSelector((state) => state.menuSlice.isOpen);
 
-  console.log(user);
+  const [userInfo, setUserInfo] = useState();
+
+  useEffect(() => {
+    const accessToken = sessionStorage.getItem("accessToken");
+    if (!accessToken) return;
+
+    fetchUserInfoWithAccessToken()
+      .then((res) => {
+        setUserInfo(() => {
+          return { ...res.data };
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   const isLogin = user.isLogin; // 일단 간이로 nickname받아오면 로그인된걸로 설정
   const sideMenuItemList = [
@@ -65,12 +83,16 @@ const SideMenu = (props) => {
             }}
           >
             <div className={classes.circleBox}>
-              <MdAccountCircle className={classes.profileImg} />
-              <img
+              {!userInfo || !userInfo.userImage.savedPath ? (
+                <MdAccountCircle className={classes.profileImg} />
+              ) : (
+                <img src={userInfo.userImage.savedPath} />
+              )}
+              {/* <img
                 className={classes.profileImg}
                 src={process.env.PUBLIC_URL + "/img/defaultProfile.png"}
                 alt="프로필이미지"
-              />
+              /> */}
             </div>
             <div className={classes.profileTxtBox}>
               <div className={classes.nickname}>{user.nickname}</div>

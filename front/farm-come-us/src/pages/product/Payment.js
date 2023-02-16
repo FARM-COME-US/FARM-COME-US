@@ -263,13 +263,11 @@ const Payment = () => {
         <div className={classes.text}>
           주문 내용을 확인하였으며, 정보 제공 등에 동의합니다.
         </div>
-        <div>
-          <KakaopayEvent
-            itemCount={location.state.amount}
-            memberId={userinfo.memberId}
-            orderId={location.state.orderId}
-          />
-        </div>
+        <KakaopayEvent
+          itemCount={location.state.amount}
+          memberId={userinfo.memberId}
+          orderId={location.state.orderId}
+        />
       </div>
     </div>
   );
