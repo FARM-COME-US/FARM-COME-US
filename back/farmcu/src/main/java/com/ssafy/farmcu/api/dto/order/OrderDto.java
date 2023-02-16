@@ -28,8 +28,6 @@ public class OrderDto {
     private List<OrderDto> OrderDtoList;
     private List<OrderItem> OrderItemList;
 
-    //    private Timestamp orderCreateAt;
-
     public OrderDto(Order order) {
         this.orderId = order.getOrderId();
         this.OrderItemList = order.getOrderItems();

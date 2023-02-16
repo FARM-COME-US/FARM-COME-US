@@ -1,6 +1,5 @@
 package com.ssafy.farmcu.api.dto.order;
 
-import com.ssafy.farmcu.api.dto.store.ItemDto;
 import com.ssafy.farmcu.api.entity.order.Cart;
 import com.sun.istack.NotNull;
 import lombok.*;
