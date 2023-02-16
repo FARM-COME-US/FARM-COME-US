@@ -1,9 +1,6 @@
 import axios from "axios";
 import session from "redux-persist/lib/storage/session";
 
-const DUMMY_SERVER_URL = "http://localhost:9090";
-const USER_API_URL = `${DUMMY_SERVER_URL}/member`;
-
 export async function userSignUp(userInfo) {
   const data = {
     id: userInfo.id,
