@@ -340,7 +340,6 @@ const OvContainer = (props) => {
     } else {
       publisher.publishAudio(false);
     }
-
     setIsMute((prev) => !prev);
   };
 
@@ -357,16 +356,15 @@ const OvContainer = (props) => {
                   className={classes.liveHeader}
                   isPublisher={props.isPublisher}
                   isMute={isMute}
-                  title={props.liveInfo.title}
+                  title={props.liveInfo.liveTitle}
                   onCameraSwitch={switchCamera}
                   onLiveLeave={leaveSessionHandler}
                   onToggleMute={toggleMuteHandler}
                 />
                 <LiveInfo
                   subCnt={viewerCnt}
-                  title={props.liveInfo.title}
-                  stock={props.liveInfo.stock}
-                  unit={props.liveInfo.unit}
+                  title={props.liveInfo.liveTitle}
+                  stock={props.itemInfo.itemStock}
                 />
                 <LiveChat
                   chatList={chatList}
