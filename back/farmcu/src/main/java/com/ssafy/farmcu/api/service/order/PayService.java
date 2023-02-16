@@ -99,9 +99,9 @@ public class PayService {
         parameters.add("total_amount", String.valueOf(totalAmount));
         parameters.add("tax_free_amount", "0");
         parameters.add("cid", "TC0ONETIME");
-        parameters.add("approval_url", "https://i8b103.p.ssafy.io:9090/api/v1/pay/kakao/success");
-        parameters.add("cancel_url", "https://i8b103.p.ssafy.io:9090");
-        parameters.add("fail_url", "https://i8b103.p.ssafy.io:9090");
+        parameters.add("approval_url", "http://localhost:9090/api/v1/pay/kakao/success");
+        parameters.add("cancel_url", "https://localhost:9090");
+        parameters.add("fail_url", "https://localhost:9090");
 
         return parameters;
     }
@@ -109,7 +109,7 @@ public class PayService {
     private HttpHeaders getKakaoHeader(){
         HttpHeaders httpHeaders = new HttpHeaders();
         // 지은 adminKey 임시 사용
-        httpHeaders.set("Authorization", "KakaoAK 89fc92ccb362f6b19e4e91d5fefc990d");
+        httpHeaders.set("Authorization", "KakaoAK 3893ae89e94143bd07d8a51e1caf6bbc");
         httpHeaders.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         return httpHeaders;
     }
