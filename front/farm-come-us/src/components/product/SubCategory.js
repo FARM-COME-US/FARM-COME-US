@@ -35,7 +35,7 @@ const SubCategory = (props) => {
     ));
 
     return (
-      <div>
+      <div className="subCategoryNav">
         <div className={classes.container}>{list}</div>
       </div>
     );
