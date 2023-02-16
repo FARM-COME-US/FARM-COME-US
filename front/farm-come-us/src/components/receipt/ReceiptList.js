@@ -48,7 +48,7 @@ const ReceiptList = (props) => {
   const costConvertedData = data.map(
     (item) => ((item.cost = convertedPrice(item.cost)), item)
   );
-  console.log(costConvertedData);
+  // console.log(costConvertedData);
 
   reciptCards = costConvertedData.map((itemcard, idx) => (
     <ReceiptCard
@@ -79,15 +79,15 @@ const ReceiptList = (props) => {
         <div className={classes.orderInfoMt}>
           <div
             className={classes.orderinfo}
-          >{`주문번호 : ${"props.orderid 1084165156"}`}</div>
+          >{`주문번호 : ${props.orderid}`}</div>
           <div
             className={classes.orderinfo}
-          >{`구매일자 : ${"props.orderDate 2023. 01. 18 16:02:19"}`}</div>
+          >{`구매일자 : ${props.orderDate}`}</div>
         </div>
         <div
           className={`${classes.orderinfo} ${classes.orderLength} ${classes.orderlength}`}
         >
-          상품 {"order.length"} 개
+          상품 {orderData.length} 개
         </div>
       </div>
 

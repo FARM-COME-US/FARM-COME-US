@@ -1,5 +1,14 @@
+.subCategoryNav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
-  height: 66px;
+  margin: 0 auto;
+  width: 96%;
+  height: 80px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

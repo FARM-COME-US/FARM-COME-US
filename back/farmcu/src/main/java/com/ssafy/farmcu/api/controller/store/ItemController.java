@@ -12,6 +12,7 @@ import com.ssafy.farmcu.api.service.store.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 @RestController
 @RequestMapping("api/v1/item")
 @RequiredArgsConstructor

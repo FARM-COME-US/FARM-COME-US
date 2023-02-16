@@ -19,14 +19,14 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
 
-  const [id, setId] = useState("myFarm");
-  const [email, setEmail] = useState("myfarm@gmail.com");
-  const [name, setName] = useState("팜컴어스");
-  const [phoneNumber, setPhoneNumber] = useState("01012341234");
-  const [password, setPassword] = useState("asd12345!");
-  const [passwordConfirm, setPasswordConfirm] = useState("asd12345!");
+  const [id, setId] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [streetAddr, setStreetAddr] = useState("");
-  const [detailAddr, setDetailAddr] = useState("삼성화재 유성캠퍼스");
+  const [detailAddr, setDetailAddr] = useState("");
   const [zipcode, setZipcode] = useState("");
 
   //오류메시지 상태저장
@@ -47,7 +47,7 @@ const SignUp = () => {
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [isstreetAddr, setIsStreetAddr] = useState(false);
 
-  let nickname = ""; //랜덤 넣어서 뿌려주는거 필요
+  let nickname = ""; //랜덤 넣어서 뿌려주는 변수
 
   // 회원가입 정보 날리는 함수
   const submitHandler = async (e) => {
@@ -162,7 +162,6 @@ const SignUp = () => {
       setIsPassword(true);
     }
   }, []);
-  //dependency arr 수정필요 - password confirm도.
 
   // 비밀번호 확인
   const onChangePasswordConfirm = useCallback(
@@ -181,7 +180,6 @@ const SignUp = () => {
     [password]
   );
 
-  // 주소확인// 주소바뀌면 동작 - 만들고 수정필요(주소컴포넌트에서 값을 줬을때, useState바꿔줘야함.)
   const onChangestreetAddr = useCallback(
     (e) => {
       if (streetAddr.length === 0) {
@@ -195,7 +193,6 @@ const SignUp = () => {
   );
 
   const selectAddress = (data) => {
-    console.log(data);
     setIsStreetAddr(true);
     setStreetAddr(data.roadAddress);
     setZipcode(data.zonecode);
@@ -276,30 +273,6 @@ const SignUp = () => {
             </span>
           )}
         </div>
-
-        {/* 닉네임 */}
-        {/* <div className={classes.formbox}>
-          <div>
-            <MdPermIdentity className={classes.icon} />
-            <input
-              className={classes.outerInput}
-              text="닉네임"
-              type="nickname"
-              placeholder="닉네임"
-              typename="nickname"
-              onChange={onChangeNickname}
-            />
-          </div>
-          {nickname.length > 0 && (
-            <span
-              className={`${classes.message} ${
-                isNickname ? classes.success : classes.error
-              }`}
-            >
-              {nicknameMessage}
-            </span>
-          )}
-        </div> */}
 
         <div className={classes.formbox}>
           <div>
