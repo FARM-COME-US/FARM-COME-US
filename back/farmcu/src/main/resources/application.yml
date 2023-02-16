@@ -17,6 +17,7 @@ spring:
       matching-strategy: ant_path_matcher
 
 
+
 cors:
   enabled: true
   allowed-origins: http://localhost:3000,https://localhost:3000,https://i8b103.p.ssafy.io/

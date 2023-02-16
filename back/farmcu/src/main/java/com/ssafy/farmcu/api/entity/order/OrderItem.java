@@ -31,12 +31,12 @@ public class OrderItem {
 
     // 연결
     @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "order_id")
+    @ManyToOne( fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id" )
     private Order order;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
 
