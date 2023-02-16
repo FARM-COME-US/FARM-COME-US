@@ -14,7 +14,7 @@ const ProductItem = (props) => {
         <Link
           to={`/product-detail`}
           state={{
-            item_id: props.item.itemId,
+            itemId: props.item.itemId,
           }}
         >
           <Card className={`${classes.productCard}`}>

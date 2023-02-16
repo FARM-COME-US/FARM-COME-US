@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { fetchStoreProducts } from "../../utils/api/product-http";
 import useHttp from "../../hooks/use-http";
 
@@ -13,6 +13,7 @@ import AddProductModal from "../../components/mystore/AddProductModal";
 import Loading from "../../components/common/Loading";
 
 const MyStoreProduct = () => {
+  const navigate = useNavigate();
   const { storeInfo } = useOutletContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currPage, setCurrPage] = useState(0);
@@ -44,6 +45,7 @@ const MyStoreProduct = () => {
   const showProductDetailHandler = (product, event) => {
     console.log(product, event);
     alert("상품 디테일로 넘어가는 이벤트");
+    navigate("/product-detail", { state: { itemId: product.itemId } });
   };
 
   return (
