@@ -26,6 +26,7 @@ const ProductList = (props) => {
 
   useEffect(() => {
     if (productsInfo) {
+      console.log(productsInfo);
       setProductsList((prev) => {
         return [...prev, ...productsInfo.itemInfoList];
       });

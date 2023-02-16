@@ -25,8 +25,6 @@ export async function createProduct(productInfo) {
     })
   );
 
-  console.log(data);
-
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -36,17 +34,11 @@ export async function createProduct(productInfo) {
     },
   };
 
-  try {
-    const response = axios.post(
-      `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item`,
-      formData,
-      config
-    );
-
-    console.log(response);
-  } catch (err) {
-    console.err(err);
-  }
+  return axios.post(
+    `${process.env.REACT_APP_API_SERVER_URL}/api/v1/item`,
+    formData,
+    config
+  );
 }
 
 /* 상품 상세 조회 */

@@ -84,7 +84,7 @@ const App = () => {
   return (
     <div id="app">
       <Header />
-      <div>
+      <div className="sideContainer">
         {menu && <Backdrop />}
         <SideMenu
           className={`${classes.sideMenu} ${

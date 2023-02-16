@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import classes from "./style/ProductDetail.module.scss";
 import Card from "../../components/common/Card";
 import { MdShoppingCart } from "react-icons/md";
@@ -12,9 +12,6 @@ import axios from "axios";
 const ProductDetail = () => {
   // const user = useSelector((state) => state.user); // 😀 고쳤음
   const userId = useSelector((state) => state.userSlice.value.memberId);
-  console.log(userId);
-  console.log("유저입니다");
-  console.log(userId);
 
   const [itemDetail, setItemDetail] = useState({});
   const [amount, setAmount] = useState(1);
@@ -39,10 +36,6 @@ const ProductDetail = () => {
 
   const orderProduct = async function orderProduct() {
     try {
-      console.log("######################@!@@@@@@@@@@@@@@@@");
-      console.log(
-        `아이템번호:${location.state.item_id} 유저번호:${userId} 개수:${amount}`
-      );
       const response = await axios({
         method: "post",
         url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/order",
@@ -71,7 +64,6 @@ const ProductDetail = () => {
   };
 
   if (itemDetail.item) {
-    console.log("렌더링 성공");
     console.log(itemDetail);
 
     const discountPrice =
@@ -82,6 +74,12 @@ const ProductDetail = () => {
     const convertedPrice = (price) =>
       price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+    const sendCartPageHandler = () => {
+      alert("장바구니에 추가되었습니다.");
+      return;
+      /* 장바구니 추가 로직 */
+    };
+
     return (
       <div className={classes.container}>
         <div className={classes.header}>
@@ -91,29 +89,33 @@ const ProductDetail = () => {
           <div className={classes.storename}>
             <Link to="/store" state={{ storeId: itemDetail.item.storeId }}>
               {itemDetail.item.storeName}
+              <span>스토어</span>
             </Link>
           </div>
         </div>
         <Card className={classes.imagecard}>
-          <img src={itemDetail.item.savedPath} alt="공백"></img>
+          <img src={itemDetail.item.savedPath} alt="상품이미지"></img>
         </Card>
         <div className={classes.productname}>{itemDetail.item.itemName}</div>
-        <div className={classes.productscript}>
+        <p className={classes.productscript}>
           {itemDetail.item.itemDescription}
-        </div>
+        </p>
         <div className={classes.option}>
           <div className={classes.discountspace}>
-            <div className={classes.salepercent}>
-              {itemDetail.item.itemDiscount}%
-            </div>
-            <div className={classes.originalprice}>
-              {convertedPrice(itemDetail.item.itemPrice)}원
-            </div>
+            {itemDetail.item.itemDiscount !== 0 ? (
+              <Fragment>
+                <div className={classes.salepercent}>
+                  {itemDetail.item.itemDiscount}%
+                </div>
+                <div className={classes.originalprice}>
+                  {convertedPrice(itemDetail.item.itemPrice)}원
+                </div>
+              </Fragment>
+            ) : null}
           </div>
           <div className={classes.saleprice}>
-            {convertedPrice(discountPrice)}
+            {`금액 : ${convertedPrice(discountPrice)} 원`}
           </div>
-          <div className={classes.won}>원</div>
           <div className={classes.selectamount}>
             <div className={classes.firstblock} onClick={minusAmount}>
               -
@@ -133,7 +135,10 @@ const ProductDetail = () => {
         </div>
         <div className={classes.buttonspace}>
           <div className={classes.cartbutton}>
-            <MdShoppingCart className={classes.carticon} />
+            <MdShoppingCart
+              className={classes.carticon}
+              onClick={sendCartPageHandler}
+            />
           </div>
           <div className={classes.buybutton} onClick={orderProduct}>
             <Link
