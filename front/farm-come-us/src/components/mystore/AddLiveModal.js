@@ -78,7 +78,7 @@ const AddLiveModal = (props) => {
           page: 0,
           size: 100,
         };
-        // props.onFetchLive(params);
+        props.onFetchLive(params);
       })
       .catch((err) => {
         console.error(err);

@@ -1,4 +1,15 @@
-.livelist {
-  margin: 0px;
-  padding: 0px;
+.noData {
+  width: 100%;
+  font-size: 1.1rem;
+  text-align: center;
+  margin-top: 120px;
+  font-weight: 600;
+}
+
+.liveList {
+  position: relative;
+  top: -8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }

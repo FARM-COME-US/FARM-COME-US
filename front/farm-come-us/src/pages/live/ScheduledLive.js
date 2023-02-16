@@ -7,7 +7,7 @@ import classes from "./style/ScheduledLive.module.scss";
 import LiveList from "../../components/live/LiveList";
 import Loading from "../../components/common/Loading";
 
-const ScheduledLive = () => {
+const ScheduledLive = (props) => {
   const [currPage, setCurrPage] = useState(0);
 
   const {
@@ -30,6 +30,7 @@ const ScheduledLive = () => {
           liveList={scheduledLiveData.liveOffList}
           hasNextPage={scheduledLiveData.hasNextPage}
           isLive={false}
+          isPreview={props.isPreview}
         />
       )}
     </div>

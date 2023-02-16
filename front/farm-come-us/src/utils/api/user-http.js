@@ -1,5 +1,4 @@
 import axios from "axios";
-import session from "redux-persist/lib/storage/session";
 
 export async function userSignUp(userInfo) {
   const data = {
@@ -54,20 +53,13 @@ export async function login(id, password) {
 export async function fetchUserInfoWithAccessToken() {
   const accessToken = sessionStorage.getItem("accessToken");
 
-  try {
-    const userDataRes = axios.get("/api/api/v1/member/", {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        token: accessToken,
-      },
-    });
-
-    // dispatch(userSlice.actions.login(userDataRes.data.userInfo));
-    return userDataRes;
-  } catch (err) {
-    console.err(err);
-  }
+  return axios.get("/api/api/v1/member/", {
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      token: accessToken,
+    },
+  });
 }
 
 export async function fetchUserInfo(id) {
@@ -83,7 +75,6 @@ export async function fetchUserInfo(id) {
         token: `${accessToken}`,
       },
     });
-    console.log(response);
   } catch (err) {
     console.err(err);
   }
