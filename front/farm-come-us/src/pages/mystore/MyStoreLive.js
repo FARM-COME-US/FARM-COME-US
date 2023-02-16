@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { fetchStoreLive } from "../../utils/api/live-http";
 
 import classes from "./style/MyStoreLive.module.scss";
 
@@ -7,6 +8,9 @@ import MyStoreContentTitle from "../../components/mystore/MyStoreContentTItle";
 import MyStoreLiveList from "../../components/mystore/MyStoreLiveList";
 import AddButton from "../../components/mystore/AddButton";
 import AddLiveModal from "../../components/mystore/AddLiveModal";
+import Loading from "../../components/common/Loading";
+
+import useHttp from "../../hooks/use-http";
 
 const DUMMY_LIVE_LIST = [
   {
@@ -49,6 +53,24 @@ const MyStoreLive = () => {
 
   const navigate = useNavigate();
 
+  const {
+    sendRequest: getStoreLive,
+    status: status,
+    data: liveList,
+    error,
+  } = useHttp(fetchStoreLive, true);
+
+  useEffect(() => {
+    if (storeInfo.storeId) {
+      const params = {
+        storeId: storeInfo.storeId,
+        page: 0,
+        size: 100,
+      };
+      getStoreLive(params);
+    }
+  }, [storeInfo.storeId, getStoreLive]);
+
   /* 기타 메서드 */
   const modalToggleHandler = () => {
     if (!isModalOpen) {
@@ -61,7 +83,9 @@ const MyStoreLive = () => {
   };
 
   const startLiveHandler = (liveInfo) => {
-    const endDate = new Date(liveInfo.startDate.getTime() + 1 * 60 * 60 * 1000);
+    const endDate = new Date(
+      new Date(liveInfo.liveStart).getTime() + 1 * 60 * 60 * 1000
+    );
     const today = new Date();
 
     const isLiveEnd = today.getTime() >= endDate.getTime() ? true : false;
@@ -72,7 +96,7 @@ const MyStoreLive = () => {
       if (!flag) return;
 
       setSessionInfo({
-        id: liveInfo.liveId + "",
+        id: liveInfo.liveId + "" + storeInfo.storeName,
         username: sessionInfo.username,
       });
 
@@ -91,14 +115,15 @@ const MyStoreLive = () => {
   return (
     <div className={classes.liveContainer}>
       <MyStoreContentTitle text="Live" />
-      <MyStoreLiveList
-        lives={DUMMY_LIVE_LIST}
-        startLiveHandler={startLiveHandler}
-      />
+      {status === "pending" && !liveList ? (
+        <Loading className={classes.loading} />
+      ) : (
+        <MyStoreLiveList lives={liveList} startLiveHandler={startLiveHandler} />
+      )}
+
       <div className={classes.btnBox}>
         <AddButton className={classes.btnAdd} onClick={modalToggleHandler} />
       </div>
-
       {isModalOpen ? (
         <AddLiveModal
           title="Live 정보 입력"

@@ -126,29 +126,34 @@ const LivePreview = () => {
   }, [getItemList]);
 
   const liveRoomEnterHandler = async (liveInfo) => {
-    const data = await fetchLiveSession(liveInfo.sessionId);
+    fetchLiveSession(liveInfo.sessionId)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    return;
 
-    if (!data) {
-      alert("진행 중인 라이브가 아닙니다.");
-      getLiveSessions();
-      return;
-    }
-    const sessionId = data.sessionId;
-    alert(`Room_id : ${sessionId}`);
-    navigate("/broadcast", {
-      state: {
-        id: sessionId,
-        username: "Participant" + Math.floor(Math.random() * 100),
-        liveInfo: liveInfo,
-      },
-    });
+    // if (!data) {
+    //   alert("진행 중인 라이브가 아닙니다.");
+    //   getLiveSessions();
+    //   return;
+    // }
+    // const sessionId = data.sessionId;
+    // alert(`Room_id : ${sessionId}`);
+    // navigate("/broadcast", {
+    //   state: {
+    //     id: sessionId,
+    //     username: "Participant" + Math.floor(Math.random() * 100),
+    //     liveInfo: liveInfo,
+    //   },
+    // });
   };
 
   const moveMorePageHandler = (uri) => {
     navigate(uri);
   };
-
-  console.log(itemList);
 
   return (
     <div className={classes.container}>

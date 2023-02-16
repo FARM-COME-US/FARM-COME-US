@@ -13,7 +13,7 @@ const MyStoreHeader = (props) => {
   const loadBgFile = () => {
     const file = inputBgRef.current.files[0];
     bgImgRef.current.src = URL.createObjectURL(file);
-    props.onStoreInfoChange("imgSrc", URL.createObjectURL(file));
+    props.onStoreInfoChange("storeImg", URL.createObjectURL(file));
     props.onStoreInfoChange("filename", file.name);
     props.onStoreInfoChange("uploadFile", file);
   };
@@ -22,9 +22,9 @@ const MyStoreHeader = (props) => {
     <div className={classes.storeHeader}>
       <div className={classes.headerBg}>
         <div className={classes.backdrop}></div>
-        {props.info.imgSrc ? (
+        {props.info.storeImg ? (
           <div className={classes.bgBox}>
-            <img ref={bgImgRef} src={props.info.imgSrc} alt="header-bg" />
+            <img ref={bgImgRef} src={props.info.storeImg} alt="header-bg" />
           </div>
         ) : (
           <div className={classes.noImg}>
@@ -56,8 +56,7 @@ const MyStoreHeader = (props) => {
           className={classes.imgInput}
           type="file"
           accept=".gif, .jpg, .png"
-          name="imgSrc"
-          // value={props.info.imgSrc}
+          name="storeImg"
           onChange={loadBgFile}
         />
       </form>
