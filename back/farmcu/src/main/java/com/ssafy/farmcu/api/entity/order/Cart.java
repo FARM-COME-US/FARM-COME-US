@@ -1,6 +1,5 @@
 package com.ssafy.farmcu.api.entity.order;
 
-
 import com.ssafy.farmcu.api.entity.member.Member;
 import com.ssafy.farmcu.api.entity.store.Item;
 import lombok.Builder;
@@ -15,7 +14,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "cart")
 public class Cart {
-    //필드
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id", unique = true)
@@ -23,7 +22,6 @@ public class Cart {
 
     private int cartItemCount;
 
-    // 연결
     @ManyToOne
     @JoinColumn(name="memberId", nullable=false)
     private Member member;
