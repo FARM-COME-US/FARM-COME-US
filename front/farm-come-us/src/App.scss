@@ -23,6 +23,7 @@
   overflow-y: scroll;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  z-index: 10;
 }
 
 .mainContainer::-webkit-scrollbar {
@@ -32,7 +33,7 @@
 .sideContainer {
   position: fixed;
   width: 100%;
-  z-index: 10;
+  z-index: 11;
 }
 
 .sideMenu {

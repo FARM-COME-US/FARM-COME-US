@@ -69,7 +69,7 @@ const MyStoreProductInfoList = (props) => {
           name="categoryDetail"
           value={props.productInfo.categoryDetail}
           onChange={categoryDetailCahangeHandler}
-          require
+          required
         >
           <option value="">상세분류</option>
           {categoryDetailList.map((item, idx) => (

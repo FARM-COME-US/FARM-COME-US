@@ -12,37 +12,6 @@ import Loading from "../../components/common/Loading";
 
 import useHttp from "../../hooks/use-http";
 
-const DUMMY_LIVE_LIST = [
-  {
-    liveId: "1",
-    title: "신선한 유기농 강원 고랭 배추",
-    productId: 1,
-    productName: "강원도 고랭지 배추",
-    storeName: "강원고랭",
-    stock: 140,
-    discount: 14,
-    price: 14000,
-    count: 1,
-    unit: "개",
-    startDate: new Date(2023, 3, 21, 23, 0, 0),
-    imgSrc: "https://via.placeholder.com/300",
-  },
-  {
-    liveId: "sessionB",
-    title: "신선한 유기농 강원 고랭 배추",
-    productId: 2,
-    productName: "강원도 고랭지 배추",
-    storeName: "강원고랭",
-    stock: 140,
-    discount: 14,
-    price: 14000,
-    count: 1,
-    unit: "개",
-    startDate: new Date(2023, 0, 30, 6, 0, 0),
-    imgSrc: "https://via.placeholder.com/300",
-  },
-];
-
 const MyStoreLive = () => {
   const { storeInfo } = useOutletContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -92,7 +61,7 @@ const MyStoreLive = () => {
     if (isLiveEnd) {
       alert("이미 종료된 라이브입니다.");
     } else {
-      const flag = window.confirm("시작?");
+      const flag = window.confirm("라이브를 시작하시겠습니까?");
       if (!flag) return;
 
       setSessionInfo({
@@ -112,6 +81,8 @@ const MyStoreLive = () => {
     return;
   };
 
+  console.log(liveList);
+
   return (
     <div className={classes.liveContainer}>
       <MyStoreContentTitle text="Live" />
@@ -130,6 +101,7 @@ const MyStoreLive = () => {
           className={isModalOpen ? null : "close"}
           storeInfo={storeInfo}
           onToggleModal={modalToggleHandler}
+          onFetchLive={getStoreLive}
         />
       ) : null}
     </div>

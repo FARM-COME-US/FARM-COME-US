@@ -6,8 +6,13 @@ import LiveItem from "./LiveItem";
 import ReservedLiveItem from "./ReservedLiveItem";
 
 const LivePreviewList = (props) => {
-  console.log(props.liveList);
-  let list = <p className={classes.noData}>등록된 라이브가 없습니다.</p>;
+  let list = (
+    <p className={classes.noData}>
+      {props.isLive
+        ? "진행 중인 라이브가 없습니다"
+        : "등록된 라이브가 없습니다."}
+    </p>
+  );
 
   if (props.liveList && props.liveList.length > 0) {
     list = props.isLive

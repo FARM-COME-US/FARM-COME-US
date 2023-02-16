@@ -47,7 +47,11 @@ const MyStoreLiveItem = (props) => {
             <span>종료된 라이브</span>
           </div>
         ) : null}
-        <img src={props.item.savedPath} alt="live_img" />
+        <img
+          className={classes.thumnail}
+          src={props.item.savedPath}
+          alt="live_img"
+        />
       </div>
       <div className={classes.liveInfo}>
         <div className={classes.productInfo}>
@@ -56,7 +60,12 @@ const MyStoreLiveItem = (props) => {
             className={classes.stock}
           >{`남은 수량: ${props.item.stock}${props.item.unit}`}</span> */}
         </div>
-        <div className={classes.unitPrice}>{`${convertedPrice} 원`}</div>
+        <div className={classes.unitPrice}>
+          <span>{`${convertedPrice} 원`}</span>
+          <span
+            className={classes.discount}
+          >{`${props.item.liveDiscount}%`}</span>
+        </div>
         <div className={classes.date}>{`${reservedDate()}`}</div>
       </div>
     </div>
