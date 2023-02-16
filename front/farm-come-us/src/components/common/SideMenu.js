@@ -80,6 +80,7 @@ const SideMenu = (props) => {
           </div>
         ) : (
           <div
+            className={classes.profileContainer}
             onClick={() => {
               dispatch(menuSlice.actions.toggle());
               navigate("/login");
@@ -96,7 +97,7 @@ const SideMenu = (props) => {
                   alt="프로필이미지"
                 />
               </div>
-              <div>로그인</div>
+              <div className={classes.txtLogin}>로그인</div>
             </div>
           </div>
         )}
@@ -123,7 +124,7 @@ const SideMenu = (props) => {
                     className={classes.iconImg}
                   />
                 </div>
-                <div className={classes.itemTxt}>로그아웃</div>
+                <div className={classes.logout}>로그아웃</div>
               </div>
             </div>
           </div>

@@ -71,59 +71,8 @@ const LIVE_LIST = [
   },
 ];
 
-const RESERVED_LIVE_LIST = [
-  {
-    liveId: 1,
-    storeId: 1,
-    storeName: "강원 고랭 배추",
-    productId: 1,
-    productName: "강원도 고랭지 배추",
-    discount: 14,
-    price: 10800,
-    unit: 1,
-    time: new Date(),
-  },
-  {
-    liveId: 2,
-    storeId: 2,
-    storeName: "제주 당근당근",
-    productId: 2,
-    productName: "[서귀포] 신선 당근",
-    discount: 12,
-    price: 6200,
-    unit: 1,
-    time: new Date(),
-  },
-  {
-    liveId: 3,
-    storeId: 3,
-    storeName: "강원 고랭 배추",
-    productId: 3,
-    productName: "강원도 고랭지 배추",
-    discount: 14,
-    price: 10800,
-    unit: 3,
-    time: new Date(),
-  },
-  {
-    liveId: 4,
-    storeId: 4,
-    storeName: "제주 당근당근",
-    productId: 4,
-    productName: "[서귀포] 신선 당근",
-    discount: 16,
-    price: 13200,
-    unit: 1,
-    time: new Date(),
-  },
-];
-
 const LivePreview = () => {
   const navigate = useNavigate();
-
-  const getProductListHandler = () => {
-    fetchProductList("전체", null, "전체", 0, 8);
-  };
 
   const {
     sendRequest: getLiveSessions,
@@ -166,10 +115,15 @@ const LivePreview = () => {
   }, [getScheduledLiveInfo]);
 
   useEffect(() => {
-    getItemList("", "", "", 0, 8);
+    const data = {
+      category: "전체",
+      itemName: "",
+      subCategory: "전체",
+      page: 0,
+      size: 8,
+    };
+    getItemList(data);
   }, [getItemList]);
-
-  getProductListHandler();
 
   const liveRoomEnterHandler = async (liveInfo) => {
     const data = await fetchLiveSession(liveInfo.sessionId);
@@ -242,7 +196,7 @@ const LivePreview = () => {
       {itemStatus === "pending" ? (
         <Loading className={classes.loading} />
       ) : (
-        <ProductList productList={itemList} />
+        <ProductList productList={itemList.itemInfoList} isPreview={true} />
       )}
     </div>
   );

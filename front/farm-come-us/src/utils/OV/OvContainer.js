@@ -223,14 +223,13 @@ const OvContainer = (props) => {
           .getVideoTracks()
           .filter((device) => device.deviceId !== currentVideoDevice.deviceId);
 
-        console.log(mediaStream.getVideoTracks());
         if (newVideoTrack && newVideoTrack.length > 0) {
           const videoTrack = newVideoTrack[0];
 
           var newPublisher = tempOV.initPublisher(props.username, {
             audioSource: undefined,
             videoSource: videoTrack,
-            publishAudio: true,
+            publishAudio: isMute ? false : true,
             publishVideo: true,
             resolution: "1280x720",
             frameRate: 30,
@@ -338,10 +337,8 @@ const OvContainer = (props) => {
   const toggleMuteHandler = () => {
     if (isMute) {
       publisher.publishAudio(true);
-      publisher.publishVideo(true);
     } else {
       publisher.publishAudio(false);
-      publisher.publishVideo(false);
     }
 
     setIsMute((prev) => !prev);
