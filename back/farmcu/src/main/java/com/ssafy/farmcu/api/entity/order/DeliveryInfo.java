@@ -14,7 +14,6 @@ import javax.persistence.*;
 @Table(name = "delivery_info")
 public class DeliveryInfo {
 
-    //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id", unique = true, nullable = false)
@@ -29,8 +28,6 @@ public class DeliveryInfo {
     @Column(name = "delivery_phone_number",length = 15, nullable = false)
     private String deliveryPhoneNumber;
 
-
-    // 연결
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Member.class)
     @JoinColumn(name = "member_id", updatable = false)
     private Member member;
@@ -41,7 +38,6 @@ public class DeliveryInfo {
     @Column
     private String deliveryMethod;
 
-    //빌더
     @Builder
     public DeliveryInfo(Order order, Member member, Long deliveryId, String deliveryName, String deliveryAddr, String deliveryPhoneNumber, String deliveryMethod) {
         this.order = order;

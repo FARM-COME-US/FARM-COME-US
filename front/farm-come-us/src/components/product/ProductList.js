@@ -11,7 +11,6 @@ import Loading from "../../components/common/Loading";
 const ProductList = (props) => {
   const categoryTitle = props.category_name;
   const categoryDetail = props.sub_category_name;
-  console.log(categoryTitle, categoryDetail);
 
   const [productsList, setProductsList] = useState([]);
   const [hasNextPage, setHasNextPage] = useState(true);
@@ -26,7 +25,6 @@ const ProductList = (props) => {
 
   useEffect(() => {
     if (productsInfo) {
-      console.log(productsInfo);
       setProductsList((prev) => {
         return [...prev, ...productsInfo.itemInfoList];
       });

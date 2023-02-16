@@ -8,8 +8,8 @@ import java.time.ZonedDateTime;
 @Getter
 public class KakaoReqDto {
 
-    private String tid = "TC0ONETIME";
     private String next_redirect_pc_url;
+    private String tid;
     private ZonedDateTime create_at = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
 
 }
