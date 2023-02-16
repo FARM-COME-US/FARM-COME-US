@@ -14,10 +14,7 @@ const LiveInfo = (props) => {
       </div>
       <div className={classes.badgeList}>
         <LiveInfoBadge icon={<ImUsers />} value={`${props.subCnt}명`} />
-        <LiveInfoBadge
-          icon={<AiFillGift />}
-          value={`${props.stock}${props.unit}`}
-        />
+        <LiveInfoBadge icon={<AiFillGift />} value={`${props.stock}상자`} />
       </div>
     </div>
   );

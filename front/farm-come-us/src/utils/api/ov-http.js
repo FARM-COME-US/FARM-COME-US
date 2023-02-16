@@ -1,9 +1,8 @@
 import axios from "axios";
 
 export function fetchLiveSessions() {
-  return axios.get(
-    `${process.env.REACT_APP_OPENVIDU_SERVER}/openvidu/api/sessions`,
-    {
+  return axios
+    .get(`${process.env.REACT_APP_OPENVIDU_SERVER}/openvidu/api/sessions`, {
       headers: {
         Authorization:
           "Basic " +
@@ -11,8 +10,13 @@ export function fetchLiveSessions() {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-    }
-  );
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 export async function fetchLiveSession(sessionId) {
