@@ -20,10 +20,10 @@ public interface LiveService {
     public HashMap<String, Object> findLivesByStore(Long storeId, Pageable pageable);
 
     //라이브 예정 목록 조회 및 검색
-    public HashMap<String, Object> findLivesByLiveTitleLikeAndLiveStartLessThan(String liveTitle, LocalDateTime localDateTime, Pageable pageable);
+    public HashMap<String, Object> findLivesByLiveTitleLikeAndLiveStartGreaterThan(String liveTitle, LocalDateTime localDateTime, Pageable pageable);
 
     //라이브 중인 목록 조회 및 검색
-    public HashMap<String, Object> findLivesByLiveTitleLikeAndLiveStartGreaterThanEqualAndLiveEndLessThanEqual(String liveTitle, LocalDateTime localDateTime1, LocalDateTime localDateTime2, Pageable pageable);
+    public HashMap<String, Object> findLivesByLiveTitleLikeAndLiveStartLessThanEqualAndLiveEndGreaterThanEqual(String liveTitle, LocalDateTime localDateTime1, LocalDateTime localDateTime2, Pageable pageable);
 
     //라이브 상세 조회
     public LiveDetailRes findOne(Long liveId);
