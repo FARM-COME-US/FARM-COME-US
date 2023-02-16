@@ -22,23 +22,26 @@ const MyReceipts = (props) => {
       })
       .then((res) => {
         console.log("멤버아이디의 오더정보 불러온다.");
+        console.log(res.status);
         console.log(res.data);
-        setReceiptsInfoArr(res.data);
+        setReceiptsInfoArr(res.data.orderList);
       })
       .catch((err) => {
         console.log(err);
       });
     // console.log(res);
+    console.log(myReceiptsInfoArr);
   }, []);
-  const response = axios({
-    method: "delete",
-    url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/",
-    params: {
-      //
-      cartId: 1,
-    },
-  });
-  console.log(response.success);
+  // 😀출처 모르는 delete함수라서 주석처리.
+  // const response = axios({
+  //   method: "delete",
+  //   url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/",
+  //   params: {
+  //     //
+  //     cartId: 1,
+  //   },
+  // });
+  // console.log(response.success);
 
   let list = <div className={classes.noItem}>주문 내역이 없습니다.</div>;
 
@@ -61,6 +64,9 @@ const MyReceipts = (props) => {
             : `${classes.centerAlignWrapper} ${classes.noItem}`
         }`}
       >
+        {/* {myReceiptsInfoArr.map((item) => (
+          <MyReceiptItem key={item.id} info={item} />
+        ))} */}
         {list}
       </div>
     </div>

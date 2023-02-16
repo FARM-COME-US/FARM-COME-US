@@ -39,7 +39,7 @@ import MyStoreLive from "./pages/mystore/MyStoreLive";
 import MyStoreProducts from "./pages/mystore/MyStoreProducts";
 import MyStoreReceipt from "./pages/mystore/MyStoreReceipt";
 import BroadCast from "./pages/BroadCast";
-import Test from "./pages/test";
+import Test from "./pages/KakaopayEvent";
 
 import Store from "./pages/store/Store";
 import StoreLive from "./pages/store/StoreLive";
@@ -124,10 +124,10 @@ const App = () => {
           <Route path="scheduled" element={<ScheduledLive />} />
           <Route path="" element={<Navigate replace to="running" />} />
         </Route>
-        <Route path="payment" element={<KakaoPayment />} />
-        <Route path="payment-result" element={<KakaoPayResult />} />
-        <Route path="payment-cancel" element={<KakaoPayCancel />} />
-        <Route path="payment-fail" element={<KakaoPayFail />} />
+        <Route path="/payment" element={<KakaoPayment />} />
+        <Route path="/payment-result" element={<KakaoPayResult />} />
+        <Route path="/payment-cancel" element={<KakaoPayCancel />} />
+        <Route path="/payment-fail" element={<KakaoPayFail />} />
 
         <Route path="/products" element={<Products />} />
         {/* 마이스토어 생성을 안했으면 prompt 창 띄우고 마이페이지로 리다이렉션 */}
