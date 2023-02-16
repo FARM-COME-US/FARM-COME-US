@@ -34,13 +34,12 @@ export async function userSignUp(userInfo) {
 }
 
 export async function login(id, password) {
+  const data = { id, password };
+
   try {
     const response = axios.post(
       process.env.REACT_APP_API_SERVER_URL + "api/v1/member/login",
-      {
-        id: id,
-        password: password,
-      }
+      data
     );
 
     const accessToken = response.data["token"];
