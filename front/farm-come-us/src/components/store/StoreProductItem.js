@@ -1,33 +1,43 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
 import classes from "./style/StoreProductItem.module.scss";
 
 const StoreProductItem = (props) => {
-  console.log(props);
-  const convertedPrice = props.product.itemPrice
+  const convertedPrice = props.item.itemPrice
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+  const dateConversionHandler = () => {
+    const regDt = new Date(props.item.itemCreatedAt);
+    const year = regDt.getFullYear();
+    const month = regDt.getMonth() + 1;
+    const date = regDt.getDate();
+    let hour = regDt.getHours();
+    hour = hour < 12 ? "0" + hour : hour;
+    let minute = regDt.getMinutes();
+    minute = minute < 10 ? "0" + minute : minute;
+
+    return `${year}.${month}.${date} ${hour}:${minute}`;
+  };
+
+  const convertedDate = dateConversionHandler();
+
   return (
-    <Link to={`/product-detail`} state={{ item_id: props.product.itemId }}>
-      <div className={classes.container}>
-        <div className={classes.imagespace}>
-          <img src={props.product.savedPath[0]} alt="공백"></img>
-        </div>
-        <div className={classes.scriptspace}>
-          <div className={classes.firstline}>
-            <div className={classes.productname}>{props.product.itemName}</div>
-            <div className={classes.productamount}>
-              {props.product.itemStock}kg
-            </div>
-          </div>
-          <div className={classes.thirdline}>
-            {props.product.itemDescription}
-          </div>
-          <div className={classes.secondline}>5kg / {convertedPrice}원</div>
-        </div>
+    <div className={classes.productItem}>
+      <div className={classes.productThumbnail}>
+        <img src={props.item.savedPath} alt="live_img" />
       </div>
-    </Link>
+      <div className={classes.infoBox}>
+        <div className={classes.productInfo}>
+          <span className={classes.productName}>{props.item.itemName}</span>
+          <span
+            className={classes.stock}
+          >{`남은 수량: ${props.item.itemStock} 개`}</span>
+        </div>
+        <div className={classes.unitPrice}>{`${convertedPrice} 원`}</div>
+        <div className={classes.date}>{`등록일 : ${convertedDate}`}</div>
+      </div>
+    </div>
   );
 };
 

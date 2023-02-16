@@ -93,7 +93,7 @@ export async function fetchStoreProducts(storeId, page, size) {
   const params = {
     storeId,
     page,
-    size: 8,
+    size: 100,
   };
 
   return await axios
@@ -109,7 +109,7 @@ export async function fetchStoreProducts(storeId, page, size) {
 /* 등록 상품 삭제 */
 export async function deleteProduct(productId) {
   try {
-    const response = axios({
+    axios({
       method: "delete",
       url: PRODUCT_API_URL,
       params: {
