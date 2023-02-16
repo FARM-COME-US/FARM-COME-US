@@ -37,21 +37,23 @@ const RunningLive = () => {
   }, [getRunningLiveInfo]);
 
   const liveRoomEnterHandler = async (liveInfo) => {
-    const data = await fetchLiveSession(liveInfo.sessionId);
-    if (!data) {
-      alert("진행 중인 라이브가 아닙니다.");
-      getLiveSessions();
-      return;
-    }
-    const sessionId = data.sessionId;
-    alert(`${sessionId}`);
-    navigate("/broadcast", {
-      state: {
-        id: sessionId,
-        username: "Participant" + Math.floor(Math.random() * 100),
-        liveInfo: liveInfo,
-      },
-    });
+    console.log(liveInfo);
+    fetchLiveSession(liveInfo.liveId)
+      .then((res) => {
+        console.log(res);
+        const sessionId = res.liveId;
+        navigate("/broadcast", {
+          state: {
+            id: sessionId,
+            username: "Participant" + Math.floor(Math.random() * 100),
+            liveInfo: liveInfo,
+          },
+        });
+      })
+      .catch(() => {
+        alert("진행 중인 라이브가 아닙니다.");
+        getLiveSessions();
+      });
   };
 
   return (
