@@ -10,7 +10,9 @@ const ProductList = (props) => {
       <p className={classes.noData}>등록된 상품이 없습니다.</p>
     ) : (
       props.productList.map((item, idx) => (
-        <ProductItem key={idx} product={item} />
+        <div className={classes.itemContainer} key={idx}>
+          <ProductItem className={classes.itemCard} key={idx} product={item} />
+        </div>
       ))
     );
 

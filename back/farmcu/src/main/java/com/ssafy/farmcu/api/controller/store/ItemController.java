@@ -98,7 +98,6 @@ public class ItemController {
     @PostMapping("/keyword")
     @ApiOperation(value = "상품 목록 조회")
     public ResponseEntity<HashMap<String, Object>> selectItemList(@RequestBody ItemSearchReq itemSearchReq, Integer page, Integer size) {
-        log.info("ItemSearchReq DTO: {}", itemSearchReq);
         PageRequest pageRequest = PageRequest.of(page, size);
         HashMap<String, Object> itemText = itemService.findItemsByCategoryAndItemNameLike(itemSearchReq, pageRequest);
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");

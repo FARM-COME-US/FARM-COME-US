@@ -4,7 +4,17 @@
   list-style: none;
   margin: 0 10px;
   padding: 0;
-  overflow-x: scroll;
+  overflow-x: hidden;
+
+  .itemContainer {
+    width: 50%;
+    padding: 4px;
+    flex-shrink: 0;
+
+    .itemCard {
+      width: 100%;
+    }
+  }
 
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
