@@ -15,6 +15,7 @@ import useHttp from "../../hooks/use-http";
 const ProductDetail = () => {
   const userId = useSelector((state) => state.userSlice.value.memberId);
   const location = useLocation();
+  const navigate = useNavigate();
 
   let ITEM_ID = null;
   if (location.state.itemId) {
@@ -31,26 +32,40 @@ const ProductDetail = () => {
   } = useHttp(productDetail, true);
 
   useEffect(() => {
+    if (!userId) {
+      navigate("/login", { replace: true });
+      alert("로그인 후 이용가능한 서비스 입니다.");
+    }
+
     getItemDetail(ITEM_ID);
   }, [getItemDetail]);
 
   const orderProduct = async function orderProduct() {
-    try {
-      const response = await axios({
-        method: "post",
-        url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/order",
-        data: {
-          itemId: location.state.item_id,
-          memberId: userId,
-          oitemCount: amount,
-        },
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    const data = {
+      itemId: ITEM_ID,
+      memberId: userId,
+      oitemCount: amount,
+    };
 
-  const navigate = useNavigate();
+    axios
+      .post(process.env.REACT_APP_API_SERVER_URL + "/api/v1/order", data)
+      .then((res) => {
+        let resData = res.data;
+        navigate("/payment", {
+          state: {
+            orderId: resData,
+            storename: itemDetail.item.storeName,
+            productname: itemDetail.item.itemName,
+            memberId: userId,
+            price: resultPrice,
+            amount: amount,
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const plusAmount = () => {
     setAmount(amount + 1);
@@ -73,9 +88,9 @@ const ProductDetail = () => {
   let resultPrice = null;
   let discountPrice = null;
   if (itemDetail) {
-    resultPrice = discountPrice * amount;
     discountPrice =
       itemDetail.item.itemPrice * (1 - itemDetail.item.itemDiscount / 100);
+    resultPrice = discountPrice * amount;
   }
 
   return (
@@ -148,7 +163,7 @@ const ProductDetail = () => {
                 onClick={sendCartPageHandler}
               />
             </div>
-            <div className={classes.buybutton} onClick={orderProduct}>
+            <div className={classes.buybutton}>
               <div className={classes.buybuttonlink} onClick={orderProduct}>
                 <div>구매하기</div>
               </div>
