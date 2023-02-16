@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { MdPermIdentity, MdLockOutline } from "react-icons/md";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import jwt_decode from "jwt-decode";
 import axios from "axios";
 import userSlice from "../reduxStore/userSlice";
 

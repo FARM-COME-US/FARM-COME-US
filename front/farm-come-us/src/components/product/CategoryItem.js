@@ -12,6 +12,7 @@ const CategoryItem = (props) => {
       <CategoryButton
         className={classes.categoryItem}
         category_name={props.category_name}
+        category_img={props.category_img}
       ></CategoryButton>
     </div>
   );

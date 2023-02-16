@@ -1,17 +1,19 @@
 import { useSelector, useDispatch } from "react-redux";
 import userSlice from "../../reduxStore/userSlice";
 import menuSlice from "../../reduxStore/menuSlice";
-import Backdrop from "./Backdrop";
 import SideMenuItem from "./SideMenuItem";
 import classes from "./style/SideMenu.module.scss";
 import { useNavigate } from "react-router-dom";
 
+import { MdAccountCircle } from "react-icons/md";
+
 const SideMenu = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const [isOpen, setIsOpen] = useState(true);
   const user = useSelector((state) => state.userSlice.value); // 로그인상태에 따라 화면 재렌더링(유저정보 업데이트)
   const isOpen = useSelector((state) => state.menuSlice.isOpen);
+
+  console.log(user);
 
   const isLogin = user.isLogin; // 일단 간이로 nickname받아오면 로그인된걸로 설정
   const sideMenuItemList = [
@@ -37,7 +39,6 @@ const SideMenu = (props) => {
     },
   ];
 
-  // closeSideMenu={setIsOpen}
   const sideMenuItems = sideMenuItemList.map((item, idx) => (
     <SideMenuItem
       className={classes.sideMenuItem}
@@ -49,15 +50,12 @@ const SideMenu = (props) => {
   ));
 
   return (
-    // <div className={`${isOpen ? "open" : "closed"} ${props.className} side`}>
     <div
       className={`${classes.sideMenu} ${
         isOpen ? classes.open : classes.closed
       }`}
     >
       <div>
-        {/* 프로필 주황색 칸 */}
-
         {isLogin ? (
           <div
             className={classes.profileBox}
@@ -67,10 +65,11 @@ const SideMenu = (props) => {
             }}
           >
             <div className={classes.circleBox}>
+              <MdAccountCircle className={classes.profileImg} />
               <img
                 className={classes.profileImg}
                 src={process.env.PUBLIC_URL + "/img/defaultProfile.png"}
-                alt="프로필이미"
+                alt="프로필이미지"
               />
             </div>
             <div className={classes.profileTxtBox}>
@@ -88,14 +87,7 @@ const SideMenu = (props) => {
           >
             <div className={classes.profileBox}>
               <div className={classes.circleBox}>
-                <img
-                  className={classes.profileImg}
-                  src={
-                    process.env.PUBLIC_URL +
-                    `/img/${isLogin ? user.profileimg : "defaultProfile.png"}`
-                  }
-                  alt="프로필이미지"
-                />
+                <MdAccountCircle className={classes.noProfileImg} />
               </div>
               <div className={classes.txtLogin}>로그인</div>
             </div>
@@ -133,9 +125,6 @@ const SideMenu = (props) => {
         )}
       </div>
       {/* 로그아웃버튼 -> isLogin true시 렌더링, 아니면 안함. */}
-
-      {isOpen ? <Backdrop /> : ""}
-      {/* fixed로 빼놔서 밑에 둠. */}
     </div>
   );
 };
