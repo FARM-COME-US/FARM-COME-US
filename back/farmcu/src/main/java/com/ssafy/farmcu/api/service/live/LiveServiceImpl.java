@@ -76,9 +76,13 @@ public class LiveServiceImpl implements LiveService {
     }
 
     @Override
-    public HashMap<String, Object> findLivesByLiveTitleLikeAndLiveStartLessThan(String liveTitle, LocalDateTime localDateTime, Pageable pageable) {
+    public HashMap<String, Object> findLivesByLiveTitleLikeAndLiveStartGreaterThan(String liveTitle, LocalDateTime localDateTime, Pageable pageable) {
         try {
-            Slice<Live> lives = liveRepository.findByLiveTitleLikeAndLiveStartLessThan(liveTitle, localDateTime, pageable);
+            Slice<Live> lives;
+
+            if(liveTitle.equals("")) lives = liveRepository.findByLiveTitleLikeAndLiveStartGreaterThan("%", localDateTime, pageable);
+            else lives = liveRepository.findByLiveTitleLikeAndLiveStartGreaterThan(liveTitle, localDateTime, pageable);
+
             List<LiveListRes> liveList = lives.getContent().stream()
                     .map(l -> new LiveListRes(l))
                     .collect(toList());
@@ -95,9 +99,13 @@ public class LiveServiceImpl implements LiveService {
     }
 
     @Override
-    public HashMap<String, Object> findLivesByLiveTitleLikeAndLiveStartGreaterThanEqualAndLiveEndLessThanEqual(String liveTitle, LocalDateTime localDateTime1, LocalDateTime localDateTime2, Pageable pageable) {
+    public HashMap<String, Object> findLivesByLiveTitleLikeAndLiveStartLessThanEqualAndLiveEndGreaterThanEqual(String liveTitle, LocalDateTime localDateTime1, LocalDateTime localDateTime2, Pageable pageable) {
         try {
-            Slice<Live> lives = liveRepository.findByLiveTitleLikeAndLiveStartGreaterThanEqualAndLiveEndLessThanEqual(liveTitle, localDateTime1, localDateTime2, pageable);
+            Slice<Live> lives;
+
+            if(liveTitle.equals("")) lives = liveRepository.findByLiveTitleLikeAndLiveStartLessThanEqualAndLiveEndGreaterThanEqual("%", localDateTime1, localDateTime2, pageable);
+            else lives = liveRepository.findByLiveTitleLikeAndLiveStartLessThanEqualAndLiveEndGreaterThanEqual(liveTitle, localDateTime1, localDateTime2, pageable);
+
             List<LiveListRes> liveList = lives.getContent().stream()
                     .map(l -> new LiveListRes(l))
                     .collect(toList());

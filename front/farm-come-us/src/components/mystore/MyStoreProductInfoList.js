@@ -54,6 +54,7 @@ const MyStoreProductInfoList = (props) => {
           name="categoryTitle"
           value={props.productInfo.categoryTitle}
           onChange={categoryTitleChangeHandler}
+          required
         >
           <option value="">대분류</option>
           {categoryTitleList.map((item, idx) => (
@@ -68,6 +69,7 @@ const MyStoreProductInfoList = (props) => {
           name="categoryDetail"
           value={props.productInfo.categoryDetail}
           onChange={categoryDetailCahangeHandler}
+          required
         >
           <option value="">상세분류</option>
           {categoryDetailList.map((item, idx) => (
@@ -84,6 +86,7 @@ const MyStoreProductInfoList = (props) => {
           name="itemName"
           value={props.productInfo.itemName}
           onChange={props.onChange}
+          required={true}
         />
       </li>
       <li className={classes.infoItem}>
@@ -93,6 +96,7 @@ const MyStoreProductInfoList = (props) => {
           value={props.productInfo.itemPrice}
           name="itemPrice"
           onChange={props.onChange}
+          required={true}
         />
       </li>
       <li className={classes.infoItem}>
@@ -102,6 +106,7 @@ const MyStoreProductInfoList = (props) => {
           value={props.productInfo.itemStock}
           name="itemStock"
           onChange={props.onChange}
+          required={true}
         />
       </li>
       <li className={classes.infoItem}>
@@ -111,6 +116,7 @@ const MyStoreProductInfoList = (props) => {
           value={props.productInfo.itemDescription}
           name="itemDescription"
           onChange={props.onChange}
+          required={true}
         />
       </li>
       <li className={classes.infoItem}>
@@ -120,6 +126,7 @@ const MyStoreProductInfoList = (props) => {
           value={props.productInfo.imgSrc}
           name="imgSrc"
           onChange={props.onChange}
+          required={true}
         />
       </li>
     </ul>

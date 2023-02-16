@@ -4,15 +4,17 @@ import classes from "./style/MyStoreLiveItem.module.scss";
 
 const MyStoreLiveItem = (props) => {
   const today = new Date();
-  const endDate = new Date(props.item.startDate.getTime() + 1 * 60 * 60 * 1000);
+  const onedayAfter =
+    new Date(props.item.liveStart).getTime() + 1 * 60 * 60 * 1000;
+  const endDate = new Date(onedayAfter);
   const isLiveEnded = today.getTime() >= endDate.getTime() ? true : false;
 
-  const convertedPrice = props.item.price
+  const convertedPrice = props.item.liveItemPrice
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   const reservedDate = () => {
-    const date = props.item.startDate;
+    const date = new Date(props.item.liveStart);
     const startTime = date.getTime();
     const endDate = new Date(startTime + 1 * 60 * 60 * 1000);
 
@@ -45,18 +47,25 @@ const MyStoreLiveItem = (props) => {
             <span>종료된 라이브</span>
           </div>
         ) : null}
-        <img src={props.item.imgSrc} alt="live_img" />
+        <img
+          className={classes.thumnail}
+          src={props.item.savedPath}
+          alt="live_img"
+        />
       </div>
       <div className={classes.liveInfo}>
         <div className={classes.productInfo}>
-          <span className={classes.title}>{props.item.title}</span>
-          <span
+          <span className={classes.title}>{props.item.liveTitle}</span>
+          {/* <span
             className={classes.stock}
-          >{`남은 수량: ${props.item.stock}${props.item.unit}`}</span>
+          >{`남은 수량: ${props.item.stock}${props.item.unit}`}</span> */}
         </div>
-        <div
-          className={classes.unitPrice}
-        >{`${convertedPrice}/${props.item.count}${props.item.unit}`}</div>
+        <div className={classes.unitPrice}>
+          <span>{`${convertedPrice} 원`}</span>
+          <span
+            className={classes.discount}
+          >{`${props.item.liveDiscount}%`}</span>
+        </div>
         <div className={classes.date}>{`${reservedDate()}`}</div>
       </div>
     </div>
