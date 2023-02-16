@@ -99,9 +99,9 @@ public class PayService {
         parameters.add("total_amount", String.valueOf(totalAmount));
         parameters.add("tax_free_amount", "0");
         parameters.add("cid", "TC0ONETIME");
-        parameters.add("approval_url", "https://localhost:9090");
-        parameters.add("cancel_url", "https://localhost:9090");
-        parameters.add("fail_url", "https://localhost:9090");
+        parameters.add("approval_url", "http://localhost:9090");
+        parameters.add("cancel_url", "http://localhost:9090");
+        parameters.add("fail_url", "http://localhost:9090");
 
         return parameters;
     }
