@@ -30,11 +30,8 @@ const AddLiveModal = (props) => {
 
   useEffect(() => {
     if (props.storeInfo.storeId) {
-      fetchStoreProducts(props.storeInfo.storeId, 0, 8).then((res) => {
-        const data = res.data;
-        console.log(data.itemImage);
-        console.log(data.itemList);
-        setProductList([...data.itemList]);
+      fetchStoreProducts(props.storeInfo.storeId, 0, 100).then((res) => {
+        setProductList([...res.itemInfoList]);
       });
     }
   }, []);
@@ -75,10 +72,17 @@ const AddLiveModal = (props) => {
     if (!isValidNewInfo()) return;
     fetchAddLive(newLiveInfo)
       .then((res) => {
-        console.log(res);
+        alert("라이브가 등록되었습니다.");
+        const params = {
+          storeId: props.storeInfo.storeId,
+          page: 0,
+          size: 100,
+        };
+        // props.onFetchLive(params);
       })
       .catch((err) => {
         console.error(err);
+        alert("라이브 등록 중 오류가 발생했습니다.");
       });
     props.onToggleModal();
   };
