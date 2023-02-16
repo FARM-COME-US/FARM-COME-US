@@ -9,6 +9,7 @@ import com.ssafy.farmcu.api.service.order.CartServiceImpl;
 import com.ssafy.farmcu.api.service.order.OrderServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("api/v1/cart")
 @Component
