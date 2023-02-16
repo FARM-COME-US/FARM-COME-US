@@ -7,7 +7,7 @@ const KakaopayEvent = (props) => {
   const kakaoClick = async () => {
     try {
       axios
-        .get("https://i8b103.p.ssafy.io" + "/api/v1/pay/kakaoreq", {
+        .get(process.env.REACT_APP_API_SERVER_URL + "/api/v1/pay/kakaoreq", {
           params: {
             itemCount: props.itemCount,
             memberId: props.memberId,
