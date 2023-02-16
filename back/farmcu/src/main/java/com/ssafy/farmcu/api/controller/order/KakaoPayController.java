@@ -1,7 +1,5 @@
 package com.ssafy.farmcu.api.controller.order;
 
-
-
 import com.ssafy.farmcu.api.dto.order.pay.KakaoPayApproveDto;
 import com.ssafy.farmcu.api.dto.order.pay.KakaoReqDto;
 import com.ssafy.farmcu.api.entity.order.Order;
@@ -22,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("api/v1/pay")
 @Api(value = "pay API")
-public class KakaoController {
+public class KakaoPayController {
 
     private final PayService payService;
     private final MemberService memberService;
@@ -30,7 +28,7 @@ public class KakaoController {
     private final OrderController orderController;
     private Long memberId;
 
-    KakaoController(@Lazy OrderServiceImpl orderService, @Lazy OrderController orderController, @Lazy PayService payService, @Lazy MemberService memberService) {
+    KakaoPayController(@Lazy OrderServiceImpl orderService, @Lazy OrderController orderController, @Lazy PayService payService, @Lazy MemberService memberService) {
         this.orderService = orderService;
         this.payService = payService;
         this.memberService = memberService;
@@ -38,7 +36,6 @@ public class KakaoController {
 
     }
 
-    //    @PreAuthorize("isAuthenticated()")
     @GetMapping("/kakaoreq")
     public KakaoReqDto payRequest(@RequestParam Long orderId, Long memberId, int itemCount ){
 
@@ -48,10 +45,12 @@ public class KakaoController {
         return requestResponse;
     }
 
+
     @PutMapping("/tid")
     @ApiOperation(value = "tid 생성")
     public ResponseEntity updateTid(@RequestParam String tid, Long orderId){
-
+        orderService.tidtid(tid);
+        orderService.threadLocal_1();
         try {
             Order order = orderService.updateTid(orderId, tid);
         }
@@ -62,18 +61,20 @@ public class KakaoController {
         return new ResponseEntity<String>("tid 생성 완료", HttpStatus.OK);
     }
 
+
     @GetMapping("/kakao/success")
     public ResponseEntity payApprove( @RequestParam("pg_token") String pgToken ){
 
-//        String tid = (String) redis.redisTemplate().opsForValue().get(String.valueOf(memberId));
-        String tid = "";
-        KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoPayApprove(tid, pgToken);
+        KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoPayApprove(pgToken);
 
         Long orderId = Long.valueOf(kakaoPayApproveDto.getPartner_order_id());
         log.info("orderId = {}", orderId);
         orderService.completeOrder(orderId);
 
+
         return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
     }
+
+
 
 }

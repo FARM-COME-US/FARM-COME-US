@@ -1,10 +1,8 @@
 package com.ssafy.farmcu.api.dto.order;
 
-import com.ssafy.farmcu.api.entity.order.OrderItem;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,7 +20,6 @@ public class OrderInfoDto {
 
     @NotNull
     private int oitemCount;
-
 
     private List<OrderInfoDto> OrderInfoDtoList;
 }
