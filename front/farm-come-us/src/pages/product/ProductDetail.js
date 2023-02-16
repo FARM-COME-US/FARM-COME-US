@@ -73,10 +73,9 @@ const ProductDetail = () => {
   let resultPrice = null;
   let discountPrice = null;
   if (itemDetail) {
+    resultPrice = discountPrice * amount;
     discountPrice =
       itemDetail.item.itemPrice * (1 - itemDetail.item.itemDiscount / 100);
-
-    resultPrice = discountPrice * amount;
   }
 
   return (
@@ -150,19 +149,9 @@ const ProductDetail = () => {
               />
             </div>
             <div className={classes.buybutton} onClick={orderProduct}>
-              <Link
-                to="/payment"
-                state={{
-                  storename: itemDetail.item.storeName,
-                  productname: itemDetail.item.itemName,
-                  memberId: userId,
-                  price: resultPrice,
-                  amount: amount,
-                }}
-                className={classes.buybuttonlink}
-              >
+              <div className={classes.buybuttonlink} onClick={orderProduct}>
                 <div>구매하기</div>
-              </Link>
+              </div>
             </div>
           </div>
         </Fragment>
