@@ -13,7 +13,7 @@ spring:
   datasource:
     hikari:
       data-source-properties:
-        socketTimeout: 5000
+        socketTimeout: 50000
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://i8b103.p.ssafy.io:3306/farmcu?serverTimezone=UTC&characterEncoding=UTF-8
     username: ssafy
