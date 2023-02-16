@@ -99,7 +99,7 @@ public class PayService {
         parameters.add("total_amount", String.valueOf(totalAmount));
         parameters.add("tax_free_amount", "0");
         parameters.add("cid", "TC0ONETIME");
-        parameters.add("approval_url", "https://i8b103.p.ssafy.io/api/v1/pay/kakao/success");
+        parameters.add("approval_url", "https://i8b103.p.ssafy.io:9090/api/v1/pay/kakao/success");
         parameters.add("cancel_url", "https://localhost:9090");
         parameters.add("fail_url", "https://localhost:9090");
 
