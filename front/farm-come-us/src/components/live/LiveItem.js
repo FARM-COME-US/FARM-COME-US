@@ -7,10 +7,10 @@ import Badge from "../common/Badge";
 import CardCaption from "../common/CardCaption";
 
 const LiveItem = (props) => {
-  console.log(props.live);
-  const convertedPrice = props.live.price
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const str_price = props.live.liveItemPrice;
+  const convertedPrice = str_price
+    ? str_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    : null;
 
   return (
     <li className={classes.liveItem}>
@@ -19,7 +19,7 @@ const LiveItem = (props) => {
         onClick={() => props.onClick(props.live)}
       >
         <figure>
-          <img src={props.item.savedPath} alt="livePreview" />
+          <img src={props.live.savedPath} alt="livePreview" />
           <figcaption className={classes.badge}>
             <Badge className={classes.liveBadge}>Live</Badge>
           </figcaption>
@@ -31,7 +31,7 @@ const LiveItem = (props) => {
               </p>
             </div>
             <div className={classes.liveTitle}>
-              <span className={classes.text}>{props.live.productName}</span>
+              <span className={classes.text}>{props.live.liveTitle}</span>
             </div>
             <div className={classes.productInfo}>
               <span className={classes.discount}>
