@@ -17,6 +17,8 @@ const initialStateValue = {
   storeId: false,
 };
 
+const initialStateOrder = [];
+
 const asynclogin = createAsyncThunk(
   "userSlice/asynclogin",
   async ({ username, password }) => {
@@ -44,7 +46,7 @@ const userSlice = createSlice({
   name: "userSlice",
   initialState: {
     value: initialStateValue,
-    store: {},
+    order: initialStateOrder,
   },
   reducers: {
     login: (state, action) => {
