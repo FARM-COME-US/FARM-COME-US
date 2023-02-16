@@ -1,35 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useOutletContext, useNavigate } from "react-router-dom";
+
 import classes from "./style/StoreProducts.module.scss";
 import StoreProductList from "../../components/store/StoreProductList";
-import { useLocation } from "react-router-dom";
 import { fetchStoreProducts } from "../../utils/api/product-http";
+import useHttp from "../../hooks/use-http";
+import Loading from "../../components/common/Loading";
 
 const StoreProducts = () => {
-  const [itemList, setItemList] = useState({});
-
-  const location = useLocation();
+  const navigate = useNavigate();
+  const [storeId] = useOutletContext();
+  const {
+    sendRequest: getStoreItems,
+    status: status,
+    data: storeItems,
+    error,
+  } = useHttp(fetchStoreProducts, true);
 
   useEffect(() => {
-    async function getItemList() {
-      try {
-        const itemArr = await fetchStoreProducts(location.state.storeId, 0, 6);
-        setItemList(itemArr);
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    getStoreItems(storeId, 0);
+  }, [getStoreItems]);
 
-    getItemList();
-  }, [location.state.storeId]);
+  const showProductDetailHandler = (product) => {
+    navigate("/product-detail", { state: { itemId: product.itemId } });
+  };
 
-  if (itemList.data) {
-    console.log(itemList.data);
-    return (
-      <div className={classes.container}>
-        <StoreProductList productList={itemList}></StoreProductList>
-      </div>
-    );
-  }
+  return (
+    <div className={classes.container}>
+      {status === "pending" ? (
+        <Loading className={classes.loading} />
+      ) : (
+        <StoreProductList
+          products={storeItems.itemInfoList}
+          onClick={showProductDetailHandler}
+        />
+      )}
+    </div>
+  );
 };
 
 export default StoreProducts;
