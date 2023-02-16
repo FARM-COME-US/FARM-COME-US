@@ -42,5 +42,9 @@
     &:not(.active) {
       color: #777;
     }
+
+    span {
+      font-size: 1.2rem;
+    }
   }
 }

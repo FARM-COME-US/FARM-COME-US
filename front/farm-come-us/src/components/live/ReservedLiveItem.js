@@ -8,12 +8,12 @@ import CardCaption from "../common/CardCaption";
 const dayText = ["일", "월", "화", "수", "목", "금", "토"];
 
 const ReservedLiveItem = (props) => {
-  const convertedPrice = props.live.price
+  const convertedPrice = props.live.liveItemPrice
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   const reservedDate = () => {
-    const date = props.live.time;
+    const date = new Date(new Date(props.live.liveStart).getTime());
     const today = new Date();
 
     let hour = date.getHours();
@@ -36,7 +36,7 @@ const ReservedLiveItem = (props) => {
     <li className={classes.liveItem}>
       <Card className={classes.liveCard}>
         <figure>
-          <img src="https://via.placeholder.com/300" alt="livePreview" />
+          <img src={props.live.savedPath} alt="livePreview" />
           <div className={classes.backCover}></div>
 
           <div className={classes.reservedCaption}>
@@ -51,13 +51,13 @@ const ReservedLiveItem = (props) => {
               </p>
             </div>
             <div className={classes.liveTitle}>
-              <span className={classes.text}>{props.live.productName}</span>
+              <span className={classes.text}>{props.live.liveTitle}</span>
             </div>
             <div className={classes.productInfo}>
-              <span className={classes.discount}>{props.live.discount}%</span>
-              <span>
-                {convertedPrice} / {props.live.unit}상자
+              <span className={classes.discount}>
+                {props.live.liveDiscount} %
               </span>
+              <span>{convertedPrice} 원</span>
             </div>
           </CardCaption>
         </figure>

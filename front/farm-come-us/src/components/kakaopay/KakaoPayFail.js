@@ -12,7 +12,7 @@ const KakaoPayFail = (props) => {
   }, []);
   return (
     <div className={classes.screen}>
-      결제 실패. 관리자에게 문의 주세요. (010-5584-2256) 잠시 후 직전페이지로
+      결제 실패. 관리자에게 문의 주세요. (1599-3211) 잠시 후 직전페이지로
       이동합니다.
     </div>
   );

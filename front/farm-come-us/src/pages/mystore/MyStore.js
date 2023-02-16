@@ -28,7 +28,7 @@ const MyStore = () => {
     storeZipcode: "",
     storeDetailAddr: "",
     storePhoneNumber: "",
-    imgSrc: "",
+    storeImg: "",
     savePath: "",
     uploadFile: "",
   });
@@ -41,7 +41,7 @@ const MyStore = () => {
     storeZipcode: "",
     storeDetailAddr: "",
     storePhoneNumber: "",
-    imgSrc: "",
+    storeImg: "",
     savePath: "",
     uploadFile: "",
   });
@@ -77,7 +77,7 @@ const MyStore = () => {
       fetchMyStoreDetail(userInfo.memberId)
         .then((res) => {
           const data = res.data;
-          console.log(data);
+
           setStoreInfo(() => {
             return { ...data };
           });
@@ -123,7 +123,7 @@ const MyStore = () => {
       storeDescription: storeInfo.storeDescription,
       storeDetailAddr: storeInfo.storeDetailAddr,
       storeId: storeInfo.storeId,
-      storeImg: storeInfo.imgSrc,
+      storeImg: storeInfo.storeImg,
       storeName: storeInfo.storeName,
       storePhoneNumber: storeInfo.storePhoneNumber,
       storeStreetAddr: storeInfo.storeStreetAddr,
@@ -154,7 +154,7 @@ const MyStore = () => {
         storeZipcode: initStoreInfo.storeZipcode,
         storeDetailAddr: initStoreInfo.storeDetailAddr,
         storePhoneNumber: initStoreInfo.storePhoneNumber,
-        imgSrc: initStoreInfo.imgSrc,
+        storeImg: initStoreInfo.storeImg,
       };
     });
 

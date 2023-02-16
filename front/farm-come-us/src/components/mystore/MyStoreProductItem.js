@@ -3,7 +3,6 @@ import React from "react";
 import classes from "./style/MyStoreProductItem.module.scss";
 
 const MyStoreProductItem = (props) => {
-  console.log(props.item);
   const convertedPrice = props.item.itemPrice
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -26,7 +25,7 @@ const MyStoreProductItem = (props) => {
   return (
     <div className={classes.productItem}>
       <div className={classes.productThumbnail}>
-        <img src={props.item.imgSrc} alt="live_img" />
+        <img src={props.item.savedPath} alt="live_img" />
       </div>
       <div className={classes.infoBox}>
         <div className={classes.productInfo}>
