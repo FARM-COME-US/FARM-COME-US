@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchLiveSession, fetchLiveSessions } from "../../utils/api/ov-http";
 import { fetchRunningLiveList } from "../../utils/api/live-http";
+import { fetchUserInfoWithAccessToken } from "../../utils/api/user-http";
 
 import useHttp from "../../hooks/use-http";
 
@@ -10,7 +11,7 @@ import classes from "./style/RunningLive.module.scss";
 import LiveList from "../../components/live/LiveList";
 import Loading from "../../components/common/Loading";
 
-const RunningLive = () => {
+const RunningLive = (props) => {
   const navigate = useNavigate();
   const [currPage, setCurrPage] = useState(0);
 
@@ -37,18 +38,30 @@ const RunningLive = () => {
   }, [getRunningLiveInfo]);
 
   const liveRoomEnterHandler = async (liveInfo) => {
-    console.log(liveInfo);
     fetchLiveSession(liveInfo.liveId)
-      .then((res) => {
-        console.log(res);
-        const sessionId = res.liveId;
-        navigate("/broadcast", {
-          state: {
-            id: sessionId,
-            username: "Participant" + Math.floor(Math.random() * 100),
-            liveInfo: liveInfo,
-          },
-        });
+      .then(() => {
+        const accessToken = sessionStorage.getItem("accessToken");
+        if (!accessToken) {
+          alert("로그인 후에 이용 가능한 서비스 입니다.");
+          return;
+        }
+
+        fetchUserInfoWithAccessToken()
+          .then((res) => {
+            const userInfo = res.data.userInfo;
+
+            navigate("/broadcast", {
+              state: {
+                id: liveInfo.liveId,
+                username: userInfo.nickname,
+                liveInfo: liveInfo,
+                isPublisher: false,
+              },
+            });
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       })
       .catch(() => {
         alert("진행 중인 라이브가 아닙니다.");
@@ -66,7 +79,8 @@ const RunningLive = () => {
           hasNextPage={runningLiveData.hasNextPage}
           sessionList={sessionList}
           isLive={true}
-          onEnter={liveRoomEnterHandler}
+          isPreview={props.isPreview}
+          onClick={liveRoomEnterHandler}
         />
       )}
     </div>

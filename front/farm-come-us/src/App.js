@@ -120,10 +120,6 @@ const App = () => {
             <Route path="scheduled" element={<ScheduledLive />} />
             <Route path="" element={<Navigate replace to="running" />} />
           </Route>
-          <Route path="/payment" element={<KakaoPayment />} />
-          <Route path="/payment-result" element={<KakaoPayResult />} />
-          <Route path="/payment-cancel" element={<KakaoPayCancel />} />
-          <Route path="/payment-fail" element={<KakaoPayFail />} />
 
           <Route path="/products" element={<Products />} />
           {/* 마이스토어 생성을 안했으면 prompt 창 띄우고 마이페이지로 리다이렉션 */}
@@ -136,7 +132,13 @@ const App = () => {
           </Route>
           <Route path="mystorecreate" element={<MyStoreCreate />} />
           <Route path="/broadcast" element={<BroadCast />} />
-          <Route path="/testttt" element={<Test />} />
+
+          {/* 카카오 페이 결제 */}
+          <Route path="/payment" element={<KakaoPayment />} />
+          <Route path="/payment-result" element={<KakaoPayResult />} />
+          <Route path="/payment-cancel" element={<KakaoPayCancel />} />
+          <Route path="/payment-fail" element={<KakaoPayFail />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
