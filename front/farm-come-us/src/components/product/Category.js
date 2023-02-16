@@ -36,7 +36,7 @@ const Category = (props) => {
     ));
 
     return (
-      <div>
+      <div className="categoryNav">
         <div className={classes.container}>{list}</div>
       </div>
     );
