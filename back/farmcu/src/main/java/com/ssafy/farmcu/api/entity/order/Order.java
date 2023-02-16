@@ -31,6 +31,9 @@ public class Order {
 
     private int totalOrderPrice;
 
+    //카카오 결제 tid
+    public String tid;
+
     // 주문 : 주문 완료 - 주문취소
     public enum OrderStatus{
         ORDER, CANCEL
@@ -72,11 +75,8 @@ public class Order {
     @JsonManagedReference
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    // 주문 정보에 배송 정보 추가
-
-
     @Builder
-    public Order(Member member, LocalDateTime orderCreateAt, DeliveryInfo delivery, KaKaoPay kaKaoPay, int totalOrderPrice, OrderStatus orderStatus, List<OrderItem> orderItems) {
+    public Order(Member member, LocalDateTime orderCreateAt,String tid, DeliveryInfo delivery, KaKaoPay kaKaoPay, int totalOrderPrice, OrderStatus orderStatus, List<OrderItem> orderItems) {
         this.member = member;
         this.delivery = delivery;
         this.kaKaoPay = kaKaoPay;
@@ -84,6 +84,7 @@ public class Order {
         this.orderStatus = orderStatus;
         this.orderItems = orderItems;
         this.totalOrderPrice = totalOrderPrice;
+        this.tid = tid;
     }
 
     public void addOrderItem(OrderItem orderItem) {
@@ -131,5 +132,6 @@ public class Order {
             orderItem.cancel();
         }
     }
+
 }
 
