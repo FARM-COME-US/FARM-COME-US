@@ -31,8 +31,6 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class CartServiceImpl implements CartService {
 
-//    @Autowired
-
     private final CartRepository cartRepository;
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
@@ -47,7 +45,6 @@ public class CartServiceImpl implements CartService {
         this.orderService = orderService;
     }
 
-    //** 장바구니 상품 추가 **//
     @Override
     @Transactional
     public Long addCart(CartDto cartDto) {
@@ -64,7 +61,6 @@ public class CartServiceImpl implements CartService {
 
     }
 
-    // 멤버 장바구니 조회
     @Transactional
     public List<Cart> findMyCart(Member member) {
 
@@ -81,24 +77,23 @@ public class CartServiceImpl implements CartService {
         return cartRepository.findAll();
     }
 
-    //카트의 상품 주문로직
     @Transactional
     public Long orderCart(List<CartOrderDto> cartOrderDtoList, String memberId){
-        List<OrderInfoDto> orderInfoDtoList = new ArrayList<>(); //장바구니 리스트
+        List<OrderInfoDto> orderInfoDtoList = new ArrayList<>();
 
-        for(CartOrderDto CartOrderDto : cartOrderDtoList){ //장바구니 항목들 정리
-            Cart cart = cartRepository.findById(CartOrderDto.getCartId()).orElseThrow();//고객이 담은 장바구니 항목 불러오기
+        for(CartOrderDto CartOrderDto : cartOrderDtoList){
+            Cart cart = cartRepository.findById(CartOrderDto.getCartId()).orElseThrow();
             OrderInfoDto orderInfoDto = new OrderInfoDto();
-            orderInfoDto.setMemberId(cart.getMember().getMemberId());//주문 자
-            orderInfoDto.setItemId(cart.getItem().getItemId()); //상품번호
-            orderInfoDto.setOitemCount(cart.getCartItemCount()); //수량
+            orderInfoDto.setMemberId(cart.getMember().getMemberId());
+            orderInfoDto.setItemId(cart.getItem().getItemId());
+            orderInfoDto.setOitemCount(cart.getCartItemCount());
             orderInfoDtoList.add(orderInfoDto);
         }
 
-        //주문 로직
+
         Long orderId = orderService.orders(orderInfoDtoList, memberId);
 
-        //주문완료 후 장바구니 삭제
+
         for (CartOrderDto cartOrderDto : cartOrderDtoList){
             Cart cart = cartRepository.findById(cartOrderDto.getCartId()).orElseThrow();
             cartRepository.delete(cart);
@@ -106,7 +101,6 @@ public class CartServiceImpl implements CartService {
         return orderId;
     }
 
-    // 장바구니 삭제
     @Override
     public void deleteCart(Long cartId) {
 

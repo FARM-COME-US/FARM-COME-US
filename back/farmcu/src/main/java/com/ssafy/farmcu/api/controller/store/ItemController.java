@@ -103,11 +103,10 @@ public class ItemController {
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
         Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 
-        //상품 대표 이미지
-        List<String> itemImages = new ArrayList<>();
         List<ItemDto> itemInfoList = new ArrayList<>();
 
         for(ItemDto itemDto : itemList) {
+            List<String> itemImages = new ArrayList<>(); //상품 이미지
             ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(itemDto.getItemId());
             if(itemImageDto != null) {
                 itemImages.add(itemImageDto.getSavedPath());
@@ -131,11 +130,10 @@ public class ItemController {
         List<ItemDto> itemList = (List<ItemDto>) itemText.get("itemList");
         Boolean hasNextPage = (Boolean) itemText.get("hasNextPage");
 
-        //상품 대표 이미지
-        List<String> itemImages = new ArrayList<>();
         List<ItemDto> itemInfoList = new ArrayList<>();
 
         for(ItemDto itemDto : itemList) {
+            List<String> itemImages = new ArrayList<>(); //상품 이미지
             ItemImageDto itemImageDto = itemImageService.findItemImageByItemId(itemDto.getItemId());
             if(itemImageDto != null) {
                 itemImages.add(itemImageDto.getSavedPath());
