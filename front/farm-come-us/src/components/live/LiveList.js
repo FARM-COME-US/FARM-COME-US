@@ -14,14 +14,16 @@ const LivePreviewList = (props) => {
     </p>
   );
 
-  if (props.liveList && props.liveList.length > 0) {
-    list = props.isLive
-      ? props.liveList.map((item, idx) => (
-          <LiveItem key={idx} live={item} onClick={props.onEnter} />
-        ))
-      : props.liveList.map((item, idx) => (
-          <ReservedLiveItem key={idx} live={item} />
-        ));
+  if (props.isLive) {
+    if (props.sessionList && props.sessionList.content.length > 0) {
+      list = props.liveList.map((item, idx) => (
+        <LiveItem key={idx} live={item} onClick={props.onEnter} />
+      ));
+    }
+  } else {
+    list = props.liveList.map((item, idx) => (
+      <ReservedLiveItem key={idx} live={item} />
+    ));
   }
 
   return (
