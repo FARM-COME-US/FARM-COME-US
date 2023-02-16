@@ -11,6 +11,7 @@ import axios from "axios";
 
 const ProductDetail = () => {
   // const user = useSelector((state) => state.user); // 😀 고쳤음
+  const navigate = useNavigate();
   const userId = useSelector((state) => state.userSlice.value.memberId);
   console.log(userId);
   console.log("유저입니다");
@@ -37,29 +38,27 @@ const ProductDetail = () => {
     getItemDetail();
   }, [location.state.item_id]);
 
-  const orderProduct = async function orderProduct() {
-    try {
-      console.log("######################@!@@@@@@@@@@@@@@@@");
-      console.log(
-        `아이템번호:${location.state.item_id} 유저번호:${userId} 개수:${amount}`
-      );
-      const response = await axios({
-        method: "post",
-        url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/order",
-        data: {
-          itemId: location.state.item_id,
-          memberId: userId,
-          oitemCount: amount,
-          // orderInfoDtoList: [null],
-        },
-      });
-      console.log(response);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const navigate = useNavigate();
+  // const orderProduct = async function orderProduct() {
+  //   try {
+  //     console.log("######################@!@@@@@@@@@@@@@@@@");
+  //     console.log(
+  //       `아이템번호:${location.state.item_id} 유저번호:${userId} 개수:${amount}`
+  //     );
+  //     const response = await axios({
+  //       method: "post",
+  //       url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/order",
+  //       data: {
+  //         itemId: location.state.item_id,
+  //         memberId: userId,
+  //         oitemCount: amount,
+  //         // orderInfoDtoList: [null],
+  //       },
+  //     });
+  //     console.log(response);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const plusAmount = () => {
     setAmount(amount + 1);
@@ -81,6 +80,33 @@ const ProductDetail = () => {
 
     const convertedPrice = (price) =>
       price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    const orderProduct = () => {
+      console.log("######################@!@@@@@@@@@@@@@@@@");
+      axios
+        .post(process.env.REACT_APP_API_SERVER_URL + "/api/v1/order", {
+          itemId: location.state.item_id,
+          memberId: userId,
+          oitemCount: amount,
+          // orderInfoDtoList: [null],
+        })
+        .then((res) => {
+          let resData = res.data;
+          navigate("/payment", {
+            state: {
+              orderId: resData,
+              storename: itemDetail.item.storeName,
+              productname: itemDetail.item.itemName,
+              memberId: userId,
+              price: resultPrice,
+              amount: amount,
+            },
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
 
     return (
       <div className={classes.container}>
@@ -136,7 +162,7 @@ const ProductDetail = () => {
             <MdShoppingCart className={classes.carticon} />
           </div>
           <div className={classes.buybutton} onClick={orderProduct}>
-            <Link
+            {/* <Link
               to="/payment"
               state={{
                 storename: itemDetail.item.storeName,
@@ -145,10 +171,12 @@ const ProductDetail = () => {
                 price: resultPrice,
                 amount: amount,
               }}
-              className={classes.buybuttonlink}
-            >
+              
+            > */}
+            <div className={classes.buybuttonlink} onClick={orderProduct}>
               <div>구매하기</div>
-            </Link>
+            </div>
+            {/* </Link> */}
           </div>
         </div>
       </div>
