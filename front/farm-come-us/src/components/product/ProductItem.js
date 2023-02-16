@@ -30,10 +30,10 @@ const ProductItem = (props) => {
                 <span>{`${convertedPrice}원`}</span>
               </div>
               <div className={`${classes.storeInfo}`}>
-                <span className={`${classes.storeName}`}>
+                <p className={`${classes.storeName}`}>
                   {props.item.storeName}
-                </span>
-                <span> 스토어</span>
+                  <span> 스토어</span>
+                </p>
               </div>
             </div>
           </Card>

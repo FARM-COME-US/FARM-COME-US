@@ -29,8 +29,6 @@ const MyStoreProduct = () => {
     getStoreProducts(storeInfo.storeId, currPage);
   }, [storeInfo, getStoreProducts]);
 
-  console.log(storeProductsInfo);
-
   /* 기타 메서드 */
   const modalToggleHandler = () => {
     if (!isModalOpen) {
@@ -42,9 +40,7 @@ const MyStoreProduct = () => {
     setIsModalOpen((prev) => !prev);
   };
 
-  const showProductDetailHandler = (product, event) => {
-    console.log(product, event);
-    alert("상품 디테일로 넘어가는 이벤트");
+  const showProductDetailHandler = (product) => {
     navigate("/product-detail", { state: { itemId: product.itemId } });
   };
 
@@ -71,6 +67,8 @@ const MyStoreProduct = () => {
           className={isModalOpen ? null : "close"}
           storeInfo={storeInfo}
           onToggleModal={modalToggleHandler}
+          onFetchProducts={getStoreProducts}
+          currPage={currPage}
         />
       ) : null}
     </div>

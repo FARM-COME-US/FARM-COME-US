@@ -88,10 +88,7 @@ const MyStoreCreate = () => {
         },
         withCredentials: false,
       };
-      console.log("유저정보");
-      console.log(userInfo.memberId);
-      console.log(data);
-      console.log("이 아래에 생성후 응답 바로아래 dispatch");
+
       dispatch(userSlice.actions.saveStoreInfo());
       axios
         .post(
@@ -105,26 +102,10 @@ const MyStoreCreate = () => {
         .catch((err) => console.log(err));
     }
 
-    //   try {
-    //     const response = axios.post("/api/api/v1/store", formData, config);
-    //     console.log(formData);
-    //     console.log(response);
-    //     return response;
-    //   } catch (err) {
-    //     console.err(err);
-    //   }
-    // }
-
     // 😀 실행부
     e.preventDefault();
-    // alert("스토어 생성로직 - 멤버 id 더미 데이터 ");
     try {
       const res = fetchCreateStore(storeInfo, user);
-      console.log("스토어 생성 res.data");
-      console.log(res.data);
-      console.log("스토어 생성 res");
-      console.log(res);
-      // dispatch(userSlice.actions.saveStoreInfo());
       alert("스토어가 생성되었습니다.");
       // 스토어 생성하고, 내 스토어로 넘김.
     } catch (err) {

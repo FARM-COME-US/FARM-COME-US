@@ -19,6 +19,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 4px 8px;
 
     .backdrop {
       position: absolute;
@@ -72,10 +73,23 @@
     }
 
     .unitPrice {
-      color: #f7863b;
       font-family: "NanumSquareRoundB";
       margin-bottom: 4px;
-      font-size: 1rem;
+      display: flex;
+      align-items: flex-end;
+
+      span {
+        color: #f7863b;
+        font-size: 1.2rem;
+      }
+
+      .discount {
+        color: red;
+        font-weight: 600;
+        margin-left: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+      }
     }
 
     .date {

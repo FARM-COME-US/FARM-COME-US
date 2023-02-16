@@ -59,7 +59,6 @@ const MyPage = () => {
         console.error(err);
       });
 
-    console.log(userInfo);
     fetchMyStoreDetail(userInfo.memberId)
       .then(() => {
         setHasMyStore(true);

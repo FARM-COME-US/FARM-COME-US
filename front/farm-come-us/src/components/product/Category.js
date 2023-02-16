@@ -28,6 +28,7 @@ const Category = (props) => {
     let list = [];
     list = categoryTitleState.map((item) => (
       <CategoryItem
+        category_img={item.imageUrl}
         category_name={item.categoryName}
         category_id={item.categoryCode}
         key={item.categoryCode}
@@ -36,7 +37,7 @@ const Category = (props) => {
     ));
 
     return (
-      <div className="categoryNav">
+      <div className={classes.categoryNav}>
         <div className={classes.container}>{list}</div>
       </div>
     );
