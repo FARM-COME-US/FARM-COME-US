@@ -20,13 +20,15 @@ const MyStoreProduct = () => {
   const {
     sendRequest: getStoreProducts,
     status: spStatus,
-    data: storeProductList,
+    data: storeProductsInfo,
     errorSp,
   } = useHttp(fetchStoreProducts, true);
 
   useEffect(() => {
     getStoreProducts(storeInfo.storeId, currPage);
   }, [storeInfo, getStoreProducts]);
+
+  console.log(storeProductsInfo);
 
   /* 기타 메서드 */
   const modalToggleHandler = () => {
@@ -47,12 +49,12 @@ const MyStoreProduct = () => {
   return (
     <div className={classes.pageContainer}>
       <MyStoreContentTitle text="판매상품" />
-      {spStatus === "pending" || !storeProductList ? (
+      {spStatus === "pending" || !storeProductsInfo ? (
         <Loading className={classes.loading} />
       ) : (
         <MyStoreProductList
-          products={storeProductList.itemInfoList}
-          hasNextPage={storeProductList.hasNextPage}
+          products={storeProductsInfo.itemInfoList}
+          hasNextPage={storeProductsInfo.hasNextPage}
           onClick={showProductDetailHandler}
         />
       )}
