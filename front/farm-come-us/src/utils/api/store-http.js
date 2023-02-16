@@ -38,10 +38,7 @@ export async function fetchCreateStore(storeInfo, userInfo) {
     withCredentials: false,
   };
   try {
-    const response = axios.post("/api/api/v1/store", formData, config);
-    console.log(formData);
-    console.log(response);
-    return response;
+    return axios.post("/api/api/v1/store", formData, config);
   } catch (err) {
     console.err(err);
   }

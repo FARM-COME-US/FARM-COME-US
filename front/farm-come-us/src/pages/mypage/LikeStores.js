@@ -6,39 +6,12 @@ import { fetchFavStores } from "../../utils/api/store-http";
 import classes from "./style/MyReceipts.module.scss";
 
 const LikeStores = (props) => {
-  // const [myReceiptsInfoArr, setReceiptsInfoArr] = useState("");
-  // receiptsInfoArr가 list형태의 객체들로 들어올것이고, [obj1, obj2... 이렇게.]
-  // item1 = { id:orderId, items:[강원도배추, 제즈스윗당근], cost:429,000, orderdate:2023.01.10 21:12:58, }
-  let data = [
-    {
-      id: 1,
-      img_address: "/img/cabbage.png",
-      isLike: true,
-      title: "고랭강원농장",
-      address: "강원도 평창군 봉평면 무이리 23-12",
-      representative: "강남자",
-      created: "2020. 05. 10",
-    },
-    {
-      id: 2,
-      img_address: "/img/cabbage.png",
-      isLike: true,
-      title: "경주우리농장",
-      address: "강원도 평창군 봉평면 무이리 23-12",
-      representative: "강남자",
-      created: "2020. 05. 11",
-    },
-  ];
-
   const [likeStoresData, setLikeStoresData] = useState([]);
   const memberId = useSelector((state) => {
-    console.log("asd");
-    console.log(state.userSlice.value.memberId);
     return state.userSlice.value.memberId;
   });
 
   useEffect(() => {
-    console.log(memberId);
     try {
       const res = fetchFavStores(memberId);
       setLikeStoresData(res.data);
