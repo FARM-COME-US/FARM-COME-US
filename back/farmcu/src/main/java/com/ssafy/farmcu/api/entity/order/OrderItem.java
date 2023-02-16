@@ -42,7 +42,6 @@ public class OrderItem {
 
     private String tid;
 
-    //빌더
     @Builder
     public OrderItem(Order order, Item item, Long oitemId,Long storeNum,String tid ,int oitemCount, LocalDateTime oitemCreatedAt, int oitemPrice ) {
         this.order = order;
@@ -55,34 +54,27 @@ public class OrderItem {
         this.tid = tid;
     }
 
-    // 주문 상품 상세 정보 생성
+
     public static OrderItem createOrderItem( Item item, int oitemCount) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setOitemCount(oitemCount);
         orderItem.setOitemPrice( oitemCount * item.getItemPrice() * (100 - item.getItemDiscount()) / 100);
-        orderItem.setOitemCreatedAt(LocalDateTime.now()); //주문시간
+        orderItem.setOitemCreatedAt(LocalDateTime.now());
         orderItem.setStoreNum(item.getStore().getStoreId());
-        // 주문 상품 재고 차감
         item.removeStock(oitemCount);
         return orderItem;
     }
 
-    // 주문 번호 주입
     public  void addOrderNum(Order order){
         this.order = order;
     }
 
-    //총액
     public int getTotalPrice(){
         return oitemPrice;
     }
 
-    //스토어
 
-
-
-    // 주문 취소 시 재고 원상 복구
     public void cancel() { this.getItem().addStock(oitemCount); }
 
 }

@@ -9,28 +9,39 @@ const res = orderList();
 console.log(res);
 
 const MyReceipts = (props) => {
-  const [myReceiptsInfoArr, setReceiptsInfoArr] = useState("");
-  // receiptsInfoArr가 list형태의 객체들로 들어올것이고, [obj1, obj2... 이렇게.]
+  const [myReceiptsInfoArr, setReceiptsInfoArr] = useState([]);
+  // receiptsInfoArr가 list형태의 객체들로 들어옵니다. [obj1, obj2... 이렇게.]
   // item1 = { id:orderId, items:[강원도배추, 제즈스윗당근], cost:429,000, orderdate:2023.01.10 21:12:58, }
   const memberId = useSelector((state) => state.userSlice.value.memberId);
 
   useEffect(() => {
+    console.log(`멤버아이디${memberId}`);
     axios
-      .get(process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/" + memberId)
+      .get(process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/", {
+        params: { member: memberId },
+      })
       .then((res) => {
-        setReceiptsInfoArr(res.data);
+        console.log("멤버아이디의 오더정보 불러온다.");
+        console.log(res.status);
+        console.log(res.data);
+        setReceiptsInfoArr(res.data.orderList);
+      })
+      .catch((err) => {
+        console.log(err);
       });
     // console.log(res);
+    console.log(myReceiptsInfoArr);
   }, []);
-  const response = axios({
-    method: "delete",
-    url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/",
-    params: {
-      //
-      cartId: 1,
-    },
-  });
-  console.log(response.success);
+  // 😀출처 모르는 delete함수라서 주석처리.
+  // const response = axios({
+  //   method: "delete",
+  //   url: process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/",
+  //   params: {
+  //     //
+  //     cartId: 1,
+  //   },
+  // });
+  // console.log(response.success);
 
   let list = <div className={classes.noItem}>주문 내역이 없습니다.</div>;
 
@@ -48,16 +59,15 @@ const MyReceipts = (props) => {
 
       <div
         className={`${classes.flexbox} ${classes.mt} ${
-          myReceiptsInfoArr
+          myReceiptsInfoArr.length > 0
             ? ""
             : `${classes.centerAlignWrapper} ${classes.noItem}`
         }`}
       >
-        {/* <MyReceiptItem /> */}
-        {/* <MyReceiptItem /> */}
-        {/* <MyReceiptItem />; */}
+        {/* {myReceiptsInfoArr.map((item) => (
+          <MyReceiptItem key={item.id} info={item} />
+        ))} */}
         {list}
-        {/* <div className={classes.flexbox}></div> */}
       </div>
     </div>
   );

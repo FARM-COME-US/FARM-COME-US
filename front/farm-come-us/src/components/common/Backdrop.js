@@ -2,12 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import menuSlice from "../../reduxStore/menuSlice";
 import classes from "./style/Backdrop.module.scss";
 
-const Backdrop = () => {
+const Backdrop = (props) => {
   const dispatch = useDispatch();
   const menu = useSelector((state) => state.menuSlice.isOpen);
   return (
     <div
-      className={classes.backdrop}
+      className={`${props.className} ${classes.backdrop}`}
       onClick={() => {
         dispatch(menuSlice.actions.toggle());
       }}

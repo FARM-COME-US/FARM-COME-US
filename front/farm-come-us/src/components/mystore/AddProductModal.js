@@ -26,7 +26,15 @@ const AddProductModal = (props) => {
 
   const addProductSubmitHandler = (e) => {
     e.preventDefault();
-    createProduct(productInfo);
+    createProduct(productInfo)
+      .then(() => {
+        alert("상품이 등록되었습니다.");
+        props.onFetchProducts(props.storeInfo.storeId, props.currPage);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("상품 등록 중 오류가 발생했습니다.");
+      });
     props.onToggleModal();
   };
 

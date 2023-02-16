@@ -6,6 +6,8 @@
   padding-left: 5%;
   padding-right: 5%;
   justify-content: space-between;
+  align-items: center;
+  position: fixed;
 }
 
 .rightflexbox {
@@ -13,6 +15,22 @@
 }
 
 .logo {
+  width: 56px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  .siteLogo {
+    width: 100%;
+    position: absolute;
+    top: 2px;
+    left: -8px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .menuBtnWrapper {
@@ -28,6 +46,10 @@
   object-fit: cover;
   background-color: #265040;
   color: white;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .searchBtnWrapper {

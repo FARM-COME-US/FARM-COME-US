@@ -18,6 +18,7 @@ export async function fetchRunningLiveList(page) {
   return await axios
     .get(`${LIVE_API_URL}/list/on`, { params })
     .then((res) => {
+      console.log(res.data);
       return res.data;
     })
     .catch((err) => {
@@ -34,9 +35,32 @@ export async function fetchScheduledLiveList(page) {
   };
 
   return await axios
-    .get(`${LIVE_API_URL}/list/off`, { params })
+    .get(`${process.env.REACT_APP_API_SERVER_URL}/api/v1/live/list/off`, {
+      params,
+    })
     .then((res) => {
+      console.log(res.data);
       return res.data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
+
+/* 스토어 라이브 목록 조회 */
+export async function fetchStoreLive(data) {
+  const params = {
+    storeId: data.storeId,
+    page: data.page,
+    size: data.size,
+  };
+
+  return axios
+    .get(`${process.env.REACT_APP_API_SERVER_URL}/api/v1/live/store`, {
+      params,
+    })
+    .then((res) => {
+      return res.data.storeLiveList;
     })
     .catch((err) => {
       console.error(err);

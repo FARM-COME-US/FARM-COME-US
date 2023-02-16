@@ -24,6 +24,15 @@ const ProductList = (props) => {
   } = useHttp(fetchProductList, true);
 
   useEffect(() => {
+    if (productsInfo) {
+      setProductsList(() => {
+        return [...productsInfo.itemInfoList];
+      });
+      setHasNextPage(() => productsInfo.hasNextPage);
+    }
+  }, [productsInfo]);
+
+  useEffect(() => {
     const data = {
       category: categoryTitle,
       itemName: "",
@@ -32,27 +41,26 @@ const ProductList = (props) => {
       size: 8,
     };
     getItemList(data);
-  }, [getItemList]);
 
-  useEffect(() => {
     if (productsInfo) {
-      setProductsList((prev) => {
-        return [...prev, ...productsInfo.itemInfoList];
+      setProductsList(() => {
+        return [...productsInfo.itemInfoList];
       });
-      setHasNextPage(() => productsInfo.hasNextPage);
     }
-  }, [productsInfo]);
+  }, [categoryTitle, categoryDetail, getItemList]);
 
   return (
-    <ul className={`${classes.productList}`}>
+    <ul
+      className={`${classes.productList} ${
+        props.isPreview ? classes.preview : null
+      }`}
+    >
       {itemStatus === "pending" ? (
         <Loading className={classes.loading} />
       ) : productsList && productsList.length > 0 ? (
         productsList.map((item, idx) => <ProductItem key={idx} item={item} />)
       ) : (
-        <ProductNoData>
-          <p></p>
-        </ProductNoData>
+        <ProductNoData>등록된 상품이 없습니다.</ProductNoData>
       )}
     </ul>
   );

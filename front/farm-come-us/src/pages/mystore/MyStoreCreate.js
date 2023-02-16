@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { fetchMyStoreDetail } from "../../utils/api/store-http";
 import classes from "./style/MyStoreCreate.module.scss";
 
 import { useDispatch } from "react-redux";
@@ -15,7 +16,12 @@ const MyStoreCreate = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { userInfo } = location.state;
+
+  let userInfo = null;
+  if (location.state) {
+    userInfo = location.state;
+  }
+
   const [storeInfo, setStoreInfo] = useState({
     memberId: "",
     storeDeliveryCost: "",
@@ -29,13 +35,21 @@ const MyStoreCreate = () => {
     storeZipcode: "",
   });
   const [storeNameIsValid, setStoreNameIsValid] = useState();
-  const [storeId, setStoreId] = useState("");
-  // 마이스토어가 있는데 들어왔으면 마이스토어로 redirect
 
   useEffect(() => {
-    if (userInfo.storeId) {
-      navigate("/mystore", { replace: true });
+    if (!userInfo) {
+      alert("잘못된 접근입니다.");
+      navigate(-1);
+      return;
     }
+
+    fetchMyStoreDetail(userInfo.memberId)
+      .then((res) => {
+        navigate("/mystore");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const user = useSelector((state) => state.userSlice.value);
@@ -74,10 +88,7 @@ const MyStoreCreate = () => {
         },
         withCredentials: false,
       };
-      console.log("유저정보");
-      console.log(userInfo.memberId);
-      console.log(data);
-      console.log("이 아래에 생성후 응답 바로아래 dispatch");
+
       dispatch(userSlice.actions.saveStoreInfo());
       axios
         .post(
@@ -91,26 +102,10 @@ const MyStoreCreate = () => {
         .catch((err) => console.log(err));
     }
 
-    //   try {
-    //     const response = axios.post("/api/api/v1/store", formData, config);
-    //     console.log(formData);
-    //     console.log(response);
-    //     return response;
-    //   } catch (err) {
-    //     console.err(err);
-    //   }
-    // }
-
     // 😀 실행부
     e.preventDefault();
-    // alert("스토어 생성로직 - 멤버 id 더미 데이터 ");
     try {
       const res = fetchCreateStore(storeInfo, user);
-      console.log("스토어 생성 res.data");
-      console.log(res.data);
-      console.log("스토어 생성 res");
-      console.log(res);
-      // dispatch(userSlice.actions.saveStoreInfo());
       alert("스토어가 생성되었습니다.");
       // 스토어 생성하고, 내 스토어로 넘김.
     } catch (err) {
