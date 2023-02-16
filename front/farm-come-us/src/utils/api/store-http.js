@@ -68,9 +68,9 @@ export async function fetchStoreDetail(storeId) {
 }
 
 /* 사용자 아이디로 조회 */
-export async function fetchMyStoreDetail(memberId) {
+export async function fetchMyStoreDetail(id) {
   return axios.get(
-    `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/mystore/${memberId}`
+    `${process.env.REACT_APP_API_SERVER_URL}/api/v1/store/mystore/${id}`
   );
 }
 
@@ -80,6 +80,7 @@ export async function fetchUpdateStore(storeInfo) {
   formData.append("uploadFile", storeInfo.uploadFile);
 
   const data = {
+    storeId: storeInfo.storeId,
     storeDeliveryCost: storeInfo.deliveryCost,
     storeDeliveryFree: storeInfo.deliveryFree,
     storeDescription: storeInfo.storeDescription,

@@ -1,6 +1,5 @@
 .productItem {
-  width: 100% !important;
-  margin: 10px;
+  width: 95%;
   padding: 5px;
 
   .productCard {
@@ -30,11 +29,14 @@
 
     .productName {
       margin-bottom: 5px;
+      font-size: 0.9rem;
     }
 
     .priceInfo {
       width: 100%;
-      font-size: 13px;
+      span {
+        font-size: 0.9rem;
+      }
 
       .discount {
         color: red;
@@ -47,6 +49,10 @@
       right: 10px;
       bottom: 10px;
       color: #f7863b;
+
+      span {
+        font-size: 0.8rem;
+      }
 
       .storeName {
         color: #000;
