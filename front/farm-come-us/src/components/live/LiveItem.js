@@ -7,9 +7,7 @@ import Badge from "../common/Badge";
 import CardCaption from "../common/CardCaption";
 
 const LiveItem = (props) => {
-  console.log(props.live);
   const str_price = props.live.liveItemPrice;
-  console.log(str_price);
   const convertedPrice = str_price
     ? str_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     : null;
