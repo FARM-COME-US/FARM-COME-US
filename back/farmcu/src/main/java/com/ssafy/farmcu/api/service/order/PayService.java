@@ -109,7 +109,7 @@ public class PayService {
     private HttpHeaders getKakaoHeader(){
         HttpHeaders httpHeaders = new HttpHeaders();
         // 지은 adminKey 임시 사용
-        httpHeaders.set("Authorization", "KakaoAK 3893ae89e94143bd07d8a51e1caf6bbc");
+        httpHeaders.set("Authorization", "KakaoAK 89fc92ccb362f6b19e4e91d5fefc990d");
         httpHeaders.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         return httpHeaders;
     }
