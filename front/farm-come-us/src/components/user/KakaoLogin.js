@@ -16,12 +16,14 @@ const KakaoLogin = (props) => {
   // console.log(KAKAO_AUTH_URL);
   const handleKakaoLogin = (e) => {
     e.preventDefault();
+    alert("준비 중인 기능입니다.");
+    return;
     console.log(KAKAO_AUTH_URL);
     axios.get(`${KAKAO_AUTH_URL}}`);
   };
 
   return (
-    <a href={KAKAO_AUTH_URL}>
+    <a href={""} onClick={handleKakaoLogin}>
       <img
         src="img/kakao_login_button.png"
         alt=""

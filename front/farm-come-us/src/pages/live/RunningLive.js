@@ -37,6 +37,7 @@ const RunningLive = (props) => {
     getRunningLiveInfo(currPage);
   }, [getRunningLiveInfo]);
 
+  console.log(sessionList, runningLiveData);
   const liveRoomEnterHandler = async (liveInfo) => {
     fetchLiveSession(liveInfo.liveId)
       .then(() => {

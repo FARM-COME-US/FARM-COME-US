@@ -1,50 +1,67 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+import axios from "axios";
 import MyReceiptItem from "../../components/mypage/MyReceiptItem";
 import StoreLikeItem from "../../components/mypage/StoreLikeItem";
 import { fetchFavStores } from "../../utils/api/store-http";
 import classes from "./style/MyReceipts.module.scss";
 
 const LikeStores = (props) => {
+  const navigate = useNavigate();
   const [likeStoresData, setLikeStoresData] = useState([]);
+  const [currPage, setCurrPage] = useState(0);
   const memberId = useSelector((state) => {
     return state.userSlice.value.memberId;
   });
 
   useEffect(() => {
-    try {
-      const res = fetchFavStores(memberId);
-      setLikeStoresData(res.data);
-    } catch (err) {
-      // console.log(err);
-    }
+    alert("준비 중인 기능입니다.");
+    navigate(-1);
+
+    const params = {
+      page: currPage,
+      size: 10,
+    };
+    axios
+      .get(
+        `${process.env.REACT_APP_API_SERVER_URL}/api/v1/storelikes/${memberId}`,
+        {
+          params,
+        }
+      )
+      .then((res) => {
+        const data = res.data;
+        if (data) {
+          if (data.hasNextPage) {
+            setCurrPage((prev) => prev + 1);
+          }
+          if (data.storeLikes) {
+            setLikeStoresData((prev) => [...prev, data.storeLikes]);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
-  console.log(memberId);
   // const res = fetchFavStores(memberId);
 
   let list = <span className={classes.noItem}>찜한 스토어가 없습니다.</span>;
 
-  // BE와 데이터 통신 이후에 살릴 구문 😀
-  // if (myReceiptsInfoArr.length > 0) {
-  //   list = props.myReceipts.map((item) => (
-  //     <MyReceiptItem key={item.id} info={item} />
-  //   ));
-  // }
-
   // list = <MyReceiptItem />;
   if (likeStoresData) {
-    list = likeStoresData.map((item) => (
+    list = likeStoresData.map((item, idx) => (
       <StoreLikeItem
-        key={item.id}
-        img_address={item.storeImg}
-        isLike={item.isLike}
-        title={item.storeName}
-        address={item.address}
-        representative={item.memberName}
+        key={idx}
         id={item.id}
+        img_address={item.storeImg}
+        title={item.storeName}
+        address={item.storeStreetAddr}
+        representative={item.memberName}
         memberId={memberId}
         storeId={item.storeId}
-        // created={item.created}
       />
     ));
   }
