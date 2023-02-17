@@ -5,7 +5,6 @@ import classes from "./style/KakaopayEvent.module.scss";
 
 const KakaopayEvent = (props) => {
   const navigate = useNavigate();
-  
   const kakaoClick = async () => {
     try {
       axios
@@ -23,9 +22,9 @@ const KakaopayEvent = (props) => {
           console.log(response);
           const setUrl = response.data.next_redirect_pc_url;
           const tid = response.data.tid;
-          console.log("여기까지");
 
           console.log(setUrl);
+
           console.log(tid);
 
           try {
@@ -34,11 +33,11 @@ const KakaopayEvent = (props) => {
               process.env.REACT_APP_API_SERVER_URL +
                 `/api/v1/pay/tid?tid=${tid}&orderId=${props.orderId}`
             );
+            navigate("/");
           } catch (err) {
             console.log(err);
           }
-
-        navigate("/mypage/receipts");
+          window.open(setUrl);
 
         })
         .catch((error) => {

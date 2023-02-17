@@ -57,10 +57,9 @@ const MyStoreLive = () => {
     );
     const today = new Date();
 
-    const isLiveEnd = today.getTime() >= endDate.getTime() ? true : false;
-    if (isLiveEnd) {
-      alert("이미 종료된 라이브입니다.");
-    } else {
+    // const isLiveEnd = today.getTime() >= endDate.getTime() ? true : false;
+    const isLiveEnd = false;
+    if (true) {
       const flag = window.confirm("라이브를 시작하시겠습니까?");
       if (!flag) return;
 
