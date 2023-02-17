@@ -38,12 +38,6 @@ const KakaopayEvent = (props) => {
             console.log(err);
           }
 
-          // if (setUrl) {
-          //   window.location.href = setUrl; // window.open(setUrl);
-          // } else {
-          //   console.log("안됨");
-          // }
-        
         navigate("/mypage/receipts");
 
         })
