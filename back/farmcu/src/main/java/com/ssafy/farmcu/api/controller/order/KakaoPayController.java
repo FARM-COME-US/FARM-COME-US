@@ -10,10 +10,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @RestController
 @Component
@@ -63,7 +67,7 @@ public class KakaoPayController {
 
 
     @GetMapping("/kakao/success")
-    public ResponseEntity payApprove( @RequestParam("pg_token") String pgToken ){
+    public ResponseEntity<Object> payApprove( @RequestParam("pg_token") String pgToken ) throws URISyntaxException {
 
         KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoPayApprove(pgToken);
 
@@ -71,8 +75,10 @@ public class KakaoPayController {
         log.info("orderId = {}", orderId);
         orderService.completeOrder(orderId);
 
-
-        return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
+        URI redirectUri = new URI("https://i8b103.p.ssafy.io/");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(redirectUri);
+        return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
 
 
