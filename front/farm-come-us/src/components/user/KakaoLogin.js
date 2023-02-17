@@ -8,7 +8,7 @@ const KakaoLogin = (props) => {
 
   const KAKAO_AUTH_URL =
     // process.env.REACT_APP_API_SERVER_URL +
-    `http://localhost:9090/authorization/kakao?redirect_uri=https://localhost:3000/kakao`;
+    `https://i8b103.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=https://localhost:3000/kakao`;
 
   // const KAKAO_AUTH_URL =
   //   process.env.REACT_APP_API_SERVER_URL + "/api/v1/login/oauth";
