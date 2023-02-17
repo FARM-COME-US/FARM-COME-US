@@ -424,22 +424,23 @@ const OvContainer = (props) => {
                   )}
                 </LiveFooter>
               </div>
-              {/* {props.isPublisher && (
+              {props.isPublisher && (
                 <UserVideoComponent
                   className={classes.streamContainer}
                   streamManager={publisher}
                 />
-              )} */}
-              {/* {!props.isPublisher && subscribers.length > 0 ? (
-                <UserVideoComponent
-                className={classes.streamContainer}
-                streamManager={subscribers}
-                />
-                ) : null}
-              {subscribers.length} */}
-              {publisher && (
+              )}
+              {!props.isPublisher && subscribers.length > 0 ? (
                 <UserVideoComponent
                   className={classes.streamContainer}
+                  streamManager={subscribers}
+                />
+              ) : null}
+              {/* {publisher && (
+                <UserVideoComponent
+                  className={`${classes.streamContainer} ${
+                    !props.isPublisher ? classes.ovHidden : null
+                  }`}
                   streamManager={publisher}
                 />
               )}
@@ -451,7 +452,7 @@ const OvContainer = (props) => {
                 >
                   <UserVideoComponent streamManager={sub} />
                 </div>
-              ))}
+              ))} */}
             </Fragment>
           ) : null}
         </Fragment>
