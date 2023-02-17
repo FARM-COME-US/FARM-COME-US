@@ -39,8 +39,8 @@ const KakaopayEvent = (props) => {
 
           if (setUrl) {
             // window.location.href = setUrl; // 
+            setTimeout(navigate("/"), 3000);
             window.open(setUrl);
-            setTimeout(navigate("/"), 10000)
           } else {
             console.log("안됨");
           }
