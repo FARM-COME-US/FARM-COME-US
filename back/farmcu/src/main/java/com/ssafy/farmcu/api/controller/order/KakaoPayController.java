@@ -71,7 +71,7 @@ public class KakaoPayController {
         log.info("orderId = {}", orderId);
         orderService.completeOrder(orderId);
 
-
+        URI redirectUri = new URI("http://www.naver.com");
         return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
     }
 
