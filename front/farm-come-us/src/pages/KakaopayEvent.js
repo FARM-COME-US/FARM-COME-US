@@ -33,6 +33,7 @@ const KakaopayEvent = (props) => {
               process.env.REACT_APP_API_SERVER_URL +
                 `/api/v1/pay/tid?tid=${tid}&orderId=${props.orderId}`
             );
+            navigate("/");
           } catch (err) {
             console.log(err);
           }
