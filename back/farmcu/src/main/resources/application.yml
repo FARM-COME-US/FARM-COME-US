@@ -31,7 +31,7 @@ app:
     token-expiry: 9000000
     refresh-token-expiry: 604800000
   oauth2:
-    authorized-redirect-uris: http://localhost:3000/kakao
+    authorized-redirect-uris: https://i8b103.p.ssafy.io:3000/kakao
 
   org.hibernate.SQL: debug
   org:
