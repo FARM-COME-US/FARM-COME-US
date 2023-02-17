@@ -46,6 +46,12 @@
 - OAuth2.0 기반 회원 인증
 - REST API
 
+🧵 <b>기술 스택</b><br>
+- 프론트엔드 : React.js 18.2.0 / Redux 8.0.5 / SASS 1.57.1 / JavaScript <br>
+- 백엔드 : Java 11 / JPA 2.7.6 / Spring Boot 2.7.7 <br>
+- DB : MySQL 8.0.31 / S3 <br>
+- Infra : EC2 Ubuntu 20.04 / Docker 23.0.0 / Nginx 1.18.0 / Jenkins 
+
 🎠 <b>배포 환경</b>
 - URL : https://i8b103.p.ssafy.io/
 - 테스트 계정 : ID - myfarm, PW - asd12345!
