@@ -56,6 +56,7 @@ const MyStore = () => {
     fetchUserInfoWithAccessToken()
       .then((res) => {
         const data = res.data;
+        console.log(data);
         if (data.userInfo) {
           setUserInfo((prev) => {
             return {
@@ -67,8 +68,8 @@ const MyStore = () => {
       })
       .catch((err) => {
         console.error(err);
-        alert("존재하지 않는 사용자입니다.");
-        navigate("/", { replace: true });
+        // alert("존재하지 않는 사용자입니다.");
+        // navigate("/", { replace: true });
       });
   }, []);
 

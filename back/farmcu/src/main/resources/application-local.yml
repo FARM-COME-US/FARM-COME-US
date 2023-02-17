@@ -15,6 +15,9 @@ spring:
     url: jdbc:mysql://i8b103.p.ssafy.io:3306/farmcu?serverTimezone=UTC&characterEncoding=UTF-8
     username: ssafy
     password: dlfdltkatkdh
+    hikari:
+      data-source-properties:
+        socketTimeout: 50000
 cloud:
   aws:
     credentials:
