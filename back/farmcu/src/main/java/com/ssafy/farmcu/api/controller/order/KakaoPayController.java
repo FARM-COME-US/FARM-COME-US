@@ -67,7 +67,7 @@ public class KakaoPayController {
 
 
     @GetMapping("/kakao/success")
-    public ResponseEntity payApprove( @RequestParam("pg_token") String pgToken ) throws URISyntaxException {
+    public ResponseEntity<Object> payApprove( @RequestParam("pg_token") String pgToken ) throws URISyntaxException {
 
         KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoPayApprove(pgToken);
 
