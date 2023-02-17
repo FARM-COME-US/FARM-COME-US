@@ -75,7 +75,7 @@ public class KakaoPayController {
         log.info("orderId = {}", orderId);
         orderService.completeOrder(orderId);
 
-        URI redirectUri = new URI("http://www.naver.com");
+        URI redirectUri = new URI("https://i8b103.p.ssafy.io/");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(redirectUri);
         return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
