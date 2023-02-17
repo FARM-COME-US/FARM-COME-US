@@ -25,6 +25,7 @@ const KakaopayEvent = (props) => {
           console.log("여기까지");
 
           console.log(setUrl);
+          window.open(setUrl);
           console.log(tid);
 
           try {
