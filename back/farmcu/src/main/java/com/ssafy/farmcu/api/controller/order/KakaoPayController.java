@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 @RestController
 @Component
 @Slf4j
@@ -63,7 +66,7 @@ public class KakaoPayController {
 
 
     @GetMapping("/kakao/success")
-    public ResponseEntity payApprove( @RequestParam("pg_token") String pgToken ){
+    public ResponseEntity payApprove( @RequestParam("pg_token") String pgToken ) throws URISyntaxException {
 
         KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoPayApprove(pgToken);
 
