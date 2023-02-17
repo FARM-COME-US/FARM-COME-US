@@ -16,8 +16,8 @@ const LivePreviewList = (props) => {
 
   if (props.isLive) {
     if (
-      props.sessionList &&
-      props.sessionList.content.length > 0 &&
+      // props.sessionList &&
+      // props.sessionList.content.length > 0 &&
       props.liveList.length > 0
     ) {
       list = props.liveList.map((item, idx) => (

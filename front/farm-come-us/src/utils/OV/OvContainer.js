@@ -343,6 +343,34 @@ const OvContainer = (props) => {
     setIsMute((prev) => !prev);
   };
 
+  console.log(props.itemInfo);
+
+  const orderProduct = async function orderProduct() {
+    // const data = {
+    //   itemId: ITEM_ID,
+    //   memberId: userId,
+    //   oitemCount: amount,
+    // };
+    // axios
+    //   .post(process.env.REACT_APP_API_SERVER_URL + "/api/v1/order", data)
+    //   .then((res) => {
+    //     let resData = res.data;
+    //     navigate("/payment", {
+    //       state: {
+    //         orderId: resData,
+    //         storename: itemDetail.item.storeName,
+    //         productname: itemDetail.item.itemName,
+    //         memberId: userId,
+    //         price: resultPrice,
+    //         amount: amount,
+    //       },
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  };
+
   useEffect(() => {
     console.log(subscribers);
   }, [subscribers]);
@@ -383,7 +411,10 @@ const OvContainer = (props) => {
                     <Fragment>
                       <LiveProductInfo liveInfo={props.liveInfo} />
                       <div className={classes.btnBox}>
-                        <TbTruckDelivery className={classes.btnPurchase} />
+                        <TbTruckDelivery
+                          className={classes.btnPurchase}
+                          onClick={orderProduct}
+                        />
                       </div>
                     </Fragment>
                   ) : (
@@ -393,22 +424,23 @@ const OvContainer = (props) => {
                   )}
                 </LiveFooter>
               </div>
-              {/* {props.isPublisher && (
+              {props.isPublisher && (
                 <UserVideoComponent
                   className={classes.streamContainer}
                   streamManager={publisher}
                 />
-              )} */}
-              {/* {!props.isPublisher && subscribers.length > 0 ? (
-                <UserVideoComponent
-                className={classes.streamContainer}
-                streamManager={subscribers}
-                />
-                ) : null}
-              {subscribers.length} */}
-              {publisher && (
+              )}
+              {!props.isPublisher && subscribers.length > 0 ? (
                 <UserVideoComponent
                   className={classes.streamContainer}
+                  streamManager={subscribers}
+                />
+              ) : null}
+              {/* {publisher && (
+                <UserVideoComponent
+                  className={`${classes.streamContainer} ${
+                    !props.isPublisher ? classes.ovHidden : null
+                  }`}
                   streamManager={publisher}
                 />
               )}
@@ -420,7 +452,7 @@ const OvContainer = (props) => {
                 >
                   <UserVideoComponent streamManager={sub} />
                 </div>
-              ))}
+              ))} */}
             </Fragment>
           ) : null}
         </Fragment>

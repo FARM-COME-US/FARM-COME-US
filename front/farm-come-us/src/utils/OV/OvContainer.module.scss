@@ -2,6 +2,12 @@
   margin-top: 100%;
 }
 
+.ovHidden {
+  visibility: hidden;
+  width: 0px !important;
+  height: 0px !important;
+}
+
 .ovInfoContainer {
   position: absolute;
   top: 0;
