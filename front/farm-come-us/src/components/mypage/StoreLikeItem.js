@@ -26,10 +26,7 @@ const StoreLikeItem = (props) => {
   return (
     <div className={`${classes.card} ${classes.mt}`}>
       <div className={`${classes.imgWrapper}`}>
-        <img
-          className={classes.img}
-          src={`${process.env.PUBLIC_URL}${props.img_address}`}
-        />
+        <img className={classes.img} src={props.storeImg} />
       </div>
       <div className={`${classes.colflexbox} ${classes.mt}`}>
         <div
