@@ -5,9 +5,6 @@ import { orderList } from "../../utils/api/order-http";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const res = orderList();
-console.log(res);
-
 const MyReceipts = (props) => {
   const [myReceiptsInfoArr, setReceiptsInfoArr] = useState([]);
   // receiptsInfoArr가 list형태의 객체들로 들어옵니다. [obj1, obj2... 이렇게.]
@@ -15,6 +12,8 @@ const MyReceipts = (props) => {
   const memberId = useSelector((state) => state.userSlice.value.memberId);
 
   useEffect(() => {
+    // const res = orderList();
+    // console.log(res);
     console.log(`멤버아이디${memberId}`);
     axios
       .get(process.env.REACT_APP_API_SERVER_URL + "/api/v1/order/", {
