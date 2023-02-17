@@ -4,7 +4,7 @@ import axios from "axios";
 import classes from "./style/KakaopayEvent.module.scss";
 
 const KakaopayEvent = (props) => {
-  
+  const navigate = useNavigate();
   const kakaoClick = async () => {
     try {
       axios
@@ -41,10 +41,7 @@ const KakaopayEvent = (props) => {
             window.location.href = setUrl; // window.open(setUrl);
           } else {
             console.log("안됨");
-            // const navigate = useNavigate();
           }
-        
-       
         })
         .catch((error) => {
           console.log("여기서에러");
