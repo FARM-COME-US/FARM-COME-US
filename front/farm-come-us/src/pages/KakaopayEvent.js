@@ -22,7 +22,6 @@ const KakaopayEvent = (props) => {
           console.log(response);
           const setUrl = response.data.next_redirect_pc_url;
           const tid = response.data.tid;
-          console.log("여기까지");
 
           console.log(setUrl);
 
@@ -38,11 +37,7 @@ const KakaopayEvent = (props) => {
             console.log(err);
           }
           window.open(setUrl);
-          if (setUrl) {
-            // window.location.href = setUrl; // window.open(setUrl);
-          } else {
-            console.log("안됨");
-          }
+
         })
         .catch((error) => {
           console.log("여기서에러");
