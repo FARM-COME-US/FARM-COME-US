@@ -25,7 +25,7 @@ const KakaopayEvent = (props) => {
           console.log("여기까지");
 
           console.log(setUrl);
-          window.open(setUrl);
+
           console.log(tid);
 
           try {
@@ -37,9 +37,9 @@ const KakaopayEvent = (props) => {
           } catch (err) {
             console.log(err);
           }
-
+          window.open(setUrl);
           if (setUrl) {
-            window.location.href = setUrl; // window.open(setUrl);
+            // window.location.href = setUrl; // window.open(setUrl);
           } else {
             console.log("안됨");
           }
