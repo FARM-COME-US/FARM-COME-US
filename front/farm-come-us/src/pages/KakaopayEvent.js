@@ -44,8 +44,8 @@ const KakaopayEvent = (props) => {
           //   console.log("안됨");
           // }
         
-        navigate("/");
-               
+        navigate("/mypage/receipts");
+
         })
         .catch((error) => {
           console.log("여기서에러");
