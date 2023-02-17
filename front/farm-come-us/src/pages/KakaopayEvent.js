@@ -5,6 +5,7 @@ import classes from "./style/KakaopayEvent.module.scss";
 
 const KakaopayEvent = (props) => {
   const navigate = useNavigate();
+  
   const kakaoClick = async () => {
     try {
       axios
@@ -37,13 +38,8 @@ const KakaopayEvent = (props) => {
             console.log(err);
           }
 
-          if (setUrl) {
-            // window.location.href = setUrl; // 
-            setTimeout(() => {navigate("/")}, 3000);
-            window.open(setUrl);
-          } else {
-            console.log("안됨");
-          }
+        navigate("/mypage/receipts");
+
         })
         .catch((error) => {
           console.log("여기서에러");
