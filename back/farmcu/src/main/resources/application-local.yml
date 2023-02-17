@@ -11,13 +11,13 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
   datasource:
-    hikari:
-      data-source-properties:
-        socketTimeout: 50000
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://i8b103.p.ssafy.io:3306/farmcu?serverTimezone=UTC&characterEncoding=UTF-8
     username: ssafy
     password: dlfdltkatkdh
+    hikari:
+      data-source-properties:
+        socketTimeout: 50000
 cloud:
   aws:
     credentials:

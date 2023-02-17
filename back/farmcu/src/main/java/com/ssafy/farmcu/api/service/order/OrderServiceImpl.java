@@ -48,7 +48,6 @@ public class OrderServiceImpl implements OrderService{
         Order order = Order.createOrder(member, orderItems);
         orderRepository.save(order);
 
-
         orderItem.addOrderNum(order);
         orderItemRepository.save(orderItem);
 
