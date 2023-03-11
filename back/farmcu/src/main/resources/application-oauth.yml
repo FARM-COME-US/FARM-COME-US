@@ -13,10 +13,10 @@ spring:
 
 
           kakao:
-            client-id: 186db3a276355426492e41a502011b88
+            client-id: kakao rest api key
             redirect-uri: https://i8b103.p.ssafy.io/login/oauth2/code/kakao
             client-authentication-method: POST
-            client-secret: n9EZSS2eagtrsOO1U5kR2YuO1XZUgk62
+            client-secret: kakao client secret key
             authorization-grant-type: authorization_code
             scope:
               - profile_nickname
@@ -38,8 +38,8 @@ spring:
             user-name-attribute: id
 
 jwt:
-  secret: '8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds'
+  secret: jwt secret key
 
 
-KAKAO_CLIENT_ID: '186db3a276355426492e41a502011b88'
-KAKAO_CLIENT_SECRET: 'n9EZSS2eagtrsOO1U5kR2YuO1XZUgk62'
+KAKAO_CLIENT_ID: kakao rest api key
+KAKAO_CLIENT_SECRET: kakao client secret key
