@@ -1,7 +1,7 @@
 import { React, useState, useEffect, Fragment } from "react";
 import { OpenVidu } from "openvidu-browser";
 import { useNavigate } from "react-router-dom";
-import { fetchCloseSession } from "../api/ov-http";
+import { createToken, fetchCloseSession } from "../api/ov-http";
 import axios from "axios";
 
 import classes from "./OvContainer.module.scss";
@@ -36,8 +36,16 @@ const OvContainer = (props) => {
   const [chatList, setChatList] = useState([]);
 
   useEffect(() => {
-    joinSession();
+    // --- 1) Get an OpenVidu object ---
+    const tempOV = new OpenVidu();
+    setOV(tempOV);
   }, []);
+
+  useEffect(() => {
+    if (OV) {
+      joinSession();
+    }
+  }, [OV]);
 
   useEffect(() => {}, [isPending]);
 
@@ -49,6 +57,62 @@ const OvContainer = (props) => {
   }, [session]);
 
   useEffect(() => {}, [subscribers]);
+
+  async function createLiveSession(sessionId) {
+    const data = { customSessionId: sessionId };
+
+    return await axios
+      .post(
+        process.env.REACT_APP_OPENVIDU_SERVER + "/openvidu/api/sessions",
+        data,
+        {
+          headers: {
+            Authorization:
+              "Basic " +
+              btoa("OPENVIDUAPP:" + process.env.REACT_APP_OPENVIDU_SECRET),
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
+      .then((res) => {
+        resolve(res.data.sessionId);
+      })
+      .catch((err) => {
+        /* 이미 존재하는 방이면 서버에서 409를 반환 */
+        if (err.response.status === 409) {
+          resolve(sessionId);
+        } else {
+          console.error(err);
+        }
+      });
+  }
+
+  async function createToken(sessionId) {
+    const myRole = props.isPublisher ? "PUBLISHER" : "SUBSCRIBER";
+    const data = { role: myRole };
+
+    return await axios
+      .post(
+        process.env.REACT_APP_OPENVIDU_SERVER +
+          `/openvidu/api/sessions/${sessionId}/connection`,
+        data,
+        {
+          headers: {
+            Authorization: `Basic ${btoa(
+              `OPENVIDUAPP:${process.env.REACT_APP_OPENVIDU_SECRET}`
+            )}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        return res.data.token;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
   const handleMainVideoStream = (stream) => {
     if (mainStreamManager !== stream) {
@@ -66,16 +130,19 @@ const OvContainer = (props) => {
   };
 
   const joinSession = async () => {
-    // --- 1) Get an OpenVidu object ---
-    tempOV = new OpenVidu();
-    setOV(tempOV);
-
     // 소켓 통신에서 생기는 여러 로그들을 띄우지 않는 모드
-    tempOV.enableProdMode();
+    OV.enableProdMode();
 
     // --- 2) Init a session ---
-    const mySession = tempOV.initSession();
+    const mySession = OV.initSession();
     setSession(mySession);
+
+    // 내가 방장이 아닐 경우 방장의 stream 정보를 가져 옴
+    if (!props.isPublisher) {
+      const subscriber = mySession.subscribe(props.sessionId, undefined);
+
+      if (subsciber.length) setSubscribers((prev) => [...prev, subscriber]);
+    }
 
     // --- 3) Specify the actions when events take place in the session ---
 
@@ -83,7 +150,7 @@ const OvContainer = (props) => {
     mySession.on("streamCreated", (event) => {
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
-      const subscriber = mySession.subscribe(event.stream, "publisher");
+      const subscriber = mySession.subscribe(event.stream, undefined);
       // setSubscribers(subscriber);
 
       // Update the state with the new subscribers
@@ -123,45 +190,47 @@ const OvContainer = (props) => {
       }
     });
 
-    getToken().then((token) => {
-      mySession
-        .connect(token, { clientData: props.username })
-        .then(async () => {
-          let devices = await tempOV.getDevices();
-          let videoTrack = devices.filter(
-            (device) => device.kind === "videoinput"
-          );
+    const token = await getToken();
 
-          var newPublisher = tempOV.initPublisher(undefined, {
-            audioSource: undefined,
-            videoSource: videoTrack,
-            publishAudio: props.isPublisher ? true : false,
-            // publishVideo: props.isPublisher ? true : false,
-            publishVideo: true,
-            resolution: "1280x720",
-            // frameRate: 10,
-            insertMode: "APPEND",
-            mirror: true,
-          });
+    mySession
+      .connect(token, { clientData: props.username })
+      .then(async () => {
+        let devices = await tempOV.getDevices();
+        let videoTrack = devices.filter(
+          (device) => device.kind === "videoinput"
+        );
 
-          // 4-c publish
-          mySession.publish(newPublisher);
-
-          console.log(newPublisher);
-
-          setPublisher(newPublisher);
-          setCurrentVideoDevice(videoTrack);
-          setMainStreamManager(newPublisher);
-          setIsPending(false);
-        })
-        .catch((error) => {
-          console.log(
-            "There was an error connecting to the session:",
-            error.code,
-            error.message
-          );
+        var newPublisher = tempOV.initPublisher(undefined, {
+          audioSource: undefined,
+          videoSource: videoTrack,
+          publishAudio: props.isPublisher ? true : false,
+          publishVideo: props.isPublisher ? true : false,
+          // publishVideo: true,
+          resolution: "1280x720",
+          // frameRate: 10,
+          insertMode: "APPEND",
+          mirror: true,
         });
-    });
+
+        // 4-c publish
+        if (props.isPublisher) {
+          mySession.publish(newPublisher);
+        }
+
+        // console.log(newPublisher);
+
+        setPublisher(newPublisher);
+        setCurrentVideoDevice(videoTrack);
+        setMainStreamManager(newPublisher);
+        setIsPending(false);
+      })
+      .catch((error) => {
+        console.log(
+          "There was an error connecting to the session:",
+          error.code,
+          error.message
+        );
+      });
   };
 
   const getUrlParams = (queryString) => {
@@ -251,59 +320,9 @@ const OvContainer = (props) => {
   };
 
   const getToken = async () => {
-    const mySessionId = await createSession(props.sessionId);
+    const mySessionId = await createLiveSession(props.sessionId);
+
     return await createToken(mySessionId);
-  };
-
-  const createSession = (sessionId) => {
-    return new Promise((resolve, reject) => {
-      const data = JSON.stringify({ customSessionId: sessionId });
-      axios
-        .post(
-          process.env.REACT_APP_OPENVIDU_SERVER + "/openvidu/api/sessions",
-          data,
-          {
-            headers: {
-              Authorization:
-                "Basic " +
-                btoa("OPENVIDUAPP:" + process.env.REACT_APP_OPENVIDU_SECRET),
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-            },
-          }
-        )
-        .then((res) => {
-          resolve(res.data.sessionId);
-        })
-        .catch((err) => {
-          if (err.response.status === 409) {
-            resolve(sessionId);
-          } else {
-            console.error(err);
-          }
-        });
-    });
-  };
-
-  const createToken = async (sessionId) => {
-    // const myRole = props.isPublisher ? "PUBLISHER" : "SUBSCRIBER";
-    // const data = { role: myRole };
-
-    const response = await axios.post(
-      process.env.REACT_APP_OPENVIDU_SERVER +
-        `/openvidu/api/sessions/${sessionId}/connection`,
-      {},
-      {
-        headers: {
-          Authorization: `Basic ${btoa(
-            `OPENVIDUAPP:${process.env.REACT_APP_OPENVIDU_SECRET}`
-          )}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    return response.data.token; // The token
   };
 
   // 실시간 채팅
@@ -430,10 +449,12 @@ const OvContainer = (props) => {
                   streamManager={publisher}
                 />
               )}
-              {!props.isPublisher && subscribers.length > 0 ? (
+              {!props.isPublisher &&
+              subscribers.length > 0 &&
+              subscribers[0] ? (
                 <UserVideoComponent
                   className={classes.streamContainer}
-                  streamManager={subscribers}
+                  streamManager={subscribers[0]}
                 />
               ) : null}
               {/* {publisher && (
