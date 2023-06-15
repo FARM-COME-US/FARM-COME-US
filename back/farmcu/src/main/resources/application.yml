@@ -27,9 +27,9 @@ cors:
 
 app:
   auth:
-    token-secret: jwt key
-    token-expiry: token expiry time
-    refresh-token-expiry: refresh token expiry time
+    token-secret: 926D96C90030DD58429D2751AC1BDBBC
+    token-expiry: 9000000
+    refresh-token-expiry: 604800000
   oauth2:
     authorized-redirect-uris: https://i8b103.p.ssafy.io:3000/kakao
 
