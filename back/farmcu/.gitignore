@@ -4,7 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-application-local.yml
+*.yml
 
 ### STS ###
 .apt_generated
@@ -36,3 +36,9 @@ out/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> b168df5b3a5aa0cdc659a356bd4e1b75d0057ffc
